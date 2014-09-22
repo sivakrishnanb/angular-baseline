@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-controller="Base" ng-init="init()">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ezy2Sell</title>
+  	<link rel="stylesheet" href="content/styles/base.css" />
+  	<link rel="stylesheet" href="content/styles/toaster.css" />
+  	<link rel="stylesheet" href="content/styles/ngGrid.css" />
+    <link rel="stylesheet" href="content/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="content/lib/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="content/lib/nvd3/nv.d3.min.css">
+    <script data-main="content/scripts/main" src="content/lib/require/require.js"></script>
+  </head>
+
+  <body ng-cloak class="ng-cloak">
+      <ng-include src="'views/shared/header.html'"></ng-include>
+      <ng-view></ng-view>
+      <ng-include src="'views/shared/base.html'"></ng-include>
+    <ng-include src="'views/shared/footer.html'"></ng-include>
+   
+  </body>
+
+</html>

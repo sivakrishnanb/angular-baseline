@@ -1,0 +1,154 @@
+<section class="container" ng-init="init()">
+  <div class="row">
+
+    <div class="col-sm-9">
+      <article class="widget-data clearfix">
+        <div class="filter-box">
+          <p class="link-hldr">
+            <a href="#" title="Link 1">Link 1</a>
+            <a href="#" title="Link 2">Link 2</a>
+            <a href="#" title="Link 3">Link 3</a>
+            <a href="#" title="Link 4">Link 4</a>
+            <a href="#" title="Link 5">Link 5</a>
+            <a href="#" title="Link 6">Link 6</a>
+          </p>
+          <div class="input-group col-md-5" id="datetimepicker7">
+            <span class="input-group-addon datepickerbutton">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+            <input type='text' class="form-control"/>
+            <span class="input-group-addon">
+                <span>Filter</span>
+            </span>
+          </div>
+        </div>
+        <h1>Sales between 18 July 2014 to 19 July 2014</h1>
+        <hr/>
+        <div class="status-box">
+          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
+          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
+          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
+          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
+        </div>
+      </article>
+      <article class="widget-table">
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+        <!-- <div class="table-responsive">
+          <table class="table table-hover table-bordered table-striped">
+            <thead>
+              <tr><td>#</td><td>Top 5 Sales</td><td>Rates</td></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>data 1</td><td>75 %</td></tr>
+              <tr><td>2</td><td>data 1</td><td>75 %</td></tr>
+              <tr><td>3</td><td>data 1</td><td>75 %</td></tr>
+              <tr><td>4</td><td>data 1</td><td>75 %</td></tr>
+              <tr><td>5</td><td>data 1</td><td>75 %</td></tr>
+            </tbody>
+          </table>
+        </div> -->
+
+      </article>
+      <article class="widget-main">
+        <header>
+            <strong>Title</strong>
+        </header>
+        <section>
+          <nvd3 options="bar.options" data="bar.data"></nvd3>
+          <div class="btn-grp">
+                <button type="button" class="btn btn-default">Default</button>
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-success">Success</button>
+          </div>
+        </section>
+      </article>
+      <article class="widget-main">
+        <header>
+            <strong>Title</strong>
+        </header>
+        <section>
+          <nvd3 options="bar.options" data="bar.data"></nvd3>
+          <div class="btn-grp">
+                <button type="button" class="btn btn-default">Default</button>
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-success">Success</button>
+          </div>
+        </section>
+      </article>
+      <article class="widget-main">
+        <header>
+            <strong>Title</strong>
+        </header>
+        <section>
+          
+            <gmap></gmap>
+  
+        </section>
+      </article>
+    </div>
+    <div class="col-sm-3">
+      <article class="widget-aside">
+        <header>Header</header>
+        <section>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+        </section>
+      </article>
+      <article class="widget-aside">
+        <header>Header</header>
+        <section>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+          <p>
+            <strong>Title</strong><br/>
+            <span>Content</span>
+          </p>
+        </section>
+      </article>
+      <article class="widget-aside">
+        <section>
+          <p>
+            <strong>Title</strong>
+          </p>
+          <p class="donut-chart">
+            <nvd3 options="pie.options" data="pie.data"></nvd3>
+          </p>
+        </section>
+      </article>
+      <article class="widget-aside">
+        <section>
+          <p>
+            <strong>Title</strong>
+          </p>
+          <p class="donut-chart">
+            <nvd3 options="pie.options" data="pie.data"></nvd3>
+          </p>
+        </section>
+      </article>
+    </div>
+  </div>
+</section>
