@@ -205,7 +205,7 @@ define(['app', 'model/products/products'], function (app, model) {
                         .done(function(success){
                             var products = [];
                             var data = success.response.data;
-                            //toaster.pop("success", success.response.success[0] ? success.response.success[0] : 'Product List', success.response.success[1] ? success.response.success[1] : 'Successfully Retrived');
+                            toaster.pop("success", (success.response.success[0] ? success.response.success[0] : 'Product List'), (success.response.success[1] ? success.response.success[1] : 'Successfully Retrived'));
                             if(!_.isArray(data.products)) {
                                     _.forEach(data.products, function(product) { products.push(product) }); 
                                 } else {

@@ -61,23 +61,14 @@ define(dep, function (angularAMD) {
     .when("/shipments", angularAMD.route({
         templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
     }))
-    .when("/shipments/pending", angularAMD.route({
-        templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
-    }))
-    .when("/shipments/intransit", angularAMD.route({
-        templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
-    }))
-    .when("/shipments/received", angularAMD.route({
-        templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
-    }))
-    .when("/shipments/cancelled", angularAMD.route({
-        templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
-    }))
     .when("/shipments/create", angularAMD.route({
         templateUrl: 'views/shipments/create.html', controller: 'CreateShipments', controllerUrl: 'controller/shipments/create'
     }))
     .when("/shipments/upload", angularAMD.route({
         templateUrl: 'views/shipments/upload.html', controller: 'UploadShipments', controllerUrl: 'controller/shipments/upload'
+    }))
+    .when("/shipments/:status", angularAMD.route({
+        templateUrl: 'views/shipments/index.html', controller: 'Shipments', controllerUrl: 'controller/shipments/index'
     }))
     //Orders routing
     .when("/orders", angularAMD.route({

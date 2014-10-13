@@ -56,7 +56,7 @@
                         <div class="row">
                           <div class="col-sm-4">
                             <div class="form-group">
-                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H (cm)</label>
+                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H ({{model.dimensionUnit || constants.notAvailable}})</label>
                               <div class="col-sm-7 three-input">
                                 <p id="product-view-dimension-length" class="form-control-static" ng-bind="model.length || constants.notAvailable"></p>
                                 <p id="product-view-dimension-width" class="form-control-static" ng-bind="model.width || constants.notAvailable"></p>
@@ -66,7 +66,7 @@
                           </div>
                           <div class="col-sm-4">
                             <div class="form-group">
-                              <label for="weight" class="col-sm-5 control-label">Weight (kg)</label>
+                              <label for="weight" class="col-sm-5 control-label">Weight ({{model.weightUnit || constants.notAvailable}})</label>
                               <div class="col-sm-7 small-input">
                                 <p id="product-view-weight" class="form-control-static" ng-bind="model.weight || constants.notAvailable"></p>
                               </div>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                               <label for="price" class="col-sm-5 control-label">Retail Price</label>
                               <div class="col-sm-7">
-                                <p id="product-view-retail-price" class="form-control-static" ng-bind="(model.retailPrice || constants.notAvailable) + ' ' + (model.retailPrice ? (model.retailPriceCurrency || constants.notAvailable) : '')"></p>
+                                <p id="product-view-retail-price" class="form-control-static" ng-bind="(model.retailPrice || constants.notAvailable) + ' ' + (model.retailPrice ? (model.retailPriceCurrency || '') : '')"></p>
                               </div>
                             </div>    
                           </div>
@@ -134,7 +134,7 @@
                             <div class="form-group">
                               <label for="costprice" class="col-sm-5 control-label">Cost Price</label>
                               <div class="col-sm-7">
-                                <p id="product-view-cost-price" class="form-control-static" ng-bind="(model.costPrice  || constants.notAvailable) + ' ' + (model.costPrice ? (model.costPriceCurrency || constants.notAvailable) : '')"></p>
+                                <p id="product-view-cost-price" class="form-control-static" ng-bind="(model.costPrice  || constants.notAvailable) + ' ' + (model.costPrice ? (model.costPriceCurrency || '') : '')"></p>
                               </div>
                             </div>
                           </div>
@@ -142,7 +142,7 @@
                             <div class="form-group">
                               <label for="inventoryLevel" class="col-sm-5 control-label">Inventory Alert Level</label>
                               <div class="col-sm-7">
-                                <p id="product-view-inventory-alert" class="form-control-static" ng-bind="model.inventoryAlertLevel || constants.notAvailable"></p>
+                                <p id="product-view-inventory-alert" class="form-control-static" ng-bind="(model.inventoryAlertLevel || model.inventoryAlertLevel == 0) ? model.inventoryAlertLevel : constants.notAvailable"></p>
                               </div>
                             </div>    
                           </div>
@@ -235,8 +235,17 @@
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse in">
                       <div class="panel-body">
-                        <div class="row">
-                          <div class="col-sm-4">
+                        <div class="row" ng-if="!(model.additionalInfo1 || model.additionalInfo2 || model.additionalInfo3 || model.additionalInfo4 || model.additionalInfo5 || model.additionalInfo6 || model.additionalInfo7 || model.additionalInfo8 || model.additionalInfo9 || model.additionalInfo10 || model.additionalInfo11 || model.additionalInfo12)">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <p id="product-view-add-info-none" class="form-control-static">No additional information available</p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row" ng-if="model.additionalInfo1 || model.additionalInfo2 || model.additionalInfo3">
+                          <div class="col-sm-4" ng-if="model.additionalInfo1">
                             <div class="form-group">
                               <label for="addInfo1" class="col-sm-5 control-label">Additional Information 1</label>
                               <div class="col-sm-7">
@@ -244,7 +253,7 @@
                               </div>
                             </div>    
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-sm-4" ng-if="model.additionalInfo2">
                             <div class="form-group">
                               <label for="addInfo2" class="col-sm-5 control-label">Additional Information 2</label>
                               <div class="col-sm-7">
@@ -252,11 +261,89 @@
                               </div>
                             </div>    
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-sm-4" ng-if="model.additionalInfo3">
                             <div class="form-group">
                               <label for="addInfo3" class="col-sm-5 control-label">Additional Information 3</label>
                               <div class="col-sm-7">
                                 <p id="product-view-add-info3" class="form-control-static" ng-bind="model.additionalInfo3 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row" ng-if="model.additionalInfo4 || model.additionalInfo5 || model.additionalInfo6">
+                          <div class="col-sm-4" ng-if="model.additionalInfo4">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 4</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info4" class="form-control-static" ng-bind="model.additionalInfo4 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo5">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 5</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info5" class="form-control-static" ng-bind="model.additionalInfo5 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo6">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 6</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info6" class="form-control-static" ng-bind="model.additionalInfo6 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row" ng-if="model.additionalInfo7 || model.additionalInfo8 || model.additionalInfo9">
+                          <div class="col-sm-4" ng-if="model.additionalInfo7">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 7</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info7" class="form-control-static" ng-bind="model.additionalInfo7 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo8">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 8</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info8" class="form-control-static" ng-bind="model.additionalInfo8 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo9">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 9</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info9" class="form-control-static" ng-bind="model.additionalInfo9 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row" ng-if="model.additionalInfo10 || model.additionalInfo11 || model.additionalInfo12">
+                          <div class="col-sm-4" ng-if="model.additionalInfo10">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 10</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info10" class="form-control-static" ng-bind="model.additionalInfo10 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo11">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 11</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info11" class="form-control-static" ng-bind="model.additionalInfo11 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4" ng-if="model.additionalInfo12">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 12</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info12" class="form-control-static" ng-bind="model.additionalInfo12 || constants.notAvailable"></p>
                               </div>
                             </div>    
                           </div>

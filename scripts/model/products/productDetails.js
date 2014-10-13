@@ -14,7 +14,7 @@ define(['utility/map'], function (map) {
 			this.width=0,
 			this.height=0;
 			this.weight=0;
-			this.weightUnit=0;				  				  				   
+			this.weightUnit="";				  				  				   
 			this.dimensionUnit=0;     
 			this.costPrice=0;
 			this.costPriceCurrency="";
