@@ -1,0 +1,11 @@
+<section class="container-fluid" ng-init="init()">
+  <form class="form-signin" role="form" name="form" novalidate>
+        <h2 class="form-signin-heading">EzyCommerce</h2>
+        <input type="email" class="form-control" placeholder="Email address" required autofocus ng-model="email"/>
+        <input type="password" class="form-control" placeholder="Password" required ng-model="password"/ >
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button type="submit" ng-disabled="form.$invalid" class="btn btn-lg btn-primary btn-block" ng-click="submit()">Sign in</button>
+      </form>
+</section>

@@ -1,0 +1,4 @@
+[{"date": "22/07/2014 9:16 SST", "file" : "Products_22072014", "result" :"In Progress", "status" : "Processing", "report" : "http://dummyurl.com/download.xls"},
+{"date": "22/07/2014 9:16 SST", "file" : "Products_22072014", "result" :"0 products uploaded", "status" : "Processing", "report" : "http://dummyurl.com/download.xls"},
+{"date": "22/07/2014 9:16 SST", "file" : "Products_22072014", "result" :"132 products uploaded", "status" : "Successful", "report" : "http://dummyurl.com/download.xls"},
+{"date": "22/07/2014 9:16 SST", "file" : "Products_22072014", "result" :"0 products uploaded", "status" : "Failed", "report" : "http://dummyurl.com/download.xls"}]

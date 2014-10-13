@@ -1,0 +1,343 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/products/nav.html'"></ng-include>
+      <section class="content full">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2 class="pull-left">Edit Product</h2>
+              <div class="btn-grp pull-right">
+                  <a href="#/products" class="btn btn-default">Cancel</a>
+                  <button type="button" class="btn btn-danger">Delete</button>
+                  <a href="#/products" class="btn btn-primary">Save Changes</a>
+              </div>
+            </div>
+          </div>
+          <form role="form" class="form-horizontal">
+            <div class="panel-group">
+              <div class="panel panel-default">
+                    <div data-toggle="collapse" data-target="#collapseOne" class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Basic Information - Non Editable
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">EAN/JAN/UPC/ISBN</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">607876</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H (cm)</label>
+                              <div class="col-sm-7 three-input">
+                                <p class="form-control-static">L</p>
+                                <p class="form-control-static">B</p>
+                                <p class="form-control-static">H</p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">Weight (kg)</label>
+                              <div class="col-sm-7 small-input">
+                                <p class="form-control-static">60</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">Date Created</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">22/07/2014</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="dimension" class="col-sm-5 control-label">Date Modified</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">22/07/2014</p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">Date Inactive</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">22/07/2014</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">Current Inventory Fulfillable</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">22</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="dimension" class="col-sm-5 control-label">Current Inventory Quarantined</label>
+                              <div class="col-sm-7">
+                                <p class="form-control-static">23</p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group checkbox-group">
+                                <label>
+                                  <span class="glyphicon glyphicon-ok"></span> Dangerous
+                                </label>
+                                <label>
+                                  <span class="glyphicon glyphicon-remove"></span> Perishable
+                                </label>
+                                <label>
+                                  <span class="glyphicon glyphicon-ok"></span> Fragile
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div data-toggle="collapse" data-target="#collapseTwo" class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        General Information
+                       </a>
+                       <label class="pull-right">
+                        <input type="checkbox" name="isActive"> Is Active
+                      </label>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="manufacturer" class="col-sm-5 control-label">Manufacturer</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="merchantSku" class="col-sm-5 control-label">Merchant SKU</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="merchantSku" placeholder="Merchant SKU" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="skuDesc" class="col-sm-5 control-label">SKU Name</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="skuDesc" placeholder="SKU Description" />
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="productCat" class="col-sm-5 control-label">Product Category</label>
+                              <div class="col-sm-7">
+                                <select id="productCat" class="form-control" name="productCategoryList">
+                                  <option>Electronics</option>
+                                  <option>Apparel</option>
+                                  <option>Baby</option>
+                                  <option>Toys</option>
+                                  <option>Home and Life Style</option>
+                                  <option>Kitchen</option>
+                                  <option>Sports</option>
+                                  <option>Fashion</option>
+                                  <option>Shoes</option>
+                                  <option>Footwear</option>
+                                  <option>Beauty and health</option>
+                                  <option>Travel</option>
+                                  <option>Accessories</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="price" class="col-sm-5 control-label">Retail Price</label>
+                              <div class="col-sm-7 one-input-select">
+                                <input type="text" class="form-control" id="price" placeholder="Price" />
+                                <select name="currency" class="form-control">
+                                  <option>$</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="costprice" class="col-sm-5 control-label">Cost Price</label>
+                              <div class="col-sm-7 one-input-select">
+                                <input type="text" class="form-control" id="costprice" placeholder="Price" />
+                                <select class="form-control" id="costpriceunit">
+                                  <option>$</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="ebayItemNo" class="col-sm-5 control-label">eBay Item number</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="ebayItemNo" placeholder="eBay Item number" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="inventoryLevel" class="col-sm-5 control-label">Inventory Alert Level</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="inventoryLevel" placeholder="Inventory Alert Level" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="remarks" class="col-sm-5 control-label">Remarks</label>
+                              <div class="col-sm-7">
+                                <textarea class="form-control" id="remarks" placeholder="Remarks" row="4"></textarea>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Customs Declaration
+                       </a>
+                       <label class="pull-right">
+                        <input type="checkbox" name="isExportable"> Is Exportable
+                      </label>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="customDesc" class="col-sm-5 control-label">Customs description</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="customDesc" placeholder="Customs description" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="htsCode" class="col-sm-5 control-label">HTS Code</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="htsCode" placeholder="HTS Code" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="declaredValue" class="col-sm-5 control-label">Declared value</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="declaredValue" placeholder="Declared value" />
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="originCountry" class="col-sm-5 control-label">Country of Origin</label>
+                              <div class="col-sm-7">
+                                <select class="form-control" id="originCountry">
+                                  <option>Select</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Additional Information 
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 1</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="addInfo1" placeholder="Additional Information 1" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 2</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="addInfo2" placeholder="Additional Information 2" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 3</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" id="addInfo3" placeholder="Additional Information 3" />
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4 pull-right">
+                            <div class="pull-right">
+                              <label for="originCountry">Add a new line</label><button class="plus-btn btn btn-primary">+</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="btn-grp pull-right">
+              
+              <a href="#/products" class="btn btn-default">Cancel</a>
+              <button type="button" class="btn btn-danger">Delete</button>
+              <a href="#/products" class="btn btn-primary">Save Changes</a>
+            </div>
+        </form>
+      </section>
+  </div>
+</div>
+</section>

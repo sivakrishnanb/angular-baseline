@@ -1,22 +1,22 @@
-<section class="container" ng-init="init()">
+<section class="container-fluid" ng-init="init()">
   <div class="row">
 
     <div class="col-sm-9">
       <article class="widget-data clearfix">
         <div class="filter-box">
           <p class="link-hldr">
-            <a href="#" title="Link 1">Link 1</a>
-            <a href="#" title="Link 2">Link 2</a>
-            <a href="#" title="Link 3">Link 3</a>
-            <a href="#" title="Link 4">Link 4</a>
-            <a href="#" title="Link 5">Link 5</a>
-            <a href="#" title="Link 6">Link 6</a>
+            <a href="javascript:;" title="Link 1">Today</a>
+            <a href="javascript:;" title="Last 7 Days">Last 7 Days</a>
+            <a href="javascript:;" title="Last 30 Days">Last 30 Days</a>
+            <a href="javascript:;" title="Link 4" class="active">This month</a>
+            <a href="javascript:;" title="Link 5">Last month</a>
+            <a href="javascript:;" title="Link 6">This quarter</a>
           </p>
           <div class="input-group col-md-5" id="datetimepicker7">
             <span class="input-group-addon datepickerbutton">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-            <input type='text' class="form-control"/>
+            <input type='text' class="form-control" value="18 July, 2014 - 19 July, 2014"/>
             <span class="input-group-addon">
                 <span>Filter</span>
             </span>
@@ -25,10 +25,10 @@
         <h1>Sales between 18 July 2014 to 19 July 2014</h1>
         <hr/>
         <div class="status-box">
-          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
-          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
-          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
-          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>65</span><br/><span>data 1</span><br/><span>20%</span></div></div>
+          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>89</span><br/><span>no. of orders</span><br/><span class="percent">45%</span></div></div>
+          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>items sold</span><br/><span class="percent">32%</span></div></div>
+          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>12</span><br/><span>ave. order <br/>per day</span></div></div>
+          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>78</span><br/><span>ave. order <br/>per day</span></div></div>
         </div>
       </article>
       <article class="widget-table">

@@ -1,12 +1,43 @@
-<article class="widget-nav">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <!-- <span class="badge">14</span> -->
-              <a href="#/products/create" title="Create a product">Create a product</a>
-            </li>
-            <li class="list-group-item">
-              <!-- <span class="badge">14</span> -->
-              <a href="#/products/upload" title="Upload a file">Upload a file</a>
-            </li>
-          </ul>
-      </article>
+<aside class="full">
+  <article class="widget-nav">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <!-- <span class="badge">14</span> -->
+          <a href="javascript:;" ng-click="toggleLeftNav()" title="Expand/Collapse" class="glyphicon glyphicon-resize-horizontal" id="product-nav"></a><span class="full expOrCol">Quick Links</span>
+        </li>
+        <li ng-class="isNavActive('products','create')" class="list-group-item">
+          <!-- <span class="badge">14</span> -->
+          <a href="#/products/create" title="Create Product" id="product-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol">Create Product</span></a>
+        </li>
+        <li ng-class="isNavActive('products','upload')" class="list-group-item">
+          <!-- <span class="badge">14</span> -->
+          <a href="#/products/upload" title="Upload Products" id="product-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol">Upload Products</span></a>
+        </li>
+      </ul>
+  </article>
+  <article class="widget-nav">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol">Product Status</span>
+        </li>
+        <li ng-class="isNavActive('products','all')" class="list-group-item">
+          <span class="badge">28</span>
+          <a href="#/products/all" title="All" id="product-nav-all"><span class="glyphicon glyphicon-certificate"></span><span class="full expOrCol">All</span></a>
+
+        </li>
+        <li ng-class="isNavActive('products','active','default')" class="list-group-item">
+          <span class="badge">14</span>
+          <a href="#/products/active" title="Active" id="product-nav-active"><span class="glyphicon glyphicon-ok-circle"></span><span class="full expOrCol">Active</span></a>
+
+        </li>
+        <li ng-class="isNavActive('products','inactive')" class="list-group-item">
+          <span class="badge">14</span>
+          <a href="#/products/inactive" title="In Active" id="product-nav-inactive"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Inactive</span></a>
+        </li>
+        <li ng-class="isNavActive('products','archived')" class="list-group-item">
+          <span class="badge">14</span>
+          <a href="#/products/archived" title="Archived" id="product-nav-archived"><span class="glyphicon glyphicon-trash"></span><span class="full expOrCol">Archived</span></a>
+        </li>
+      </ul>
+  </article>
+</aside>

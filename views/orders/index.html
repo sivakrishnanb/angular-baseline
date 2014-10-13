@@ -1,122 +1,115 @@
-<section class="container" ng-init="init()">
-    <div class="row">
-      <div class="col-sm-3">
-        <ng-include src="'views/orders/nav.html'"></ng-include>
-      </div>
-      <div class="col-sm-9">
-        <article>
-          <h2>Orders</h2>
-          <p>description goes here...</p>
-          <h5>Search Products</h5>
-          <form class="form-inline" role="form">
-            <div class="form-group">
-              <label class="sr-only" for="searchProducts">Search Products</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="searchProducts" placeholder="Search">
-                <span class="input-group-btn">
-                  <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                </span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="sr-only" for="searchProducts">Create Date Range</label>
-              <div class="input-group">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default">Create Date Range</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="sr-only" for="searchProducts">Product Category</label>
-              <div class="input-group">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default">Product Category</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="checkbox">
-              <label>
-                 Active? <input type="checkbox" name="active">
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                 Inactive? <input type="checkbox" name="inactive">
-              </label>
-            </div>
-          </form>
-          <div class="table-responsive widget-table">
-            <table class="table table-hover table-bordered table-striped">
-              <thead>
-                <tr><td>Actions</td><td>Sku ID</td><td>Merchant</td><td>Name</td><td>Customer Name</td><td>Customer Address</td><td>Remarks</td></tr>
-              </thead>
 
-              <tbody>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-                <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-
-              </tbody>
-              
-            </table>
-            <div class="table-footer row">
-              <div class="col-sm-4 row-info">Showing 1-10 of 20 products</div>
-              <div class="col-sm-4">View <div class="btn-group">
-                  <button type="button" class="btn btn-default">10</button>
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">10</a></li>
-                    <li><a href="#">20</a></li>
-                    <li><a href="#">15</a></li>
-                  </ul>
-                </div> per page
-              </div>
-              <div class="col-sm-4">
-                <ul class="pagination pull-right">
-                  <li class="disabled"><a href="#">&laquo;</a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li><a href="#">&raquo;</a></li>
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/orders/nav.html'"></ng-include>
+      <section class="content full">
+        <h2>Manage Orders</h2>
+        <p>Create, manage and track your orders from all channels. Orders can be created one at a time or in bulk by uploading a file using our standard template. If you are connected to a sales channel, your orders will be automatically imported. You can track your order through the various statuses from Pending to Delivered.</p>
+        <h4 class="sub-head">Search Orders</h4>
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <label class="sr-only" for="searchOrders">Search Orders</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="searchOrders" placeholder="Search Orders">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="searchProducts">Created Date Range</label>
+            <div class="input-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">Created Date Range</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="javascript:;">Today</a></li>
+                  <li><a href="javascript:;">Yesterday</a></li>
+                  <li><a href="javascript:;">Last 7 Days</a></li>
+                  <li><a href="javascript:;">Last 30 Days</a></li>
+                  <li><a href="javascript:;">This Month</a></li>
+                  <li><a href="javascript:;">Last Month</a></li>
+                  <li><a href="javascript:;">Custom Range</a></li>
                 </ul>
               </div>
             </div>
           </div>
-        </article>
+          <div class="form-group">
+          <label>
+            <input type="checkbox" name="isActive"> Domestic
+          </label>
+          <label>
+            <input type="checkbox" name="isActive"> International
+          </label>
+        </div>
+      </form>
+      <div class="widget-table">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+          <thead>
+            <tr><th>
+            <label class="sr-only" for="searchProducts">Actions</label>
+            <div class="input-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-link" data-toggle="dropdown">Actions</button>
+                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="javascript:;">Approve</a></li>
+                  <li><a href="javascript:;">Cancel</a></li>
+                </ul>
+              </div>
+            </div>
+          </th><th>Edit</th><th>FBSP-SKU ID</th><th>Created Date</th><th>Merchant SKU</th><th>Name/Description</th><th>Inventory Fulfillable</th><th>Inventory Inbound</th><th>Inventory Quarantined</th><th>Inventory Alert Level</th><th>Active</th></tr>
+          </thead>
+
+          <tbody>
+            <tr><td><input type="checkbox" name="action"></td><td><a href="#/products/edit/EZT001" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#/products/view/EZT001" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>3</td><td>4</td><td>5</td><td>6</td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+            <tr><td><input type="checkbox" name="action"></td><td><a href="#/products/edit/EZT001" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#/products/view/EZT001" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>3</td><td>4</td><td>5</td><td>6</td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+            <tr><td><input type="checkbox" name="action"></td><td><a href="#/products/edit/EZT001" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#/products/view/EZT001" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>3</td><td>4</td><td>5</td><td>6</td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+            <tr><td><input type="checkbox" name="action"></td><td><a href="#/products/edit/EZT001" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#/products/view/EZT001" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>3</td><td>4</td><td>5</td><td>6</td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+            <tr><td><input type="checkbox" name="action"></td><td><a href="#/products/edit/EZT001" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#/products/view/EZT001" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>3</td><td>4</td><td>5</td><td>6</td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+          </tbody>
+
+        </table>
       </div>
+
+      <div class="table-footer row">
+        <div class="col-xs-12">
+          <div class="col pull-right">
+            <ul class="pagination">
+              <li class="disabled"><a href="#">&laquo;</a></li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#">&raquo;</a></li>
+            </ul>
+          </div>
+          <div class="col pull-right">View <div class="btn-group">
+              <button type="button" class="btn btn-default">10</button>
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">10</a></li>
+                <li><a href="#">20</a></li>
+                <li><a href="#">15</a></li>
+              </ul>
+            </div> per page
+          </div>
+          <div class="col row-info pull-right">Showing 1-10 of 20 products</div>
+        </div>
     </div>
+  </section>
+</div>
+</div>
 </section>

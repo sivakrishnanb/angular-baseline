@@ -1,328 +1,319 @@
-<section class="container" ng-init="init()">
+<section class="container-fluid" ng-init="init()">
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-xs-12">
       <ng-include src="'views/products/nav.html'"></ng-include>
-    </div>
-    <div class="col-sm-9">
-      <article>
-        <h2>Create Product</h2>
-        <form role="form" class="form-horizontal">
-          <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" href="javascript:;">
-                  Panel title
-                 </a>
-                </h4>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse in">
-                <div class="panel-body">
-                  Panel Content
+      <section class="content full">
+          <div class="row">
+            <div class="col-sm-12">
+              <form role="form" class="form-horizontal" name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h2 class="pull-left">Create Product</h2>
+                    <!-- <div class="btn-grp pull-right">
+                      <a href="#/products" class="btn btn-default">Cancel</a>
+                      <button class="btn btn-primary" type="submit">Create Product</button>
+                    </div> -->
+
+                  </div>
                 </div>
-              </div>
+                <p>Manually fill up the fields to create a product. No two products must have the same Merchant SKU. Apply Customs declaration information to be used in future orders. <br/>Fields marked with asterisk ( * ) are mandatory</p>
+                <div class="panel-group">
+                  <div class="panel panel-default">
+                    <div data-toggle="collapse" data-target="#collapseOne" class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Basic Information
+                       </a>
+                       
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="merchantSku" class="col-sm-5 control-label">Merchant SKU</label>
+                              <div class="col-sm-7">
+                                <input name="merchantSku" type="text" class="form-control" id="merchantSku" placeholder="Merchant SKU" ng-model="model.sku" required required-message="validationMessages.required"/>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="skuDesc" class="col-sm-5 control-label">SKU Name</label>
+                              <div class="col-sm-7">
+                                <input name="skuName" type="text" class="form-control" id="skuDesc" placeholder="SKU Description" ng-model="model.skuDescription"  required required-message="validationMessages.required" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="productCat" class="col-sm-5 control-label">Product Category</label>
+                              <div class="col-sm-7">
+                                <select id="productCat" class="form-control" name="productCategoryList" ng-model="model.mainProductCategory"  required required-message="validationMessages.required">
+                                  <option>Electronics</option>
+                                  <option>Apparel</option>
+                                  <option>Baby</option>
+                                  <option>Toys</option>
+                                  <option>Home and Life Style</option>
+                                  <option>Kitchen</option>
+                                  <option>Sports</option>
+                                  <option>Fashion</option>
+                                  <option>Shoes</option>
+                                  <option>Footwear</option>
+                                  <option>Beauty and health</option>
+                                  <option>Travel</option>
+                                  <option>Accessories</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H (cm)</label>
+                              <div class="col-sm-7 three-input">
+                                <input name="productLength" type="text" class="form-control" placeholder="L" ng-model="model.length" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required/>
+                                <input name="productBreadth" type="text" class="form-control" placeholder="B" ng-model="model.width" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
+                                <input name="productHeight" type="text" class="form-control" placeholder="H" ng-model="model.height" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="weight" class="col-sm-5 control-label">Weight (kg)</label>
+                              <div class="col-sm-7 small-input">
+                                <input name="weight" type="text" class="form-control" id="weight" ng-model="model.weight" placeholder="Weight" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group required">
+                              <label for="price" class="col-sm-5 control-label">Retail Price</label>
+                              <div class="col-sm-7 one-input-select">
+                                <input type="text" name="retailPrice" class="form-control" id="price" placeholder="Price" ng-model="model.retailPrice" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required/>
+                                <select name="currency" class="form-control" ng-model="model.retailPriceCurrency" required-message="validationMessages.required" required>
+                                  <option>$</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Advanced Information
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="ebayItemNo" class="col-sm-5 control-label">eBay Item number</label>
+                              <div class="col-sm-7">
+                                <input type="text" name="ebayitemno" ng-model="model.ebayItemNumber" class="form-control" id="ebayItemNo" placeholder="eBay Item number" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="ean" class="col-sm-5 control-label">EAN/JAN/UPC/ISBN</label>
+                              <div class="col-sm-7">
+                                <input type="text" name="ean" class="form-control" ng-model="model.hsCode" id="ean" placeholder="EAN/JAN/UPC/ISBN" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="eanType" class="col-sm-5 control-label">Type of EAN/JAN/UPC/ISBN</label>
+                              <div class="col-sm-7">
+                                <select id="eanType" class="form-control" name="eanType" ng-model="model.codeType">
+                                  <option>Select</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="manufacturer" class="col-sm-5 control-label">Manufacturer</label>
+                              <div class="col-sm-7">
+                                <input type="text" name="manufacturer" class="form-control" id="manufacturer" placeholder="Manufacturer" ng-model="model.manufacturer" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="costprice" class="col-sm-5 control-label">Cost Price</label>
+                              <div class="col-sm-7 one-input-select">
+                                <input type="text" name="costprice" class="form-control" id="costprice" placeholder="Price" ng-model="model.costPrice"/>
+                                <select class="form-control" id="costpriceunit" name="costpriceunit" ng-model="model.costPriceCurrency">
+                                  <option>$</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="inventoryLevel" class="col-sm-5 control-label">Inventory Alert Level</label>
+                              <div class="col-sm-7">
+                                <input type="text" name="inventoryLevel" class="form-control" id="inventoryLevel" placeholder="Inventory Alert Level" ng-model="model.inventoryAlertLevel" />
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="remarks" class="col-sm-5 control-label">Remarks</label>
+                              <div class="col-sm-7">
+                                <textarea class="form-control" name="remarks" id="remarks" placeholder="Remarks" row="4" ng-model="model.remarks"></textarea>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group col-sm-5">
+                                <!-- <label>
+                                  <input type="checkbox" name="productNature" ng-model="isDangerous"> Dangerous
+                                </label>
+                                <label>
+                                  <input type="checkbox" name="productNature" ng-model="isPerishable"> Perishable
+                                </label> -->
+                                <label class="pull-right control-label">
+                                  <input type="checkbox" name="productNature" ng-model="isFragile"> Fragile
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Customs Declaration
+                       </a>
+                       <label class="pull-right">
+                        <input type="checkbox" name="isExportable" ng-model="model.isExportable"> Is Exportable
+                      </label>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group" ng-class="{required : model.isExportable}">
+                              <label for="customDesc" class="col-sm-5 control-label">Customs description</label>
+                              <div class="col-sm-7">
+                                <!-- <input type="text" ng-show="isExport" name="customDesc1" disabled ng-model="model.customdesc" class="form-control" id="customDesc" placeholder="Customs description" /> -->
+                                <input type="text" ng-disabled="!model.isExportable" name="customDesc" ng-model="model.customdesc" class="form-control" id="customDesc" placeholder="Customs description" invalid-message="validationMessages.required" validator= "isExportSelected()" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group" ng-class="{required : model.isExportable}">
+                              <label for="htsCode" class="col-sm-5 control-label">HTS Code</label>
+                              <div class="col-sm-7">
+                                <input type="text" ng-disabled="!model.isExportable" name="htsCode" ng-model="model.hsCode" class="form-control" id="htsCode" placeholder="HTS Code" invalid-message="validationMessages.required" validator= "isExportSelected()" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group" ng-class="{required : model.isExportable}">
+                              <label for="declaredValue" class="col-sm-5 control-label">Declared value</label>
+                              <div class="col-sm-7">
+                                <input type="text" ng-disabled="!model.isExportable" name="declaredValue" ng-model="model.declaredValue" class="form-control" id="declaredValue" placeholder="Declared value" invalid-message="validationMessages.required"  validator= "isExportSelected()" />
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group" ng-class="{required : model.isExportable}">
+                              <label for="originCountry" class="col-sm-5 control-label">Country of Origin</label>
+                              <div class="col-sm-7">
+                                <select class="form-control" ng-disabled="!model.isExportable" name="originCountry" ng-model="model.countryOfOrigin" id="originCountry" invalid-message="validationMessages.required" validator= "isExportSelected()">
+                                  <option>Select</option>
+                                </select>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                      <h4 class="panel-title">
+                        <a href="javascript:;">
+                        Additional Information 
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 1</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" ng-model="model.additionalInfo1" id="addInfo1" placeholder="Additional Information 1" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 2</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" ng-model="model.additionalInfo2" id="addInfo2" placeholder="Additional Information 2" />
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 3</label>
+                              <div class="col-sm-7">
+                                <input type="text" class="form-control" ng-model="model.additionalInfo3" id="addInfo3" placeholder="Additional Information 3" />
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4 pull-right">
+                            <div class="pull-right">
+                              <label for="originCountry">Add a new line</label><button type="button" class="plus-btn btn btn-primary">+</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" href="javascript:;">
-                  Panel title
-                 </a>
-                </h4>
-              </div>
-              <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                  Panel Content
-                </div>
-              </div>
+            <div class="col-sm-12">
+              <label class="pull-right">
+                        <input type="checkbox" name="isActive" ng-model="model.isActive"> Is Active
+                      </label>
             </div>
-          </div>
-        <!-- <div class="panel panel-default">
-          <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
+            <div class="btn-grp pull-right">
+              <button type="button" class="btn btn-default">Cancel</button>
+              
+              <button class="btn btn-primary" type="submit">Create Product</a>
             </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <div class="col-sm-4 control-label">
-                    <label for="exampleInputEmail1">Email address</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <div class="btn-grp">
-          <button type="button" class="btn btn-default">Default</button>
-          <button type="button" class="btn btn-primary">Primary</button>
-          <button type="button" class="btn btn-success">Success</button>
-        </div>
-      </form>
-    </article>
+        </form>
+       </div>
+      </div>
+    </section>
   </div>
 </div>
 </section>

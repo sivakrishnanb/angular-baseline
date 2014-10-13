@@ -1,123 +1,105 @@
 
-<section class="container" ng-init="init()">
+<section class="container-fluid" ng-init="init()">
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-xs-12">
       <ng-include src="'views/products/nav.html'"></ng-include>
-    </div>
-    <div class="col-sm-9">
-      <article>
-        <h2>Products</h2>
-        <p>description goes here...</p>
-        <h5>Search Products</h5>
+      <section class="content full">
+        <h2>Product Catalog</h2>
+        <p>Create and manage your product catalog here. Add products one at a time by typing the product information or in bulk by uploading a file using our standard template. Once Products are created and activated, you can use them to create shipments, orders and do more.</p>
+        <h4 class="sub-head">Search Products</h4>
         <form class="form-inline" role="form">
-          <div class="form-group">
-            <label class="sr-only" for="searchProducts">Search Products</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="searchProducts" placeholder="Search">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-              </span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="searchProducts">Create Date Range</label>
-            <div class="input-group">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default">Create Date Range</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
+          <div class="row padBtm15px">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="sr-only" for="searchProducts">Search Products</label>
+                <div class="input-group selectboxhldr">
+                      <div multi-select input-model="productFilterOptions" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="" output-model="searchColumn" id="product-search-column"></div>
+                    <input type="text" class="form-control" id="product-search-text" placeholder="Search Products" ng-model="searchKey">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="searchProducts">Created Date Range</label>
+                <div class="input-group product-date">
+                  <div multi-select input-model="dateOptions" output-model="date" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Created Date Range" disable-property="label" id="product-date-range"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="searchProducts">Product Category</label>
+                <div class="input-group product-category">
+                  <div multi-select input-model="categoryOptions" output-model="category" button-label="name" item-label="name" tick-property="ticked" max-labels="1" default-label="Product Category" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category"></div>
               </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="searchProducts">Product Category</label>
-            <div class="input-group">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default">Product Category</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
+            <div class="form-group">
+                <label class="sr-only" for="searchProducts">Inventory</label>
+                <div class="input-group product-inventory">
+                  <div multi-select input-model="inventoryOptions" output-model="inventory" button-label="name" item-label="name" tick-property="ticked" helper-elements="" default-label="Inventory" selection-mode="single" disable-property="label" id="product-search-inventory"></div>
               </div>
-            </div>
-          </div>
-          <div class="checkbox">
-            <label>
-               Active? <input type="checkbox" name="active">
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-               Inactive? <input type="checkbox" name="inactive">
-            </label>
-          </div>
-        </form>
-        <div class="table-responsive widget-table">
-          <table class="table table-hover table-bordered table-striped">
-            <thead>
-              <tr><td>Actions</td><td>Sku ID</td><td>Merchant</td><td>Name</td><td>Customer Name</td><td>Customer Address</td><td>Remarks</td></tr>
-            </thead>
-
-            <tbody>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-              <tr><td><input type="checkbox" name="action"></td><td><a href="#" title="EZT001">EZT001</a></td><td>01-MAY-2014</td><td>123-ABC</td><td>Krishna</td><td>2010 Co</td><td>Name</td></tr>
-
-            </tbody>
-            
-          </table>
-          <div class="table-footer row">
-            <div class="col-sm-4 row-info">Showing 1-10 of 20 products</div>
-            <div class="col-sm-4">View <div class="btn-group">
-                <button type="button" class="btn btn-default">10</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">10</a></li>
-                  <li><a href="#">20</a></li>
-                  <li><a href="#">15</a></li>
-                </ul>
-              </div> per page
-            </div>
-            <div class="col-sm-4">
-              <ul class="pagination pull-right">
-                <li class="disabled"><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
             </div>
           </div>
         </div>
-      </article>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="sr-only" for="searchProducts">Actions</label>
+              <label class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</label>
+                <div class="input-group">
+                  <!-- <input type="checkbox" name="action" /> -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="product-search-action">
+                      Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li ng-if="isOptionVisible('shipment')"><a href="javascript:;" id="product-action-create-shipment">Create Shipment</a></li>
+                      <li ng-if="isOptionVisible('fulfillment')"><a href="javascript:;" id="product-action-create-fulfillment">Create Fulfillment Order</a></li>
+                      <li ng-if="isOptionVisible('removal')"><a href="javascript:;" id="product-action-create-removal">Create Removal Order</a></li>
+                      <li ng-if="isOptionVisible('active')"><a href="javascript:;" id="product-action-make-active">Make Active</a></li>
+                      <li ng-if="isOptionVisible('inactive')"><a href="javascript:;" id="product-action-make-inactive">Make Inactive</a></li>
+                      <li ng-if="isOptionVisible('archived')"><a href="javascript:;" id="product-action-archive">Archive</a></li>
+                      <li ng-if="isOptionVisible('restore')"><a href="javascript:;" id="product-action-restore">Restore</a></li>
+                    </ul>
+                  </div>
+                  
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <button class="btn btn-primary" ng-click="applyFilter()" id="product-search-apply">Apply Filter</button>
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <button class="btn btn-default" ng-click="resetFilter()" id="product-action-reset">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="widget-table">
+        <!-- <div class="action-palette">
+              <label class="sr-only" for="searchProducts">Actions</label>
+              <div class="input-group">
+                 <input type="checkbox" name="action" /> 
+                <div class="btn-group">
+                   <button type="button" class="btn btn-link" data-toggle="dropdown">Actions</button> 
+                  <button type="button" title="Action" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="javascript:;">Create Shipment</a></li>
+                    <li><a href="javascript:;">Create Fulfillment Order</a></li>
+                    <li><a href="javascript:;">Create Removal Order</a></li>
+                    <li><a href="javascript:;">Make Active</a></li>
+                    <li><a href="javascript:;">Make Inactive</a></li>
+                    <li><a href="javascript:;">Archive</a></li>
+                    <li><a href="javascript:;">Restore</a></li>
+                  </ul>
+                </div>
+              </div>
+        </div> -->
+        <div class="gridStyle products-list" showEmptyMsg ng-grid="gridOptions" id="product-list-grid"></div>
     </div>
-  </div>
+  </section>
+</div>
+</div>
 </section>

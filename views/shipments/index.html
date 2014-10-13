@@ -1,13 +1,11 @@
-<section class="container" ng-init="init()">
+<section class="container-fluid" ng-init="init()">
     <div class="row">
-      <div class="col-sm-3">
-        <ng-include src="'views/shipments/nav.html'"></ng-include>
-      </div>
-      <div class="col-sm-9">
-        <article>
-          <h2>Shipment</h2>
-          <p>description goes here...</p>
-          <h5>Search Products</h5>
+    <div class="col-xs-12">
+      <ng-include src="'views/shipments/nav.html'"></ng-include>
+      <section class="content full">
+          <h2>Manage Shipments</h2>
+          <p>Create, manage and track shipments here. Shipment consists of a list of active products and corresponding quantity that you wish to send to us. Create a shipment manually or by uploading a file. Once a shipment is created and approved, shipment status and product inventory levels will be updated once the warehouse has successfully received your complete shipment.</p>
+          <h5 class="sub-head">Search Shipments</h5>
           <form class="form-inline" role="form">
             <div class="form-group">
               <label class="sr-only" for="searchProducts">Search Products</label>
@@ -116,7 +114,7 @@
               </div>
             </div>
           </div>
-        </article>
+        </section>
       </div>
     </div>
   </section>

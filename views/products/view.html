@@ -1,0 +1,313 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/products/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+            <div class="col-sm-12">
+              <h2 class="pull-left">View Product</h2>
+              <!-- <div class="btn-grp pull-right">
+                <a href="#/products" class="btn btn-default">Back</a>
+                <a href="#/products/edit/EZ001" class="btn btn-primary">Edit</a>
+              </div> -->
+            </div>
+          </div>
+          <form role="form" class="form-horizontal">
+            <div class="panel-group">
+                  <div class="panel panel-default">
+                    <div data-toggle="collapse" data-target="#collapseOne" class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="product-view-basic">
+                        Basic Information
+                        </a>
+                        <label class="pull-right" id="product-view-isactive-label">
+                          <span id="product-view-isactive-icon" class="{{model.isActive ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'}}"></span> Is Active
+                        </label>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="merchantSku" class="col-sm-5 control-label">Merchant SKU</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-merchant-sku" class="form-control-static" ng-bind="model.sku || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="skuDesc" class="col-sm-5 control-label">SKU Description</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-sku-desc" class="form-control-static" ng-bind="model.skuDescription || constants.notAvailable"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="productCat" class="col-sm-5 control-label">Product Category</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-product-category" class="form-control-static" ng-bind="model.mainProductCategory || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H (cm)</label>
+                              <div class="col-sm-7 three-input">
+                                <p id="product-view-dimension-length" class="form-control-static" ng-bind="model.length || constants.notAvailable"></p>
+                                <p id="product-view-dimension-width" class="form-control-static" ng-bind="model.width || constants.notAvailable"></p>
+                                <p id="product-view-dimension-height" class="form-control-static" ng-bind="model.height || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="weight" class="col-sm-5 control-label">Weight (kg)</label>
+                              <div class="col-sm-7 small-input">
+                                <p id="product-view-weight" class="form-control-static" ng-bind="model.weight || constants.notAvailable"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="price" class="col-sm-5 control-label">Retail Price</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-retail-price" class="form-control-static" ng-bind="(model.retailPrice || constants.notAvailable) + ' ' + (model.retailPrice ? (model.retailPriceCurrency || constants.notAvailable) : '')"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="product-view-advanced">
+                        Advanced Information
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="ebayItemNo" class="col-sm-5 control-label">eBay Item number</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-ebay-item-no" class="form-control-static" ng-bind="model.ebayItemNumber || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="ean" class="col-sm-5 control-label">EAN/JAN/UPC/ISBN</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-ean-jan" class="form-control-static" ng-bind="model.hsCode || constants.notAvailable"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="eanType" class="col-sm-5 control-label">Type of EAN/JAN/UPC/ISBN</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-ean-type" class="form-control-static" ng-bind="model.codeType || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="manufacturer" class="col-sm-5 control-label">Manufacturer</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-manufacturer" class="form-control-static" ng-bind="model.manufacturer || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="costprice" class="col-sm-5 control-label">Cost Price</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-cost-price" class="form-control-static" ng-bind="(model.costPrice  || constants.notAvailable) + ' ' + (model.costPrice ? (model.costPriceCurrency || constants.notAvailable) : '')"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="inventoryLevel" class="col-sm-5 control-label">Inventory Alert Level</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-inventory-alert" class="form-control-static" ng-bind="model.inventoryAlertLevel || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="remarks" class="col-sm-5 control-label">Remarks</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-remarks" class="form-control-static" ng-bind="model.remarks || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group col-sm-5">
+                                <!-- <label>
+                                  <span class="{{model.isDangerous ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'}}"></span> Dangerous
+                                </label>
+                                <label>
+                                  <span class="{{model.isPerishable ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'}}"></span> Perishable
+                                </label> -->
+                                <label class="pull-right control-label" id="product-view-isfragile-label">
+                                  <span id="product-view-isfragile-icon" class="{{model.isFragile ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'}}"></span> Fragile
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="product-view-custom-dec">
+                        Customs Declaration
+                       </a>
+                       <label class="pull-right" id="product-view-isexport-label">
+                        <span id="product-view-isexport-icon" class="{{model.isExportable ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'}}"></span> Is Exportable
+                      </label>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="customDesc" class="col-sm-5 control-label">Customs description</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-custom-desc" class="form-control-static" ng-bind="model.customDescription || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="htsCode" class="col-sm-5 control-label">HTS Code</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-hts-code" class="form-control-static" ng-bind="model.hsCode || constants.notAvailable">HTS Code</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="declaredValue" class="col-sm-5 control-label">Declared value</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-declared-value" class="form-control-static" ng-bind="model.declaredValue || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="originCountry" class="col-sm-5 control-label">Country of Origin</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-origin-country" class="form-control-static" ng-bind="model.countryOfOrigin || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="product-view-add-info">
+                        Additional Information 
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 1</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info1" class="form-control-static" ng-bind="model.additionalInfo1 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 2</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info2" class="form-control-static" ng-bind="model.additionalInfo2 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="form-group">
+                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 3</label>
+                              <div class="col-sm-7">
+                                <p id="product-view-add-info3" class="form-control-static" ng-bind="model.additionalInfo3 || constants.notAvailable"></p>
+                              </div>
+                            </div>    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div data-toggle="collapse" data-target="#collapseFive" class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="product-view-history">
+                        History - Stock Movement
+                       </a>
+                      </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <article class="widget-table">
+                              <div class="table-responsive">
+                                <table class="table table-hover table-bordered table-striped">
+                                  <thead>
+                                    <tr><th>DATE AND TIME</th><th>ACTION</th><th>CHANGE</th><th>INVENTORY FULFILLABLE</th><th>INVENTORY INBOUND</th><th>INVENTORY QUARANTINED</th></tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr><td>22/07/2014 9:16 SST</td><td>Fulfillemnt Order</td><td>+2</td><td>97</td><td>0</td><td>0</td></tr>
+                                    <tr><td>22/07/2014 9:16 SST</td><td>Removal Order</td><td>+2</td><td>97</td><td>0</td><td>0</td></tr>
+                                    <tr><td>22/07/2014 9:16 SST</td><td>Shipment Recieved Order</td><td>+2</td><td>97</td><td>0</td><td>0</td></tr>
+                                  </tbody>
+                                </table>
+                                <div class="btn-grp pull-right">
+                                  <button type="button" class="btn btn-primary" id="product-view-export">Export</button>
+                                </div>
+                              </div>
+                            </article>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="btn-grp pull-right">
+              
+              <a href="#/products" class="btn btn-default" id="product-view-back">Back</a>
+              
+              <a href="#/products/edit/EZ001" class="btn btn-primary" id="product-view-edit">Edit</a>
+            </div>
+        </form>
+      </section>
+  </div>
+</div>
+</section>

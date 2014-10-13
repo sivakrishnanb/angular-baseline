@@ -1,0 +1,57 @@
+define(['utility/map'], function (map) {
+        var model = function () {
+            this.productName="";
+			this.productDisplayName="";
+			this.articleCode="";
+			this.codeType="";
+			this.sku="";
+			this.skuDescription="";
+			this.mainProductCategory="";
+			this.countryOfOrigin="";
+			this.manufacturer="";
+			this.shipFromCountry="";
+			this.length=0;
+			this.width=0,
+			this.height=0;
+			this.weight=0;
+			this.weightUnit=0;				  				  				   
+			this.dimensionUnit=0;     
+			this.costPrice=0;
+			this.costPriceCurrency="";
+			this.retailPrice=0;
+			this.retailPriceCurrency="";
+			this.wholesaleProductCost=0;
+			this.wholesaleShipCost=0;
+			this.wholesaleDropshipCost=0;
+			this.actualWeightPounds=0;
+			this.lengthInches=0;
+			this.widthInches=0;
+			this.heightInches=0;
+			this.textAttr1=0;
+			this.textAttr2="";
+			this.isDangerous=false;
+			this.isPerishable=false;
+			this.isFragile=false;
+			this.withstandDropTest=false;
+			this.isExportable=false;
+			this.hsCode="";
+			this.inventoryAlertLevel=0;
+			this.remarks="";
+			this.ebayItemNumber=0;
+			this.additionalInfo1="";
+			this.additionalInfo2="";
+			this.additionalInfo3="";
+			this.additionalInfo4="";
+			this.additionalInfo5="";
+			this.additionalInfo6="";
+			this.additionalInfo7="";
+			this.additionalInfo8="";
+			this.additionalInfo9="";
+			this.additionalInfo10="";
+			this.additionalInfo11="";
+			this.additionalInfo12="";
+
+            map.apply(this, arguments);
+        };
+        return model;
+    });
