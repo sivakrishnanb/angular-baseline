@@ -1,0 +1,174 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="edit_product"
+              novalidate angular-validator angular-validator-submit="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Edit eBay Store : Mikebay</h2>
+                </div>
+              </div>
+
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="product-edit-product-defaults">
+                        Store Details </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="storeName" class="col-sm-5 control-label">Store Name</label>
+                            <div class="col-sm-7">
+                              <input name="storeName" type="text"
+                                class="form-control" id="storeName"
+                                placeholder="Store Name" ng-model="model.storeName"
+                                required required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="displayName" class="col-sm-5 control-label">Display Name</label>
+                            <div class="col-sm-7">
+                              <input name="displayName" type="text"
+                                class="form-control" id="newPassword"
+                                placeholder="Display Name" ng-model="model.displayName"
+                                required required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="btn-grp">
+                            <button type="button" class="btn btn-danger">Deactivate</button>
+                            <button type="button" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="product-edit-product-defaults">
+                        Features </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <input type="checkbox" class="control-label" id="product-create-isactive-top" name="isActive" ng-model="model.isActive"> Auto Fulfillment
+                        </div> 
+                        <div class="col-sm-2">
+                          <select id="product-create-productCategory" class="form-control" name="product-create-productCategory" ng-model="mainProductCategoryCtrl"  required required-message="validationMessages.required">
+                              <option value="">Select</option>
+                              <option value="">Immediate</option>
+                          </select>
+                        </div> 
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-12" >
+                          <p class="">
+                            Imported Orders will directly be sent for fulfillment after x number of days.  Orders that have discrepancies will override and be placed under Pending for further action
+                          </p>
+                        </div> 
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <div class="form-group required">
+                            <label for="order-create-merchant-id" class="col-sm-5 control-label">Domestic Orders</label>
+                            <div class="col-sm-7">
+                              <select id="product-create-productCategory" class="form-control" name="product-create-productCategory" ng-model=" mainProductCategoryCtrl"  required required-message="validationMessages.required">
+                                <option value="">Select</option>
+                                <option value="">Standard</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                       <div class="row">
+                        <div class="col-sm-4">
+                          <div class="form-group required">
+                            <label for="order-create-merchant-id" class="col-sm-5 control-label">International Orders</label>
+                            <div class="col-sm-7">
+                              <select id="product-create-productCategory" class="form-control" name="product-create-productCategory" ng-model=" mainProductCategoryCtrl"  required required-message="validationMessages.required">
+                                <option value="">Select</option>
+                                <option value="">Priority</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <input type="checkbox" id="product-create-isactive-top" name="isActive" ng-model="model.isActive"> Automatically update Shipment status and tracking number
+                        </div> 
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <input type="checkbox" id="product-create-isactive-top" name="isActive" ng-model="model.isActive"> Email me once an order has been imported
+                        </div> 
+                      </div>
+
+                      <div class="row">
+                      <div class="col-sm-12">
+                      <p>
+                        An email notification to the registered email will be sent when an order is pulled from this store
+
+                      </p>
+                      </div>
+                      </div>
+
+                       <div class="row">
+                        <div class="col-sm-12">
+                          <div class="btn-grp">
+                            <button type="button" class="btn btn-danger">Deactivate</button>
+                            <button type="button" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

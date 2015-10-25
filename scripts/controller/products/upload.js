@@ -1,8 +1,10 @@
-define(['app', 'utility/restapi', 'utility/messages','downloader'], function (app, restapi, messages) {
-    app.controller('UploadProducts', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', 'fileUpload', '$rootScope', 'notify','$timeout','$routeParams',
-        function ($scope, $bus, $location, ngProgress, $http, $constants, fileUpload, $rootScope, notify,$timeout,$routeParams) {
+define(['app', 'utility/restapi', 'utility/messages'], function (app, restapi, messages) {
+    app.controller('UploadProducts', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', 'toaster', 'fileUpload', '$rootScope', 'notify','$timeout','$routeParams',
+        function ($scope, $bus, $location, ngProgress, $http, $constants, toaster, fileUpload, $rootScope, notify,$timeout,$routeParams) {
 
-            $scope.productTemplateXlsx = $rootScope.getProductUploadTemplatesUrl($constants.productTemplateXlsx);
+            $scope.productTemplateXlsx = $constants.productTemplateXlsx;
+
+            $scope.productTemplateCsv = $constants.productTemplateCsv;
 
             $scope.fileStatus = $constants.fileStatus;
 
@@ -47,6 +49,7 @@ define(['app', 'utility/restapi', 'utility/messages','downloader'], function (ap
                             .done(function (response, status) {
                                 if (response.success.length) {
                                     notify.message(messages.uploadSuccess,'','succ');
+                                    //toaster.pop("success", messages.uploadSuccess); commented
                                     $("#upload-product-file").val('');
                                     $scope.myFile = null;
                                     $scope.getPagedDataAsync();
@@ -56,8 +59,10 @@ define(['app', 'utility/restapi', 'utility/messages','downloader'], function (ap
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.productUploadError, "", 0); commented
                                         notify.message(messages.productUploadError);
                                     }
                                 }
@@ -65,44 +70,19 @@ define(['app', 'utility/restapi', 'utility/messages','downloader'], function (ap
                                 ngProgress.complete();
                             }).fail(function (error) {
                                 $rootScope.activateOverlay = false;
+                                //toaster.pop("error", messages.productUploadError); commented
                                 notify.message(messages.productUploadError);
                                 ngProgress.complete();
                             });
                     } else {
+                        //toaster.pop("error", messages.uploadInvalidFiles); commented
                         notify.message(messages.uploadInvalidFiles);
                     }
                 } else {
+                    //toaster.pop("error", messages.uploadStopAnotherFile); commented
                     notify.message(messages.uploadStopAnotherFile);
                 }
             }
-
-            $scope.downloadSourceFile = function (type,referenceId) {
-
-                var url= $constants.baseUrl + restapi['sourcefiledownload'].url+'?type='+type+'&referenceId='+referenceId;
-
-                $.fileDownload(url, {
-                    successCallback: function (url) {
-                        notify.message(messages.SourceFileDownloadSuccess,'','succ');
-                    },
-                    failCallback: function (error, url) {
-                        var err = JSON.parse($(error).text());
-                        if (err && err.errors) {
-                            var errors = [];
-                            _.forEach(err.errors, function (error) {
-                                errors.push(error)
-                            });
-                            if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors))
-                            } else {
-                                notify.message(messages.SourceFileDownloadError);
-                            }
-                        } else {
-                            notify.message(messages.SourceFileDownloadError);
-                        }
-                        $scope.$apply();
-                    }
-                });
-            };
 
             $scope.init = function () {
                 $rootScope.getProductsCount();
@@ -145,6 +125,7 @@ define(['app', 'utility/restapi', 'utility/messages','downloader'], function (ap
                             }
                             ngProgress.complete();
                         }).fail(function (error) {
+                            // toaster.pop("error", messages.productListFetchError); commented
                             notify.message(messages.productListFetchError);
                             ngProgress.complete();
                         });

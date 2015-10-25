@@ -1,5 +1,3 @@
-<div ng-class="getProductScrollClassTop()">
-<div ng-class="getProductScrollClassBot()">
 <section class="container-fluid" ng-init="init()">
   <div class="row">
     <div class="col-xs-12">
@@ -20,9 +18,9 @@
         
         <div class="clear"></div>
         <h4 class="sub-head thSubHead">Search Products</h4>
-        <form class="form-inline container-fluid" role="form">
+        <form class="form-inline" role="form">
           <div class="row padBtm15px">
-           
+            <div class="col-sm-12">
               <div class="form-group" id="suggestion-holder">
                 <label class="sr-only" for="product-search-text">Search Products</label>
                 <div class="input-group selectboxhldr">
@@ -48,10 +46,6 @@
                            <div class="suggprodProductContainer">
                              <div class="suggprodPrdName" ng-bind-html="'Name: ' + highlightSuggest(suggest.productName, searchKey) | addEllipse:37"></div>
                            </div>
-
-                            <div class="suggprodProductContainer">
-                              <div class="suggMerchantId" ng-bind-html="'Merchant Id: ' + highlightSuggest(suggest.merchantCode, searchKey) | addEllipse:37"></div>
-                            </div>
                            
                            <div class="suggestprodSKU">
                              <div class="txtItalic fleft suggprodEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(suggest.fbspSkuId, searchKey)"></div>
@@ -71,13 +65,6 @@
                       <span class="center fnt12px">No matching products found</span>
                   </a>
                 </div>
-                
-                <div class="list-group suggestion-box" id="" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
-                  <a href="javascript:;" class="list-group-item">
-                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
-                  </a>
-                </div>
-
 
               </div>
               <!--<div class="form-group">
@@ -149,13 +136,13 @@
             </div>
 			 <p class="invntTxt" ng-show="routeParams.inv">Only Products that have inventory history are shown. Products that were never sent to the warehouse even once will not be shown.
             </p>
-         
+          </div>
 
          
         </div>
         <div class="row">
 
-          <div class="col-sm-2 col-lg-4 actions padd0">
+          <div class="col-sm-2 col-lg-4 actions">
             <div class="form-group">
 
               <label class="sr-only" for="searchProducts">Actions</label>
@@ -169,147 +156,25 @@
                     <span class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</span>
                     <ul class="dropdown-menu" role="menu">
                       
-                      <li ng-click="checkShipmntRowsCount()" check-acl="productAction" acl-disable="true" ng-if="isOptionVisible('shipment')"><a ng-class="disableActionLinks(myData)" href="javascript:void(0)"  id="product-action-create-shipment" >Create Shipment</a></li>
+                      <li ng-click="checkShipmntRowsCount()" check-acl="productAction" ng-if="isOptionVisible('shipment')"><a ng-class="disableActionLinks(myData)" href="javascript:void(0)"  id="product-action-create-shipment" >Create Shipment</a></li>
                       
                       <li ng-click="checkOrderRowsCount()"  check-acl="productAction" ng-if="isOptionVisible('fulfillment')" class="noBorder"><a ng-class="disableActionLinks(myData)" href="javascript:void(0)" id="product-action-create-fulfillment">Create Fulfillment Order</a></li>
                       
-                      <li ng-click="checkRemovalRowsCount()" check-acl="productAction" acl-disable="true" ng-if="isOptionVisible('removal')"><a ng-class="disableActionLinks(myData)" href="javascript:void(0);" id="product-action-create-removal">Create Removal Order</a></li>
+                      <li check-acl="productAction" ng-if="isOptionVisible('removal')"><a class="disableRemovalOrder" href="javascript:void(0);" id="product-action-create-removal">Create Removal Order</a></li>
                       
-                      <li check-acl="productActionStatus" ng-if="isOptionVisible('active')" data-toggle="modal" ng-click="changeProdStauts(true)"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-active">Make Active</a></li>
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('active')"><a ng-class="disableActionLinks(myData,1)" href="javascript:;" id="product-action-make-active">Make Active</a></li>
                       
-                      <li check-acl="productActionStatus" ng-if="isOptionVisible('inactive')" data-toggle="modal" ng-click="changeProdStauts(false)" class="noBorder"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-inactive">Make Inactive</a></li>
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('inactive')" class="noBorder"><a ng-class="disableActionLinks(myData,1)" href="javascript:;" id="product-action-make-inactive">Make Inactive</a></li>
                       
-                      <li check-acl="productActionStatus" ng-if="isOptionVisible('archived')" data-toggle="modal" ng-click="changeProdStautsArchiveClick()" class="noBorder"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-archive">Archive</a></li>
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('archived')"><a href="javascript:;" ng-class="disableActionLinks(myData,1)" id="product-action-archive">Archive</a></li>
                       
-                      <li check-acl="productActionStatus" acl-disable="true" ng-if="isOptionVisible('restore')"><a href="javascript:;" id="product-action-restore">Restore</a></li>
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('restore')"><a href="javascript:;" id="product-action-restore">Restore</a></li>
                       
                     </ul>
                   </div>
                   
                 </div>
             </div>
-            <!-- Product Bulk Approve -->
-            <div class="modal fade" id="prod-bulk-approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div ng-if="!isBulkProductUpdating" class="modal-header">
-                    <p>Bulk action report - <span ng-bind="getCurrentStatus()"></span> <span class="model-close" data-dismiss="modal">X</span></p>
-                  </div>
-                  <div class="modal-body">
-                    <h5>{{isBulkProductUpdating ? 'Loading' : 'Completed'}} {{getBulkApprovePercentage('total')}}%</h5>
-                    <div class="progress">
-                      <div ng-if="bulkProdUpdate.prodsSuccess > 0" class="progress-bar progress-bar-success" role="progressbar" style="width:{{getBulkApprovePercentage('success')}}%">
-                      </div>
-                      <div ng-if="bulkProdUpdate.prodsFailed > 0" class="progress-bar progress-bar-danger" role="progressbar" style="width:{{getBulkApprovePercentage('failed')}}%">
-                      </div>
-                    </div>
-
-
-                    <!--<p>Success : {{$rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount}}</p>-->
-                    <p>Selected Products : {{bulkProdUpdate.totalProdsCount}}</p>
-                    <p class="succ-sku">Success : {{bulkProdUpdate.prodsSuccess}}</p>
-                    <p class="failed-sku">Failure : {{bulkProdUpdate.prodsFailed}}</p>
-                    
-                    <p ng-if="popUpCondition=='inactive'" class="fnt500 paddtop5">Make Inactive condition :</p>
-                    <p ng-if="popUpCondition=='inactive'" class="paddtop5">1. Product should not be present in any Pending Order</p>
-                    
-                    <div class="bulk-approve-sku">
-                      <h5>Details</h5>
-
-                      <h6 ng-if="bulkProdUpdate.successSKU.length > 0">Successful SKU's</h6>
-                      <div ng-if="bulkProdUpdate.successSKU.length > 0" class="success-cnt">
-                        <span ng-repeat="fbsku in bulkProdUpdate.successSKU">{{fbsku + ' '}}</span>
-                      </div>
-
-                      <h6 ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure">Failed SKU's</h6>
-                      <div ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure-cnt">
-                        <span  ng-repeat="fbsku in bulkProdUpdate.failedSKU">{{fbsku + ' '}}<br/></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div ng-if="!isBulkProductUpdating" class="modal-footer">
-                    <button type="button" class="btn thButton modelButtonOk" id="update-prod-modal-ok" ng-click="closeUpdateModal()">OK</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            
-            <!-- archive confirmation model starts -->
-            <div class="modal fade" id="confirm-modal-archive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <p>Bulk action report - Archive <span class="model-close" data-dismiss="modal">X</span></p>
-                        </div>
-
-                        <div class="modal-body">
-                            <p>Are you sure you want to archive selected product(s) ? </p>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancel-archive">Cancel</button>
-                            <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="modalOk-archive" ng-click="modalOkButton()">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- model ends -->
-
-            <!-- Product Bulk Archive -->
-            <div class="modal fade" id="prod-bulk-archive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div ng-if="!isBulkProductUpdating" class="modal-header">
-                    <p>Bulk action report - Archive <span class="model-close" data-dismiss="modal" ng-click="closeArchiveModal()">X</span></p>
-                  </div>
-                  <div class="modal-body">
-                    <h5>{{isBulkProductUpdating ? 'Loading' : 'Completed'}} {{getBulkApprovePercentage('total')}}%</h5>
-                    <div class="progress">
-                      <div ng-if="bulkProdUpdate.prodsSuccess > 0" class="progress-bar progress-bar-success" role="progressbar" style="width:{{getBulkApprovePercentage('success')}}%">
-                      </div>
-                      <div ng-if="bulkProdUpdate.prodsFailed > 0" class="progress-bar progress-bar-danger" role="progressbar" style="width:{{getBulkApprovePercentage('failed')}}%">
-                      </div>
-                    </div>
-
-
-                    <!--<p>Success : {{$rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount}}</p>-->
-                    <p>Selected Products : {{bulkProdUpdate.totalProdsCount}}</p>
-                    <p class="succ-sku">Success : {{bulkProdUpdate.prodsSuccess}}</p>
-                    <p class="failed-sku">Failure : {{bulkProdUpdate.prodsFailed}}</p>
-                    
-                    <p class="fnt500 paddtop5">Archive condition :</p>
-                    <p class="paddtop5">1. Should not have inventory</p>
-                    <p class="paddtop5">2. Should not be present in Open Shipments</p>
-                    <p class="paddtop5">3. Should not be present in Open Orders</p>
-                    
-                    <div class="bulk-approve-sku">
-                      <h5>Details</h5>
-                      
-                      <h6 ng-if="bulkProdUpdate.successSKU.length > 0">Successful SKU's</h6>
-                      <div ng-if="bulkProdUpdate.successSKU.length > 0" class="success-cnt">
-                        <span ng-repeat="fbsku in bulkProdUpdate.successSKU">{{fbsku + ' '}}</span>
-                      </div>
-
-                      <h6 ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure">Failed SKU's</h6>
-                      <div ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure-cnt">
-                        <span  ng-repeat="fbsku in bulkProdUpdate.failedSKU">{{fbsku + ' '}}<br/></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div ng-if="!isBulkProductUpdating" class="modal-footer">
-                    <button type="button" class="btn thButton modelButtonOk" id="update-prod-modal-ok" ng-click="closeArchiveModal()">OK</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-
               <!--<div class="form-group thDateFrom" ng-show="date[0].value=='custom'">
                   <label class="sr-only" for="product-search-fromdate">From Date</label>
                   <div class="input-group">
@@ -330,7 +195,7 @@
               </span>
               
           </div>
-          <div class="col-sm-10 col-lg-8 padd0">
+          <div class="col-sm-10 col-lg-8">
             <div class="pull-right">
           <div class="showingPage pull-left" ng-if="myData.length">
             Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} products
@@ -360,7 +225,7 @@
           
           <div class="sort txtRight pull-left">
             
-            <div class="">
+            <div class="form-group">
               <label class="sr-only" for="searchProducts">Sort By: Category</label>
               
                 <div class="input-group">
@@ -422,7 +287,7 @@
       
       <div class="newGridContainer container-fluid">
         
-        <div class="row proHeader hidden-xs">
+        <div class="row proHeader">
           <div class="proHeaEditH col-xs-12 col-sm-1 col-md-1">
             <div class="checkboxFive">
               <input type="checkbox" value="" name="" ng-click="toggleCheckBox()" ng-model="toggleCheckBoxVal"/>
@@ -439,7 +304,7 @@
         <div class="clear"></div>
         
        
-        <div class="row proRow" ng-class="{rowSelected:product.Selected,highlightAddedRow:highlightAdded(product.sku)}" ng-repeat="product in myData track by product.fbspSkuId">
+        <div class="row proRow" ng-class="{rowSelected:product.Selected,highlightAddedRow:highlightAdded(product.sku)}" ng-repeat="product in myData">
             
           <div class="proHeaEdit col-xs-12 col-sm-12 col-md-1">
             <div class="checkboxFive">
@@ -463,9 +328,6 @@
                   
                   <a id="edit-{{product.fbspSkuId}}" ng-click="editProduct()" ng-href="#/products/edit/{{product.fbspSkuId}}" data-toggle="tooltip" data-placement="top" title="Edit"><span class="glyphicon glyphicon-edit-grid"></span></a>
 
-                  <a data-toggle="tooltip" data-placement="top"  class="productArchive" ng-click="archive(product.fbspSkuId)" title="Archive"><span class="glyphicon glyphicon-archive-grid"></span></a>
-                  
-
                   <a ng-if="0" id="create-{{product.fbspSkuId}}" ng-href="#/products/create/{{product.fbspSkuId}}" data-toggle="tooltip" data-placement="top" title="Edit"><span class="glyphicon glyphicon-edit-grid"></span></a>
 
                   <span  data-toggle="tooltip" data-placement="top" title="{{(product.isExportable) ? 'Exportable' : 'Non-Exportable'}}" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
@@ -475,10 +337,6 @@
             <div class="clear"></div>
             <div class="proName">
                <span data-toggle="tooltip" data-placement="top" title="Product Name"><span ng-bind="product.productName | addEllipse:23"></span></span>
-              
-            </div>
-			<div class="proName" check-acl="showMerchId" ng-if="product.merchantCode">
-				<span >Merchant Id: {{product.merchantCode}}</span>
             </div>
             
             <div class="eSku fnt10px">
@@ -552,11 +410,11 @@
           <div class="noRecordDisplayIcons col-sm-12 col-md-12 col-lg-12">
 
                   <div ng-if="loading.nodata">
-                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Create Product" ng-show="getProductStatus()">
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Create product" ng-show="getProductStatus()">
                       <a href="#/products/create" data-toggle="tooltip" id=""><span class="glyphicon glyphicon-plus-nodata"></span><span class="full expOrCol ezyHide">Create product</span></a>
                     </div>
                     
-                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Upload Products" ng-show="getProductStatus()">
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Upload product" ng-show="getProductStatus()">
                       <a href="#/products/upload" data-toggle="tooltip" id=""><span class="glyphicon glyphicon-upload-nodata"></span><span class="full expOrCol ezyHide">Upload product</span></a>
                     </div>
                     
@@ -584,5 +442,3 @@
 </div>
 </div>
 </section>
-</div>
-</div>

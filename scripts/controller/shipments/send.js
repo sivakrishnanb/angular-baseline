@@ -1,10 +1,9 @@
 define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'utility/messages'], function (app, model, downloader, restapi, messages) {
-    app.controller('SendShipments', ['$scope', '$bus', '$location', 'ngProgress', '$constants', '$rootScope', '$routeParams', '$timeout','notify','$window','highlight',
-        function ($scope, $bus, $location, ngProgress, $constants, $rootScope, $routeParams, $timeout,notify,$window,highlight) {
+    app.controller('SendShipments', ['$scope', '$bus', '$location', 'ngProgress', '$constants', 'toaster', '$rootScope', '$routeParams', '$timeout','notify','$window','highlight',
+        function ($scope, $bus, $location, ngProgress, $constants, toaster, $rootScope, $routeParams, $timeout,notify,$window,highlight) {
 
             //ngProgress.start();
             $scope.model = new model();
-            $scope.tempModel = {};
 
             $scope.constants = $constants;
 
@@ -41,50 +40,13 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                 date = dateStr.split('/');
                 var month_names     = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-                var dtString = date[2] + '/' + date[1] + '/' + date[0];
+                var dtString = date[1] + '-' + date[0] + '-' + date[2];
                 var day = days[new Date(dtString).getDay()];
-
                 if (date.length == 3) 
 
                     return (date[0] + ' ' + month_names[parseInt(date[1])] + ',' + date[2] + ' (' + day + ')');
-            }
-            $scope.goBackTransitLandPage = function(){
-                    $('.modal-backdrop.fade.in').remove();                       
-                     $location.path('shipments/intransit');
-            }
-
-            $scope.downloadShipDeliveryreceipt = function () {
-                url= $constants.baseUrl + restapi['shipDeliveryReceipt'].url + '?id=' + $scope.model.header.inboundCode;
-                
-                $scope.getFileUrlDeliveryReceipt(url);
             };
 
-            $scope.getFileUrlDeliveryReceipt = function (url) {
-
-                $.fileDownload(url, {
-                    successCallback: function (url) {
-                        notify.message(messages.labelDownloadSuccess,'','succ');
-                    },
-                    failCallback: function (error, url) {
-                        var err = JSON.parse($(error).text());
-                        if (err && err.errors) {
-                            var errors = [];
-                            _.forEach(err.errors, function (error) {
-                                errors.push(error)
-                            });
-                            if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors))
-                                //notify.message(errors.join());
-                            } else {
-                                notify.message(messages.labelDownloadError);
-                            }
-                        } else {
-                            notify.message(messages.labelDownloadError);
-                        }
-                        $scope.$apply();
-                    }
-                });
-            };
 
 
             // For popover 
@@ -201,6 +163,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                 if (success.response.success.length && success.response.data && success.response.data.shipment) {
                                     $scope.model.header.cancelledDate = success.response.data.shipment.header.cancelledDate;
                                     $scope.model.header.status = success.response.data.shipment.header.status;
+                                    //toaster.pop("success", messages.shipmentCancelSuccess); commented
 									highlight.added($scope.model.header.inboundCode);
                                     notify.message(messages.shipmentCancelSuccess,'','succ');
                                     $location.path('shipments/cancelled');
@@ -210,12 +173,15 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.shipmentCancelError, "", 0); commented
                                         notify.message(messages.shipmentCancelError);
                                     }
                                 }
                             }).fail(function (error) {
+                                //toaster.pop("error", messages.shipmentCancelError); commented
                                 notify.message(messages.shipmentCancelError);
                             });
                         $('#shipcancel-modalCancel').click();
@@ -257,6 +223,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                 if (success.response.success.length && success.response.data && success.response.data.shipment) {
                                     $scope.model.header.cancelledDate = success.response.data.shipment.header.cancelledDate;
                                     $scope.model.header.status = success.response.data.shipment.header.status;
+                                    //toaster.pop("success", messages.shipmentRestoreSuccess); commneted
                                     notify.message(messages.shipmentRestoreSuccess,'','succ');
                                 } else {
                                     var errors = [];
@@ -264,12 +231,15 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.shipmentRestoreError, "", 0); commented
                                         notify.message(messages.shipmentRestoreError);
                                     }
                                 }
                             }).fail(function (error) {
+                                //toaster.pop("error", messages.shipmentRestoreError); commented
                                 notify.message(messages.shipmentRestoreError);
                             });
                         $('#shiprestore-modalCancel').click();
@@ -282,14 +252,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                             $('#shiprestore-modalOk').click();
                         }
                     });
-            };
-
-            $scope.$watch('tempModel.whoSendShipment', function(newValue) {
-                if (typeof newValue == "undefined" || typeof newValue == "null") return;
-                if ($scope.model && $scope.model.header) {
-                    $scope.model.header.whoSendShipment = (newValue) ? 'Merchant' : 'Supplier';
-                }
-            });
+            }
 
             $scope.getShipmentDetails = function () {
 
@@ -308,8 +271,6 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                         var data = success.response.data;
                         if (data && data.shipment) {
                             $scope.model = new model(data.shipment);
-                            $scope.tempModel.whoSendShipment = (typeof $scope.model.header.whoSendShipment == 'undefined' || typeof $scope.model.header.whoSendShipment == 'null' || $scope.model.header.whoSendShipment == '' || $scope.model.header.whoSendShipment=='Merchant')?true:false;
-                            $scope.model.header.supplierEzcShipmentLabel = ($scope.model.header.supplierEzcShipmentLabel)?true:false;
                             if ($scope.model.header.status != 1) {
                                 $scope.shipmentCreated = true;
                                 
@@ -325,7 +286,9 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                 $scope.model.header.estArrivalDate = $scope.model.header.estArrivalDate.replace(/\-/g,'/');
                                 $scope.model.header.estShipDate = $scope.model.header.estShipDate.replace(/\-/g,'/');    
                             }
+                            //toaster.pop("success", messages.shipmentDetail, messages.retrivedSuccess);
                         } else {
+                            //toaster.pop("error", messages.shipmentFetchError); commented
                             notify.message(messages.shipmentFetchError);
                         }
                         
@@ -334,6 +297,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.shipmentFetchError); commented
                         notify.message(messages.shipmentFetchError);
                         ngProgress.complete();
 
@@ -471,10 +435,10 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
 
             $scope.getFileUrl = function (type, label) {
                 if (type) {
-                    var newSheetRequired = $scope.newSheetRequired?1:0;
-                    var url = $constants.baseUrl + restapi[label].url + '?inboundCode=' + $scope.model.header.inboundCode + '&standardCode=' + type.value+'&newSheetRequired='+newSheetRequired;
+                    var url = $constants.baseUrl + restapi[label].url + '?inboundCode=' + $scope.model.header.inboundCode + '&standardCode=' + type.value;
                     $.fileDownload(url, {
                         successCallback: function (url) {
+                            //toaster.pop("success", messages.labelDownloadSuccess); commented
                             notify.message(messages.labelDownloadSuccess,'','succ');
                         },
                         failCallback: function (error, url) {
@@ -485,37 +449,25 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors))
                                 } else {
+                                    //toaster.pop("error", messages.labelDownloadError); commented
                                     notify.message(messages.labelDownloadError);
                                 }
                             } else {
+                                //toaster.pop("error", messages.labelDownloadError); commented
                                 notify.message(messages.labelDownloadError);
                             }
                         }
                     });
                 } else {
+                    //toaster.pop("error", messages.labelInvalid); commented
                     notify.message(messages.labelInvalid);
                 }
             }
 
-            $scope.validateSupplierInfo = function(){
-
-                if($scope.model.header.whoSendShipment=='Merchant') {
-                    $scope.model.header.supplierEzcShipmentLabel = false;
-                    $scope.model.header.supplierPoNumber = $scope.model.header.supplierEmail = '';
-                }
-                else if($scope.model.header.whoSendShipment=='Supplier') {
-                    if($scope.model.header.supplierEzcShipmentLabel){
-                        $scope.model.header.supplierPoNumber = $scope.model.header.supplierEmail = '';       
-                    }
-                }
-
-            }
-
             $scope.sendService = function () {
-                
-                $scope.validateSupplierInfo();
                 $bus.fetch({
                     name: 'editshipments',
                     api: 'editshipments',
@@ -526,32 +478,32 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                         if (success.response.success.length) {
                             var inboundCode = success.response.data.shipment.header.inboundCode;
                             $scope.shipmentCreated = true;
+                            //toaster.pop("success", messages.shipmentUpdateSucess); commented
                             notify.message(messages.shipmentUpdateSucess,'','succ');
                             highlight.added(inboundCode);
-                            //$location.path('shipments/intransit');
-                            $('#modal-shipment-receipt').modal();
-                            $scope.downloadShipDeliveryreceipt();
+                            $location.path('shipments/intransit');
                         } else {
                             var errors = [];
                             _.forEach(success.response.errors, function (error) {
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
 
                             } else {
+                                //toaster.pop("error", messages.shipmentUpdateError, "", 0); commented
                                 notify.message(messages.shipmentUpdateError);
                             }
                         }
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.shipmentUpdateError); commented
                         notify.message(messages.shipmentUpdateError);
                     });
             }
 
             $scope.sendShipment = function () {
 				
-               
-
                 if($scope.fullEditShipment && $scope.model.header.status==2){
                     $scope.sendService();
                     return false;
@@ -603,7 +555,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                         return false;
 
                     var request = {
-                            warehouseCode: $scope.model.header.whCode?$scope.model.header.whCode:'QSSGEC',
+                            warehouseCode: 'QSSGEC',
                             arrivalDate:  $scope.model.header.estArrivalDate?$scope.model.header.estArrivalDate:''
                     }
 
@@ -657,12 +609,6 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                     $scope.getWareHouseLeadTime();
 
                 });
-
-                if($constants.currentLocation==$constants.countryShortCodes.australia) {
-                    $scope.inTransitFooterText = "For Inbound Shipment notices received by the warehouse before the cut-off time at business day 0 by 4pm - goods will be received and ready for fulfilment latest by business day 1 by 5pm. This SLA does not apply if the Inbound shipment has problems such as damages, quantity discrepancies etc.";
-                }else{
-                    $scope.inTransitFooterText = "For Inbound Shipment notices received by the warehouse before the cut-off time at business day 0 by 4pm -  goods will be received and ready for fulfilment latest by business day 2 by 4pm. However we strive to receive all shipments within 1 business day.This SLA does not apply if the Inbound shipment has problems such as damages and quantity discrepancies.";
-            }
 
                 $rootScope.getCountryList();
                 ngProgress.complete();

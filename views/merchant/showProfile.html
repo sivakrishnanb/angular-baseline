@@ -97,62 +97,22 @@
                                             </div>
                                         </div>
 
-                                        <div class="row" ng-if="isCountriesOptionsVisible('refType')">
-                                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="merchant.referralType&&merchant.referralName">
-                                                <div class="form-group">
-                                                    <label class="col-md-5 col-sm-6 control-label">Referral Name</label>
-                                                    <label class="col-md-5 col-sm-5 control-label lblcln">{{merchant.referralName}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="merchant.referralType&&merchant.referralName">
-                                                <div class="form-group">
-                                                    <label class="col-md-5 col-sm-6 control-label">Referral Type</label>
-                                                    <label class="col-md-5 col-sm-5 control-label lblcln">{{getReferralType(merchant.referralType)}}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            
+                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="col-md-5 col-sm-6 control-label">Last Login</label>
                                                     <label class="col-md-5 col-sm-5 control-label lblcln" >{{merchant.accountLastLogin || constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="col-md-5 col-sm-6 control-label">Promo Code</label>
-                                                    <label class="col-md-5 col-sm-5 control-label lblcln">{{merchant.promoCode || constants.notAvailableText}}</label>
-                                                </div>
-                                            </div>
+                                       
 
-                                    </div>
-
-                                    <div class="row">
-                                           <div class="col-md-6 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <label class="col-md-5 col-sm-6 control-label">Remarks</label>
-                                                
-                                                <div ng-if="isRemarksEditable" class="col-md-5 col-sm-5">
-                                                    <textarea ng-change="checkVal()"  id="merchant-remarks" name="merchant-remarks" ng-model="merchant.remarks" class="form-control" maxlength="250"></textarea>
-                                                    <button id="merchant-add-remarks-btm" class="btn btn-primary martop15" type="button" ng-click="addRemarks()">Add</button>
-                                                </div>
-
-                                                <div ng-if="!isRemarksEditable">
-                                                   <label class="col-md-5 col-sm-5 control-label lblcln">
-                                                    <span class="merchantRemarks" ng-bind="merchant.remarks || constants.notAvailableText"></span>
-                                                    <a id="edit-remarks" ng-click="editRemarks()" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                        <span class="glyphicon glyphicon-edit-grid marg-left-10"></span></a>
-                                                    </label>
-                                                </div>
-                                            </div>
                                         </div>
+
+
+                 
                                     </div>
 
-                                    </div>
-                       <!-- right panel -->
+                                <!-- right panel -->
 
                             </div>
 
@@ -460,50 +420,24 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('corpAccNo')">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="col-md-5 col-sm-6 control-label">Corporate Account Number</label>
                                                     <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.corpAccountNumber || constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
-                                             <div class="col-md-5 col-sm-12 col-xs-12" ng-show="merchant.subsidyGranted" ng-if="isCountriesOptionsVisible('springGrant')">
+                                             <div class="col-md-5 col-sm-12 col-xs-12" ng-show="merchant.subsidyGranted">
                                                 <div class="form-group">
                                                     <label class="col-md-6 col-sm-6 control-label">Spring Grant</label>
                                                     <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.subsidyGranted ? 'Yes' : constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-5 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="col-md-6 col-sm-6 control-label">Average Order value</label>
-                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.averageOrders || constants.notAvailableText}}</label>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-
-                             <!-- API Information starts here-->
                             <div class="row">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">API Information</h4>
-                                </div>
-                                <div class="">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="col-md-5 col-sm-6 control-label">API Key</label>
-                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.apiKey || constants.notAvailableText}}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row" ng-if="isCountriesOptionsVisible('springGrant')">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">SPRING</h4>
                                 </div>

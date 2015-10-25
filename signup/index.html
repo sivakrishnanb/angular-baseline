@@ -11,7 +11,7 @@
     <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../lib/angular/angular.min.js"></script>
     <script type="text/javascript" src="../lib/angular/angular-validator.min.js"></script>
-    <script type="text/javascript" src="../lib/underscore/underscore.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="../scripts/signup.js"></script>
     <script type="text/javascript" src="../lib/angular/angular-no-captcha.js"></script>
 </head>
@@ -20,11 +20,11 @@
 
 <header class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">  
-        <a class="navbar-brand siteLogo" href="#/home"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a> 
-       
+        <a class="navbar-brand hidden-xs siteLogo" href="#/home"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a> 
+        <a class="navbar-brand visible-xs mobsitelogo" href="#/home"></a> 
     </div>
 </header>
-<section class="container-fixed">
+<section class="container-fixed fixedFooterPosition">
     <!--step 1-->
     <div class="row" ng-show = "currentStep == 1">
         <div class="col-xs-12">
@@ -46,18 +46,18 @@
                 <ul >
                     <li>A valid email that you have access to</li>
                     <li>Your registered company name and address</li>
-                    <li>Your Company registration identification ({{compRegTypesText}})</li>
+                    <li>Your Company registration identification (UEN/GSTN)</li>
                     <li>A valid contact number that will allow us to reach you during the registration process</li>
                 </ul>
             </div>
             <form class="signuppanel" name="formStep1" id="formStep1" novalidate angular-validator angular-validator-submit="next()">
-                <div class="panel-group marbtm0">
+                <div class="panel-group">
                     <div class="row">
                         <h3>Credentials Setup</h3>
 
                         <div class="row emailuserlbl">
 
-                            <div class="col-xs-11 col-md-5 col-sm-5">
+                            <div class="col-md-5 col-sm-5">
                                 <div class="form-group required" ng-class="{'has-error':(!emailAvailableSuccess  && emailFormatError)}">
                                     <label for="accountSetupEmail" class="control-label">Email Address</label>
                                     <input name="accountSetupEmail" type="email" class="form-control" ng-class="{'has-success':(emailAvailableSuccess  && !emailFormatError)}" id="accountSetupEmail" placeholder="abc@xyz.com"
@@ -81,8 +81,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-11 col-md-5 col-sm-5">
-                                <div class="form-group required signupbtm">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required marbtm0">
                                     <label for="account-setup-password" class="control-label">Password</label>
 
                                     <input
@@ -106,7 +106,7 @@
                            <div class="clear-fix"></div>
                          
 
-                            <div class="col-xs-11 col-md-5 col-sm-5">
+                            <div class="col-md-5 col-sm-5">
                                 <div class="form-group required marbtm0">
                                     <label for="account-setup-retype-password" class="control-label">Retype Password</label>
 
@@ -175,7 +175,7 @@
                                             <!-- invalid-message="validationMessages.required" -->
                                         </div>
                                     </div>
-                                    <em class="text-muted text-descrip-close text-grey">You need to be a registered company in <span >{{countryName}}</span> and provide a valid {{compRegTypesText}}</em>
+                                    <em class="text-muted text-descrip-close text-grey">You need to be a registered company in Singapore and provide a valid UEN / GSTN</em>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +197,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-5 col-sm-5">
-                                <div class="form-group required signupbtm">
+                                <div class="form-group required marbtm0">
                                     <label for="account-setup-security-question" class="control-label">Security Question</label>
                                     <input name="account-setup-security-question" type="text" class="form-control" id="account-setup-security-question" placeholder="Security Question" ng-model="model.securityQuestion"
                                            required required-message="validationMessages.required" maxlength="300" />
@@ -235,7 +235,7 @@
                                             </select>-->
                                             <!--dial code with country name-->
                                             <select id="account-setup-dialCode" name="account-setup-dialCode" class="form-control" ng-model="model.contactNoCountryCode">
-                                                <option ng-repeat="item in countryList" value="{{item.dialCode}}" ng-selected="{{$index==selectDialCode}}">{{' ( '+item.dialCode+' ) '+item.countryName}}</option>
+                                                <option ng-repeat="item in countryList" value="{{item.dialCode}}">{{' ( '+item.dialCode+' ) '+item.countryName}}</option>
                                             </select>
                                             <em class="text-muted text-descrip-close text-grey">Country code</em>
                                         </div>
@@ -244,7 +244,7 @@
                                                     required required-message="validationMessages.required" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidphone" maxlength="60"/>-->
                                             <input name="account-setup-phone" type="tel" class="form-control" id="account-setup-phone" placeholder="Phone" ng-model="model.contactPhone"
                                                     required required-message="validationMessages.required" maxlength="60"/>
-                                            <em class="text-muted text-descrip-close text-grey col-xs-12">Number without country code</em>
+                                            <em class="text-muted text-descrip-close text-grey">Number without country code</em>
                                             <!-- invalid-message="validationMessages.required" -->
                                         </div>
                                     </div>
@@ -327,7 +327,7 @@
                     </ul>
                 </div>
             </div>
-            <h2 ng-if="isVisible('subsidyGrant')">ezyCommerce-SPRING SME subsidy grant</h2>
+            <h2>ezyCommerce-SPRING SME subsidy grant</h2>
             
             <form class="signuppanel" name="signuppanel2" id="signuppanel2" novalidate angular-validator angular-validator-submit="next()">
                 <div class="panel-group">
@@ -335,38 +335,28 @@
                     <div class="row">
 
                         <!--<h3>ezyCommerce-SPRING SME subsidy grant</h3>-->
-                        <div ng-if="isVisible('subsidyGrant')">
-                            <div class="row">
-                                <div class="col-sm-12 padBtm15px pad-left-none">Please provide us more information about your business to help us serve you better.  You may be eligible for the ezyCommerce-SPRING SME subsidy grant which will provide you rebates up to 70% of your monthly fulfillment charges.</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 padBtm15px pad-left-none">To be eligible for the grant - </div>
-                            </div>
-                            <div class="paddnone">
-                                <ol >
-                                    <li>Your company should be incorporated in Singapore, in which Singaporean citizens hold at least 30% of the shares</li>
-                                    <li>
-                                        When aggregated with its parent company and its subsidiaries (i.e. considered with other members of its group), have :
-                                        <ul>
-                                            <li>Annual sales of not more than S$100,000,000 OR</li>
-                                            <li>Not more than 200 employees</li>
-                                        </ul>
-                                    </li>
-                                    <li>An average order volume at least 150-1500 per month</li>
-                                </ol>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 padBtm15px pad-left-none">Your application will be reviewed within 3 working days and you will be informed on the outcome. SP eCommerce reserves the right to revise applicable eligibility terms, accept or refuse the grant without providing any reason.</div>
-                                <div class="col-sm-12 padBtm15px pad-left-none font-strong">If you do not meet the eligibility criteria, you can still go ahead and sign-up for ezyCommerce without the grant.</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 paddnone">
-                                    <label>
-                                        <input type="checkbox" id="verify-agree" class="chkpadd applyCheckBox" name="verify-agree" ng-model="model.applySme">
-                                        <span class="applyCheckText">I wish to apply for the ezyCommerce-SME subsidy grant and confirm that I meet the above criteria for the application.</span>
-                                    </label>
-                                    <div>Sign the <a href="/content/ezyCommerce SPRING Grant - Eligibility One-pager.pdf" target="_blank">One-Pager</a> and send it to support@ezycommerce.com</div>
-                                </div>
+                        <div class="row">
+                            <div class="col-sm-12 padBtm15px pad-left-none">Please provide us more information about your business to help us serve you better.  You may be eligible for the ezyCommerce-SPRING SME subsidy grant which will provide you rebates up to 70% of your monthly fulfillment charges.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 padBtm15px pad-left-none">To apply for this grant, you should be - </div>
+                        </div>
+                        <div class="paddnone">
+                            <ol >
+                                <li>Registered company in Singapore and have at least 30% local shareholding</li>
+                                <li>Company group annual sales not more than $100mil (OR) company group employment size not more than 200 workers</li>
+                            </ol>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 padBtm15px pad-left-none">Your application will be reviewed within 3 working days and you will be informed on the outcome. SP eCommerce reserves the right to revise applicable eligibility terms, accept or refuse the grant without providing any reason.</div>
+                            <div class="col-sm-12 padBtm15px pad-left-none font-strong">If you do not meet the eligibility criteria, you can still go ahead and sign-up for ezyCommerce without the grant.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 paddnone">
+                                <label>
+                                    <input type="checkbox" id="verify-agree" class="chkpadd applyCheckBox" name="verify-agree" ng-model="model.applySme">
+                                    <span class="applyCheckText">I wish to apply for the ezyCommerce-SME subsidy grant and confirm that I meet the above criteria for the application.</span>
+                                </label>
                             </div>
                         </div>
                         <h2>Please provide the below information for our reference</h2>
@@ -451,44 +441,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-5 col-sm-5">
-
-                                <div class="form-group">
-                                    <label for="business-info-avg-orders" class="control-label">Average Order value</label>
-                                    <input name="business-info-avg-orders" type="text" class="form-control" id="business-info-avg-orders"  ng-model="model.averageOrders" maxlength="12"/>
-                                </div>
-                               
-                            </div>
-							 <div class="col-md-5 col-sm-5 col-sm-offset-1">
                                 <div class="form-group">
                                     <label for="business-info-domestic-orders" class="control-label">Percentage of Domestic Orders</label>
                                     <!--<input name="business-info-domestic-orders" type="text" class="form-control" id="business-info-domestic-orders"  ng-model="model.domesticOrdersPercentage" maxlength="3"  validator="isDomestOrderFormat(model.domesticOrdersPercentage)"  invalid-message="domesticOrdErrorMessage" />-->
-                                    <input name="business-info-domestic-orders" type="text" class="form-control" id="business-info-domestic-orders"  ng-model="model.domesticOrdersPercentage" invalid-message="validationMessages.orderPercentageValid" validator="checkDomesticOrderPercentage(model.domesticOrdersPercentage)" maxlength="7" />
+                                    <input name="business-info-domestic-orders" type="text" class="form-control" id="business-info-domestic-orders"  ng-model="model.domesticOrdersPercentage" maxlength="3" />
                                 </div>
-                               
-                            </div>
-                           
-                        </div>
-                        <div class="row">
-						 <div class="col-md-5 col-sm-5">
-						 <div class="form-group">
+                                <div class="form-group">
                                     <label for="business-info-skus-handled" class="control-label">Number of unique Products (SKUs) sold</label>
                                     <!--<input name="business-info-skus-handled" type="text" class="form-control" id="business-info-skus-handled" ng-model="model.noOfUniqueSkus" maxlength="5" validator="isSKUsHandledFormat(model.noOfUniqueSkus)" invalid-message="skusHandledError"/>-->
                                     <input name="business-info-skus-handled" type="text" class="form-control" id="business-info-skus-handled" ng-model="model.noOfUniqueSkus" maxlength="5"/>
                                 </div>
-                        
-                                <div class="form-group">
-                                    <label for="business-info-avg-units" class="control-label">URL of Website where you are currently selling</label>
-                                    <!--<input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" 
-
-                                    validator="checkSalesChannelMaxLimit(model.salesChannelLink)" invalid-message="checkSalesChannelMaxLimitErrorMessage" 
-
-
-                                    />-->
-                                    <input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" maxlength="100" />
-                                </div>
                             </div>
-							
-							 <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
                                 <div class="form-group">
                                     <label for="business-info-prod-cat" class="control-label">Product Category</label>
 
@@ -509,9 +473,20 @@
                                     </select>
                                 </div>
                             </div>
-							
-							
-							
+                        </div>
+                        <div class="row">
+                         <div class="col-md-5 col-sm-5">
+                                <div class="form-group">
+                                    <label for="business-info-avg-units" class="control-label">URL of Website where you are currently selling</label>
+                                    <!--<input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" 
+
+                                    validator="checkSalesChannelMaxLimit(model.salesChannelLink)" invalid-message="checkSalesChannelMaxLimitErrorMessage" 
+
+
+                                    />-->
+                                    <input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" maxlength="100" />
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -530,7 +505,7 @@
                             </div>
                         </div>
 
-                        <div class="row" ng-if="isVisible('existingSingpostCustomer')">
+                        <div class="row">
                             <div class="row paddtop20">
                                 <div class="row paddtop20">
                                     <div class="form-group">
@@ -575,7 +550,7 @@
             <div class="row">
                 <div class="col-sm-12 padBtm15px pad-left-none">All the information you entered in Steps 1 and 2 are shown here. Please make sure they are correct and agree to the standard T&Cs before you register. Click on the Back button to modify any information. If you are all set, click Sign Up Now to complete your registration.</div>
 
-                <div class="col-sm-12 padBtm15px pad-left-none" ng-if="isVisible('subsidyGrant')">If you have applied for an ezyCommerce-SPRING SME subsidy grant, you will be separately notified on the outcome of this application.</div>
+                <div class="col-sm-12 padBtm15px pad-left-none">If you have applied for an ezyCommerce-SPRING SME subsidy grant, you will be separately notified on the outcome of this application.</div>
 
                 <!--<div class="col-sm-12 padBtm15px pad-left-none font-strong">Welcome to ezyCommerce!</div>-->
 
@@ -588,7 +563,7 @@
                         <div class="col-md-12 col-sm-12 paddnone">
                             <div class="form-group">
                                 <label for="verify-email" class="col-sm-3 signupEmail control-label paddnone">Email</label>
-                                <div class="col-sm-8"> <span id="verify-email" class="form-control-static lblcln" ng-bind="model.email || constants.notAvailableText"></span> </div>
+                                <div class="col-sm-8"> <span id="verify-email" class="form-control-static" ng-bind="model.email || constants.notAvailableText"></span> </div>
                             </div>
                         </div>
                     </div>
@@ -599,14 +574,14 @@
                                 <div class="form-group">
                                     <label for="verify-company-name" class="col-sm-7 control-label paddnone">Company Name</label>
                                     <div class="col-sm-5">
-                                        <span id="verify-company-name" class="form-control-static lblcln" ng-bind="model.companyName || constants.notAvailableText"></span>
+                                        <span id="verify-company-name" class="form-control-static" ng-bind="model.companyName || constants.notAvailableText"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-first-name" class="col-sm-7 control-label paddnone">First Name</label>
-                                    <div class="col-sm-5"> <span id="verify-first-name" class="form-control-static lblcln" ng-bind="model.merFirstName || constants.notAvailableText">Karthik</span> </div>
+                                    <div class="col-sm-5"> <span id="verify-first-name" class="form-control-static" ng-bind="model.merFirstName || constants.notAvailableText">Karthik</span> </div>
                                 </div>
                             </div>
                         </div>
@@ -614,13 +589,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-regno-type" class="col-sm-7 control-label paddnone">Company Registration Number Type</label>
-                                    <div class="col-sm-5"> <span id="verify-regno-type" class="form-control-static lblcln" ng-bind="model.companyRegType || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-regno-type" class="form-control-static" ng-bind="model.companyRegType || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-last-name" class="col-sm-7 control-label paddnone">Last Name</label>
-                                    <div class="col-sm-5"> <span id="verify-last-name" class="form-control-static lblcln" ng-bind="model.merLastName || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-last-name" class="form-control-static" ng-bind="model.merLastName || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -628,7 +603,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-regno" class="col-sm-7 control-label paddnone">Company Registration Number</label>
-                                    <div class="col-sm-5"> <span id="verify-regno" class="form-control-static lblcln" ng-bind="model.companyRegNumber || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-regno" class="form-control-static" ng-bind="model.companyRegNumber || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -637,14 +612,14 @@
                                 <div class="form-group">
                                     <label for="verify-security-question" class="col-sm-7 control-label paddnone">Security Question</label>
                                     <div class="col-sm-5">
-                                        <span id="verify-security-question" class="form-control-static lblcln" ng-bind="model.securityQuestion || constants.notAvailableText"></span>
+                                        <span id="verify-security-question" class="form-control-static" ng-bind="model.securityQuestion || constants.notAvailableText"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-security-answer" class="col-sm-7 control-label paddnone">Security Answer</label>
-                                    <div class="col-sm-5"> <span id="verify-security-answer" class="form-control-static lblcln" ng-bind="model.securityAnswer || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-security-answer" class="form-control-static" ng-bind="model.securityAnswer || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -658,13 +633,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-cont-no" class="col-sm-7 control-label paddnone">Contact Number</label>
-                                    <div class="col-sm-5"> <span id="verify-cont-no" class="form-control-static lblcln" ng-bind="model.contactPhone || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-cont-no" class="form-control-static" ng-bind="model.contactPhone || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-country" class="col-sm-7 control-label paddnone">Country</label>
-                                    <div class="col-sm-5"> <span id="verify-country" class="form-control-static lblcln" ng-bind="parseCountryName(model.countryCode) || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-country" class="form-control-static" ng-bind="parseCountryName(model.countryCode) || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -672,13 +647,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-addressLine1" class="col-sm-7 control-label paddnone">Address Line 1</label>
-                                    <div class="col-sm-5"> <span id="verify-addressLine1" class="form-control-static lblcln" ng-bind="model.addressLine1 || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-addressLine1" class="form-control-static" ng-bind="model.addressLine1 || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-addressLine2" class="col-sm-7 control-label paddnone">Address Line 2</label>
-                                    <div class="col-sm-5"> <span id="verify-addressLine2" class="form-control-static lblcln" ng-bind="model.addressLine2 || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-addressLine2" class="form-control-static" ng-bind="model.addressLine2 || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -686,13 +661,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-state" class="col-sm-7 control-label paddnone">State</label>
-                                    <div class="col-sm-5"> <span id="verify-state" class="form-control-static lblcln" ng-bind="model.state || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-state" class="form-control-static" ng-bind="model.state || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-city" class="col-sm-7 control-label paddnone">City</label>
-                                    <div class="col-sm-5"> <span id="verify-city" class="form-control-static lblcln" ng-bind="model.city || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-city" class="form-control-static" ng-bind="model.city || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -700,13 +675,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="account-setup-zipcode1" class="col-sm-7 control-label paddnone">ZIP / Postal Code</label>
-                                    <div class="col-sm-5"> <span id="account-setup-zipcode1" class="form-control-static lblcln" ng-bind="model.zipCode || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="account-setup-zipcode1" class="form-control-static" ng-bind="model.zipCode || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-landline" class="col-sm-7 control-label paddnone">Alternate Contact Number</label>
-                                    <div class="col-sm-5"> <span id="verify-landline" class="form-control-static lblcln" ng-bind="model.landline || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-landline" class="form-control-static" ng-bind="model.landline || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -718,13 +693,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-rev-pa" class="col-sm-7 control-label paddnone">Revenue per annum</label>
-                                    <div class="col-sm-5"> <span id="verify-rev-pa" class="form-control-static lblcln" ng-bind="model.revPerAnnum || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-rev-pa" class="form-control-static" ng-bind="model.revPerAnnum || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-permanent-emp" class="col-sm-7 control-label paddnone">Permanent employees</label>
-                                    <div class="col-sm-5"> <span id="verify-permanent-emp" class="form-control-static lblcln" ng-bind="model.permanentEmp || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-permanent-emp" class="form-control-static" ng-bind="model.permanentEmp || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -732,13 +707,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-yr-founded" class="col-sm-7 control-label paddnone">Year in which company was founded</label>
-                                    <div class="col-sm-5"> <span id="verify-yr-founded" class="form-control-static lblcln" ng-bind="model.compFoundedYear || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-yr-founded" class="form-control-static" ng-bind="model.compFoundedYear || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-temp-emp" class="col-sm-7 control-label paddnone">Temporary employees</label>
-                                    <div class="col-sm-5"> <span id="verify-temp-emp" class="form-control-static lblcln" ng-bind="model.temporaryEmp || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-temp-emp" class="form-control-static" ng-bind="model.temporaryEmp || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -746,7 +721,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-website" class="col-sm-7 control-label paddnone">Company website</label>
-                                    <div class="col-sm-5"> <span id="verify-website" class="form-control-static lblcln" ng-bind="model.companyWebsite || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-website" class="form-control-static" ng-bind="model.companyWebsite || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -759,28 +734,32 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-orders-pm" class="col-sm-7 control-label paddnone">Orders per month</label>
-                                    <div class="col-sm-5"> <span id="verify-orders-pm" class="form-control-static lblcln" ng-bind="model.ordersPerMonth || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-orders-pm" class="form-control-static" ng-bind="model.ordersPerMonth || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-avg-units" class="col-sm-7 control-label paddnone">Average units per order</label>
-                                    <div class="col-sm-5"> <span id="verify-avg-units" class="form-control-static lblcln" ng-bind="model.avgUnitsPerOrder || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-avg-units" class="form-control-static" ng-bind="model.avgUnitsPerOrder || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
-                                    <label for="verify-percent-domestic" class="col-sm-7 control-label paddnone">Average Order value</label>
-                                    <div class="col-sm-5"> <span id="verify-percent-domestic" class="form-control-static lblcln" ng-bind="model.averageOrders || constants.notAvailableText"></span> </div>
+                                    <label for="verify-percent-domestic" class="col-sm-7 control-label paddnone">Percentage of Domestic
+                                        Orders </label>
+                                    <div class="col-sm-5"> <span id="verify-percent-domestic" class="form-control-static" ng-bind="model.domesticOrdersPercentage || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="form-group">
-                                    <label for="verify-percent-domestic" class="col-sm-7 control-label paddnone">Percentage of Domestic
-                                        Orders </label>
-                                    <div class="col-sm-5"> <span id="verify-percent-domestic" class="form-control-static lblcln" ng-bind="model.domesticOrdersPercentage || constants.notAvailableText"></span> </div>
+                                <div class="marbtm15">
+                                    <label for="verify-prod-cat" class="col-sm-7 control-label paddnone">Product Category </label>
+                                    <div class="col-sm-5"> 
+                                    
+                                        <span data-toggle="tooltip" data-placement="top" title="{{itemsToDispay}}" data-original-title="{{itemsToDispay}}" ng-bind="(model.merCategory)?getSignupCategory(model.merCategory):constants.notAvailableText">
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -788,13 +767,13 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-skus" class="col-sm-7 control-label paddnone">Number of unique Products (SKUs) sold</label>
-                                    <div class="col-sm-5"> <span id="verify-skus" class="form-control-static lblcln" ng-bind="model.noOfUniqueSkus || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-skus" class="form-control-static" ng-bind="model.noOfUniqueSkus || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-online-channels" class="col-sm-7 control-label paddnone">Number of online channels currently selling in </label>
-                                    <div class="col-sm-5"> <span id="verify-online-channels" class="form-control-static lblcln" ng-bind="model.noOfOnlineChannels || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-online-channels" class="form-control-static" ng-bind="model.noOfOnlineChannels || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -802,32 +781,22 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-sales-channel" class="col-sm-7 control-label paddnone">URL of Website where you are currently selling</label>
-                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static lblcln" ng-bind="model.salesChannelLink || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static" ng-bind="model.salesChannelLink || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-oversees" class="col-sm-7 control-label paddnone">No. of overseas countries
                                         currently selling </label>
-                                    <div class="col-sm-5"> <span id="verify-oversees" class="form-control-static lblcln" ng-bind="model.noOfOverseasSelling || constants.notAvailableText"></span> </div>
+                                    <div class="col-sm-5"> <span id="verify-oversees" class="form-control-static" ng-bind="model.noOfOverseasSelling || constants.notAvailableText"></span> </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-if="isVisible('subsidyGrant')">
+                        <div class="row">
                             <div class="col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <label for="verify-sales-channel" class="col-sm-7 control-label paddnone">ezyCommerce-SPRING SME subsidy grant</label>
-                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static lblcln" ng-bind="model.applySme ? 'Yes' : 'No'"></span> </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="marbtm15">
-                                    <label for="verify-prod-cat" class="col-sm-7 control-label paddnone">Product Category </label>
-                                    <div class="col-sm-5"> 
-
-                                        <span class="form-control-static lblcln" data-toggle="tooltip" data-placement="top" title="{{itemsToDispay}}" data-original-title="{{itemsToDispay}}" ng-bind="(model.merCategory)?getSignupCategory(model.merCategory):constants.notAvailableText">
-                                        </span>
-                                    </div>
+                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static" ng-bind="model.applySme ? 'Yes' : 'No'"></span> </div>
                                 </div>
                             </div>
                         </div>
@@ -862,14 +831,7 @@
                                 </div>
                             </div>
                     </div>
-					 <div class="row paddtop20">
-                         <div class="col-md-6 col-sm-6">
-                            <!--<img src="../images/captcha.png" class="captchaimg">-->
-                             <!--<div class="g-recaptcha" data-sitekey="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></div>-->
-                             <no-captcha g-recaptcha-response="model.gRecaptchaResponse" site-key="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></no-captcha>
-                             <p class="error-message" ng-show="!isCaptchaVerified" ng-bind="validationMessages.captchaError"></span></p>
-                        </div>
-						<div class="col-sm-6">
+                   <div class="row pull-right col-sm-6 promoCodePad">
                         <label for="verify-promo-code" class="col-md-3 col-sm-3 paddnone pull-left">Promo Code</label>
                             <div class="col-md-6 col-sm-6">
                                 <input id="verify-promo-code" name="orders-create-addressLine1" ng-model="model.promoCode" type="text" class="form-control ng-binding" data-toggle="tooltip" data-placement="top" title="Redeem your promo code here" maxlength="60" />
@@ -880,18 +842,23 @@
                             </div>--> 
                     </div>
 
+
+                    <div class="row paddtop20">
+                         <div class="col-md-5 col-sm-5">
+                            <!--<img src="../images/captcha.png" class="captchaimg">-->
+                             <!--<div class="g-recaptcha" data-sitekey="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></div>-->
+                             <no-captcha g-recaptcha-response="model.gRecaptchaResponse" site-key="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></no-captcha>
+                             <p class="error-message" ng-show="!isCaptchaVerified" ng-bind="validationMessages.captchaError"></span></p>
+                        </div>
+
                     </div>
-                   
-
-
-                   
 
 
                     <div class="row paddtop20">
                         <div class="col-md-6 col-sm-5 paddnone">
                             <label>
                                 <input type="checkbox" id="verify-agree" class="chkpadd agreeCheckBox colnRemove" name="verify-agree" ng-model="isAgreed">
-                               <span class="agreeCheckText">I have read &amp; agreed to the  <a href="{{termsAndConditionFile}}" class="blog-nav-item" target="_blank">Terms &amp; Conditions</a></span>
+                               <span class="agreeCheckText">I have read &amp; agreed to the  <a href="/content/ezyCommerce General T&Cs.pdf" class="blog-nav-item" target="_blank">Terms &amp; Conditions</a></span>
                             </label>
 
                         </div>
@@ -931,9 +898,9 @@
 
                         <div class="row font1">
                             
-                            <p>Didn't receive an email?  Please check your junk folder and add ezyCommerce domain to your safe senders list. If you still didn't receive the email, you can submit a request to <a href="/#/verify">Resend </a>&nbsp;it.</p>
+                            <p>Didn't receive an email?  Please check your junk folder and add ezyCommerce domain to your safe senders list. If you still didn't receive the email, you can submit a request to <a href="/#/verify">Resend </a>it.</p>
                             
-                            <p>{{isVisible('signup')}}</p>
+                            <p>Got questions? Contact us at +65 6229 5979 or email us at support@ezycommerce.com</p>
                             
                         </div>
                     </div>
@@ -943,13 +910,22 @@
     </div>
 </section>
 
-
+<!--<footer class="thFooter">
+  <div class="container-fluid thFooterBg">
+    <nav class="blog-nav"> <a href="#/help" class="blog-nav-item">HELP AND SUPPORT <span class="glyphicon glyphicon-fot-sep">|</span></a> <a href="#/terms" class="blog-nav-item">TERMS OF USE <span class="glyphicon glyphicon-fot-sep">|</span></a> <a href="#/policy" class="blog-nav-item">PRIVACY POLICY</a> </nav>
+    <div class="clear"></div>
+    <p class="text-muted thFootCopy">@ 2014 SINGAPORE POST LIMITED. ALL RIGHTS RESERVED</p>
+    <p class="text-muted thFootPower hidden-xs">Powered by : </p>
+  </div>
+</footer>-->
 
 <footer class="thFooter footerBottomFixed">
     <div class="container-fluid thFooterBg">
       <nav class="blog-nav">
-       
-        <a href="{{termsAndConditionFile}}" class="blog-nav-item" target="_blank">Terms & Conditions</a>
+        <!-- <a href="#/help" class="blog-nav-item">HELP AND SUPPORT <span class="glyphicon glyphicon-fot-sep">|</span></a>
+        <a href="#/terms" class="blog-nav-item">TERMS OF USE <span class="glyphicon glyphicon-fot-sep">|</span></a>
+        <a href="#/policy" class="blog-nav-item">PRIVACY POLICY</a> -->
+        <a href="/content/ezyCommerce General T&Cs.pdf" class="blog-nav-item" target="_blank">Terms & Conditions</a>
       </nav>
       <div class="clear"></div>
       <p class="text-muted thFootCopy">@ 2014 SINGAPORE POST LIMITED. ALL RIGHTS RESERVED</p>

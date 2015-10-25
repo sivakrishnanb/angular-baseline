@@ -1,0 +1,64 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="edit_product"
+              novalidate angular-validator angular-validator-submit="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Add New Channel</h2>
+                </div>
+              </div>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="product-edit-product-defaults">
+                        New Channel </a>
+                       <label class="pull-right">
+                        <input type="checkbox" id="accounts-connections-showInactive" name="accounts-connections-showInactive"> Show Inactive
+                      </label>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <input type="search" class="form-control" placeholder="Search Channel" /> 
+                          </div>
+                          <div class="col-sm-4">
+                              <a href="#" class="btn btn-info"><span class="glyphicon glyphicon-search"></span> Search</a>
+                          </div>
+                        </div>
+                     
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <div class="form-group pull-right">
+                                <a href="#/accounts/connections/integrateEbay"><img src="images/ebay.jpg" height="75" width="75" alt="eBay" class="img-rounded"></a>
+                            </div>
+                          </div>
+                           <div class="col-sm-1">
+                           </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                                <a href="#/accounts/connections/integrateShopify"><img src="images/shopify.jpg" height="75" width="75" alt="Shopify"
+                                class="img-rounded"></a>
+                            </div>
+                          </div>
+                        </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

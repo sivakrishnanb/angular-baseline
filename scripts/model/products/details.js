@@ -1,7 +1,6 @@
 define(['map'], function (map) {
         var model = function () {
         	this.fbspSkuId="";
-			this.merchantCode="";
             this.productName="";
 			this.productId="";
 			this.articleCode="";

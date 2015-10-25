@@ -1,6 +1,6 @@
 define(['app', 'model/shipments/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('CreateShipments', ['$scope', '$bus', '$location', 'ngProgress', '$constants', '$rootScope', '$timeout','notify','$window','highlight','$routeParams',
-        function ($scope, $bus, $location, ngProgress, $constants, $rootScope, $timeout,notify,$window,highlight,$routeParams) {
+    app.controller('CreateShipments', ['$scope', '$bus', '$location', 'ngProgress', '$constants', 'toaster', '$rootScope', '$timeout','notify','$window','highlight','$routeParams',
+        function ($scope, $bus, $location, ngProgress, $constants, toaster, $rootScope, $timeout,notify,$window,highlight,$routeParams) {
 
 
 
@@ -40,27 +40,6 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                     }
                 });
             });
-
-            $scope.postalCodeVaidate = function() {
-
-               if($scope.countryOfOriginCtrl  && $scope.countryOfOriginCtrl.countryCode=='SG') {
-                    if(!$scope.model.header.addressPostalCode || !(/^[0-9]{6}$/.test($scope.model.header.addressPostalCode))){
-                        $scope.invalidPostalShipment = angular.copy($constants.validationMessages.zipCodeNew);
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-
-                }
-                else if(!$scope.model.header.addressPostalCode) {
-                    $scope.invalidPostalShipment = angular.copy($constants.validationMessages.required);
-                    return false;
-
-                }
-
-                return true;
-            }
 
             $scope.addProduct = function (product) {
                 
@@ -319,6 +298,7 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                                 var inboundCode = success.response.data.shipment.header.inboundCode;
                                 $scope.shipmentCreated = true;
                                 notify.message(messages.shipmentCreateSuccess.replace('##',inboundCode?inboundCode:''),'','succ');
+                                //toaster.pop("success", messages.shipmentCreateSuccess); commented
                                 highlight.added(inboundCode);
                                 $location.path('shipments/send/' + inboundCode);
                             }
@@ -330,13 +310,16 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.shipmentCreateError, "", 0); commented
                                     notify.message(messages.shipmentCreateError);
                                 }
                             }
 
                         }).fail(function (error) {
+                            //toaster.pop("error", messages.shipmentCreateError); commented
                             notify.message(messages.shipmentCreateError);
 
                         });
@@ -392,12 +375,15 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                                     });
                                 });
      
+                                //toaster.pop("success", messages.shipmentDetail, messages.retrivedSuccess);
                             } else {
+                                // toaster.pop("error", messages.shipmentFetchError); commented
                                 notify.message(messages.shipmentFetchError);
                             }
                             ngProgress.complete();
                         }).fail(function (error) {
                             $scope.model = new model();
+                            //toaster.pop("error", messages.shipmentFetchError); commented
                             notify.message(messages.shipmentFetchError);
                             ngProgress.complete();
                         });

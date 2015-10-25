@@ -1,9 +1,8 @@
-define(['angularAMD','utility/constants','angular-route','angular-cookies','angular-sanitize','controller/base', 'jquery', 'underscore','bootstrap','ngAnimate','ngProgress','directive/ng-directive','service/dal','service/exception','service/ng-service','factory/bus', 'factory/ng-factory','filter/ng-filter','angular-validator','directive/angular-gmap','ng-multiselect','nanoScroller','timeAgo','aes','map', 'ngStorage', 'highcharts', 'tabslideout','html2canvas'], function (angularAMD) {
-
+define(['angularAMD','utility/constants','angular-route','angular-cookies','angular-sanitize','controller/base', 'jquery', 'underscore','bootstrap','ngAnimate','ngProgress','ngToaster','directive/ng-directive','service/dal','service/exception','service/ng-service','factory/bus', 'factory/ng-factory','filter/ng-filter','angular-nvd3','angular-validator','directive/angular-gmap','ng-multiselect','nanoScroller','timeAgo','angular-nvd3','aes','map', 'ngStorage', 'highcharts', 'tabslideout', 'no-data','angular-translate'], function (angularAMD) {
   //Define the app module
-  var app = angular.module("ezyCommerce", ['ngRoute','ngCookies','ngSanitize','ngProgress', 'multi-select', 'angularValidator','ngStorage']);
+  var app = angular.module("ezyCommerce", ['ngRoute','ngCookies','ngSanitize','ngProgress','toaster', 'multi-select', 'angularValidator', 'nvd3', 'ngStorage', 'pascalprecht.translate']);
   
-  app.config(['$routeProvider',function ($routeProvider) {
+  app.config(['$routeProvider', '$translateProvider',function ($routeProvider, $translateProvider) {
     
     var roleMapping = {
                     admin:{name:'admin',value:'1'},
@@ -84,10 +83,6 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         
         {urlPath:"/orders/create", templateUrl: 'views/orders/create.html', controller: 'CreateOrders', controllerUrl: 'controller/orders/create', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
         
-        {urlPath:"/orders/returns/create", templateUrl: 'views/orders/createreturns.html', controller: 'CreateReturns', controllerUrl: 'controller/orders/createreturns', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
-        {urlPath:"/orders/returns/view/:id", templateUrl: 'views/orders/viewreturns.html', controller: 'ViewReturns', controllerUrl: 'controller/orders/viewReturns', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
         {urlPath:"/orders/create/:frmpage", templateUrl: 'views/orders/create.html', controller: 'CreateOrders', controllerUrl: 'controller/orders/create', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
         
         {urlPath:"/orders/send/:sku", templateUrl: 'views/orders/review.html', controller: 'ReviewOrders', controllerUrl: 'controller/orders/review', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
@@ -95,15 +90,7 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         {urlPath:"/orders/upload", templateUrl: 'views/orders/upload.html', controller: 'UploadOrders', controllerUrl: 'controller/orders/upload', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
 
         {urlPath:"/orders/upload/:highlight", templateUrl: 'views/orders/upload.html', controller: 'UploadOrders', controllerUrl: 'controller/orders/upload', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
-        {urlPath:"/orders/removals/create", templateUrl: 'views/orders/createRemovals.html', controller: 'CreateRemovals', controllerUrl: 'controller/orders/createRemovals', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
-        {urlPath:"/orders/removals/create/:frmpage", templateUrl: 'views/orders/createRemovals.html', controller: 'CreateRemovals', controllerUrl: 'controller/orders/createRemovals', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
-        {urlPath:"/orders/removals/view/:remvalid", templateUrl: 'views/orders/viewRemovals.html', controller: 'ViewRemovalOrders', controllerUrl: 'controller/orders/viewRemovals', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
-        {urlPath:"/orders/removals/edit/:remvalid", templateUrl: 'views/orders/editRemovals.html', controller: 'EditRemovalOrders', controllerUrl: 'controller/orders/editRemovals', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
-
+        
         {urlPath:"/orders/:status", templateUrl: 'views/orders/index.html', controller: 'Orders', controllerUrl: 'controller/orders/index', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
         
         {urlPath:"/orders/view/:sku", templateUrl: 'views/orders/view.html', controller: 'ViewOrders', controllerUrl: 'controller/orders/view', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.accountowner.value,roleMapping.configmgr.value]},
@@ -116,28 +103,20 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         {urlPath:"/accounts", templateUrl: 'views/accounts/editProfileIndividual.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.finance.value,roleMapping.accountowner.value]},
         
         {urlPath:"/accounts/profile", templateUrl: 'views/accounts/editProfileIndividual.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value,roleMapping.finance.value,roleMapping.accountowner.value]},
-                
+        
+        {urlPath:"/accounts/editProfileBusiness", templateUrl: 'views/accounts/editProfileBusiness.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
+        
         {urlPath:"/accounts/connections", templateUrl: 'views/accounts/connections.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.productmgr.value,roleMapping.ordermgr.value]},
-                        
+        
+        {urlPath:"/accounts/connections/addNewChannel", templateUrl: 'views/accounts/addNewChannel.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
+        
         {urlPath:"/accounts/connections/integrateEbay", templateUrl: 'views/accounts/integrateEbay.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
         {urlPath:"/accounts/connections/integrateShopify", templateUrl: 'views/accounts/integrateShopify.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
-
-        {urlPath:"/accounts/connections/integrateAmazonDoc", templateUrl: 'views/accounts/integrateAmazonDoc.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
-
-        {urlPath:"/accounts/connections/integrateAmazon", templateUrl: 'views/accounts/integrateAmazon.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
-
-
-        {urlPath:"/accounts/connections/integrateRakutenDoc", templateUrl: 'views/accounts/integrateAmazonDoc.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
-
-        {urlPath:"/accounts/connections/integrateRakuten", templateUrl: 'views/accounts/integrateRakuten.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
-
-
+        
         {urlPath:"/accounts/connections/edit/:id", templateUrl: 'views/accounts/editEbay.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
-        {urlPath:"/accounts/connections/:channel/:status", templateUrl: 'views/accounts/connections.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
-
-        {urlPath:"/accounts/connections/:channel", templateUrl: 'views/accounts/connections.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
+        {urlPath:"/accounts/connections/:channel/:status", templateUrl: 'views/accounts/addNewChannel.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
         {urlPath:"/accounts/addressBook", templateUrl: 'views/accounts/addressBook.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
@@ -151,11 +130,17 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         
         {urlPath:"/accounts/editUser/:id", templateUrl: 'views/accounts/newSubAccount.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
-        {urlPath:"/accounts/billingSummary", templateUrl: 'views/accounts/billingSummary.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},       
-       
+        {urlPath:"/accounts/editSubAccount", templateUrl: 'views/accounts/editSubAccount.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
+        
+        {urlPath:"/accounts/billingSummary", templateUrl: 'views/accounts/billingSummary.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
+        
+        {urlPath:"/accounts/changePlan", templateUrl: 'views/accounts/changePlan.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.accountowner.value]},
+        
         {urlPath:"/accounts/fulfillmentCost", templateUrl: 'views/accounts/fulfillmentCost.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.productmgr.value]},
         
         {urlPath:"/accounts/preferences/fulfillment", templateUrl: 'views/accounts/orderFulfillment.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value]},
+        
+        {urlPath:"/accounts/printSetup", templateUrl: 'views/accounts/printSetup.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.vendor.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]},
         
         {urlPath:"/accounts/preferences/email", templateUrl: 'views/accounts/email.html', controller: 'Accounts', controllerUrl: 'controller/accounts/accounts', role:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value]},
         
@@ -179,23 +164,11 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         
         {urlPath:"/merchant/:status", templateUrl: 'views/merchant/index.html', controller: 'Merchant', controllerUrl: 'controller/merchant/index', role:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.finance.value]},
 
-        {urlPath:"/merchant/shipments/:status", templateUrl: 'views/merchant/merchantShipmentFilter.html', controller: 'MerchantShipments', controllerUrl: 'controller/merchant/shipments', role:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.finance.value]},
-
-        {urlPath:"/merchant/orders/:status", templateUrl: 'views/merchant/merchantOrdersFilter.html', controller: 'MerchantOrders', controllerUrl: 'controller/merchant/orders', role:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.finance.value]},
-
-        /************************************************************************************************************************************************************/
-
-        {urlPath:"/admin", templateUrl: 'views/admin/index.html', controller: 'Admin', controllerUrl: 'controller/admin/index', role:[roleMapping.admin.value]},
-
         /************************************************************************************************************************************************************/
         
         {urlPath:"/acl", templateUrl: 'views/shared/404.html', controller: 'Login', controllerUrl: 'controller/login/index',
           role:{
             merchantTab : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.finance.value],
-
-            adminTab : [roleMapping.admin.value,roleMapping.finance.value],
-
-            adminInvoiceGenerate : [roleMapping.admin.value],
             
             financeText : [roleMapping.admin.value,roleMapping.finance.value,roleMapping.accountowner.value],
             financePayments : [roleMapping.admin.value,roleMapping.finance.value,roleMapping.accountowner.value],
@@ -240,43 +213,29 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
             editOrderSave : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.ordermgr.value],
             uploadOrder : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.ordermgr.value],
             approveOrder : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.ordermgr.value],
-            updateReturnsTrackNumber : [roleMapping.admin.value,roleMapping.csr.value],
-            showReturnsTrackNumber : [roleMapping.accountowner.value,roleMapping.ordermgr.value],
-            showReturnsMerchantCode : [roleMapping.admin.value],
-            managerApproveOrder : [roleMapping.admin.value,roleMapping.csr.value],
-
-            poOrderNumber : [roleMapping.admin.value,roleMapping.csr.value],
             
-            merchantAdminDashboard : [roleMapping.admin.value,roleMapping.csr.value],
+            managerApproveOrder : [roleMapping.admin.value,roleMapping.csr.value],
             
             preferencesText:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value,roleMapping.productmgr.value,roleMapping.ordermgr.value],
             order:'*',
             email:'*',
             other:'*',
             
-            reportsText:    [roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
+            reportsText:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
             productsReports:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
             shipmentReports:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
-            ordersReports:  [roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
-            transReports:   [roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
-            removalsRemarkEdit:   [roleMapping.admin.value],
-            removalsRemarkShow:   [roleMapping.accountowner.value],
-
+            ordersReports:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
+            transReports:[roleMapping.admin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value],
+            
             productAction : [roleMapping.admin.value,roleMapping.accountadmin.value,roleMapping.vendor.value,roleMapping.ordermgr.value,roleMapping.csr.value,roleMapping.accountowner.value],
-            showMerchId : [roleMapping.admin.value],
             productActionStatus : [roleMapping.admin.value,roleMapping.accountadmin.value,roleMapping.vendor.value,roleMapping.productmgr.value,roleMapping.csr.value,roleMapping.accountowner.value],
-            showMerchId : [roleMapping.admin.value],
-
-            showAdminShipmentReport : [roleMapping.admin.value],
-
-
-              prefOrderSave : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value],
+            
+            
+            prefOrderSave : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value],
             prefEmailSave : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value],
             prefOthersSave : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value],
             
-            ebayConnectButton : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value],
-
-            connnectionsLandingPage : [roleMapping.admin.value,roleMapping.accountadmin.value,roleMapping.csr.value,roleMapping.configmgr.value,roleMapping.accountowner.value]
+            ebayConnectButton : [roleMapping.admin.value,roleMapping.csr.value,roleMapping.accountowner.value,roleMapping.accountadmin.value,roleMapping.configmgr.value]
             
           }
         }
@@ -292,8 +251,24 @@ define(['angularAMD','utility/constants','angular-route','angular-cookies','angu
         }));
     });
     $routeProvider.otherwise({redirectTo: "/404"});
+
+      $translateProvider.useStaticFilesLoader({
+          prefix: 'content/locale-',
+          suffix: '.json'
+      })
+      .registerAvailableLanguageKeys(['en-US', 'de', 'jp'], {
+          'en_US': 'en-US',
+          'en_UK': 'en-US',
+          'en'   : 'en-US',
+          'de_DE': 'de',
+          'de_CH': 'de'
+      });
+      $translateProvider.determinePreferredLanguage();
+      $translateProvider.useLocalStorage();
+
+
   }]);
-  app.run(['$rootScope', 'ngProgress', '$location', '$window', '$cookieStore','role','$route','$routeParams',function($rootScope, ngProgress, $location, $window, $cookieStore,role,$route,$routeParams) {
+  app.run(['$rootScope', 'ngProgress', '$location', '$window', '$cookieStore','role','$route','$routeParams', '$translate', '$localStorage', function($rootScope, ngProgress, $location, $window, $cookieStore,role,$route,$routeParams, $translate, $localStorage) {
       $rootScope.$on('$routeChangeStart', function(event, next, current) {
           
 

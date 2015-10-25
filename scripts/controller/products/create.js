@@ -1,64 +1,53 @@
 define(['app', 'model/products/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('CreateProducts', ['$scope', '$bus', '$location', 'ngProgress', '$constants','$rootScope','$window','notify','highlight','$routeParams',
-        function ($scope, $bus, $location, ngProgress, $constants,$rootScope,$window,notify,highlight,$routeParams) {
+    app.controller('CreateProducts', ['$scope', '$bus', '$location', 'ngProgress', '$constants', 'toaster', '$rootScope','$window','notify','highlight','$routeParams',
+        function ($scope, $bus, $location, ngProgress, $constants, toaster, $rootScope,$window,notify,highlight,$routeParams) {
 
           // Dimension
 
-        $scope.isPatternMatched = function (pattern, value) {
-            if (!value) return false;
-            var regEx = new RegExp(pattern);
-                return regEx.test(value);
-        };
+
 
     	$scope.isDimensionValidFunction = function(param1,param2,param3) {
 
-            if($rootScope.isCountriesOptionsVisible('productDimensions')){
-                $scope.validationMessages.invalidFieldValue = $constants.validationMessages.invalidFieldValue;
-            }
-            if( (!(isNaN(param1) || isNaN(param2) || isNaN(param3))) && ($rootScope.isCountriesOptionsVisible('productDimensions')) ){
-               
-                $scope.validationMessages.invalidDimensiontotal  =  $scope.validationMessages.invalidDimensiontotalCubicMeters;
+/*            $scope.validationMessages.invalidLength = angular.copy($constants.validationMessages.invalidLength);
+            $scope.validationMessages.invalidWidth = angular.copy($constants.validationMessages.invalidWidth);
+            $scope.validationMessages.invalidHeight = angular.copy($constants.validationMessages.invalidHeight);
+            
 
+            if(!_.isEmpty(length) && !_.isEmpty(width) && !_.isEmpty(height)){
 
-                var length = parseFloat(param1) / 100;
-                var width = parseFloat(param2) / 100;
-                var height = parseFloat(param3) / 100;
-               
-                if ((length*width*height) > 0.25){
-                	$scope.isDimensionValid=true;
-                    $scope.validationMessages.invalidFieldValue ='';
-                     return false;
+                if(( parseInt(length) + parseInt(2*width) + parseInt(2*height) ) > 200) {
+                    $scope.isDimensionValid=true;
+                    $scope.validationMessages.invalidLength = $scope.validationMessages.invalidWidth = $scope.validationMessages.invalidHeight ='';
+                    return false;
+                }else{
+                    $scope.isDimensionValid=false;
+                    return true;
                 }
+            }else{
+                $scope.isDimensionValid=false;
+                return true;
+            }*/
+    		
+            
+            if(!(isNaN(param1) || isNaN(param2) || isNaN(param3))){
+                var max = Math.max(param1,param2,param3);
+
+               var totalDimension = parseInt(max) + (2*(parseInt(param1)+parseInt(param2)+parseInt(param3) - parseInt(max)));
+               
+                if(totalDimension>200 && (typeof(param1)!='object' && typeof(param2)!='object' && typeof(param3)!='object')){
+                	$scope.isDimensionValid=true;
+                    $scope.validationMessages.invalidLength = $scope.validationMessages.invalidWidth = $scope.validationMessages.invalidHeight ='';
+                     return false;
+                    }
                	else
                 {
                		$scope.isDimensionValid=false;
-                    $scope.validationMessages.invalidFieldValue = $constants.validationMessages.invalidFieldValue;
-
-                    return true;
-                }
-            }
-            else if(!(isNaN(param1) || isNaN(param2) || isNaN(param3)) && !($rootScope.isCountriesOptionsVisible('productDimensions'))){
-                var max = Math.max(param1,param2,param3);
-
-                var totalDimension = Number(max) + (2*(Number(param1)+Number(param2)+Number(param3) - Number(max)));
-
-                if(totalDimension>200 && (typeof(param1)!='object' && typeof(param2)!='object' && typeof(param3)!='object')){
-                    $scope.isDimensionValid=true;
-                    $scope.validationMessages.invalidLength = $scope.validationMessages.invalidWidth = $scope.validationMessages.invalidHeight ='';
-                     return false;
-                }
-               	else
-                {
-                    $scope.isDimensionValid=false;
                     return true;
                 }
            }
            else{
        				$scope.isDimensionValid=false;
-                    $scope.validationMessages.invalidLength = $constants.validationMessages.invalidLength;
-                    $scope.validationMessages.invalidWidth = $constants.validationMessages.invalidWidth;
-                    $scope.validationMessages.invalidHeight = $constants.validationMessages.invalidHeight;
-                    return true;
+                     return true;
        	   }
            
 
@@ -355,6 +344,7 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
 							if (success.response.success.length) {
 								$scope.productCreated = true;
 								notify.message(messages.productCreateSuccess.replace('##',success.response.data.products.fbspSkuId?success.response.data.products.fbspSkuId:''),'','succ');
+								//toaster.pop("success", messages.productCreateSuccess);
 								var redirPath = ($scope.model.isActive)?'products':'products/inactive';
 								highlight.added($scope.model.sku);
 								$location.path(redirPath);
@@ -366,12 +356,15 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
 									errors.push(error)
 								});
 								if (errors.length) {
+									//toaster.pop("error", errors.join(', '), '', 0);
 									notify.message($rootScope.pushJoinedMessages(errors));
 								} else {
+									//toaster.pop("error", messages.productCreateError, "", 0);
 									notify.message(messages.productCreateError);
 								}
 							}
 						}).fail(function (error) {
+							//toaster.pop("error", messages.productCreateError); commented
 							notify.message(messages.productCreateError);
 						});
 			};

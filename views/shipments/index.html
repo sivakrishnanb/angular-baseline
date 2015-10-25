@@ -1,5 +1,3 @@
-<div ng-class="getshipmentScrollClassTop()">
-<div ng-class="getshipmentScrollClassBot()">
 <section class="container-fluid" ng-init="init()">
   <div class="row">
     <div class="col-xs-12">
@@ -20,9 +18,9 @@
         </div>
         <div class="clear"></div>
         <h4 class="sub-head thSubHead">Search Shipments</h4>
-        <form class="form-inline container-fluid" role="form">
+        <form class="form-inline" role="form">
           <div class="row padBtm15px">
-           
+            <div class="col-sm-12">
               <div class="form-group">
                 <label class="sr-only" for="shipment-search-text">Search
                   Shipments</label>
@@ -45,29 +43,21 @@
                       <div class="shipSuggestion">
                          <div class="shipIdContainer">
                            <div class="shipIDs">
-                             <div class="txtBold shipId" ng-bind-html="highlightSuggest(suggest.inboundCode, searchKey) | toTrusted "></div>
-                             <div class="txtBold shipPlanName" ng-bind-html="'Plan Name: ' + highlightSuggest(suggest.planName, searchKey) | toTrusted "></div>
+                             <div class="txtBold shipId" ng-bind-html="highlightSuggest(suggest.inboundCode, searchKey)"></div>
+                             <div class="txtBold shipPlanName" ng-bind-html="'Plan Name: ' + highlightSuggest(suggest.planName, searchKey)"></div>
                            </div>
                          </div>
-
-                        <div class="suggestShipSKU">
-                          <div class="txtItalic fleft suggShipMerSKU" ng-bind-html="'Merchant SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest,searchKey,'merSku'), searchKey) | toTrusted "></div>
-                          <div class="suggShipProductContainer" check-acl="showMerchId" ng-if="suggest.merchantCode">
-                            <div class="suggShipPrdName" ng-bind-html="'Merchant Id: ' + highlightSuggest(suggest.merchantCode, searchKey) | toTrusted |addEllipse:25"></div>
-                          </div>
-
-                          <div class="clear"></div>
-                        </div>
-                        
-                         <div class="suggShipProductContainer">
-						 <div class="txtItalic fleft suggShipEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest,searchKey,'ezySku'), searchKey) | toTrusted "></div>
-                           <div class="suggShipPrdName" ng-bind-html="'Product Name: ' + highlightSuggest(getFirstMatchSuggest(suggest,searchKey,'prodName'), searchKey) | toTrusted |addEllipse:25"></div>
-                           
+                         
+                         <div class="suggestShipSKU">
+                           <div class="txtItalic fleft suggShipMerSKU" ng-bind-html="'Merchant SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest.inbMerchantSkus,searchKey), searchKey)"></div>
+                           <div class="txtItalic fleft suggShipEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest.inbPrdSkus,searchKey), searchKey)"></div>
                            <div class="clear"></div>
-                         </div> 
-						 <div class="suggShipProductContainer">
-						 <div class="suggShipPrdCodes">
-                             <span ng-bind-html=" 'Product Id : ' + highlightSuggest(getFirstMatchSuggest(suggest,searchKey,'prodId'), searchKey) | toTrusted |addEllipse:28" ></span>
+                         </div>
+                         <div class="suggShipProductContainer">
+                           <div class="suggShipPrdName" ng-bind-html="'Product Name: ' + highlightSuggest(suggest.inbPrdDesc, searchKey)|addEllipse:25"></div>
+                           <div class="suggShipPrdCodes">
+                             <span ng-if="suggest.productCodeType" ng-bind-html="highlightSuggest(suggest.productCodeType, searchKey)"></span>
+                             <span ng-if="suggest.productCodeType" ng-bind-html="': '+((suggest.productCode) ? (highlightSuggest(suggest.productCode, searchKey)|addEllipse:10):constants.notAvailableText)"></span>
                            </div>
                            <div class="clear"></div>
                          </div>  
@@ -82,13 +72,6 @@
                   id="shipment-search-suggestion" ng-if="emptySuggestions">
                   <a href="javascript:;" class="list-group-item">
                       <span class="center fnt12px">No matching shipments found</span>
-                  </a>
-                </div>
-
-
-                <div class="list-group suggestion-box" id="" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
-                  <a href="javascript:;" class="list-group-item">
-                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
                   </a>
                 </div>
 
@@ -154,11 +137,11 @@
                       <button class="btn btn-default" ng-click="resetFilter()" id="shipment-filter-reset">Reset</button>
                   </div>
               </div>
-            
+            </div>
           </div>
           <div class="row">
             <!--<div class="col-sm-4">-->
-            <div class="col-sm-2 col-lg-4 actions padd0">
+            <div class="col-sm-2 col-lg-4 actions">
               <div class="form-group">
                 <label class="sr-only" for="searchProducts">Actions</label> <label
                   class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}}
@@ -211,7 +194,7 @@
 
       
          <!-- pagination starts -->
-          <div class="col-sm-10 col-lg-8 padd0">
+          <div class="col-sm-10 col-lg-8">
             <div class="pull-right">
           <div class="showingPage pull-left" ng-if="myData.length">
             Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} shipments
@@ -243,7 +226,7 @@
           
           <div class="sort txtRight pull-left">
             
-            <div class="">
+            <div class="form-group">
               <label class="sr-only" for="searchProducts" ng-bind="'Sort By: ' + sortingOptions.name">Sort By: Date Created</label>
               
                 <div class="input-group">
@@ -256,7 +239,7 @@
                       <span ng-class="{'glyphicon glyphicon-sort-cat':!sortLogo(),'glyphicon glyphicon-sort-cat-asc':sortLogo()}"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li ng-click="sort('createdOn', 'Date Created')"><a href="javascript:;" id="product-action-create-shipment">Date Created</a></li>
+                      <li ng-click="sort('createdDate', 'Date Created')"><a href="javascript:;" id="product-action-create-shipment">Date Created</a></li>
                       <li ng-click="sort('inboundCode', 'Shipment ID')"><a href="javascript:;" id="product-action-create-shipment">Shipment ID</a></li>
                       <li ng-click="sort('planName','Plan Name')"><a href="javascript:;" id="product-action-create-fulfillment">Plan Name</a></li>
                       <li ng-click="sort('labelBy','Who Labels?')"><a href="javascript:;" id="product-action-create-shipment">Who Labels?</a></li>                      
@@ -274,7 +257,7 @@
         <div class="widget-table">
           <div class="newGridContainer container-fluid ship-table">
 
-            <div class="row proHeader hidden-xs">
+            <div class="row proHeader">
               <div class="proShipHeaEditH col-xs-12 col-sm-1 col-md-1">
                 <div class="checkboxFive">
                   <input type="checkbox" value="" id="" name="" ng-click="toggleCheckBox()" ng-model="toggleCheckBoxVal" />
@@ -292,7 +275,7 @@
             </div>
 
             <div class="clear"></div>
-            <div class="row proRow" ng-repeat="shipment in myData track by shipment.inboundCode" ng-class="{rowSelected:shipment.Selected,highlightAddedRow:highlightAdded(shipment.inboundCode)}">
+            <div class="row proRow" ng-repeat="shipment in myData" ng-class="{rowSelected:shipment.Selected,highlightAddedRow:highlightAdded(shipment.inboundCode)}">
                 <div class="proShipHeaEdit col-xs-12 col-sm-1 col-md-1">
                   <div class="checkboxFive">
                     <input type="checkbox" value="" id="" name="" ng-model="shipment.Selected" ng-change="isChanged(shipment)"/>
@@ -319,9 +302,6 @@
                       <span class="">
                         <span data-toggle="tooltip" data-placement="top" title="Shipment Plane Name" ng-bind="shipment.planName || constants.notAvailableTextText | addEllipse:25"></span>
                       </span>
-                  </div>
-				  <div class="proShipName" check-acl="showMerchId" ng-if="shipment.merchantCode">
-                      <span >Merchant Id: {{shipment.merchantCode}}</span>
                   </div>
                   <div class="eSkuShip">
                     Remarks : <span ng-bind="shipment.remarks || constants.notAvailableText | addEllipse:20"></span>
@@ -456,11 +436,11 @@
                 <div class="noRecordDisplayIcons col-sm-12 col-md-12 col-lg-12">
                   <div ng-if="loading.nodata">
                     
-                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Create Shipment" ng-show="getShipmentStatus()">
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Create shipment" ng-show="getShipmentStatus()">
                       <a href="#/shipments/create" data-toggle="tooltip" id="shipment-nav-create"><span class="glyphicon glyphicon-plus-nodata"></span><span class="full expOrCol ezyHide">Create Shipment</span></a>
                     </div>
                     
-                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Upload Shipment" ng-show="getShipmentStatus()">
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Upload shipment" ng-show="getShipmentStatus()">
                       <a href="#/shipments/upload" data-toggle="tooltip" id="shipment-nav-create"><span class="glyphicon glyphicon-upload-nodata"></span><span class="full expOrCol ezyHide">Create Shipment</span></a>
                     </div>
                     
@@ -488,5 +468,3 @@
     </div>
   </div>
 </section>
-</div>
-</div>

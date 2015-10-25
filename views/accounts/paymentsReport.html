@@ -3,7 +3,7 @@
         <div class="col-xs-12">
             <ng-include src="'views/accounts/nav.html'"></ng-include>
             <section class="content full widget-form">
-                <div class="row transReportsContainer">
+                <div class="row">
                     <div class="col-sm-12">
                         <form role="form">
                             <h2 class="thHead">Transactions Report</h2>
@@ -25,26 +25,6 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-sm-12 col-md-11">
-                                                <div class="row">
-                                                    <div class="form-group">
-                                                        <label class="col-sm-3 col-md-2 col-lg-2 control-label">Transaction Type</label>
-                                                        <div class="col-sm-4">
-                                                            <div class="input-group product-date thCreDate">
-                                                                <span ng-init="getBillingDates()"></span>
-                                                                <div class="form-group">
-                                                                    <div id="acc-reports-transaction-type" multi-select input-model="transactionType" output-model="selectedTransType" button-label="name" item-label="name" tick-property="ticked" max-labels="1" default-label="Transaction Type" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-sm-12 col-md-11">

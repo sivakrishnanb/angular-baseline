@@ -54,7 +54,7 @@
                             <a href="#/accounts/billingSummary" title="Summary" class="approvedIndent" id="myaccount-nav-summary"><span class="glyphicon glyphicon-icon-MyAccount-summary"></span><span class="full expOrCol">Summary</span></a>
                         </li>
                         
-                        <li ng-if="0" check-acl="fulfillmentCost" ng-class="isNavActive('accounts','fulfillmentCost')" class="list-group-item">
+                        <li check-acl="fulfillmentCost" ng-class="isNavActive('accounts','fulfillmentCost')" class="list-group-item">
                             <a href="#/accounts/fulfillmentCost" title="Fulfillment Cost" class="approvedIndent" id="myaccount-nav-funfillmntCost"><span class="glyphicon glyphicon-star"></span><span class="full expOrCol">Calculator</span></a>
                         </li>                        
                                                 
@@ -72,7 +72,7 @@
                     
                     <div class="othersIndentCont collapse" ng-class="{'in':isOptionVisible('myAccAccPrefCollapse')}">
                         <li check-acl="order" ng-class="isNavActive('accounts','preferences','fulfillment')" class="list-group-item">
-                            <a href="#/accounts/preferences/fulfillment" title="Order" class="othersIndent" id="myaccount-nav-fulfillment"><span class="glyphicon glyphicon-icon-MyAccount-fulfillment"></span><span class="full expOrCol">Order</span></a>
+                            <a href="#/accounts/preferences/fulfillment" title="Fulfillment" class="othersIndent" id="myaccount-nav-fulfillment"><span class="glyphicon glyphicon-icon-MyAccount-fulfillment"></span><span class="full expOrCol">Order</span></a>
                         </li>
                         
                         <li check-acl="email" ng-class="isNavActive('accounts','preferences','email')" class="list-group-item">

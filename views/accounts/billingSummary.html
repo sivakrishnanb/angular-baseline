@@ -38,7 +38,7 @@
                         </div>
                       </div>
 
-                       <div class="row" ng-if="0">
+                       <div class="row">
                         <div class="form-group">
                           <div class="col-md-12 col-sm-12">
                               Note: Payment made on or after {{lastPaymentDate}} will not be reflected in this summary. To view the latest payments please view the payments / adjustments table below
@@ -208,12 +208,12 @@
                   <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body pnlbdy-pad5 billsumtbl" >
                       
-                        <div class="row proHeader hidden-xs">
+                        <div class="row proHeader">
                           <div class="accbillEntryDate col-md-2 col-sm-12">Entry Date</div>
-                          <div class="accbillPayment col-md-2 col-sm-12">Payment/Adj. Date</div>
-                          <div class="accbillReference col-md-2 col-sm-12">Reference Number</div>
+                          <div class="merHeaPayH col-md-2 col-sm-12">Payment/Adj. Date</div>
+                          <div class="merHeaRefnoH col-md-2 col-sm-12">Reference Number</div>
                           <div class="accbillInvoice col-md-2 col-sm-12">Invoice Number</div>
-                          <div class="accbillAmnt col-md-1 col-sm-12 ">Amount ({{constants.currentCurrency}})</div>
+                          <div class="accbillAmnt col-md-1 col-sm-12 ">Amount (SGD)</div>
                           <div class="accbilltype col-md-1 col-sm-12 ">Type</div>
                           <div class="accbillRemarks  col-md-2 col-sm-12 ">Remarks</div>
                         </div>
@@ -222,8 +222,8 @@
 
                         <div class="row proRow paddbtm4" ng-repeat="payment in payments">
                           <div class="accbillEntryDate col-md-2 col-sm-12 ">{{payment.entryDate || constants.notAvailableText}}</div>
-                          <div class="accbillPayment col-md-2 col-sm-12 ">{{payment.paymentDate || constants.notAvailableText}}</div>
-                          <div class="accbillReference col-md-2 col-sm-12 ">{{payment.paymentNo || constants.notAvailableText}}</div>
+                          <div class="merHeaPayH col-md-2 col-sm-12 ">{{payment.paymentDate || constants.notAvailableText}}</div>
+                          <div class="merHeaRefnoH col-md-2 col-sm-12 ">{{payment.paymentNo || constants.notAvailableText}}</div>
                           <div class="accbillInvoice col-md-2 col-sm-12 ">{{(payment.type == 'payment') ? constants.notAvailableText : payment.invoiceNo}}</div>
                           <div class="accbillAmnt col-md-1 col-sm-12 ">{{payment.amount|number:2}}</div>
                           <div class="accbilltype col-md-1 col-sm-12 ">{{(payment.type && payment.type == 'payment') ? payment.type : ('Adjustment - '+payment.type)|| constants.notAvailableText}}</div>

@@ -1,6 +1,6 @@
 define(['app', 'model/shipments/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('EditShipments', ['$scope', '$bus', '$location', 'ngProgress', '$rootScope','$window','$routeParams', '$constants', '$timeout', 'notify',
-        function ($scope, $bus, $location, ngProgress, $rootScope,$window, $routeParams, $constants, $timeout,notify) {
+    app.controller('EditShipments', ['$scope', '$bus', '$location', 'ngProgress', 'toaster', '$rootScope','$window','$routeParams', '$constants', '$timeout', 'notify',
+        function ($scope, $bus, $location, ngProgress, toaster, $rootScope,$window, $routeParams, $constants, $timeout,notify) {
 
             $scope.model = new model();
 
@@ -49,26 +49,7 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                 }
             }
 
-            $scope.postalCodeVaidate = function() {
-
-               if($scope.countryOfOriginCtrl  && $scope.countryOfOriginCtrl.countryCode=='SG') {
-                    if(!$scope.model.header.addressPostalCode || !(/^[0-9]{6}$/.test($scope.model.header.addressPostalCode))){
-                        $scope.invalidPostalShipment = angular.copy($constants.validationMessages.zipCodeNew);
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-
-                }
-                else if(!$scope.model.header.addressPostalCode) {
-                    $scope.invalidPostalShipment = angular.copy($constants.validationMessages.required);
-                    return false;
-
-                }
-
-                return true;
-            }
+            
 
             $scope.addProduct = function (product) {
                 if ($scope.model.products.length > 0 && _.findIndex($scope.model.products, {
@@ -97,6 +78,7 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                             $scope.suggestions = [];
                         });
                     //} else {
+                        //toaster.pop("error", messages.addActiveProducts); commented
                         //notify.message(messages.addActiveProducts);
                    //}
                 }
@@ -300,12 +282,15 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                                 $scope.getProductInventory(prod);
                             });
  
+                            //toaster.pop("success", messages.shipmentDetail, messages.retrivedSuccess);
                         } else {
+                            // toaster.pop("error", messages.shipmentFetchError); commented
                             notify.message(messages.shipmentFetchError);
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.shipmentFetchError); commented
                         notify.message(messages.shipmentFetchError);
                         ngProgress.complete();
                     });
@@ -350,6 +335,7 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                         .done(function (success) {
                             if (success.response.success.length) {
                                 $scope.shipmentEdited = true;
+                                //toaster.pop("success", messages.shipmentUpdateSucess); commented
                                 notify.message(messages.shipmentUpdateSucess,'','succ');
                                 $location.path('shipments/send/' + success.response.data.shipment.header.inboundCode);
                             } else {
@@ -358,12 +344,15 @@ define(['app', 'model/shipments/details', 'utility/messages'], function (app, mo
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors))
                                 } else {
+                                    //toaster.pop("error", messages.shipmentUpdateError, "", 0); commented
                                     notify.message(messages.shipmentUpdateError);
                                 }
                             }
                         }).fail(function (error) {
+                            //toaster.pop("error", messages.shipmentUpdateError); commented
                             notify.message(messages.shipmentUpdateError);
                         });
                 } 

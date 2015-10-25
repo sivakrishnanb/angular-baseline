@@ -61,16 +61,6 @@
 														</div>
 													</div>
 												</div>
-
-												<div class="col-sm-12 col-xs-12" check-acl="showMerchId" ng-if="model.header.merchantCode">
-													<div class="form-group">
-														<label for="price" class="col-sm-5 control-label leftHead0 fllft">Merchant Id<span class="pull-right">:</span></label>
-														<div class="col-sm-6 xstxt-paddlft20 fllft">
-															<p id="product-view-merch-id" class="form-control-static " ng-bind="model.header.merchantCode || constants.notAvailableText"></p>
-														</div>
-													</div>
-												</div>
-
 												<div class="col-sm-12 col-xs-12">
 													<div class="form-group">
 														<label for="price" class="col-sm-5 control-label leftHead0 fllft">Status<span class="pull-right">:</span></label>
@@ -223,7 +213,7 @@
 													<select id="shipment-view-prodcut-labels" class="form-control font2" name="shipment-view-prodcut-labels" ng-model="productLabelList"  ng-options="item as item.name for item in constants.productLabelList track by item.value">
 													</select>
 												</td>
-												<td  valign="middle" class="print-hide">
+												<td  valign="middle">
 													<button type="button" ng-click="getFileUrl(productLabelList, 'productlabelshipment')" title="Product Label" id="shipment-view-prodcut-label-btn" class="btn btn-primary boxLabel">Product Label</button>
 												</td>
 											</tr>
@@ -232,7 +222,7 @@
 													<select id="shipment-view-box-label" class="form-control newTable1 font2" name="shipment-view-box-label" ng-model="boxLabelList"  ng-options="item as item.name for item in constants.boxLabelList track by item.value">
 													</select>
 												</td>
-												<td valign="middle" class="print-hide">
+												<td valign="middle">
 													<button type="button" ng-click="getFileUrl(boxLabelList, 'boxlabelshipment')" id="shipment-view-box-label-btn" class="btn btn-primary boxLabel" title="Box Label">Box Label</button>
 												</td>
 											</tr>
@@ -289,7 +279,7 @@
 										<div class="col-sm-12 col-xs-12 paddnone">
 
 											<div class="newGridContainer container-fluid  col-xs-12 paddnone">
-												<div class="row proHeader tblHdr2 hidden-xs">
+												<div class="row proHeader tblHdr2">
 													<div class="protablepadd col-xs-12 col-sm-12 col-md-4 shipviewprod headerColor1">Product</div>
 													<div class="protablepadd col-xs-12 col-sm-12 col-md-2 headerColor2">Category</div>
 													<div class="protablepadd col-xs-12 col-sm-12 col-md-2 shipviewquantity headerColor3">Expected Quantity</div>
@@ -454,45 +444,6 @@
 									</div>
 								</div>
 							</div> -->
-
-							<div class="panel panel-default col-md-12 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="javascript:;"
-										   for="product-create-additional-information">Supplier Info</a>
-									</h4>
-								</div>
-								<div id="collapseFour" class="panel-collapse collapse in">
-
-									<div class="panel-body">
-
-										<div class="row">
-											<div class="col-md-9 col-sm-9 col-xs-9 paddnone">
-												<div class="form-group">
-													<label class="col-sm-5 col-xs-5 control-label paddrgt0">Who will be sending the Shipment? (Merchant/Supplier)</label>
-													<span>:</span>
-													{{model.header.whoSendShipment || constants.notAvailableText}}
-												</div>
-											</div>
-
-											<div class="col-md-9 col-sm-9 col-xs-9 paddnone">
-												<div class="form-group" ng-if="model.header.whoSendShipment == 'Supplier'">
-													<label class="col-sm-5 col-xs-5 control-label paddrgt0">Will the Supplier paste EZC Shipment label?</label>
-													<span>:</span>
-													{{model.header.supplierEzcShipmentLabel ? "Yes": "No" || constants.notAvailableText}}
-												</div>
-											</div>
-											<div class="col-md-9 col-sm-9 col-xs-9 paddnone" ng-if="model.header.whoSendShipment=='Supplier' && !model.header.supplierEzcShipmentLabel">
-												<label class="col-sm-5 col-xs-5 control-label paddrgt0">PO number</label>
-												<span>:</span>
-												{{model.header.supplierPoNumber || constants.notAvailableText}}
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-
 							<div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
                                     <div class="panel-heading">
                                         <h4 class="panel-title panelHeading4-order">Shipment History</h4>
@@ -517,7 +468,7 @@
                                                     <div class="row proRow pad510 radiusnone" ng-if="!model.history.length">
                                                         <div class="col-sm-12">No data to display</div>
                                                     </div>
-                                                    <div class="row proRow pad510 radiusnone ship-row-print-single" ng-repeat="data in model.history">
+                                                    <div class="row proRow pad510 radiusnone" ng-repeat="data in model.history">
                                                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value1" ng-bind="data.eventName || constants.notAvailable"></div>
                                                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value2" ng-bind="data.createdDate || constants.notAvailable"></div>
                                                         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value3" ng-bind="data.createdByUser || constants.notAvailable"></div>
@@ -534,7 +485,7 @@
 					</div>
 
 	                <div class="btn-grp pull-left">
-	                   <button id="edit-shipment-cancel-btm" type="button" class="btn btn-primary print-hide" ng-click="duplicate(model.header.inboundCode)">Duplicate</button>
+	                   <button id="edit-shipment-cancel-btm" type="button" class="btn btn-primary" ng-click="duplicate(model.header.inboundCode)">Duplicate</button>
 	                </div>
 
 

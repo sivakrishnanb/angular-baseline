@@ -12,9 +12,7 @@ define([], function () {
             addProductError : "Oops..an error occurred when adding the product. Please try again.",
             labelInvalid : "Please select a valid label type from the available templates",
             labelDownloadSuccess : "Label downloaded successfully",
-            SourceFileDownloadSuccess : "Source file downloaded successfully",
             labelDownloadError : "Oops..an error occurred when downloading the label. Please try again.",
-            SourceFileDownloadError : "Oops..an error occurred when downloading the source file. Please try again.",
             required : "This field is mandatory",
             invalidnumber : "This field should be a positive number",
             invalidweight : "Weight should be a positive number less than 30 Kg",
@@ -22,7 +20,6 @@ define([], function () {
             invalidemail : "Email ID format is invalid",
             invalidphone : "Phone is invalid",
             countryFetchError : "Oops..an error occurred when downloading the country list. Please refresh the page to try again",
-            countryPostalCodeError : "Oops..an error occurred when fetching postal codes. Please refresh the page to try again",
             currencyFetchError : "Oops..an error occurred when downloading the country list. Please refresh the page to try again",
             viewStatus : "View Status",
             fileProcessingCompleted : "File upload has been processed. Click here to view the status.",
@@ -30,7 +27,7 @@ define([], function () {
             continueBrowsing : "Continue..",
             logOut : "Logout",
             //login
-            invalidCredential : "The Username or Password you entered is incorrect.",
+            invalidCredential : "The Username or Password your entered is incorrect.",
             loginSuccess : "Login successful",
             logoutSuccess : "You have been logged out. Thank you.",
             logoutError : "Oops..an error occurred when logging out. Please try again.",
@@ -87,11 +84,6 @@ define([], function () {
             orderDraftSuccess : "Order saved as Draft successfully.",
             orderDraftError : "Oops..an error occurred when saving the Order as draft. Please try again.",
             orderFetchError : "Oops.. an error occurred when fetching order details. Please try again by refreshing the page.",
-            orderReturnsFetchError : "Oops.. an error occurred when fetching return details. Please try again by refreshing the page.",
-            orderReturnsTrackNumberError : "Oops.. an error occurred when updating tracking details. Please try again by refreshing the page.",
-            orderReturnsTrackNumberSuccess : "Tracking Number Successfully updated.",
-            orderReturnsCreateError : "Oops.. an error occurred when creating return. Please try again by refreshing the page.",
-            orderReturnsEstimageError : "Oops.. an error occurred when fetching additional details. Please try again by refreshing the page.",
             orderUpdateSucess : "Order has been updated successfully.",
             orderUpdateError : "Oops.. an error occurred when updating the Order. Please try again.",
             orderCancelConfirm : "Are you sure you want to Cancel this Order?",
@@ -107,8 +99,8 @@ define([], function () {
             orderCarrierServiceError : "Oops..an error occurred when fetching the Delivery options for this order. Please try again by refreshing the page.",
             orderApproveSuccess : "Order with ID: ## approved successfully.",
             orderApproveError : "Error in approving order, please try again later.",
-            noCarrierAvailable : "Sorry, we are not able to find any suitable delivery option to fulfill your order. Please raise a support ticket for further enquiries.",
-            orderDeleteSuccess : "Order deleted successfully.",
+            noCarrierAvailable : "Sorry. We could not find any suitable delivery option for your order. This can be due to weight limitations, destination Country or the combination of Products in your Order. If you think this is an error, please contact client Service.",
+            
             
             //header Text - products
             headerProductActive:'Active Products can be used to create Shipments and Orders. Active Products cannot be made inactive if there is existing inventory in the warehouse, impending Shipment or open orders.',
@@ -138,8 +130,7 @@ define([], function () {
             noProductsHeaderTextFilter:"No Products matching filter criteria",
             noProductsHeaderSubTextFilter:"",
 
-            headerTitleMerchantShipPending :'Created Shipments',
-            headerTitleMerchantShipInTransit:'Shipments In Transit',
+
             
             //header Text - shipment
             headerShipPending:'Inbound Shipment consists of a list of active products and corresponding inventory (number of units) that you want to send to the warehouse. Your pending shipments are shown here. Click the Edit icon to modify the shipment details. Once you have prepared and labeled the shipment, you can update the shipment status to In Transit.',
@@ -202,11 +193,6 @@ define([], function () {
             
             headerOrdersCancelled:'All cancelled orders are listed here for your reference.',
 
-            headerOrdersUndeliverable:'RTS (Returned to Sender) are orders that never reached your customer and have been returned to the warehouse. A physical check for package level damages is done and put away for fulfillment.',
-
-            headerOrdersReturns:'You can create returns on behalf of your customer. Please fill the returns form and we will mail you or your customer the returns label. This label can be pasted on the return shipment and dropped off in any Post Office or POP station.',
-            headerOrdersRemovals:'Removal Orders are orders placed by you to remove inventory from ezyCommerce warehouse. Removals can be placed for damaged products, slow moving products, discontinued products etc. Once you have confirmed the details of the removal order, you can approve the removal order. You will be notified once the removal order has been packed.',
-
 
             // Header - Title - Orders
             headerTitleOrdersHasIssue    :'Orders - Has Issues',
@@ -218,9 +204,6 @@ define([], function () {
             headerTitleOrdersDelivered   :'Orders - Delivered',
             headeTitlerOrdersDraft       :'Orders - Drafts',
             headerTitleOrdersCancelled   :'Orders - Cancelled',
-            headerTitleOrdersUndeliverable  :'Orders - Undeliverable',
-            headerTitleOrdersReturns  :'Orders - Returns',
-            headerTitleOrdersRemovals  :'Removals',
 
             // View Orders - Has Issues
             headerOrderViewHasIssues:'Has Issues orders have one or more problems that need your attention before they can be approved. All issues pertaining to this order are listed below. This can be missing or invalid inputs, unidentified products or insufficient inventory for products in the order. Inventory will not be reserved for products inside these orders until they are approved.',
@@ -239,13 +222,6 @@ define([], function () {
            
             // View Orders - Delivered
             headerOrderViewDelivered:'Delivered orders have been successfully received by your customers. Refer to the order history at the bottom for detailed tracking milestones.',
-
-            //Removal Order
-            removalSubmitError:"Oops! Something went wrong. Please try again later",
-            removalZeroOrderline:"Must have at least one orderline attached to an order",
-
-            removalRemarkSuccess:"Remarks Successfully updated.",
-            removalRemarkError:"Oops..an error occurred when updating remarks. Please try again.",
 
             noOrdersHeaderTextAll:"You don't have any Orders.",
             noOrdersHeaderSubTextAll:"You can create orders manually through the user interface or by uploading a spreadsheet.",
@@ -275,55 +251,13 @@ define([], function () {
             noOrdersHeaderTextCancelled:"You don't have any Orders in Cancelled status.",
             noOrdersHeaderSubTextCancelled:"",
 
-            noOrdersHeaderTextUndeliverable:"You don't have any Orders in Undeliverable status.",
-            noOrdersHeaderSubTextUndeliverable:"",
-
-            noOrdersHeaderTextReturns:"You don't have any Orders in Returns status.",
-            noOrdersHeaderSubTextReturns:"",
-
-            noOrdersHeaderTextRemovals:"You don't have any Orders in Removal status.",
-            noOrdersHeaderSubTextRemovals:"",
-
             noOrdersHeaderTextFilter:"No orders matching filter criteria",
             noOrderssHeaderSubTextFilter:"",
             
-            //admin
-            invoiceGenerationError:"Oops.. an error occurred when generating Invoice. We apologize for the inconvenience. Please try again.",
-
-            invoiceBulkGenerationError:"Oops.. an error occurred when generating Bulk Invoice. We apologize for the inconvenience. Please try again.",
-            invoiceBulkGenerationSuccess:"Bulk Invoice generation has been successfully started..",
-
            //accounts
-            ebaySuccessTokenAdd:"Channel has been added successfully, it will be updated in a few minutes.",
+            ebaySuccessTokenAdd:"Channel has been added successfully.",
             ebayChannelError:"Oops.. an error occurred when adding the Channel. We apologize for the inconvenience. Please try again.",
             ebayChannelListingError:"Oops.. an error occurred when fetching the list of available channels. Please try again by refreshing the page.",
-
-            amazonSuccessTokenAdd:"Channel has been added successfully, it will be updated in a few minutes.",
-            amazonChannelError:"Oops.. an error occurred when adding the Channel. We apologize for the inconvenience. Please try again.",
-            amazonChannelListingError:"Oops.. an error occurred when fetching the list of available channels. Please try again by refreshing the page.",
-
-
-            channelForcePullSuccess:"Channel Order pull successfully initiated.",
-            channelForcePullError:"Oops.. an error occurred when initiating channel order pull. Please try again by refreshing the page.",
-
-            rakutenSuccessTokenAdd:"Channel has been added successfully.",
-            rakutenChannelError:"Oops.. an error occurred when adding the Channel. We apologize for the inconvenience. Please try again.",
-            rakutenChannelListingError:"Oops.. an error occurred when fetching the list of available channels. Please try again by refreshing the page.",
-            
-            channelActivated:"Channel has been resumed successfully.",
-            channelActivateError:"Oops.. an error occurred when activating the Channel. We apologize for the inconvenience. Please try again.",
-
-            channelDeactivated:"Channel has been paused successfully.",
-            channelDeactivateError:"Oops.. an error occurred when deactivating the Channel. We apologize for the inconvenience. Please try again.",
-
-            channelDeleted:"Channel has been deleted successfully.",
-            channelDeleteError:"Oops.. an error occurred when deactivating the Channel. We apologize for the inconvenience. Please try again.",
-
-            channelOrderStatus:"Channel preferences updated successfully.",
-            channelOrderStatusError:"Oops.. an error occurred when updating the Channel preferences. We apologize for the inconvenience. Please try again.",
-            channelReAuthError:"Oops.. an error occurred when authenticating the Channel preferences. We apologize for the inconvenience. Please try again.",
-
-            channelProcessing:"Channel has been added successfully. You will be notified when processing has been completed",
 
             //accounts/users
             updateUserError:"Oops..an error occurred when updating user. Please try again or contact Client Service.",
@@ -346,7 +280,6 @@ define([], function () {
             
             //Orders
             cancelOrderError: "Oops.. an error occurred when cancelling the order. Please try again by refreshing the page.",
-            orderReturnStatusUpdated:"Status Updated Successfully",
 
 
             //merchant
@@ -367,8 +300,6 @@ define([], function () {
             merchantSpringApproveSuccess: "Merchant preferences successfully updated.",
             merchantSpringApproveError  : "Oops.. an error occurred when changing the Application Outcome. Please try again.",
             merchantSpringDateError  : "Subsidy start date should be less than Subsidy end date.",
-            merchantRemarksError  : "Oops.. an error occurred when changing the Merchant remarks. Please try again.",
-            merchantRemarksSuccess  : "Merchant remarks successfully changed.",
 
             //Billing
             errorBillingSummary         : "Error in fetching Billing Summary",
@@ -386,14 +317,7 @@ define([], function () {
             popUpWrongFileExtension  : "only .jpg .jpeg .png .bmp files allowed",
             popUpSubmitProcessing  : "Processing ...",
             popUpSubmitSuccess  : "Request Submitted Successfully",
-            popUpSubmitError  : "Error in submitting Request",
-
-            //Support Form submit
-            supportSubmitError      : "Oops..an error occurred when trying to submit the form. Please try again.",
-            supportSubmitSuccess    : "Form submitted successfully",
-            supportFileError        : "Please upload only jpeg or png or gif format",
-            supportSubmitInprocess  : "Your request is being submitted, please wait",
-
+            popUpSubmitError  : "Error in submitting Request"
 
             
       }

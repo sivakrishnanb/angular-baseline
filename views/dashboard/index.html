@@ -1,16 +1,15 @@
-<div ng-class="getDashboardScrollClassTop()">
-<div ng-class="getDashboardScrollClassBot()">
 <section class="container-fluid" ng-init="init()">
     <div class="row">
-
+        <a href="javascript:" ng-click="setLang('de')">Deutch</a> |
+        <a href="javascript:" ng-click="setLang('en')">English</a>
+        <h1 translate="HEADLINE">xyz</h1>
         <div class="col-sm-12 widget-data-panel">
             <article class="widget-data widget-box clearfix">
                 <div class="filter-box dashboardOrdersHeight">
                     <p class="link-hldr pull-left hvr-sweep-to-bottom" ng-repeat="option in dashBoardDateOptions">
                         <a href="javascript:;" title="{{option.name}}" ng-class="{active:option.selected}" ng-click="dateOptionChanged(option)" class="hvr-fade" ng-model="selectedDateOption">{{option.name}}</a>
                     </p>
-					
-                    <div class="input-group col-md-5 pull-right hide " id="datetimepicker7">
+                    <div class="input-group col-md-5 pull-right invisible " id="datetimepicker7">
                         <div class="input-daterange input-group rangepicker" id="datepicker">
                             <div class="input pull-left daterangefrm" id="date-range-from"></div>
                             <div class="input pull-left daterangeto" id="date-range-to"></div>
@@ -23,11 +22,10 @@
                 <span>Filter</span>
             </span>
                     </div>
-                    <h1 class="dashboard" ng-hide="!salesBetween">{{(selectedDateOption.value == "1d" || selectedDateOption.value == "-1d")? "Sales on" : "Sales between"}} {{salesBetween}}</h1>
                 </div>
                 <div class="clearfix"></div>
-                
-                
+                <h1 class="dashboard" ng-hide="!salesBetween">{{(selectedDateOption.value == "1d" || selectedDateOption.value == "-1d")? "Sales on" : "Sales between"}} {{salesBetween}}</h1>
+                <hr class="dashboard" />
                 <div id='quicklook-top' class="status-box">
                     <div class="row">
                         <div class="col-sm-3">
@@ -52,7 +50,7 @@
                             <div class="text">
                                 <!--<span class="number">{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length | number) : 0}}</span><br/>-->
                                 <span class="number" count-to="{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length | number) : 0}}" value="{{0}}" duration="3"></span>
-                                <span>Number of SKU's Sold</span>
+                                <span>Number of Products Sold</span>
                             </div>
                         </div>
 						</div>
@@ -95,11 +93,7 @@
                         </header>
                         <span ng-show="!inboundRcvd" class="nodatatext nodatatxtblk">SAMPLE</span>
                         <section class="announcebar">
-
-                            <div id="tooltip-bar" class="avg-line-tooltip">
-                                <p id="tooltiptext-bar">default</p>
-                            </div>
-
+                            <!--<nvd3 options="historicalBar.options" data="orderAggrDataChart"></nvd3>-->
                             <div id="bar-chart"></div>
                         </section>
                     </article>
@@ -110,10 +104,14 @@
 
             <div class="row">
 
+
+
                 <div class="col-sm-4">
-                    <article class="widget-aside marbtm0 overFlowHide hvr-glow">
-                        <header><span class="glyphicon glyphicon-bullhornnotify"></span>Notifications</header>
-                        <section class="widgetnotify col-sm-12">
+                    <article class="widget-aside marbtm0 hvr-glow">
+                        <header>Notifications</header>
+                        <!--<span class="nodatatext">SAMPLE</span>-->
+                        <section class="widgetnotify">
+
                             <div class="popover-content">
                                 <div class="nano">
                                     <div class="nano-content">
@@ -134,19 +132,16 @@
                 </div>
 
                 <div class="col-sm-4">
-                    <article class="widget-aside announceArt overFlowHide hvr-glow">
-					<header>
-					<span class="glyphicon glyphicon-announce"></span>
-						<span class="topsellhead">Announcements</span>
-                        </header>
+                    <article class="widget-aside announceArt hvr-glow">
+                        <header>Announcements</header>
                         <!--<span class="nodatatext-announce">SAMPLE</span>-->
-                        <section class="announce col-sm-12">
+                        <section class="announce">
                             <div class="nano">
                                 <div class="nano-content">
                                     <p ng-repeat="myData in announcements" class="{{$index%2==0 ? 'Records odd announcementsBorder' : 'Records even announcementsBorder'}}">
                                         <strong>
                                             <span ng-bind="myData.header||constants.notAvailableText"></span>
-                                            <span class="announcementsTimeAgo" title="{{myData.time}}">{{getTimeAgoAnnouncement(myData.time)}}</span>
+                                            <span class="announcementsTimeAgo" title="2015-02-27T18:48:17+08.00">3 days ago</span>
                                         </strong><br/>
                                         <span ng-bind="myData.message||constants.notAvailableText"></span>
                                     </p>
@@ -163,9 +158,7 @@
                 <div class="col-sm-4">
                     <article class="widget-main deliverymethod-panel hvr-glow">
                         <header>
-						<span class="glyphicon glyphicon-header-prod"></span>
-						<span class="topsellhead">Delivery Method</span>
-                           
+                            <span>Delivery Method</span>
                         </header>
                         <span ng-show="!inboundRcvd" class="nodatatext-delivey">SAMPLE</span>
                         <div class="widgetbtn">
@@ -175,6 +168,7 @@
 
                         <section>
                             <p id="pie-chart-delivery" class="delivery-chart">
+                                <!--<nvd3 options="pieDeliveryMethod.options" data="deliveryMethodsChart"></nvd3>-->
                             </p>
                         </section>
                     </article>
@@ -189,7 +183,7 @@
                     <article class="widget-table overFlowHide hvr-glow">
                         <!-- <div class="gridStyle" ng-grid="gridOptions"></div> -->
                         <div class="widgettblhead">
-                            <h3><span class="glyphicon glyphicon-header-prod"></span><span class="topsellhead">Top Selling Products</span></h3>
+                            <h3>Top Selling Products</h3>
                         </div>
                         <span ng-show="!inboundRcvd" class="nodatatext">SAMPLE</span>
                         <div class="topSellingProdsHeader">
@@ -198,7 +192,7 @@
                             <div class="col-sm-3 padd0">Number of Units Sold</div>
                         </div>
 
-                        <div class="col-sm-12 padd0">
+                        <div class="col-sm-12">
                             <div class="container-fluid topSellingProds nano">
                                 <div class="nano-content">
 
@@ -207,7 +201,7 @@
                                     <div ng-repeat="prod in topSellingProds | orderBy:'-sold'" class="{{$index%2==0 ? 'row Records odd' : 'row Records even'}}">
                                         <div class="showBorders col-sm-5 bdrlft">{{prod.prodName}}</div>
                                         <div class="showBorders col-sm-4">{{prod.SKU}}</div>
-                                        <div class="showBorders col-sm-3 txtCentersm" ng-class="getTopSellingClass($index+1)"><span>{{prod.sold}}</span></div>
+                                        <div class="showBorders col-sm-3 txtCentersm"><span>{{prod.sold}}</span></div>
                                     </div>
 
                                     <div class="row Records text-center noRecords" ng-show="topSellingProds.length < 1">
@@ -223,8 +217,9 @@
 
                 <div class="col-sm-5 ">
                     <div class="piechartpad hvr-glow">
-                        <div class="piechartheader col-sm-12">                           
-							<span class="glyphicon glyphicon-orders"></span><span class="piecharttxt">Orders</span>
+                        <div class="piechartheader col-sm-12">
+                            <span class="piecharttxt">Orders</span>
+
                             <button ng-click="togglePieChart('$')" ng-hide="pieChannelData.length < 1 && pieShipmentData.length < 1" class="btn btn-sm pull-right marlft8 hvr-fade" ng-class="{active:pieSortByDollar}">By $</button>
                             <button ng-click="togglePieChart('#')" ng-hide="pieChannelData.length < 1 && pieShipmentData.length < 1" class="btn btn-sm pull-right hvr-fade" ng-class="{active:!pieSortByDollar}">By #</button>
                         </div>
@@ -233,6 +228,7 @@
                             <article>
                                 <section>
                                     <p id="pie-chart-channel" class="donut-chart">
+                                        <!--<nvd3 options="pie.options" data="pieChannelData"></nvd3>-->
                                     </p>
                                     <header>Channel</header>
                                 </section>
@@ -242,8 +238,9 @@
                             <article>
                                 <section>
                                     <p id="pie-chart-shipment" class="donut-chart">
+                                        <!--<nvd3 options="pie.options" data="pieShipmentData"></nvd3>-->
                                     </p>
-                                    <header ng-bind="isCountriesOptionsVisible('pieShipmentHeader')"></header>
+                                    <header>Domestic / International</header>
 
                                 </section>
                             </article>
@@ -259,11 +256,11 @@
                 <div class="col-sm-7 productsoldpanel">
                     <article class="widget-main hvr-glow">
                         <header>
-						<span class="glyphicon glyphicon-header-prod"></span>
-                            <span class="prod-sold">Products Sold</span>
+                            Products Sold
                         </header>
                         <span ng-show="!inboundRcvd" class="nodatatext">SAMPLE</span>
                         <section>
+                            <!--<nvd3 options="line.options" data="prodAggrData"></nvd3>-->
                             <div id="line-chart"></div>
                         </section>
                     </article>
@@ -272,6 +269,7 @@
                            Products in Stock
                        </header>
                        <section>
+                         <nvd3 options="line.options" data="line.data"></nvd3>
                        </section>
                      </article> -->
                 </div>
@@ -345,8 +343,7 @@
                 <div class="col-sm-5">
                     <article class="widget-main orderbygeo hvr-glow">
                         <header>
-						<span class="glyphicon glyphicon-orders"></span>
-                            <span class="store-used">Orders by Geography</span>
+                            Orders by Geography
                             <div class="widgetbtn">
 
                                 <button ng-hide="geoChartData.length < 1" class="btn btn-sm pull-right marlft8" ng-click="populateGeoChart('$')" ng-class="{active:geoSortByDollar}">By $</button>
@@ -356,22 +353,13 @@
                         <span ng-show="!inboundRcvd" class="nodatatext-geo">SAMPLE</span>
                         <section>
                             <gmap geo-loactions="geoLocations"></gmap>
-
-
-                            <div class="topcountries hidden-xs">
-                                <div class="topcountryhead">Top Countries</div>
-                                <div class="clearfix"></div>
-                            <div ng-repeat="country in topCountries"><div class="topcountrycnt">{{country[0]}} : {{country[1]}}</div></div>
-                            </div>
                         </section>
                     </article>
                 </div>
-
                 <div class="col-sm-7">
                     <article class="widget-main storageused hvr-glow">
                         <header>
-						<span class="glyphicon glyphicon-header-prod"></span>
-                            <span class="store-used">Storage Used</span>
+                            Storage Used
                             <div class="widgetbtn">
                                 <button ng-hide="stackAreaData.length < 1" class="btn btn-sm pull-right marlft8 hvr-glow" ng-click="populateStorageUsed('$')" ng-class="{active:storageSortByDollar}">By $</button>
                                 <button ng-hide="stackAreaData.length < 1" class="btn btn-sm pull-right hvr-glow" ng-click="populateStorageUsed('#')" ng-class="{active:!storageSortByDollar}">By #</button>
@@ -379,10 +367,7 @@
                         </header>
                         <span ng-show="!inboundRcvd" class="nodatatext-geo">SAMPLE</span>
                         <section>
-
-                            <div id="tooltip-area" class="avg-line-tooltip">
-                                <p id="tooltiptext-area">default</p>
-                            </div>
+                            <!--<nvd3 options="stackAreaOptions" data="stackAreaData"></nvd3>-->
                             <div id="area-chart"></div>
                         </section>
                     </article>
@@ -398,5 +383,3 @@
 
 
 </section>
-</div>
-</div>

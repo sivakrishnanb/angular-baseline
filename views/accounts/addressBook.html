@@ -1,0 +1,248 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="edit_product"
+              novalidate angular-validator angular-validator-submit="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Address Book</h2>
+                </div>
+              </div>
+               <p>
+              <div class="row">
+                <div class="col-sm-3">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#myModal"  >Add new address</button>
+                </div>
+              </div>
+              </p>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse"  class="panel-heading">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <input type="search" class="form-control" placeholder="Search" /> 
+                      </div>
+                      <div class="col-sm-4">
+                        <a href="#" class="btn btn-info"><span class="glyphicon glyphicon-search"></span> Search</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-5">
+                            <p class="bg-success text-center" style="border-radius: 10px">
+                              <label for="product-create-costprice" class="col-sm-12"><a href="#">Edit</a></label>
+                              <label for="product-create-costprice" class="col-sm-12" >Default : Return Address</label>
+                              <label for="product-create-costprice" class="col-sm-12">23, Clementi Road</label>
+                              <label for="product-create-costprice" >Singapore - 389220</label>
+                            </p>
+                          </div>
+                          <div class="col-sm-5">
+                            <p class="bg-success text-center" style="border-radius: 10px">
+                              <label for="product-create-costprice" class="col-sm-12"><a href="#">Edit</a></label>
+                              <label for="product-create-costprice" class="col-sm-12" >Default : Ship from  Address</label>
+                              <label for="product-create-costprice" class="col-sm-12" >Tag : Warehouse</label>
+                              <label for="product-create-costprice" class="col-sm-12">21, Clementi Road</label>
+                              <label for="product-create-costprice" >Singapore - 389220</label>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-5">
+                            <p class="bg-success text-center" style="border-radius: 10px">
+                              <label for="product-create-costprice" class="col-sm-12"><a href="#">Edit</a></label>
+                              <label for="product-create-costprice" class="col-sm-12" >Tag : Supplier</label>
+                              <label for="product-create-costprice" class="col-sm-12">22, Clementi Road</label>
+                              <label for="product-create-costprice" >Singapore - 389220</label>
+                            </p>
+                          </div>
+                          <div class="col-sm-5">
+                            <p class="bg-success text-center" style="border-radius: 10px">
+                              <label for="product-create-costprice" class="col-sm-12"><a href="#">Edit</a></label>
+                              <label for="product-create-costprice" class="col-sm-12" >Tag : Supplier</label>
+                              <label for="product-create-costprice" class="col-sm-12">24, Clementi Road</label>
+                              <label for="product-create-costprice" >Singapore - 389220</label>
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Starts -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Add New Address</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="country" class="col-sm-5 control-label">Country
+                </label>
+              <div class="col-sm-7">
+                <input name="country" type="text"
+                  class="form-control" id="country"
+                  placeholder="Country"
+                  ng-model="model.country" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="address1" class="col-sm-5 control-label">Address 1
+                </label>
+              <div class="col-sm-7">
+                <input name="address1" type="text"
+                  class="form-control" id="address1"
+                  placeholder="Address 1"
+                  ng-model="model.address1" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+         <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="address2" class="col-sm-5 control-label">Address 2
+                </label>
+              <div class="col-sm-7">
+                <input name="address2" type="text"
+                  class="form-control" id="address2"
+                  placeholder="Address 2"
+                  ng-model="model.address2" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="city" class="col-sm-5 control-label">City
+                </label>
+              <div class="col-sm-7">
+                <input name="city" type="text"
+                  class="form-control" id="city"
+                  placeholder="City"
+                  ng-model="model.city" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+         <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="state" class="col-sm-5 control-label">State / Province / Region
+                </label>
+              <div class="col-sm-7">
+                <input name="state" type="text"
+                  class="form-control" id="state"
+                  placeholder="State / Province / Region"
+                  ng-model="model.state" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="postalCode" class="col-sm-5 control-label">ZIP / Postal Code
+                </label>
+              <div class="col-sm-7">
+                <input name="postalCode" type="text"
+                  class="form-control" id="postalCode"
+                  placeholder="ZIP / Postal Code"
+                  ng-model="model.confirmPassword" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+         <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="landline" class="col-sm-5 control-label">Landline
+                </label>
+              <div class="col-sm-7">
+                <input name="landline" type="text"
+                  class="form-control" id="landline"
+                  placeholder="Landline"
+                  ng-model="model.landline" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="contactPhone" class="col-sm-5 control-label">Contact Phone
+                </label>
+              <div class="col-sm-7">
+                <input name="contactPhone" type="text"
+                  class="form-control" id="contactPhone"
+                  placeholder="Contact Phone"
+                  ng-model="model.contactPhone" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+         <br>
+        <div class="row">
+          <div class="col-sm-11">
+            <div class="form-group">
+              <label for="tags" class="col-sm-5 control-label">Tags
+                </label>
+              <div class="col-sm-7">
+                <input name="tags" type="text"
+                  class="form-control" id="tags"
+                  placeholder="Tags"
+                  ng-model="model.tags" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

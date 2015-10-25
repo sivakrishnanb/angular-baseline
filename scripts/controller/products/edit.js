@@ -1,6 +1,6 @@
 define(['app', 'model/products/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('EditProducts', ['$window','$scope', '$bus', '$location', 'ngProgress', '$rootScope', '$routeParams', '$constants','notify','highlight',
-        function ($window,$scope, $bus, $location, ngProgress, $rootScope, $routeParams, $constants,notify,highlight) {
+    app.controller('EditProducts', ['$window','$scope', '$bus', '$location', 'ngProgress', 'toaster', '$rootScope', '$routeParams', '$constants','notify','highlight',
+        function ($window,$scope, $bus, $location, ngProgress, toaster, $rootScope, $routeParams, $constants,notify,highlight) {
 
             $scope.model = new model();
 
@@ -230,9 +230,11 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                         $scope.model.costPrice = Number($scope.model.costPrice) || null;
                         $scope.model.codeTypeCtrl = _.findWhere($constants.codeType,{name:$scope.model.codeType})?_.findWhere($constants.codeType,{name:$scope.model.codeType}):'';
                         $scope.updateComboValue();
+                        //toaster.pop("success", messages.productDetail, messages.retrivedSuccess);
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.productFetchError); commented
                         notify.message(messages.productFetchError);
                         ngProgress.complete();
                     });
@@ -241,7 +243,7 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
 
         $scope.checkAlertLevelEdit = function(param){
 
-                var pattern = /^([0-9\\]{0,3}|1000)$/;
+                var pattern = /^[0-9\\]{0,4}$/;
 
                 if(param && param=='NA')
                     return true;
@@ -311,6 +313,7 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                                         products = data.products;
                                     }
                                     $scope.model.dateArchived = products[0].dateArchived;
+                                    //toaster.pop("success", messages.productArchiveSuccess); commented
                                     notify.message(messages.productArchiveSuccess,'','succ');
                                     $scope.productEdited = true;
                                     $location.path('products');
@@ -320,12 +323,15 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.productArchiveError, "", 0); commented
                                         notify.message(messages.productArchiveError);
                                     }
                                 }
                             }).fail(function (error) {
+                                //toaster.pop("error", messages.productArchiveError); commented
                                 notify.message(messages.productArchiveError);
                             });
                         $('#archivemodalCancel').click();
@@ -354,6 +360,7 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                 .done(function (success) {
                     if (success.response.success.length) {
                         $scope.productEdited = true;
+                        //toaster.pop("success", messages.productUpdateSucess); commented
                         notify.message(messages.productUpdateSucess,'','succ');
 						highlight.added($scope.model.sku);
                         $location.path(($scope.model.isActive)?'products':'products/inactive');
@@ -363,13 +370,16 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                             errors.push(error)
                         });
                         if (errors.length) {
+                            //toaster.pop("error", errors.join(', '), '', 0); commented
                             notify.message($rootScope.pushJoinedMessages(errors));
 
                         } else {
+                            //toaster.pop("error", messages.productUpdateError, "", 0); commented
                             notify.message(messages.productUpdateError);
                         }
                     }
                 }).fail(function (error) {
+                    //toaster.pop("error", messages.productUpdateError); commented
                     notify.message(messages.productUpdateError);
                 });
 			};
@@ -393,6 +403,72 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                 $location.path(path);
             };
 
+            $scope.line = {
+                options:{
+                    chart: {
+                        "type": "lineChart",
+                        "height": 280,
+                        "margin": {"top": 20,"right": 20,"bottom": 40,"left": 55},
+                        "useInteractiveGuideline": true,
+                        showLegend: false,
+                        /*"dispatch": {},*/
+                        "xAxis": {
+                            //"axisLabel": "Date",
+                            tickFormat:d3.time.format('%d-%b'),rotateLabels:-20},
+                        "yAxis": {"axisLabel": "Count","axisLabelDistance": 10},
+                        xScale : d3.time.scale(),
+                        "transitionDuration": 250
+                    }
+                },
+                data: []
+            };
+            $scope.populateProdLineChart= function() {
+                var prodData = [];
+                angular.forEach($scope.lineSampleData, function(prod, $index){
+                    prodData.push({x:(new Date(prod[0])), y:prod[1]});
+                });
+
+                $scope.lineChartData = [{
+                    values: prodData,
+                    key: '',
+                    color: '#fff',
+                    width: '10px'
+                }];
+            };
+            $scope.initLineChart = function() {
+                $scope.lineSampleData =  [
+                    ["2015-01-01T00:00:00Z",44], ["2015-01-02T00:00:00Z",36], ["2015-01-03T00:00:00Z",29],
+                    ["2015-01-04T00:00:00Z",54], ["2015-01-05T00:00:00Z",46], ["2015-01-06T00:00:00Z",46],
+                    ["2015-01-07T00:00:00Z",39], ["2015-01-08T00:00:00Z",51], ["2015-01-09T00:00:00Z",46],
+                    ["2015-01-10T00:00:00Z",36], ["2015-01-11T00:00:00Z",52], ["2015-01-12T00:00:00Z",46],
+                    ["2015-01-13T00:00:00Z",29], ["2015-01-14T00:00:00Z",40], ["2015-01-15T00:00:00Z",56],
+                    ["2015-01-16T00:00:00Z",37], ["2015-01-17T00:00:00Z",49], ["2015-01-18T00:00:00Z",35],
+                    ["2015-01-19T00:00:00Z",33], ["2015-01-20T00:00:00Z",36], ["2015-01-21T00:00:00Z",25],
+                    ["2015-01-22T00:00:00Z",45], ["2015-01-23T00:00:00Z",30], ["2015-01-24T00:00:00Z",42],
+                    ["2015-01-25T00:00:00Z",40], ["2015-01-26T00:00:00Z",55], ["2015-01-27T00:00:00Z",45],
+                    ["2015-01-28T00:00:00Z",48], ["2015-01-29T00:00:00Z",28], ["2015-01-30T00:00:00Z",50],
+                    ["2015-01-31T00:00:00Z",54], ["2015-02-01T00:00:00Z",49], ["2015-02-02T00:00:00Z",57],
+                    ["2015-02-03T00:00:00Z",57], ["2015-02-04T00:00:00Z",27], ["2015-02-05T00:00:00Z",53],
+                    ["2015-02-06T00:00:00Z",31], ["2015-02-07T00:00:00Z",27], ["2015-02-08T00:00:00Z",34],
+                    ["2015-02-09T00:00:00Z",59], ["2015-02-10T00:00:00Z",48], ["2015-02-11T00:00:00Z",36],
+                    ["2015-02-12T00:00:00Z",49], ["2015-02-13T00:00:00Z",32], ["2015-02-14T00:00:00Z",35],
+                    ["2015-02-15T00:00:00Z",59], ["2015-02-16T00:00:00Z",40], ["2015-02-17T00:00:00Z",37],
+                    ["2015-02-18T00:00:00Z",34], ["2015-02-19T00:00:00Z",35], ["2015-02-20T00:00:00Z",41],
+                    ["2015-02-21T00:00:00Z",54], ["2015-02-22T00:00:00Z",48], ["2015-02-23T00:00:00Z",33],
+                    ["2015-02-24T00:00:00Z",58], ["2015-02-25T00:00:00Z",55], ["2015-02-26T00:00:00Z",60],
+                    ["2015-02-27T00:00:00Z",36], ["2015-02-28T00:00:00Z",28], ["2015-03-01T00:00:00Z",51],
+                    ["2015-03-02T00:00:00Z",40], ["2015-03-03T00:00:00Z",27], ["2015-03-04T00:00:00Z",49],
+                    ["2015-03-05T00:00:00Z",37], ["2015-03-06T00:00:00Z",27], ["2015-03-07T00:00:00Z",47],
+                    ["2015-03-08T00:00:00Z",59], ["2015-03-09T00:00:00Z",60], ["2015-03-10T00:00:00Z",56],
+                    ["2015-03-11T00:00:00Z",43], ["2015-03-12T00:00:00Z",46], ["2015-03-13T00:00:00Z",43],
+                    ["2015-03-14T00:00:00Z",27], ["2015-03-15T00:00:00Z",50], ["2015-03-16T00:00:00Z",52],
+                    ["2015-03-17T00:00:00Z",51], ["2015-03-18T00:00:00Z",47], ["2015-03-19T00:00:00Z",32],
+                    ["2015-03-20T00:00:00Z",25], ["2015-03-21T00:00:00Z",27], ["2015-03-22T00:00:00Z",33],
+                    ["2015-03-23T00:00:00Z",43], ["2015-03-24T00:00:00Z",27], ["2015-03-25T00:00:00Z",27],
+                    ["2015-03-26T00:00:00Z",57], ["2015-03-27T00:00:00Z",54], ["2015-03-28T00:00:00Z",39],
+                    ["2015-03-29T00:00:00Z",59], ["2015-03-30T00:00:00Z",28], ["2015-03-31T00:00:00Z",49]
+                ];
+            };
 
             $scope.init = function () {
                 $scope.populatePagingData();
@@ -400,6 +476,8 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                 $scope.getProductDetails();
                 $rootScope.getCountryList();
                 $rootScope.getCurrencyList();
+                $scope.initLineChart();
+                $scope.populateProdLineChart();
                 ngProgress.complete();
             };
 

@@ -1,0 +1,1014 @@
+Login.html
+^^^^^^^^^^
+Welcome
+As a security precaution, your session has expired due to inactivity for more than two hours. Please login again
+Remember Me
+Forgot Password
+Resend verification email
+Login
+New to ezyCommerce?
+SignUp
+
+Acivate.html
+^^^^^^^^^^^^
+is successfully registered for an ezyCommerce account. Your Merchant ID is
+Your account is now awaiting approval. This shouldn't take long so we will send you an email as soon as your approval is done. We might contact you if we have further questions relating to your interest.
+Once your account is approved, you can now sign into your ezyCommerce account with the user name and password you chose during signup.
+Oops! The verification link has expired. Please initiate the 
+resend verification email
+from the login page if you have not verified
+Account approved? Click 
+here 
+to go directly to the login page
+Have questions? Contact us at
+or email us at
+Close
+Success
+Merchant Created Successfully...!!!
+
+forgotPassword.html
+^^^^^^^^^^^^^^^^^^^
+Forgot Password
+Enter your email address below and we'll help you reset your password
+Email
+Send Email
+Enter your security answer given during SignUp
+Security Question
+Security Answer
+Reset instruction has been sent to your email
+Change Password
+It appears you've forgotten your password.<br>To create a new one, just enter and confirm it.
+New Password
+Password should be 8 - 20 characters long. At least one upper case alphabet, one number and one special character like '@', '_', '!'.
+Retype Password
+
+Dashboard:
+^^^^^^^^^
+Filter
+SAMPLE
+Number of Orders
+Number of Products Sold
+Number of Units Sold
+Total Retail Value
+Orders
+Notifications
+Currently you don't have any notifications to display..
+Announcements
+3 days ago
+No records to display
+Delivery Method
+By ($/#)
+Top Selling Products
+Product Name
+SKU
+No Data Available.
+Channel
+Domestic
+International
+Products Sold
+Average orders / day
+Max Number of orders
+Number of unique products
+Average order value
+Orders by Geography
+Storage Used
+
+Orders:
+^^^^^^^
+Create Order step
+Enter the Merchant Order ID, customer address and packing slip information for the order. Search and add products and enter number of units for each product. Click Next to view available delivery options and estimated charges. Fields marked with asterisk (*) are mandatory.
+Provide Details
+Place Order
+Merchant Order ID
+Ship To Address
+First Name
+Last Name
+Address Line
+City
+Town
+State
+Region
+Country
+Select
+ZIP
+Postal Code
+Save to address book
+Search and Add Products
+No matching products found
+Click on the suggested product to add them.
+Please make sure the product is exportable for international orders. You can edit the product to change the active & exportable status.
+Remove the products highlighted in red or resolve the issues in order to create order
+Product
+Category
+Inventory
+Weight
+No.of Units
+Action
+EZY-SKU
+Fullfillable
+Inbound
+No products added
+Additional Details
+Displayable Order ID
+Displayable Order Date
+See
+Other Preferences
+for options and Packing list preview
+Process Order Date
+Your Order will not be sent for fulfillment before this date. If the Process Order Date is today then it will be sent immediately after approval. The date cannot be more than one week in advance.
+An identifier for your order assigned by you. The ID should be unique across all Orders.
+Displayable Order ID is only used for printing on the packing slip which is sent to your customer.
+Displayable Order Date is only used for printing on the packing slip which is sent to your customer.
+Remarks
+Additional Information
+Additional Info
+Save as Draft
+Cancel
+Next
+Select a delivery option for your order. You can optionally add enhanced liability coverage up to declared value. Review the total estimated charges for the order. Click 'Save Order' to save and edit the order later. Click 'Save &amp; Approve Order' to approve and send this order for fulfillment. Inventory is allocated only when an Order is approved.
+Choose a shipping method
+Name
+Lead Time
+Estimated Cost
+Estimated Charges
+This is only an estimate based on calculated weight and dimensions. Billing will be based on actuals and may vary.
+Estimated Shipping Weight
+Product(s) weight + 10% dunnage for packaging weight
+Delivery Fee
+Volume tier discounts, if any are not shown here
+Warehouse Handling Fee
+Enhanced Liability Fee
+For Insurance Coverage
+Total Charges
+Fulfillment Order Summary
+Shipping Address
+Insurance Coverage
+Add Enhanced Liability(EL) to your shipment for
+EL coverage not available for this Delivery option
+Calculated Retail Value
+Calculated Declared Value
+Calculated values are taken from the product catalog.
+Declared Value
+Order Declared value is calculated as the sum of product declared value(s) entered in the customs declaration section below
+Enhanced Liability Amount
+Get EL charges
+Cannot be more than declared value. Max EL amount for
+Customs Information
+Category of shipment
+Description
+Non delivery instructions
+Customs declaration is mandatory for International Orders. Select the products that you want to declare, review the customs information and edit if required. At least one product must be declared for us to ship the order. We will print and enclose the Commercial invoice CN22 / CN23 / CP72 form using the information you enter here.
+Note: You will be the Exporter of Record for International orders. We will not hold responsibility for packages held by customs due to improper / false declarations.
+Customs Item Description
+Number of Units
+HS Code
+Declared value for all units
+Country of Origin
+Create Order
+Create & Approve Order
+Back
+Please add atleast one product to create order
+Please add only the exportable products for your international orders
+Estimated Charges Summary
+Approve Order
+Insufficient Inventory
+Product(s) with
+Merchant SKU
+have insufficient inventory to fulfill this Order. Please replenish your inventory or remove the product(s) that have insufficient inventory. You can continue to save this order and approve it later
+You have unsaved changes
+Do you want to save the order as Draft?
+Note: Merchant Order ID is required to save as Draft. You can edit it later
+No
+Yes
+Edit Order step
+You can edit customer address, packing slip information, add and remove products in the order. Click Next to view available delivery options and estimated charges. Fields marked with asterisk (*) are mandatory.
+Issues
+Showing
+of
+Phone
+Payment Method
+Shipping Service
+Shipping ServiceCost
+SubTotal
+Order Total
+Buyer UserID
+Buyer Checkout Message
+Duplicate
+Cancel Order
+Select a delivery option for your order. You can optionally add enhanced liability coverage for the declared value. Review the total estimated charges for the order. Click 'Back' to go back to the previous step. Click 'Save Order' to save and edit the order later. Click 'Save &amp; Approve Order' to approve and send this order for fulfillment. Inventory is allocated only when an Order is approved.
+Customs declaration is mandatory for International Orders. Select the products that you want to declare, review the customs information and edit if required. At least one product must be declared for us to ship the order. We will print and enclose the Commercial invoice CN22 form using the information you enter here.
+Save Order
+Save &amp; Approve Order
+Edit Order
+Please add atleast one product to edit order
+Please confirm
+Note: Once an order is cancelled it cannot be restored
+Search Orders
+row(s) selected
+Inventory Type
+Order Channel
+No matching orders found
+Apply Filter
+Actions
+Restore
+per page
+view
+Sort By
+Modified Date
+Created Date
+EZY Order ID
+Order
+Tracking Number
+Delivery By
+Date
+Status
+Products
+SKUs
+Units
+Kg
+No products available
+Upload Order
+We are retrieving your data. Please wait
+Order Status
+Upload Orders
+Has Issues
+Unapproved
+Approved
+In Process
+Fulfillment
+Shipped
+Delivered
+Others
+Drafts
+Cancelled
+Download the Orders template and open in Excel or any other spreadsheet. Please read and follow the instructions provided in the 'Guide' sheet before filling the data. Once you have uploaded the file, you can monitor the status in Order file upload summary section below
+Prepare your orders file
+Click the button to download the template
+Update
+Order templates conatining more than 100 unique orders cannot be completed(requires multiple uploads)
+XLS
+Upload and create order ID
+Upload your completed orders file. Successful uploads are updated directly to the system, This will create an EZY-Order ID for each of your orders. Unsuccessful uploads will generate a validation report containing detailed error messages
+Locate Order File
+Upload Now
+Note : You can't upload another file until your previous file completes processing
+Order file upload summary
+Only unsuccessful uploads have a download report option
+File Name
+Result
+Report
+No data to display
+Order Specifications
+Not available
+Category of  shipment
+Other Category of shipment
+Delivery Information
+Delivery Option
+Delivery Charges
+Handling Charges
+Enhanced Liability
+Total declared value
+Destination Address
+Weight(KG)
+Retail Price
+Customs Info
+Origin Country
+No additional information available
+Order History
+Track your order activity from here. Click on the tracking number to view the detailed status of your shipment
+Date & Time
+User
+Print
+Approve
+Tracking History
+Event Code
+Event Description
+Shipment Weight (kg)
+Delivery Charge
+Note: You might be able to get more detailed tracking milestones for your orders
+Domestic Standard, International Standard and International Expedited - Track the shipments through
+Domestic Economy - Track the shipments through
+International Economy - Track shipments through
+If there are no events in
+track the shipment directly through the websites of the postal administration of the destination country. For countries with no online tracking updates, SingPost will check with the overseas postal administrations on the status if the addressee did not receive the item after a stipulated time
+PO Number
+Fulfillable
+Damaged
+Missing
+Reason
+
+Accounts
+^^^^^^^^
+Add New Channel
+New Channel
+Show Inactive
+Search
+Address Book
+Add new address
+Edit
+Default
+Return Address
+Ship from  Address
+Tag
+Tags
+Warehouse
+Address
+Province
+Landline
+Contact Phone
+Save
+Billing Summary
+You can access current and past billing statements here
+Balance Summary
+The charges shown here are updated as of
+Charges will be updated when the next statement is generated on
+Please view the Transaction Report under Reports section to view the latest charges
+Note: Payment made on or after
+will not be reflected in this summary. To view the latest payments please view the payments / adjustments table below
+Previous Balance
+Payment(s) received
+Current charges
+Total charges due
+Payment due date
+Payment mode
+Refer to invoice
+Download Monthly Statement
+Statement Period
+Download Method
+Download PDF
+OR
+Send to email
+Monthly Statement will be generated on the 28th of every month
+You can download monthly statements for the last 12 billing cycles here. If you want to see statement by transaction, download it from the Reports section under Transactions
+Payments
+Adjustments
+Entry Date
+Payment/Adj. Date
+Reference Number
+Invoice Number
+Amount (SGD)
+Type
+There are no payments or adjustments
+Old Password
+Confirm Password
+Change Plan
+Here you can upgrade once every 30 days. Please call customer service to downgrade your plan
+Existing Plan
+Personal
+Usage
+No. of Products in Catalog
+No of orders
+ezyFulfillment Subscription Type
+Monthly subscription Fee
+Until March 2015
+Products and Orders
+Max. no. of orders per month
+Additional orders above maximum
+Customer Service
+Seller Support
+Customized Email Notiffications
+Analytics and Reporting
+Enhanced Platform Features
+Automate order Fulfillment Preferences
+Number of concurrent user IDs
+Data Backup
+Product Catalog Backup
+Orders Backup
+Marketplace Integration
+Sales Channel
+eBay Integration (coming soon)
+All the basics you need to get started
+Free for 30 days
+Email only
+Dashboard Products
+No Backup for detailed product
+Backup for 30 days
+Additional features to expand your sell
+Email and Telephone Support
+Shipments
+Full Backup for 120 days
+Power Seller
+For enhanced feature and felxibility in scale
+Email,Live chat,Telephone Support
+Inventory Aging report
+Full backup for 365 days
+Orders, inventory, synchronization
+Enterprise
+Ultimate all in one package with ultimate scale and personalized support
+Unlimited
+Email,Live chat,Telephone Support,Face to face Trainings
+All reports
+Full unlimited backup
+Plan Changed
+You have selected Power Seller Plan
+Effective Date
+The change will be effective immediately and the billing will be prorated accordinlgy
+Connections
+You can manage connections to external sales channels - marketplaces and shopping carts here
+Sales Channels
+Sales Channel
+User Name
+NA
+Update Tracking Status
+You don't have any sales channel connected
+Start by adding sales channels by clicking on your desired marketplace. Once authorized we will automatically pull orders from all your stores and ship it to your customers based on your preferences
+Add new Channels
+Edit eBay Store
+Store Details
+Store Name
+Display Name
+Deactivate
+Features
+Auto Fulfillment
+Immediate
+Imported Orders will directly be sent for fulfillment after x number of days.  Orders that have discrepancies will override and be placed under Pending for further action
+Domestic Orders
+Standard
+International Orders
+Priority
+Automatically update Shipment status and tracking number
+Email me once an order has been imported
+An email notification to the registered email will be sent when an order is pulled from this store
+You can run reports of your account activity here. You can download all data or use filters to limit results to specific ones
+Account Information
+Merchant ID
+Date joined
+Current Password
+Contact Details
+Contact Number
+Company Information
+Revenue per annum
+Company Size
+Year in which company was founded
+Permanent employees
+Company website
+Temporary employees
+Business Information
+Orders per month
+Average units per order
+Percentage of domestic orders
+Product Category
+Electronics, Toys
+Number of unique SKUs handled
+Number of online channels currently selling in
+Sales channel link
+No. of oversees countries currently selling in
+Close Account
+This action will close/delete your account permanently
+All inventory must be removed from the warehouse
+All Orders must be closed
+An email will be sent regarding pending payments
+Create Shipment
+Please add atleast one product to create shipment
+Edit Profile
+Email Address
+Edit Basic Information
+Individual
+Business
+Company Name
+Your Last Name
+Company regn. Number (UEN/GSTN)
+Your First Name
+Save Changes
+You can change account password, modify contacts details and manage your account status here
+Alternate Contact Number
+Update Profile
+Corporate Account Number
+Spring Grant
+Contact Client Service
+Send request to Close Account
+Adjustment Ref No
+Invoice Ref. No
+Adjustment Amount
+Adjustment Date
+OK
+Edit Sub Account
+Information
+Full Name
+Date Created
+Last Login
+Permission
+Choose which modules can be viewed
+Allows the user to view selected modules
+Dashboard
+Create/Edit Products
+Access to create, modify and perform actions on products
+Create/Edit Shipments
+Access to create inbound plans, cannot ship Orders
+Create/Edit Orders
+Access to create and modify orders, cannot approve for Order Fulfillment
+Approve Orders
+Access to approving orders for fulfillment
+Reporting
+Access to download All Reports
+Billing
+Access to view the outstanding amount and download monthly bill
+Access to add and modify channels/marketplaces
+Email Preferences
+You can configure your email preferences here. This will apply to all users of this account
+Email me when Product upload is completed
+The validation report will be present in attachments if any
+Email me when a Product's dimension is updated by EZC
+Email me when Product Inventory Fulfillable falls below the corresponding Inventory Alert Level
+Email me when Shipment upload is completed
+Email me when a Shipment status changes to 'In Transit'
+Email me when Order upload is completed
+Email me when an Order status changes to Pending - Has Issues
+Email me when an Order status changes to Pending - Unaprroved
+Email me when an Order status changes to 'In Process'
+Email me when an Order status changes to 'Shipped'
+Email me when an Order status changes to 'Delivered'
+Email me a daily summary on all Pending items (Shipments and Orders)
+Email me when monthly invoice is ready to view
+Calculator
+Use the interactive pricing calculator to get an estimate of Handling and Storage rates based on your volumes. These rates are only for your reference and does not reflect actual usage for your account
+Handling
+Storage
+Delivery
+Total Cost per month
+Average number of outbound orders per month
+Average number of units in each Order
+Picking
+Packing and Shipping
+Average Cost per Order
+Average Cost per Unit
+Cost per month
+Storage, Cycle count and Inv. Mgt
+Storage capacity required in cubic metre (cbm)
+Help
+Delivery rates calculator coming soon
+ezyCommerce offers multiple delivery options for Domestic and International orders
+Domestic Economy rates start from SGD 3.94 per order
+Domestic Standard rates start from SGD 4.99 per order
+International delivery has Economy, Standard and Priority options to more than 220 countries. Rates vary by weight and destination and starts from SGD 7.95 per order
+Terms and conditions apply
+Average Product Size (cm)
+Including external packaging, if any
+Average units
+Product on Storage
+Total number of unique Products
+Calculate
+Estimated Storage capacity required
+Connect to your eBay Seller Account
+With ezyCommerce, you can sell on eBay and use ezyCommerce as the fulfillment solution for your eBay orders. In order to do this, you need to add your eBay seller account on the ezyCommerce platform
+We can synchronize the following information with eBay
+Fulfillment Orders
+Once you are connected, we will start polling eBay servers periodically to check for new orders under your account. All new and modified orders will be downloaded into your ezyCommerce account
+When an order is shipped, status and tracking information is pushed to eBay
+Follow the procedure below to add your eBay account to ezyCommerce
+Click
+Connect to eBay
+you’ll be directed to the eBay.com website. Simply enter your eBay credentials and it will link up. eBay has unified logins between all their individual websites for different countries
+Enter the required account information – your username and password. EBay uses oAuth security authentication mechanism hence nobody including us will not have access to your account password
+After logging in, select
+I agree
+to grant access for ezyCommerce to access your eBay account and you’ll be redirected back to the ezyCommerce Connections page
+You need to make sure that your eBay listings have the same
+Merchant SKU in the ‘SKU’ field
+so that when we import an order from eBay, we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item, click
+to know the process to setup variant SKUs in your eBay listing
+If you would like to update shipment tracking information back to eBay, check
+Update Order Tracking Status
+in the Connections page. Once your orders have shipped, we will automatically push tracking information into Ebay and change the order status to “Shipped”
+Note
+At this time, we support only Direct eBay connection. We do not support eBay via Paypal IPN connection
+Integrate with Shopify
+Shopify Domain
+Enter you Shopify store domain and proceed to click ‘Connect’. You will be redirected to Shopify’s site to authorize ezyFulfillment by providing your login credentials
+Connect to Shopify
+My Accounts
+Account Settings
+User Accounts
+Summary
+Preferences
+Reports
+Transactions
+Create sub-user
+Edit sub-user
+Assign your subuser from a set of pre-defined roles to manage your business. You can change the previleges of the sub-users after creation
+Password
+Date Modified
+Permissions
+Choose one or more user permissions for your sub-user
+Allows the user to edit the respective module
+Product Management
+Allows the user to create / edit and perform product related actions on products
+Fulfillment Management
+Allows the user to create / edit Shipment and Orders. The user can perform fulfillment related actions on products
+Configuration Management
+Allows the user to add / modify sales channels, preferences and download reports. Allows the user to add / edit all sections under My Account except User Accounts
+Note: Selecting all the above permissions gives complete access to your account except User Accounts
+Create
+Manage Credit Card
+Your existing card information is shown here. If you would like to edit it or add a new card, you need to delete the existing card info
+Credit Card Summary
+Card Holder Name
+Billing Address
+Expiry Date
+No Credit card information present
+Add New Card
+Show Existing Card - Temporary Link to Show static Page
+Once you enter the card information, we will authorize and validate the information
+Our site is SSL encrypted and your card information is safe with us
+Card Number
+Card Holder's Name
+Expiration Date
+CVV
+Add
+Order Preferences
+You can configure your default shipping preferences here. You can turn on automatic order fulfillment to automatically approve external orders upon receipt
+Automatic Fulfillment
+Automatic Order Approval
+Coming Soon
+When activated, Orders will be automatically approved on your behalf by applying the preferences in Order defaults. Orders will be put on hold if it matches the below criteria
+Hold orders above retail value greater than SGD
+and notify via
+Note : Existing order defaults will be applied to the orders
+Order Defaults
+Defaults will be applied to new order. You can still edit the order before approval
+Customs Declaration for International Orders
+Default Delivery Options
+Add Enhanced Liability (EL) coverage on the total Declared Value for
+Orders Report
+Here you can download all orders  by specifying a date range. Maximum date range allowed is 3 months from the current date. Please call client service and raise a request if you need older records
+Download Orders File
+Filter Orders
+Order Created Date Range
+Download
+Orders file download summary
+You can download up to 10 previously generated files
+Filters Used
+You don't have any download history
+You can set other preferences such as customizing packing list message and setting default label sizes for Shipments
+Customize Packing List Message
+Enter the name to be printed on the packing List at the header level
+This is typically your brand name and how the cutsomers identify you in the market
+Enter the footer information to be printed on the packing list (if any)
+It can be any message that you want to convey to your customers
+Packing slip sample
+Shipment Label Defaults
+This will be the default label size that will be pre-selected when you create a Shipment. Contact Client Service if you want to order label supplies
+Product Label
+Template
+Box Label
+Transactions Report
+Here you can download all transactions by specifying a custom date range. Maximum date range allowed is 12 months from the current date. Please call client service and raise a request if you need older records
+Download Transaction report
+Filter transactions
+Transaction Range
+Adjustments and payments, if any are not shown in the transactions report
+Payments file download summary
+Print Setup
+Paper Size
+A4
+Plain Paper
+Products Report
+Here you can either download all products or download filtered data. Apply the filter and proceed to Download.By default Product Category is All and Active is selected. The report will be in CSV format which can be used for file uploads
+Download Products file
+Filter Products
+InActive
+Created Date Range
+Download all products
+This will download the complete Products catalog ignoring the filters
+Products file download summary
+Shipments Report
+You can download only one Shipment at a time.  Enter either the Shipment ID or Shipment Plan Name that you entered during the creation process
+Download Shipments File
+Filter Shipment
+You have to provide the entire Shipment ID or the Shipment Plan Name. Partial matches will not be accepted
+Shipment Plan / ID
+Shipments file download summary
+Credit Card Details
+You can add, edit and remove other users for your account here
+Account Owner
+Add new sub-user
+Sub Users
+User ID
+User Permissions
+You don't have any sub-user set up for this account
+Create a sub user account for your sub-ordinates to manage your business. You can control their permissions at all times
+
+Merchant:
+^^^^^^^^^
+Merchant List
+Export Merchants List
+Search Merchants
+No matching merchant found
+Reset
+merchants
+Company Info
+Merchant Name
+Pending Approval
+Set Context
+Activate
+Block
+Unblock
+Automatic Approval
+Verification pending
+Merchant Status
+All
+Finance
+Please set the merchant context in the merchant table to add payments or adjustments. Once you set the context data for that merchant will be reflected here
+Merchant Finance Information
+Active From
+Current Outstanding Amount
+Add New Payment
+Add New Adjustment
+Previous Receipts
+New Payment
+Billing Cycle
+Payment Ref No
+Payment Amount
+Payment Date
+Create Payment
+Confirm Payment
+SalesForce Ticket No
+SGD
+Create Adjustment
+Confirm Adjustment
+Confirm Adjustments
+Merchant Details
+You can view merchant details here
+Company
+Registration Number
+Registration type
+Pending Manager Order Approval
+Number of online channels currently selling
+No.of oversees countries currently selling
+SPRING
+Applied
+Apply
+Applied Date
+Application Outcome
+Reject
+Rejected
+Rejected Date
+Grant Period
+Start Date
+End Date
+
+Products:
+^^^^^^^^^
+Create Product
+Manually fill up the fields to create a product. No two products must have the same Merchant SKU. Apply Customs declaration information to be used in future orders. Fields marked with asterisk ( * ) are mandatory
+Dimensions
+Advanced Information
+Product ID
+Cost Price
+Manufacturer
+Inventory Alert Level
+Fragile
+Note : All fragile products must be packed in such a way that they pass the standard 4-foot drop test
+Customs Declaration
+Is Exportable
+Product Create Confirmation
+Are you sure you want to create the Product without a Product ID (EAN/UPC/JAN/ISBN)?
+Please make sure that the Merchant SKU physical barcode is available on the product
+An identifier for the product, assigned by you.  The SKU must be unique across all your Products
+Longest side of the product should be given as length. Max. Length 105cm and L+2W+2H should not exceed 200cm
+We will notify you once the fulfillable quantity hits the alert quantity. Giving 0 will alert you once it is out of stock
+Edit Product
+Only certain information can be edited. Product defaults cannot be edited after product creation. Fields marked with asterisk (*) are mandatory
+Product Defaults
+Date Last Modified
+Date Since Inactive
+General Information
+Add a new line
+Product History
+Track your product activity from here
+Line Chart
+Is Active
+Archive
+Search Products
+Only Products that have inventory history are shown. Products that were never sent to the warehouse even once will not be shown
+Create Fulfillment Order
+Create Removal Order
+Make Active
+Make Inactive
+Alert Level
+Modified
+Product Status
+Upload Product
+Download the Products template and open in Excel or any other spreadsheet. Please read and follow the instructions provided in the 'Guide' sheet before filling the data. Once you have uploaded the file, you can monitor the status in Products file upload summary section below
+Prepare your products file
+To get started, please download the import template in one of the formats below. The file contains guidelines on how to fill the template. You can upload a maximum of 500 products at one go
+Upload the completed templates
+Once you've added your products to the template, upload it here. Don't worry, if your file contains error, we will generate a status report to help you correct those errors
+Locate Product File
+Product file upload summary
+View the status of the file here. If your upload has some problems, you can download a status report which will help you to correct the errors. The same file can be upload again in Step 2
+View Product
+Customs Declaration Information
+Change
+Current Inventory Fulfillable
+Current Inventory Damaged
+Inventory Inbound
+Fulfillemnt Order
+Removal Order
+Shipment Recieved Order
+Export
+
+Shared:
+^^^^^^^
+Unauthorized Access
+Sorry, You don't have access to view the page you requested. Please use different credentials or contact Client Service
+Client Service
+or, login with different  credentials
+Oops!
+We have redesigned our site and it looks like the page you want has gone on vacation
+Here's a little map that might help you to get back on track
+Home
+Contact
+Are you sure you want to leave this page?
+Are you sure you want to Archive this Product?
+Are you sure you want to create Inactive Product?
+Are you sure you want to make product as Inactive?
+Are you sure you want to cancel this shipment?
+Are you sure you want to restore this shipment?
+Are you sure you want to cancel this order?
+Are you sure you want to restore this order?
+Archive Product
+Cancel Shipment
+Restore Shipment
+Restore Order
+Delete User
+Submit request to close account
+Confirm request
+Our client service team will review your account closure request and will contact you if there are outstanding issues regarding your account. All outstanding balances must be paid in full before account can be fully closed. A new account cannot be created with the same details as the closed account. Your data and reports may not be saved once your account has been closed. Please contact Client Service if you are unsure before proceeding to close your account
+Update Tracking Status - eBay
+Are you sure you don't want to update tracking status back to your sales channel? Your customer will not be aware of the order status & tracking number
+Are you sure you want to remove this sales channel? You can no longer receive orders from this channel. If there are outstanding Orders in ezyCommerce from this channel, their status will not be updated
+Are you sure you want to delete the user?
+Cannot perform product action
+Please check at least one product to perform any product action
+Welcome to ezyCommerce
+Hello
+Now that you are signed in to your ezyCommerce account, we'd like to highlight some important points before you send in your inventory and place your orders. It's important you understand this clearly so you can plan ahead and we can always ensure a great experience for your customers
+Sending Shipments to our warehouse
+For all Inbound Shipments received by the warehouse on business day 0 by 4pm - goods will be received and ready for fulfilment
+latest
+on business day 2 by 4pm. However, we strive to receive all shipments within 1 business day and update you as soon as shipment is closed
+Please follow the shipment preparation guidelines to ensure a smooth and timely receiving process
+Shipping Orders from our warehouse
+For all Outbound orders approved on business day 0 by 9am, Orders will be shipped out of warehouse
+on business day 1 by 5pm. However, we strive to ship out all orders received until 8 AM on business day 1 on the same day
+Delivery of orders to customers
+Depending upon the delivery method chosen by you, the delivery service level agreement will start from the time your order is shipped out of our warehouse. For example, when using Domestic Standard delivery, all orders shipped out by 5 PM on business day 0 will get delivered latest on business day 1, by 6 PM
+Please refer to our
+section for detailed SLAs and other guidelines
+Now you're all set, get started and get ready to transform the way you sell online
+Leave us your details and we will get in touch with you as soon as possible
+Submit
+Terms & Conditions
+@ 2014 SINGAPORE POST LIMITED. ALL RIGHTS RESERVED
+Powered by
+Toggle navigation
+Logout
+My Account
+Create Inbound Shipment
+Enter the Inbound Shipment Plan Name and Ship From address. Search and add products you wish to send to the warehouse. Choose who will label the units in the shipment. Click Create Shipment to create an Inbound Shipment ID. Fields marked with asterisk (*) are mandatory
+Add Products
+Send Shipment
+Shipment Plan Name
+Ship From Address
+Product Details
+Who Labels?
+Remove the products highlighted in red or resolve the issues in order to create shipment
+Label Quantity
+Remove
+Inactive Product
+Archived Product
+Edit Inbound Shipment
+You can edit all information other than Inbound Shipment Plan Name. Add or remove products and choose who will label the units in the shipment. Click Next to proceed to the next step and update Inbound Shipment details
+Save & Proceed
+Edit Shipment
+Please add atleast one product to edit shipment
+Search Shipments
+No matching shipments found
+Shipment ID
+Plan Name
+Expected Quantity
+Arrival Details
+Received Details
+Label by
+Total units
+Carrier
+Expected
+Received
+Upload Shipment
+Shipment Status
+Pending
+In Transit
+Send Inbound Shipment
+You can update the Inbound shipment details and print labels here. We advise you to update the Carrier name and Carrier Tracking Number if you have this information. We will start receiving the shipment only after the complete shipment has arrived. The total number of cartons we receive should match what you enter here. Please provide the carton number visible from the outside
+Update Shipment Details
+Carrier Name
+Carrier Tracking Number
+Carrier Tracking #
+Estimated Ship Date
+Estimated Arrival Date
+Total Number of Cartons
+Print Product & Box Labels
+Products will be ready for order fulfillment by
+if you send the Shipment before
+Change Status to In Transit
+Shipment Preparation Checklist
+Please make sure that the following tasks have been completed before you send the Shipment. This will allow us to receive and process your Shipment without any delays.
+You are shipping the right products (SKUs) as given in the Shipment.
+Number of units shipped for each product matches with the Shipment quantity for each product.
+Product Labels have been printed and pasted on every unit (if you chose 'Merchant' under Who labels?).
+Shipment Box labels have been printed and pasted on every external carton in the shipment.
+All items are securely packed with suitable packaging/filler materials - without any open/damaged cartons.
+All cartons are fully sealed with brown tape or transparent tape.
+Total number of cartons you enter in this page matches with the total number of cartons you ship to us.
+For Inbound Shipment notices received by the warehouse before the cut-off time at business day 0 by 4pm -  goods will be received and ready for fulfilment latest by business day 2 by 4pm. However we strive to receive all shipments within 1 business day.This SLA does not apply if the Inbound shipment has problems such as damages and quantity discrepancies
+Upload Inbound Shipment
+Download the Shipment template and open in Excel or any other spreadsheet. Please read and follow the instructions provided in the 'Guide' sheet before filling the data. You can upload only one shipment at a time. Once you have uploaded the file, you can monitor the status in Shipment file upload summary section below.
+Prepare your Shipment file
+Locate Shipment File
+Shipment file upload summary
+Shipment
+Shipment Specification
+Expected Cartons
+Print Labels
+Inventory Receipt
+Size & Dimension
+Will be updated once warehouse receives your Shipment
+Shipment History
+Track your shipment activity from here.
+Print Summary
+
+Signup:
+^^^^^^^
+Account Setup
+Verify & Create Account
+Get Started Now!
+We&#146;re really excited that you&#146;re interested to sign up for ezyCommerce. Please have the following information ready before you begin
+A valid email that you have access to
+Your registered company name and address
+Your Company registration identification (UEN/GSTN)
+A valid contact number that will allow us to reach you during the registration process
+Credentials Setup
+This will be your username. Kindly make sure that you can access this email. We will send a verification link to this email after you SignUp
+Company Registration Number
+You need to be a registered company in Singapore and provide a valid UEN / GSTN
+Please choose a security question and an answer that is simple to remember yet difficult to be guessed by others
+Give us your contact details below. Our Merchant Support Team might use the information you enter to contact you.
+Country code
+Number without country code
+SPRING SME subsidy grant
+Please provide us more information about your business to help us serve you better.  You may be eligible for the ezyCommerce-SPRING SME subsidy grant which will provide you rebates up to 70% of your monthly fulfillment charges
+To apply for this grant, you should be
+Registered company in Singapore and have at least 30% local shareholding
+Company group annual sales not more than $100mil (OR) company group employment size not more than 200 workers
+Your application will be reviewed within 3 working days and you will be informed on the outcome. SP eCommerce reserves the right to revise applicable eligibility terms, accept or refuse the grant without providing any reason
+If you do not meet the eligibility criteria, you can still go ahead and sign-up for ezyCommerce without the grant
+I wish to apply for the ezyCommerce-SME subsidy grant and confirm that I meet the above criteria for the application
+Please provide the below information for our reference
+Tell us a little more about your business. This will help us to serve you better and customize special offers or packages exclusively for you
+Number of unique Products (SKUs) sold
+URL of Website where you are currently selling
+Number of overseas countries currently selling
+Are you an existing Singpost Corporate customer?
+Review your information
+All the information you entered in Steps 1 and 2 are shown here. Please make sure they are correct and agree to the standard T&Cs before you register. Click on the Back button to modify any information. If you are all set, click Sign Up Now to complete your registration.
+If you have applied for an ezyCommerce-SPRING SME subsidy grant, you will be separately notified on the outcome of this application.
+Company Registration Number Type
+No. of overseas countries currently selling
+Referral type
+Referral Name
+CAPTCHA validation
+Promo Code
+if any
+I have read & agreed to the
+Terms &  Conditions
+Sign Up Now
+you're almost ready to get started!
+Thank you for signing up for an ezyCommerce account. An activation email has been sent to
+Please click on the activation link to verify your email. You can login to your account as soon as your account has been approved by the administrator
+Didn't receive an email?  Please check your junk folder and add ezyCommerce domain to your safe senders list. If you still didn't receive the email, you can submit a request to
+Resend
+it
+Got questions? Contact us at +65 6229 5979 or email us at support@ezycommerce.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

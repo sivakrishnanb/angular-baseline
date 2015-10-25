@@ -1,0 +1,92 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="create_shipment">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Manage Credit Card</h2>
+
+                </div>
+              </div>
+              <p>
+                Welcome Nataranjan, Krishna Kumar. <br /> Your existing card
+                information is shown here. If you would like to edit it or add a
+                new card, you need to delete the existing card info
+              </p>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="shipment-create-ship-address">
+                        Credit Card Summary </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-striped">
+                          <thead>
+                            <tr><th>Card Number</th><th>Card Holder Name</th><th>Billing Address</th><th>Expiry Date</th><th>Action</th></tr>
+                          </thead>
+                          <tbody>
+                            <tbody> 
+                             <tr><td>XXXX-XXXX-XXXX-0388</td><td>John Doe</td><td>201C Compassvale Drive</td><td>11/2007</td><td><a href=""  data-toggle="modal" data-target="#myModal">Details</a></td></tr>
+                          </tbody>
+                          </tbody>
+                        </table>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 ">
+                  <button class="btn btn-danger pull-right col-sm-4"
+                    data-toggle="modal" data-target="#myModal">Delete</button>
+                </div>
+              </div>
+              <br>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Credit Card Details</h4>
+      </div>
+      <div class="modal-body">
+        <p> Card Number : XXXX-XXXX-XXXX-0388</p>
+        <hr>
+        <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+          <tbody>
+            <tr><td>Card Holder Name<td>John Doe</td></tr>
+            <tr><td>Expiry Date<td>11/2017</td></tr>
+            <tr><td>Billing Information<td>201C Compassvale Drive,Singapore, 543201, SG 97236250</td></tr>
+            <tr><td>Country<td>Singapore</td></tr>
+          </tbody>
+        </table>
+      </div>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -273,7 +273,7 @@
                                                         <label for="accounts-eidt-address-2" class="col-md-5 col-sm-6 col-xs-6 control-label">Address Line2</label>
                                                         <div class="col-md-6 col-sm-12 col-xs-12">
                                                             <input name="accounts-eidt-address-2" id="accounts-eidt-address-2" class="form-control" ng-model="tempMerchant.addressLine2"
-                                                                   maxlength="60"/>
+                                                                   maxlength="30"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -311,10 +311,10 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                                     <div class="form-group ">
-                                                        <label for="accounts-eidt-landline" class="col-md-5 col-sm-6 col-xs-6 control-label">Alternate Contact Number</label>
+                                                        <label for="accounts-eidt-landline" class="col-md-5 col-sm-6 col-xs-6 control-label">Landline</label>
                                                         <div class="col-md-6 col-sm-12 col-xs-12">
                                                             <input name="accounts-eidt-landline" id="accounts-eidt-landline"  class="form-control" ng-model="tempMerchant.landline"
-                                                                   invalid-message="validationMessages.invalidphone" maxlength="30"/>
+                                                                   validator="validatePhone(tempMerchant.landline)" invalid-message="validationMessages.invalidphone" maxlength="30"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -445,7 +445,7 @@
                                             <div class="col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="col-md-5 col-sm-6 control-label">Sales channel link</label>
-                                                    <label class="col-md-7 col-sm-6 control-label lblcln breakWord">{{merchant.salesChannelLink || constants.notAvailableText}}</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.salesChannelLink || constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-5 col-sm-12 col-xs-12">
@@ -457,22 +457,16 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('corpAccNo')">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="col-md-5 col-sm-6 control-label">Corporate Account Number</label>
                                                     <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.corpAccountNumber || constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
-                                             <div class="col-md-5 col-sm-12 col-xs-12" ng-show="merchant.subsidyGranted" ng-if="isCountriesOptionsVisible('springGrant')">
+                                             <div class="col-md-5 col-sm-12 col-xs-12" ng-show="merchant.subsidyGranted">
                                                 <div class="form-group">
                                                     <label class="col-md-6 col-sm-6 control-label">Spring Grant</label>
                                                     <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.subsidyGranted ? 'Yes' : constants.notAvailableText}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="col-md-6 col-sm-6 control-label">Average Order value</label>
-                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.averageOrders || constants.notAvailableText}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -480,30 +474,6 @@
                                 </div>
                             </div>
                             <!-- Business Information ends here-->
-
-
-
-                            <!-- Business Information starts here-->
-                            <div class="row">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">API Information</h4>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="col-md-5 col-sm-6 control-label">API Key</label>
-                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.apiKey || constants.notAvailableText}}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
                             <!-- Close Account starts here-->
                             <div class="row">
                                 <div class="panel-heading">

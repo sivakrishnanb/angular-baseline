@@ -1,0 +1,239 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="create_shipment">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Manage Credit Card</h2>
+
+                </div>
+              </div>
+              <p>
+                Welcome Nataranjan, Krishna Kumar. <br /> Your existing card
+                information is shown here. If you would like to edit it or add a
+                new card, you need to delete the existing card info
+              </p>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="shipment-create-ship-address">
+                        Credit Card Summary </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-striped">
+                          <thead>
+                            <tr><th>Card Number</th><th>Card Holder Name</th><th>Billing Address</th><th>Expiry Date</th><th>Action</th></tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                       </div>
+                      <div class="row">
+                        <div class="col-sm-8 pull-right">
+                          No Credit card information present
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 ">
+                  <button class="btn btn-success pull-right col-sm-4"
+                    data-toggle="modal" data-target="#myModal">Add New
+                    Card</button>
+                </div>
+              </div>
+              <br>
+              <a href="#/accounts/showCreditCard"><button type="button"
+                  class="btn btn-primary" data-dismiss="modal">Show
+                  Existing Card - Temporary Link to Show static Page</button></a>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Add New Card</h4>
+      </div>
+      <div class="modal-body">
+        <p>Once you enter the card information, we will authorize and
+          validate the information.</p>
+        <p>Our site is SSL encrypted and your card information is safe
+          with us</p>
+        <hr>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="eanType" class="col-sm-5 control-label">Card Number
+                </label>
+              <div class="col-sm-7">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <input name="expirationDateMonth" type="text"
+                      class="form-control" id="expirationDateMonth"
+                      placeholder="XXXX" ng-model="model.expirationDateMonth"
+                      required required-message="validationMessages.required" />
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear"
+                      placeholder="XXXX" ng-model="model.expirationDateYear"
+                      required required-message="validationMessages.required" />
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="expirationDateMonth" type="text"
+                      class="form-control" id="expirationDateMonth"
+                      placeholder="XXXX" ng-model="model.expirationDateMonth"
+                      required required-message="validationMessages.required" />
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear"
+                      placeholder="XXXX" ng-model="model.expirationDateYear"
+                      required required-message="validationMessages.required" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="eanType" class="col-sm-5 control-label">Card
+                Holder's Name</label>
+              <div class="col-sm-7">
+                <input name="cardHolderName" type="text" class="form-control"
+                  id="cardHolderName" placeholder="Card Holder Name"
+                  ng-model="model.cardHolderName" required
+                  required-message="validationMessages.required" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="eanType" class="col-sm-5 control-label">Expiration
+                Date</label>
+              <div class="col-sm-7">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <input name="expirationDateMonth" type="text"
+                      class="form-control" id="expirationDateMonth"
+                      placeholder="MM" ng-model="model.expirationDateMonth"
+                      required required-message="validationMessages.required" />
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear" placeholder="YY"
+                      ng-model="model.expirationDateYear" required
+                      required-message="validationMessages.required" />
+                  </div>
+
+                   <div class="col-sm-3">
+                    <label for="eanType" class="col-sm-5 control-label">CVV</label>
+                
+                  </div>
+
+                    <div class="col-sm-3">
+                
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear" placeholder="YY"
+                      ng-model="model.expirationDateYear" required
+                      required-message="validationMessages.required" />
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="eanType" class="col-sm-5 control-label">Billing
+                Address</label>
+              <div class="col-sm-7">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input name="expirationDateMonth" type="text"
+                      class="form-control" id="address1" placeholder="Address 1"
+                      ng-model="model.expirationDateMonth" required
+                      required-message="validationMessages.required" />
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear"
+                      placeholder="Address 2" ng-model="model.expirationDateYear"
+                      required required-message="validationMessages.required" />
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input name="expirationDateYear" type="text"
+                      class="form-control" id="expirationDateYear"
+                      placeholder="State/Postal Code"
+                      ng-model="model.expirationDateYear" required
+                      required-message="validationMessages.required" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="eanType" class="col-sm-5 control-label">Country</label>
+              <div class="col-sm-7">
+                <select id="eanType" class="form-control" name="eanType"
+                  ng-model="model.codeType">
+                  <option>Select</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 define(['app', 'model/orders/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('ViewOrders', ['$window','$scope', '$bus', 'ngProgress', '$constants', '$routeParams', '$rootScope', '$location', 'notify','highlight',
-        function ($window,$scope, $bus, ngProgress, $constants, $routeParams, $rootScope, $location, notify,highlight) {
+    app.controller('ViewOrders', ['$window','$scope', '$bus', 'ngProgress', '$constants', '$routeParams', 'toaster', '$rootScope', '$location', 'notify','highlight',
+        function ($window,$scope, $bus, ngProgress, $constants, $routeParams, toaster, $rootScope, $location, notify,highlight) {
 
             $scope.constants = $constants;
 
@@ -206,6 +206,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         .done(function (success) {
                             if (success.response.success.length && success.response.data && success.response.data.order) {
                                 $scope.model.header.cancelledDate = success.response.data.order.header.cancelledDate;
+                                //toaster.pop("success", messages.orderCancelSuccess); commented
                                 notify.message(messages.orderCancelSuccess,'','succ');
                             } else {
                                 var errors = [];
@@ -213,12 +214,15 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderCancelError, "", 0); commented
                                     notify.message(messages.orderCancelError);
                                 }
                             }
                         }).fail(function (error) {
+                            //toaster.pop("error", messages.orderCancelError); commented
                             notify.message(messages.orderCancelError);
                         });
                 }
@@ -262,6 +266,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         .done(function (success) {
                             if (success.response.success.length && success.response.data && success.response.data.order) {
                                 $scope.model.header.cancelledDate = success.response.data.order.header.cancelledDate;
+                                //toaster.pop("success", messages.orderRestoreSuccess); commented
                                 notify.message(messages.orderRestoreSuccess,'','succ');
                             } else {
                                 var errors = [];
@@ -269,12 +274,15 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderRestoreError, "", 0); commented
                                     notify.message(messages.orderRestoreError);
                                 }
                             }
                         }).fail(function (error) {
+                            //toaster.pop("error", messages.orderRestoreError); commented
                             notify.message(messages.orderRestoreError);
                         });
                 }
@@ -306,6 +314,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     })
                         .done(function (success) {
                             if (success.response.success.length) {
+                                //toaster.pop("success", messages.orderUpdateSucess); commented
                                 notify.message(messages.orderApproveSuccess.replace('##',$scope.model.merchantOrderId),'','succ');
                                 highlight.added($scope.model.merchantOrderId);
                                 $location.path('orders/inprocess');
@@ -315,8 +324,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                     notify.message(messages.orderApproveError);
                                 }
                             }
@@ -327,8 +338,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                 notify.message(messages.orderApproveError);
                             }
                             ngProgress.complete();
@@ -441,7 +454,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     var eachItem = {
                         orderLineId                     :   $scope.model.lineItems[i].orderLineId,
                         ezcSku                          :   $scope.model.lineItems[i].ezcSku,
-                        channelLineId                   :   $scope.model.lineItems[i].channelLineId,
                         quantityCancelled               :   qtyCancelled,
                         orderlineQuantityDamaged        :   qtyDamaged, 
                         orderlineQuantityFulfillable    :   qtyFulfillable,  
@@ -456,7 +468,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     api : 'ordersUpdate',
                     data: JSON.stringify({
                             update: JSON.stringify(updateJSON)
-                    })
+                    }),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
                     .done(function (data) {
                        
@@ -476,6 +489,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.merchantListFetchError);
                         notify.message(messages.cancelOrderError);
                         ngProgress.complete();
                     });
@@ -535,9 +549,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             });*/
                             
                             _($scope.model.lineItems).forEach(function (item, key) {
-                                $rootScope.getCountryNameByCode(item.originCountry).done(function(name){
-                                    $scope.model.lineItems[key].countryByName = name;
-                                });
+                                
                                 $scope.model.lineItems[key].cancelQtyFulfillable = '0';
                                 $scope.model.lineItems[key].cancelQtyDamaged = '0';
                                 $scope.model.lineItems[key].cancelQtyMissing = '0';
@@ -559,14 +571,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     $scope.model.additionalInfo[key] = value;
                                 });
                             });
-                            for(var i = 0; i < 12; i++) {
-                                if($scope.model.additionalInfo['additionalInfo'+(i+1)] && $scope.model.additionalInfo['additionalInfo'+(i+1)].indexOf('|') != -1) {
-                                    $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] = $scope.model.additionalInfo['additionalInfo'+(i+1)].split('|')[0] || 'Additional Information ' + (i+1);
-                                    $scope.model.additionalInfo['additionalInfo'+(i+1)] = $scope.model.additionalInfo['additionalInfo'+(i+1)].split('|')[1] || '';
-                                } else {
-                                    $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] = 'Additional Information ' + (i+1);
-                                }
-                            }
                             $scope.model.shipments = data.order[0].shipments;
                             $scope.model.trackingNumber = _.pluck($scope.model.shipments, 'shipmentTrackingNumber');
 
@@ -583,12 +587,15 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 
                             }
                             $scope.model.purchaseOrders = data.order[0].purchaseOrders;
+                            //toaster.pop("success", messages.orderDetail, messages.retrivedSuccess);
                         } else {
+                            //toaster.pop("error", messages.orderFetchError); commented
                             notify.message(messages.orderFetchError);
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model(); 
+                        //toaster.pop("error", messages.orderFetchError); commented
                         notify.message(messages.orderFetchError);
                         ngProgress.complete();
                     });

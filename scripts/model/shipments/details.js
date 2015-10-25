@@ -1,12 +1,10 @@
 define(['map'], function (map) {
             
             var header = function() {
-                this.merchantCode="";
                 this.inboundId=0;
                 this.inboundCode="";
                 this.vendorId=0;
                 this.whId=0;
-                this.whCode="";
                 this.planName="";
                 this.fromName="";
                 this.email="";
@@ -37,10 +35,6 @@ define(['map'], function (map) {
                 this.numberOfProducts=0;
                 this.numberOfUnits=0;
                 this.history = null;
-                this.whoSendShipment="";
-                this.supplierEzcShipmentLabel=false;
-                this.supplierEmail="";
-                this.supplierPoNumber="";
 
                 map.apply(this, arguments);
         }

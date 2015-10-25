@@ -30,8 +30,8 @@
                                 </div>
                             </div>
 
-                            <div class="ordersHasIssuesWarn" role="alert" ng-if="!isReviewOrder&&model.hasIssues.length&&showOrdersHasIssues(model.hasIssues,1)">
-                                <h5 class="martop0 as">Issues</h5>
+                            <div class="ordersHasIssuesWarn" role="alert" ng-if="model.hasIssues.length&&showOrdersHasIssues(model.hasIssues,1)">
+                                <h5 class="martop0">Issues</h5>
                                 <ol>
                                     <li ng-repeat="orderIssue in model.hasIssues" ng-bind="model.hasIssues[$index].issue.issueText" ng-if="showOrdersHasIssues(model.hasIssues[$index].issue.issueKey,0)"></li>
                                 </ol>
@@ -58,7 +58,7 @@
                                     <div id="collapseOne" class="panel-collapse collapse in">
                                         <div class="panel-body order-headid">
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-8 col-xs-12 ordrwidthtxt">
+                                                <div class="col-md-6 col-sm-8 col-xs-12">
                                                     <div class="form-group required">
                                                         <div class="col-lg-4 col-md-6 col-sm-5 col-xs-12">
                                                             <label for="order-draft-merchant-id" class="control-label custmrid">Merchant Order ID</label>
@@ -79,20 +79,9 @@
                                                             <p id="order-edit-merchant-id" name="order-edit-merchant-id" class="form-control-static" ng-bind="model.merchantOrderId || constants.notAvailable"></p>
                                                         </div>
 
-                                                        <div class="col-md-6 col-sm-6 col-xs-11 paddnone colwdthordr" ng-show="model.orderStatus=='DRAFT'">
-                                                            <input name="order-draft-merchant-id" type="text" class="form-control" id="orders-draft-merchant-id" placeholder="Merchant Order ID"  ng-model="model.merchantOrderId" validator="draftMerchantOrderId(model.merchantOrderId)" invalid-message="validationMessages.orderMerchantIdError" maxlength="30" ng-change="updateDisplayableOrderId()"
-                                                              ng-blur="checkMerchantOrderIdAvail()" ng-class="{'has-error':isOrderExists  && model.merchantOrderId}"/>
+                                                        <div class="col-md-6 col-sm-6 col-xs-11 paddnone" ng-show="model.orderStatus=='DRAFT'">
+                                                            <input name="order-draft-merchant-id" type="text" class="form-control" id="orders-draft-merchant-id" placeholder="Merchant Order ID"  ng-model="model.merchantOrderId" validator="draftMerchantOrderId(model.merchantOrderId)" invalid-message="validationMessages.orderMerchantIdError" maxlength="30" ng-change="updateDisplayableOrderId()"/>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-md-6 col-sm-12 pull-left paddnone txtItalic" ng-if="isOrderExists && model.merchantOrderId.length>0">
-                                                    <span class="error-font-color" >Merchant Order ID entered is already in use.Please enter a different and unique Merchant Order ID.</span>
-                                                </div>
-
-                                                <div class="form-group col-md-6 col-sm-8 col-xs-12" check-acl="showMerchId" ng-if="model.merchantCode">
-                                                    <label class="col-lg-2 col-md-6 col-sm-5 col-xs-12 control-label">Merchant Id : </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-11 paddnone">
-                                                        {{model.merchantCode || constants.notAvailable}}
                                                     </div>
                                                 </div>
 
@@ -158,7 +147,7 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <div class="form-group required">
                                                             <label for="order-edit-originCountry" class="control-label">Country</label>
-                                                            <select ng-disabled="isCountriesOptionsVisible('ordersDisableCountry')" class="form-control" name="order-edit-originCountry" ng-model="countryOfOriginCtrl" id="order-edit-originCountry" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
+                                                            <select class="form-control" name="order-edit-originCountry" ng-model="countryOfOriginCtrl" id="order-edit-originCountry" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
                                                                 <option value="">Select</option>
                                                             </select>
                                                         </div>
@@ -167,7 +156,7 @@
                                                         <div class="form-group required">
                                                             <label for="orders-edit-zipCode" class="control-label">ZIP/Postal
                                                                 Code</label>
-                                                            <input name="orders-edit-zipCode" type="text" class="form-control" id="orders-edit-zipCode" placeholder="ZIP/Postal Code" ng-model="model.customer.shippingAddress.postalCode" validator="postalCodeVaidate()" invalid-message="validationMessages.invalidPostal" maxlength="12"/>
+                                                            <input name="orders-edit-zipCode" type="text" class="form-control" id="orders-edit-zipCode" placeholder="ZIP/Postal Code" ng-model="model.customer.shippingAddress.postalCode" required required-message="validationMessages.required" maxlength="60"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -207,7 +196,7 @@
                                                         <div class="form-group">
                                                             <label for="order-edit-search-product" class="col-md-4 col-sm-4 col-xs-12 control-label">Search and Add Products</label>
                                                             <div class="col-md-6 col-sm-6 col-xs-11 paddnone">
-                                                                <input ng-disabled="managerOrderEditFields(model.orderStatus)" name="order-edit-search-product" type="text" class="form-control shipment-search-box-products" id="order-edit-search-product" placeholder="Search Product" ng-model="searchKey" ng-focus="findSuggestion(searchKey,'searchKey')" ng-change="findSuggestion(searchKey, 'searchKey')" />
+                                                                <input name="order-edit-search-product" type="text" class="form-control shipment-search-box-products" id="order-edit-search-product" placeholder="Search Product" ng-model="searchKey" ng-focus="findSuggestion(searchKey,'searchKey')" ng-change="findSuggestion(searchKey, 'searchKey')" />
                                                                 <div class="list-group suggestion-box nano" id="order-edit-product-search-suggestion" ng-if="suggestions.length && searchKey">
                                                                     <div class="nano-content">
                                                                         <a ng-repeat="suggest in suggestions" href="javascript:;" class="list-group-item" ng-click="addProduct(suggest)" ng-class="{'disabled' : checkActive(suggest)}">
@@ -246,12 +235,6 @@
                                                                     <span class="center fnt12px">No matching products found</span>
                                                                 </a>
                                                             </div>
-
-                                                            <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
-                                                              <a href="javascript:;" class="list-group-item">
-                                                                <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
-                                                            </a>
-                                                        </div>
                                                                 
                                                             </div>
                                                         </div>
@@ -266,7 +249,7 @@
                                                     <div class="col-md-12 col-sm-12 col-xs-12 paddnone marbtm15">
                                                         <div class="newGridContainer container-fluid  col-xs-12 paddnone">
 
-                                                            <div class="row proHeader hidden-xs">
+                                                            <div class="row proHeader">
                                                                 <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordrcreateprod">Product</div>
                                                                 <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreatecate">Category </div>
                                                                 <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent">Inventory </div>
@@ -322,11 +305,11 @@
 
                                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 fullfillableContainer">
                                                                     <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                                                        <input ng-pattern="/^[0-9]*$/" ng-disabled="managerOrderEditFields(model.orderStatus)" name="order-edit-product-quantity-{{$index}}" type="number" class="form-control createordrqty" id="order-edit-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1" invalid-message="validationMessages.invalidOrderUnits"/>
+                                                                        <input name="order-edit-product-quantity-{{$index}}" type="number" class="form-control createordrqty" id="order-edit-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1"/>
                                                                     </div>
 
                                                                     <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 paddleft20 orderRemove">
-                                                                        <button ng-disabled="managerOrderEditFields(model.orderStatus)" class="btnbgnone" id="order-edit-product-remove-{{$index}}"type="button"  ng-click="removeProduct(product)"><span class="glyphicon glyphicon-cross" ng-class="{'glyphicon-cross-disable':managerOrderEditFields(model.orderStatus)}"></button>
+                                                                        <button class="btnbgnone" id="order-edit-product-remove-{{$index}}"type="button"  ng-click="removeProduct(product)"><span class="glyphicon glyphicon-cross"></button>
                                                                     </div>
 
                                                                     <div class="clearfix"></div>
@@ -472,19 +455,22 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo1.length!=0 || addInfo>0">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo1" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel1">Additional Info 1</label>
+                                                            <label for="order-edit-addInfo1" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 1</label>
+                                                            <label for="order-edit-addInfo1" class="control-label" ng-if="order.channel == 'EBAY'">Payment Method</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo1" name="order-edit-addInfo1" id="order-edit-addInfo1" placeholder="Additional Info 1" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo2.length!=0 || addInfo>1">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo2" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel2">Additional Info 2</label>
+                                                            <label for="order-edit-addInfo2" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 2</label>
+                                                            <label for="order-edit-addInfo2" class="control-label" ng-if="order.channel == 'EBAY'">Shipping Service</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo2" name="order-edit-addInfo2" id="order-edit-addInfo2" placeholder="Additional Info 2" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="model.additionalInfo.additionalInfo3.length!=0 || addInfo>2">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo3" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel3">Additional Info 3</label>
+                                                            <label for="order-edit-addInfo3" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 3</label>
+                                                            <label for="order-edit-addInfo3" class="control-label" ng-if="order.channel == 'EBAY'">Shipping ServiceCost</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo3" name="order-edit-addInfo3" id="order-edit-addInfo3" placeholder="Additional Info 3" maxlength="100"/>
                                                         </div>
                                                     </div>
@@ -492,19 +478,22 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo4.length!=0 || addInfo>3">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo4" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel4">Additional Info 4</label>
+                                                            <label for="order-edit-addInfo4" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 4</label>
+                                                            <label for="order-edit-addInfo4" class="control-label" ng-if="order.channel == 'EBAY'">SubTotal</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo4" name="order-edit-addInfo4" id="order-edit-addInfo4" placeholder="Additional Info 4" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo5.length!=0 || addInfo>4">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo5" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel5">Additional Info 5</label>
+                                                            <label for="order-edit-addInfo5" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 5</label>
+                                                            <label for="order-edit-addInfo5" class="control-label" ng-if="order.channel == 'EBAY'">OrderTotal</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo5" name="order-edit-addInfo5" id="order-edit-addInfo5" placeholder="Additional Info 5" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="model.additionalInfo.additionalInfo6.length!=0 || addInfo>5">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo6" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel6">Additional Info 6</label>
+                                                            <label for="order-edit-addInfo6" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 6</label>
+                                                            <label for="order-edit-addInfo6" class="control-label" ng-if="order.channel == 'EBAY'">Buyer UserID</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo6" name="order-edit-addInfo6" id="order-edit-addInfo6" placeholder="Additional Info 6" maxlength="100"/>
                                                         </div>
                                                     </div>
@@ -512,19 +501,20 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo7.length!=0 || addInfo>6">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo7" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel7">Additional Info 7</label>
+                                                            <label for="order-edit-addInfo7" class="control-label" ng-if="order.channel != 'EBAY'">Additional Info 7</label>
+                                                            <label for="order-edit-addInfo7" class="control-label" ng-if="order.channel == 'EBAY'">Buyer CheckoutMessage</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo7" id="order-edit-addInfo7" id="order-edit-addInfo7" placeholder="Additional Info 7" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12" ng-if="model.additionalInfo.additionalInfo8.length!=0 || addInfo>7">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo8" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel8">Additional Info 8</label>
+                                                            <label for="order-edit-addInfo8" class="control-label">Additional Info 8</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo8" name="order-edit-addInfo8" id="order-edit-addInfo8" placeholder="Additional Info 8" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 paddnone"  ng-if="model.additionalInfo.additionalInfo9.length!=0 || addInfo>8">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo9" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel9">Additional Info 9</label>
+                                                            <label for="order-edit-addInfo9" class="control-label">Additional Info 9</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo9" name="order-edit-addInfo9" id="order-edit-addInfo9" placeholder="Additional Info 9" maxlength="100"/>
                                                         </div>
                                                     </div>
@@ -532,19 +522,19 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-4 col-xs-12"  ng-if="model.additionalInfo.additionalInfo10.length!=0 || addInfo>9">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo10" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel10">Additional Info 10</label>
+                                                            <label for="order-edit-addInfo10" class="control-label">Additional Info 10</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo10" id="order-edit-addInfo10" id="order-edit-addInfo10" placeholder="Additional Info 10" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12"  ng-if="model.additionalInfo.additionalInfo11.length!=0 || addInfo>10">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo11" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel11">Additional Info 11</label>
+                                                            <label for="order-edit-addInfo11" class="control-label">Additional Info 11</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo11" name="order-edit-addInfo11" id="order-edit-addInfo11" placeholder="Additional Info 11" maxlength="100"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-4 col-xs-12 paddnone"  ng-if="model.additionalInfo.additionalInfo12.length!=0 || addInfo>11">
                                                         <div class="form-group">
-                                                            <label for="order-edit-addInfo12" class="control-label" ng-bind="model.additionalInfo.additionalInfoLabel12">Additional Info 12</label>
+                                                            <label for="order-edit-addInfo12" class="control-label">Additional Info 12</label>
                                                             <input type="text" class="form-control" ng-model="model.additionalInfo.additionalInfo12" name="order-edit-addInfo12" id="order-edit-addInfo12" placeholder="Additional Info 12" maxlength="100"/>
                                                         </div>
                                                     </div>
@@ -560,7 +550,7 @@
                             <div class="btn-grp pull-left" >
                                 <button check-acl="draftOrder" ng-show="model.orderStatus=='DRAFT'" type="button" name="orders-draft1-button1-btm" id="orders-draft1-button1-btm" class="btn btn-primary" ng-click="saveAsDraft()">Save as Draft</button>
                                 <button id="edit-shipment-cancel-btm" type="button" class="btn btn-primary" ng-click="duplicate(model.orderHeaderId)">Duplicate</button>
-								<button ng-if="model.orderStatus!='DRAFT'" id="edit-order-cancelOrder-btm" type="button" class="btn btn-default" ng-click="cancelOrder()">Cancel Order</button>
+								<button id="edit-order-cancelOrder-btm" type="button" class="btn btn-default" ng-click="cancelOrder()">Cancel Order</button>
                             </div>
                             <div class="btn-grp pull-right">
                                 <button id="edit-order-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>
@@ -609,7 +599,7 @@
 
                             </div>
 
-                            <div class="ordersHasIssuesWarn" role="alert" ng-if="!isReviewOrder&&model.hasIssues.length&&showOrdersHasIssues(model.hasIssues,1)">
+                            <div class="ordersHasIssuesWarn" role="alert" ng-if="model.hasIssues.length&&showOrdersHasIssues(model.hasIssues,1)">
                                 <h5 class="martop0">Issues</h5>
                                 <ol>
                                     <li ng-repeat="orderIssue in model.hasIssues" ng-bind="model.hasIssues[$index].issue.issueText" ng-if="showOrdersHasIssues(model.hasIssues[$index].issue.issueKey,0)"></li>
@@ -664,13 +654,13 @@
                                             </h4>
                                             <!--<div class="popover fade right collapse" id="carrier-popover" role="tooltip"><div class="{{isInternationalOrder ? 'arrow international' : 'arrow domestic'}}"></div><div class="popover-content" ng-show="isInternationalOrder">
                                                 <p><strong>International Priority</strong> - Fastest and most reliable. Includes detailed tracking. Standard coverage USD 20/kg up to USD 100 / package.  EL coverage available.</p>
-                                                <p><strong>International Standard</strong> - Quick and efficient. Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 150 per package or declared value. EL coverage  available.</p>
-                                                <p><strong>International Economy</strong> - Cost effective mail delivery. Quality of tracking varies by destination.  Standard coverage lower of {{constants.currentCurrency}} 68 or declared value. EL coverage not available.</p>
+                                                <p><strong>International Standard</strong> - Quick and efficient. Includes tracking. Standard coverage lower of SGD 150 per package or declared value. EL coverage  available.</p>
+                                                <p><strong>International Economy</strong> - Cost effective mail delivery. Quality of tracking varies by destination.  Standard coverage lower of SGD 68 or declared value. EL coverage not available.</p>
     </div>
                                             <div class="popover-content" ng-show="!isInternationalOrder">
-                                                <p><strong>Domestic Standard</strong> - Quick and efficient delivery.  Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 150 or declared value. EL coverage available.
+                                                <p><strong>Domestic Standard</strong> - Quick and efficient delivery.  Includes tracking. Standard coverage lower of SGD 150 or declared value. EL coverage available.
     </p>
-                                                <p><strong>Domestic Economy</strong> - Reliable and cost effective delivery.  Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 68 or declared value. EL coverage not available.</p>
+                                                <p><strong>Domestic Economy</strong> - Reliable and cost effective delivery.  Includes tracking. Standard coverage lower of SGD 68 or declared value. EL coverage not available.</p>
     </div><span class="glyphicon glyphicon-cross" data-toggle="collapse" data-target="#carrier-popover"></span></div>-->
                                         </div>
                                         <div id="orders-edit2-collapseTwo" class="panel-collapse collapse in">
@@ -683,7 +673,7 @@
                                                                 <td>Select</td>
                                                                 <td>Name</td>
                                                                 <td>Lead Time</td>
-                                                                <td>Estimated Cost (<span ng-bind="constants.currentCurrency"></span>)</td>
+                                                                <td>Estimated Cost</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody ng-if="shippingOptions.length">
@@ -696,7 +686,7 @@
                                                                         <span ng-bind="method.name || constants.notAvailable"></span>
                                                                         <div class="popoverHldr">
                                                                             <span class="glyphicon glyphicon-info" id="{{'carrier-popover-head-' + $index}}" ng-click="toggleTooltip($index)"></span>
-                                                                            <div data-html2canvas-ignore="true" class="editOrder popover fade collapse right" id="{{'carrier-popover-' + $index}}"><div class="arrow"></div><div class="popover-content"><p ng-bind="method.description || constants.notAvailableText"></p>
+                                                                            <div class="editOrder popover fade collapse right" id="{{'carrier-popover-' + $index}}"><div class="arrow"></div><div class="popover-content"><p ng-bind="method.description || constants.notAvailableText"></p>
                                                                             </div><span class="glyphicon glyphicon-cross" ng-click="toggleTooltip($index)"></span></div></div>
                                                                     </div>
                                                                 </td>
@@ -706,7 +696,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <p class="form-control-static"
-                                                                       ng-bind="(method.deliveryRate || constants.notAvailable)"></p>
+                                                                       ng-bind="(method.currency || constants.notAvailable) + ' ' +
+                                                                                 (method.deliveryRate || constants.notAvailable)"></p>
                                                                 </td>
                                                             </tr>
                                                             </tbody>
@@ -746,7 +737,7 @@
                                                                         <label for="orders-edit2-shipping-weight" class="col-sm-5 control-label">Estimated Shipping Weight</label>
                                                                         <div class="col-sm-7">
                                                                             <p id="orders-edit2-shipping-weight" class="form-control-static padd0" ng-bind="(model.shipping.estShippingWeight + ' ' + model.shipping.weightUnits) || constants.notAvailable"></p>
-                                                                            <em>Product(s) weight + <span ng-bind="isCountriesOptionsVisible('dunnagePercentage')"></span> dunnage for packaging weight</em>
+                                                                            <em>Product(s) weight + 10% dunnage for packaging weight</em>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -769,7 +760,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('ordersRemoveEnhancedLiability')">
+                                                                <div class="col-sm-12 col-xs-12">
                                                                     <div class="form-group">
                                                                         <label for="orders-edit2-liability-charges" class="col-sm-5 control-label">Enhanced Liability Fee</label>
                                                                         <div class="col-sm-7">
@@ -897,7 +888,6 @@
 
                                                                         <span class="form-control-static" ng-bind="model.customer.shippingAddress.city || constants.notAvailable"></span><br/>
                                                                         <span class="form-control-static" ng-bind="countryOfOriginCtrl.countryName || constants.notAvailable"></span><br/>
-                                                                        <span ng-if="model.customer.shippingAddress.stateCode" class="form-control-static" ng-bind="model.customer.shippingAddress.stateCode || constants.notAvailable"></span><br/>
                                                                         <span class="form-control-static" ng-bind="model.customer.shippingAddress.postalCode || constants.notAvailable"></span><br/>
                                                                         <span class="form-control-static" ng-bind="model.customer.shippingAddress.phone[0].number || constants.notAvailable"></span>
                                                                     </div>
@@ -927,7 +917,7 @@
                                 <div class="row">
 
                                     <!-- Insurance-->
-                                    <div class="panel panel-default col-md-7 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20" ng-if="isCountriesOptionsVisible('ordersRemoveInsuranceCoverage')">
+                                    <div class="panel panel-default col-md-7 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a href="javascript:;" id="shipment-view-general">
@@ -937,7 +927,7 @@
                                                        class="pull-right control-label" ng-show="selectedShippingMethod.liabilityAvailable"> <input
                                                         type="checkbox" id="orders-edit2-add-liability"
                                                         name="orders-edit2-add-liability" ng-model="model.shipping.liabilityTaken" ng-disabled="!selectedShippingMethod.liabilityAvailable" ng-change="updateDeliveryCharge()">
-                                                    Add Enhanced Liability(EL) to your shipment for {{selectedShippingMethod.estEnhancedCost || 0}} {{constants.currentCurrency}}
+                                                    Add Enhanced Liability(EL) to your shipment for {{selectedShippingMethod.estEnhancedCost || 0}} SGD
                                                 </label>
                                                 <label for="orders-edit2-add-liability"
                                                        class="pull-right control-label" ng-show="!selectedShippingMethod.liabilityAvailable"> <input
@@ -999,7 +989,7 @@
                                                         <div class="form-group" ng-class="{required : model.shipping.liabilityTaken}">
                                                             <label for="orders-edit2-enhanced-liability-amount" class="col-sm-6 control-label">Enhanced Liability Amount ({{model.shipping.estDeliveryChargeCode}})
                                                             </label>
-                                                            <div class="col-md-3 col-sm-3 col-xs-12 elValidation">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12">
                                                                 <input type="text" id="orders-edit2-enhanced-liability-amount" name="orders-edit2-enhanced-liability-amount" class="form-control" placeholder="Enhanced Liability Amount" ng-model="model.shipping.liabilityValue" validator="checkLiabilityValue(model.shipping.liabilityValue, model.shipping.orderDeclaredValue)" invalid-message="validationMessages.orderELValueError" step="10" ng-disabled="!model.shipping.liabilityTaken" />
 
                                                             </div>
@@ -1009,7 +999,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-offset-6 col-sm-6 col-xs-12" ng-hide="!selectedShippingMethod.liabilityAvailable">
-                                                        <p>(Cannot be more than declared value. Max EL amount for {{selectedShippingMethod.name}} is {{constants.currentCurrency}} {{selectedShippingMethod.elMax}})</p>
+                                                        <p>(Cannot be more than declared value. Max EL amount for {{selectedShippingMethod.name}} is SGD {{selectedShippingMethod.elMax}})</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1116,9 +1106,9 @@
                                                                     <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-2' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-4'}}">Product Name</div>
                                                                     <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}">Number of Units</div>
                                                                     <div ng-show="isInternationalOrder" class="inline-required proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Customs Item Description</div>
-                            
+
                                                                     <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-1 col-lg-1">HS Code <span class="glyphicon glyphicon-question-sign"></span></div>
-                                                                    <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Declared value for all units ({{customs.dvalueCurrencyCode || constants.currentCurrency}})<span class="reqStar">&nbsp;*</span></div>
+                                                                    <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Declared value for all units ({{customs.dvalueCurrencyCode || "SGD"}})<span class="reqStar">&nbsp;*</span></div>
                                                                     <div ng-show="isInternationalOrder" class="inline-required proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Country of Origin</div>
 
 
@@ -1157,7 +1147,7 @@
 
                                                                     <div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-edit2-product-decvalue-{{$index}}">
 
-                                                                        <input ng-disabled="!product.selected" name="orders-edit2-total-value-{{$index}}" type="text" class="form-control" id="orders-edit2-total-value-{{$index}}" placeholder="Total Value ({{constants.currentCurrency}})" ng-model="product.customs.itemDeclaredValue" validator="checkInternationalOrderDValue({{product.selected}}, {{$index}})" invalid-message="validationMessages.invalidDeclaredValue"  ng-change="updateProductBasedCalc()"/>
+                                                                        <input ng-disabled="!product.selected" name="orders-edit2-total-value-{{$index}}" type="text" class="form-control" id="orders-edit2-total-value-{{$index}}" placeholder="Total Value (SGD)" ng-model="product.customs.itemDeclaredValue" validator="checkInternationalOrderDValue({{product.selected}}, {{$index}})" invalid-message="validationMessages.invalidDeclaredValue"  ng-change="updateProductBasedCalc()"/>
                                                                     </div>
 
                                                                     <div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-edit2-product-origin-country-{{$index}}">
@@ -1191,7 +1181,7 @@
 
                              <div class="btn-grp pull-left">
                                  <button id="edit-shipment-cancel-btm" type="button" class="btn btn-primary" ng-click="duplicate(model.orderHeaderId)">Duplicate</button>
-								 <button ng-if="model.orderStatus!='DRAFT'" id="edit-order-cancelOrder-btm" type="button" class="btn btn-default" ng-click="cancelOrder()">Cancel Order</button>
+								 <button id="edit-order-cancelOrder-btm" type="button" class="btn btn-default" ng-click="cancelOrder()">Cancel Order</button>
                              </div>
                                                            
 
@@ -1278,7 +1268,7 @@
                                     </label>
                                     <div class="col-sm-7">
                                         <p id="orders-create2-shipping-weight" class="form-control-static padd0" ng-bind="(model.shipping.estShippingWeight + ' ' + model.shipping.weightUnits) || constants.notAvailable"></p>
-                                        <em>Product(s) weight + <span ng-bind="isCountriesOptionsVisible('dunnagePercentage')"></span> dunnage for packaging weight</em>
+                                        <em>Product(s) weight + 10% dunnage for packaging weight</em>
                                     </div>
                                 </div>
                             </div>
@@ -1302,7 +1292,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('ordersRemoveEnhancedLiability')">
+                            <div class="col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="orders-create2-liability-charges" class="col-sm-5 control-label">Enhanced Liability Fee<span class="glyphicon glyphicon-question-sign"></span>
                                     </label>
@@ -1376,7 +1366,7 @@
 <!-- model ends -->
 
 <!-- Modal - Cancel Order Starts -->
-<!-- <div class="modal fade" id="confirm-modal-cancelOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirm-modal-cancelOrder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -1387,10 +1377,10 @@
             <div class="modal-body cancelorderpopup">
                 <p>Are you sure you want to cancel your order? </p>
 
-               <div class="form-group">
+               <!-- <div class="form-group">
                       <label for="merchant-block-remarks" class="control-label">Remarks</label>
                       <textarea class="form-control" row="4" name="order-cancel-remarks" id="order-cancel-remarks" placeholder="Remarks" maxlength="255" ng-model="cancelOrderRemarks"></textarea>
-                    </div>
+                    </div> -->
 
                 <p class="saveDraftModel">Note: Once an order is cancelled it cannot be restored</p>
             </div>
@@ -1398,178 +1388,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancelCancelOrder">Cancel</button>
                 <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="modalOkButtonCancelOrder" ng-click="modalOkButtonCancelOrder()">OK</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!-- model ends -->
-
-<!-- New Modal Box -->
-<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-order-cancel-new">
-    <div class="modal-dialog">
-        <form role="form"  name="modal-cancel-order" novalidate angular-validator angular-validator-submit="isTotalQtyValid()">
-            <div class="modal-content fnt12px"> 
-                <div class="modal-header">
-                    <p> Cancel Order <span id="cancel-order-modalClose" class="cancel-order-modalClose" data-dismiss="modal">X</span></p>
-                </div>
-                <div class="modal-body">
-
-                    <div class="col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <label for="orders-view-ezy-order-id" class="col-sm-3 control-label leftHead-Order fllft padtop7">EZY Order ID<span class="pull-right">:</span></label>
-                            <div class="col-sm-6 xstxt-paddlft20 fllft">
-                                <p class="form-control-static" ng-bind="model.ezcOrderNumber || constants.notAvailable"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <label for="orders-view-merchant-order-id" class="col-sm-3 control-label leftHead-Order fllft padtop7">Merchant order ID<span class="pull-right">:</span></label>
-                            <div class="col-sm-6 xstxt-paddlft20 fllft">
-                                <p class="form-control-static" ng-bind="model.merchantOrderId || constants.notAvailable"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            <label for="orders-view-merchant-po-number" class="col-sm-3 control-label leftHead-Order fllft padtop7">PO Number<span class="pull-right">:</span></label>
-                            <div class="col-sm-6 xstxt-paddlft20 fllft">
-                                <p  class="form-control-static" ng-bind="model.purchaseOrders[0].poNumber || constants.notAvailableText"></p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-md-12 paddnone marbtm15">
-
-                            <div class="container-fluid  col-md-12 paddnone">
-
-                                <div class="row proHeader">
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordcnclprod">Product</div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclcat">Category </div>
-                                    <!-- <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent">Inventory </div> -->
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclweight">Weight </div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclunits">No.of Units</div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclfull">Fulfillable</div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcncldmg">Damaged</div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclmiss">Missing</div>
-
-                                </div>
-                                <div class="clear"></div>
-
-                                <div class="row proRow" ng-repeat="product in model.lineItems">
-
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordcnclprod">
-                                        <div class="fleft martop5" ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}"></div>
-
-                                        <div class="skU fleft">
-                                            <div class="createOrdSKU">
-                                                <span ng-bind="product.merchantSku || constants.notAvailable | addEllipse:20" id="order-edit-merchant-sku-{{$index}}"></span>
-                                            </div>
-                                        </div>
-                                        <span class="pull-right rgt30" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
-                                        <div class="clear"></div>
-
-                                        <span class="disblk paddlft10" ng-bind="product.description || constants.notAvailable | addEllipse:23" class="prdctname" id="order-edit-product-desc-{{$index}}"></span>
-                                        <div class="eSku fnt10px">
-                                            <span class="">EZY-SKU : {{product.ezcSku || constants.notAvailable}}</span>
-                                            <span class="eEan" ng-if="product.productCodeType && product.productCode">{{product.productCodeType}} : {{product.productCode}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclcat" ng-bind="getCategory(product.productCategory) || constants.notAvailableText">
-                                    </div>
-                                    <!-- <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent" id="order-edit-product-filfillable-{{$index}}">
-                                        <div class="fullFill fullColor txtBold">
-                                            Fullfillable : {{product.qtyFulfillable || '0' }}
-                                        </div>
-                                        <div class="damInbound">
-                                            <span class="inb txtItalic">Inbound : {{product.qtyInShipment || '0'}}</span>
-                                        </div>
-                                        </div> -->
-                                     
-                                        <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclweight text-center" ng-bind="product.productWeight ? (product.productWeight + ' ' + product.weightUnit) : constants.notAvailableText">
-                                        </div>
-                                        
-                                        <div class="orderCancelQuantities">
-
-                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcnclunits text-center" ng-bind="product.quantity"></div>
-
-                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcnclfull error_{{$index}}">
-                                                <input name="order-edit-cancelQtyFulfillable-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyFulfillable" ng-blur="isTotalQtyValid($index)" />
-                                            </div>
-
-                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcncldmg error_{{$index}}">
-                                                <input name="order-edit-cancelQtyDamaged-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyDamaged" ng-blur="isTotalQtyValid($index)" />
-                                            </div>
-
-                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 paddleft20 ordcnclmiss error_{{$index}}">
-                                                <input name="order-edit-cancelQtyMissing-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyMissing" ng-blur="isTotalQtyValid($index)" />
-                                            </div>
-
-                                            <div class="clearfix"></div>
-
-                                            <div class="col-sm-12 cancelOrderText ezyHide text-danger" id="cancelOrder_{{$index}}"></div>
-
-                                        </div>
-                                       
-                                    </div>
-
-                                    <div class="row proRow" ng-if="!model.lineItems.length">
-                                        <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
-                                            No products added
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="order-cancel-remarks" class="control-label">Reason <span class="reqStar">*</span></label>
-                            <textarea ng-blur="isTotalQtyValid($index)" class="form-control" row="4" name="order-cancel-remarks" id="order-cancel-remarks" placeholder="Remarks" maxlength="255" ng-model="remarks"></textarea>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="order-cancel-modalCancel" ng-click="resetCancelOrder()">Cancel</button>
-                        <button type="submit" class="btn btn-primary thButton modelButtonOk" id="order-cancel-modalOk">Cancel Order</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </form>
-        </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<!-- Old Modal Box -->
-<!-- Modal - Cancel Order Starts -->
-<div class="modal fade" id="modal-order-cancel-old" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <p>Cancel Order <span id="cancel-order-modalClose" class="model-close" data-dismiss="modal">X</span></p>
-            </div>
-
-            <div class="modal-body cancelorderpopup">
-                <p>Are you sure you want to cancel your order? </p>
-
-              <div class="form-group"> <!-- ng-class="{'has-error':cancelOrderRemarks.length==0}" -->
-                    <label for="merchant-block-remarks" class="control-label">Remarks <span class="reqStar">*</span></label> 
-                      <textarea ng-change="checkVal()" class="form-control" row="4" name="order-cancel-remarks-old" id="order-cancel-remarks-old" placeholder="Remarks" maxlength="30" ng-model="cancelOrderRemarks" ></textarea>
-                    </div> 
-
-                <p class="cancelOrderModel">Note: Once an order is cancelled it cannot be restored</p>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancelCancelOrder">Cancel</button>
-                <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="modalOkButtonCancelOrder" >OK</button>
             </div>
         </div>
     </div>

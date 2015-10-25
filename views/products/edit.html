@@ -52,18 +52,6 @@
                                 </div>
                               </div>
                             </div>
-
-                            <div class="row" check-acl="showMerchId" ng-if="model.merchantCode">
-                              <div class="col-md-11 paddnone">
-                                <div class="form-group">
-                                  <label for="product-edit-fbsp-sku" class="col-md-5 col-sm-6 col-xs-5 control-label">Merchant ID</label>
-                                  <div class="col-md-7 col-sm-6 col-xs-7">
-                                    <p id="product-edit-merch-id" class="form-control-static" ng-bind="model.merchantCode || constants.notAvailable"></p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
                             <div class="row"  ng-if="!showMerSku">
                               <div class="col-md-11 paddnone">
                                 <div class="form-group">
@@ -99,7 +87,7 @@
 
                               <div class="row productIdCode" ng-if="showProductCode">
                                 <div class="col-md-12 col-sm-12 col-xs-12 paddnone">
-                                  <div class="form-group">
+                                  <div class="form-group required">
                                     <label for="product-edit-product-id" class="col-md-5 col-sm-6 col-xs-5 control-label">Product ID</label>
                                     <div class="one-input-select prct-dflt">
                                       <div class="col-md-3 col-sm-3 col-xs-12 xstxt-marbtm">
@@ -251,12 +239,12 @@
                               <label for="product-edit-retailPrice" class="control-label">Retail Price</label>
                               <div class="one-input-select">
                                 <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
-                                  <select ng-disabled="disableCurrency" id="product-edit-retailPriceCurrency" name="product-edit-retailPriceCurrency" class="form-control" ng-model="retailPriceCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                  <select ng-disabled="selectSGD" id="product-edit-retailPriceCurrency" name="product-edit-retailPriceCurrency" class="form-control" ng-model="retailPriceCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
                                     <option value="">Select</option>
                                   </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
-                                  <input type="number" name="product-edit-retailPrice" min="0.01" class="form-control" id="product-edit-retailPrice" placeholder="Max. 20000" ng-model="model.retailPrice" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidDecimal" required-message="validationMessages.invalidnumber" required step="10"/>
+                                  <input type="number" name="product-edit-retailPrice" min="0.01" class="form-control" id="product-edit-retailPrice" placeholder="Max. 20000" ng-model="model.retailPrice" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.invalidnumber" required step="10"/>
                                 </div>
                               </div>
                             </div>
@@ -277,12 +265,12 @@
                               <label for="product-create-declaredValue" class="control-label">Declared value</label>
                               <div class="one-input-select">
                                 <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
-                                  <select ng-disabled="disableCurrency" name="product-edit-declaredValueCurrency" id="product-edit-declaredValueCurrency" class="form-control" ng-model="declaredValueCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                  <select ng-disabled="selectSGD" name="product-edit-declaredValueCurrency" id="product-edit-declaredValueCurrency" class="form-control" ng-model="declaredValueCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
                                     <option value="">Select</option>
                                   </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
-                                  <input type="number" id="product-edit-declaredValue" name="product-edit-declaredValue" ng-model="model.declaredValue" class="form-control" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" placeholder="Max. 20000" invalid-message="validationMessages.invalidDecimal" required-message="validationMessages.invalidnumber" required step="10"/>
+                                  <input type="number" id="product-edit-declaredValue" name="product-edit-declaredValue" ng-model="model.declaredValue" class="form-control" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" placeholder="Max. 20000" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.invalidnumber" required step="10"/>
                                 </div>
                               </div>
                             </div>
@@ -300,12 +288,12 @@
                               <label for="product-edit-costprice" class="control-label">Cost Price</label>
                               <div class="one-input-select">
                                 <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
-                                  <select ng-disabled="disableCurrency" class="form-control" id="product-edit-costPriceCurrency" name="product-edit-costPriceCurrency" ng-model="costPriceCurrencyCtrl" ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode" validator="isCodeValid(costPriceCurrencyCtrl.currencyCode, model.costPrice)" invalid-message="validationMessages.required">
+                                  <select ng-disabled="selectSGD" class="form-control" id="product-edit-costPriceCurrency" name="product-edit-costPriceCurrency" ng-model="costPriceCurrencyCtrl" ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode" validator="isCodeValid(costPriceCurrencyCtrl.currencyCode, model.costPrice)" invalid-message="validationMessages.required">
                                     <option value="">Select</option>
                                   </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
-                                  <input type="number" name="product-edit-costprice" class="form-control" id="product-edit-costprice" placeholder="Max. 20000" ng-model="model.costPrice" invalid-message="validationMessages.invalidDecimal" step="10" validator="isCodeValidPrice(costPriceCurrencyCtrl.currencyCode, model.costPrice)"/>
+                                  <input type="number" name="product-edit-costprice" class="form-control" id="product-edit-costprice" placeholder="Max. 20000" ng-model="model.costPrice" invalid-message="validationMessages.invalidnumber" step="10" validator="isCodeValidPrice(costPriceCurrencyCtrl.currencyCode, model.costPrice)"/>
                                 </div>
                               </div>
                             </div>
@@ -316,7 +304,7 @@
                             <div class="form-group">
                               <label for="product-edit-inventoryLevel" class="control-label">Inventory Alert Level</label>
                                   <div class="popoverHldr">
-                                    <span class="glyphicon glyphicon-info" id="product-edit-invertoryalerticon"
+                                    <span class="glyphicon glyphicon-info" 
                                           data-container="body" 
                                           data-toggle="popover" 
                                           data-placement="right" 
@@ -524,7 +512,7 @@
                         Line Chart
                       </header>
                       <section>
-                        <!-- <nvd3 options="line.options" data="lineChartData"></nvd3> -->
+                        <nvd3 options="line.options" data="lineChartData"></nvd3>
                       </section>
                     </article>
                   </div>
@@ -549,10 +537,10 @@
                 <label class="disblk-xs text-right">
                   <input type="checkbox" id="product-edit-isactive" name="isActive" ng-model="model.isActive"> Is Active
                 </label>
-                <button type="button" class="btn btn-default" ng-click="back()" id="product-edit-modaCancel">Cancel</button>
-                <button type="button" class="btn btn-danger" ng-click="archive(1)" ng-show="!model.dateArchived" check-acl="archiveProduct" id="product-edit-modaArchive">Archive</button>
+                <button type="button" class="btn btn-default" ng-click="back()">Cancel</button>
+                <button type="button" class="btn btn-danger" ng-click="archive(1)" ng-show="!model.dateArchived" check-acl="archiveProduct">Archive</button>
                 <!--<button type="button" class="btn btn-danger" ng-click="archive(0)" ng-show="model.dateArchived">Restore</button>-->
-                <button class="btn btn-primary" type="submit" check-acl="editProductSave" id="product-edit-modaSave">Save</button>
+                <button class="btn btn-primary" type="submit" check-acl="editProductSave">Save</button>
               </div>
               <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="archiveProduct" showmessage="hide"></div>
             </form>

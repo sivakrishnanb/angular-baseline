@@ -1,6 +1,6 @@
 define(['app', 'utility/messages'], function (app, messages) {
-    app.controller('Products', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', '$routeParams', '$rootScope', '$timeout','notify', '$localStorage',
-        function ($scope, $bus, $location, ngProgress, $http, $constants, $routeParams, $rootScope, $timeout,notify, $localStorage) {
+    app.controller('Products', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', '$routeParams', 'toaster', '$rootScope', '$timeout','notify', '$localStorage',
+        function ($scope, $bus, $location, ngProgress, $http, $constants, $routeParams, toaster, $rootScope, $timeout,notify, $localStorage) {
 
             $scope.productFilterOptions = $constants.productFilterOptions;
 
@@ -25,68 +25,6 @@ define(['app', 'utility/messages'], function (app, messages) {
                 }
             }
 
-            $scope.archive = function (fbspSkuId) {
-
-                $('#confirm-archive-modal').modal();
-                    
-                $('#archivemodalCancel,#archive-model-close').on('click',function(e){
-                   $('#archive-modalOk').off('click');
-                }); 
-                        
-
-                    $('#archive-modalOk').on('click',function(e){
-                        var request = {
-                            fbspSkuId: fbspSkuId,
-                            archived: 1
-                        }
-                        $bus.fetch({
-                            name: 'editproducts',
-                            api: 'editproducts',
-                            params: null,
-                            data: JSON.stringify(request)
-                        })
-                            .done(function (success) {
-                                if (success.response.success.length) {
-                                    var products = [];
-                                    var data = success.response.data;
-                                    if (!_.isArray(data.products)) {
-                                        _.forEach(data.products, function (product) {
-                                            products.push(product)
-                                        });
-                                    } else {
-                                        products = data.products;
-                                    }
-                                    $scope.getPagedDataAsync();
-                                    notify.message(messages.productArchiveSuccess,'','succ');
-                                    $scope.productEdited = true;
-                                  
-                                } else {
-                                    var errors = [];
-                                    _.forEach(success.response.errors, function (error) {
-                                        errors.push(error)
-                                    });
-                                    if (errors.length) {
-                                        notify.message($rootScope.pushJoinedMessages(errors));
-                                    } else {
-                                        notify.message(messages.productArchiveError);
-                                    }
-                                }
-                            }).fail(function (error) {
-                                notify.message(messages.productArchiveError);
-                            });
-                        $('#archivemodalCancel').click();
-                        $('.modal-backdrop.fade.in').remove();
-                        $('#archive-modalOk').off('click');
-                });
-                
-                $('#confirm-archive-modal').keypress(function(e){
-                    if(e.keyCode == 13 || e.keyCode == 32){
-                        $('#archive-modalOk').click();
-                    }
-                });
-            }
-
-
             $scope.checkOrderRowsCount = function()
             {
                 if($scope.showSelectedLength==0){
@@ -95,16 +33,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                     $location.path('/orders/create/product');
                 }
             }
-
-            $scope.checkRemovalRowsCount = function()
-            {
-                if($scope.showSelectedLength==0){
-                    $('#no-productsSelected-modal').modal();
-                }else{
-                    $location.url('/orders/removals/create/product');
-                }
-            }
-
+            
             $scope.getCategory = function (cat) {
                 return _.findWhere($scope.categoryOptions, {
                     'value': cat
@@ -180,17 +109,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                 }
             }
 
-            $scope.getCurrentStatus = function() {
-                
-                if((!$routeParams.status)||($routeParams && $routeParams.status=='active')){
-                    $scope.popUpCondition='inactive';
-                    return 'Inactive';
-                }
-                else if ($routeParams && $routeParams.status=='inactive'){
-                    $scope.popUpCondition='active';
-                    return 'Active';
-                }
-            }
+
 
             // For getting the header title
 
@@ -217,10 +136,10 @@ define(['app', 'utility/messages'], function (app, messages) {
                     return ($routeParams.status != 'archived' && $routeParams.status != 'inactive');
                     break;
                 case 'active':
-                    return ($routeParams.status == 'all' || ($routeParams.status != 'active' && $routeParams.status != 'archived' && $location.path()!='/products'));
+                    return (($routeParams.status != 'active' && $routeParams.status != 'archived' && $location.path()!='/products'));
                     break;
                 case 'inactive':
-                    return ($routeParams.status == 'all' || $routeParams.status != 'inactive' && $routeParams.status != 'archived');
+                    return ($routeParams.status != 'inactive' && $routeParams.status != 'archived');
                     break;
                 case 'archived':
                     return ($routeParams.status != 'archived');
@@ -306,274 +225,8 @@ define(['app', 'utility/messages'], function (app, messages) {
                     var actDate = (option.createdDate)?option.createdDate:$constants.notAvailableText;
                     return actDate;
                 }
-            };
-
-            $scope.closeUpdateModal = function() {
-                $('#prod-bulk-approve').modal('hide');
-                $('.modal-backdrop.fade.in').remove();
-                $location.path($rootScope.bulkProdUpdate.status ? '/products/active' : '/products/inactive');
-            };
-
-            $scope.closeArchiveModal = function() {
-                $('#prod-bulk-archive').modal('hide');
-                $('.modal-backdrop.fade.in').remove();
-                $scope.getPagedDataAsync();
-                $rootScope.getProductsCount();
-                $scope.toggleCheckBoxVal = false;
-            };
-
-            $('#prod-bulk-approve').on('hidden.bs.modal', function (e) {
-                $location.path($rootScope.bulkProdUpdate.status ? '/products/active' : '/products/inactive');
-                $scope.$apply();
-            });
-
-            $scope.getBulkApprovePercentage = function(key) {
-                if (!$rootScope.bulkProdUpdate) return;
-                if      (key == 'total')    return Math.round(($rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount)*100);
-                else if (key == 'success')  return Math.round($rootScope.bulkProdUpdate.prodsSuccess  / $rootScope.bulkProdUpdate.totalProdsCount*100);
-                else if (key == 'failed')   return Math.round($rootScope.bulkProdUpdate.prodsFailed   / $rootScope.bulkProdUpdate.totalProdsCount*100)
             }
-
-            $scope.changeProdStauts = function(isActive) {
-
-                $rootScope.prods = [];
-                angular.forEach($scope.myData, function(prod) {
-                    if (prod.Selected && prod.isActive != isActive) {
-                        $rootScope.prods.push(prod.fbspSkuId)
-                    }
-                });
-                if ($rootScope.prods.length == 0) return;
-                $('#prod-bulk-approve').modal();
-                $rootScope.isBulkProductUpdating = true;
-                $rootScope.activateOverlay = true;
-                var totalCount = $rootScope.prods.length;
-                $rootScope.bulkProdUpdate = {
-                    totalProdsCount:totalCount,
-                    prodsSuccess:0,
-                    prodsFailed:0,
-                    prodsHitCount:0,
-                    slicedProdsLength:0,
-                    response:[],
-                    successSKU:[],
-                    failedSKU:[],
-                    status:isActive
-                };
-
-                var changeStatus = function () {
-                    var slicedProds = [];
-                    if ($rootScope.prods.length > 5) {
-                        slicedProds = $rootScope.prods.slice(0, 5);
-                        $rootScope.prods.splice(0,5);
-                    }
-                    else slicedProds = angular.copy($rootScope.prods);
-                    $rootScope.bulkProdUpdate.slicedProdsLength = slicedProds.length;
-
-
-                    angular.forEach(slicedProds, function(fbsku) {
-                        $bus.fetch({
-                            name: 'updateProductStatus',
-                            api: 'updateProductStatus',
-                            params: {
-                                fbspSkuId: fbsku,
-                                isActive: isActive ? 1 : 0
-                            },
-                            data: null
-                        })
-                            .done(function (success) {
-                                if (success && success.response && success.response.status == 'Exception') {
-                                    $rootScope.bulkProdUpdate.prodsFailed++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    var failureMsg;
-                                    angular.forEach(success.response.errors, function(value, key){
-                                        failureMsg = value;
-                                    })
-                                    $rootScope.bulkProdUpdate.failedSKU.push(success.params.fbspSkuId + ' - ' + failureMsg);
-
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            //(isActive) ? $location.path('/products/active') : $location.path('/products/inactive');
-                                            console.log('total prods updated :' + $rootScope.bulkProdUpdate.totalProdsCount + '\nSuccess Count :' + $rootScope.bulkProdUpdate.prodsSuccess + '\nFailure Count :' + $rootScope.bulkProdUpdate.prodsFailed);
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-                                    }
-                                } else {
-                                    $rootScope.bulkProdUpdate.prodsSuccess++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    $rootScope.bulkProdUpdate.successSKU.push(success.params.fbspSkuId);
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            //(isActive) ? $location.path('/products/active') : $location.path('/products/inactive');
-                                            console.log('total prods updated :' + $rootScope.bulkProdUpdate.totalProdsCount + '\nSuccess Count :' + $rootScope.bulkProdUpdate.prodsSuccess + '\nFailure Count :' + $rootScope.bulkProdUpdate.prodsFailed);
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-
-                                    }
-                                }
-
-
-                            }).fail(function (error) {
-                                $rootScope.bulkProdUpdate.prodsFailed++;
-                                $rootScope.bulkProdUpdate.response.push(error);
-                                $rootScope.bulkProdUpdate.prodsHitCount++;
-                                $rootScope.bulkProdUpdate.failedSKU.push(error.params.fbspSkuId);
-                                ngProgress.complete();
-                                if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                    if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                        $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                        changeStatus();
-                                    }
-                                    else {
-                                        //(isActive) ? $location.path('/products/active') : $location.path('/products/inactive');
-                                        console.log('total prods updated :' + $rootScope.bulkProdUpdate.totalProdsCount + '\nSuccess Count :' + $rootScope.bulkProdUpdate.prodsSuccess + '\nFailure Count :' + $rootScope.bulkProdUpdate.prodsFailed);
-                                        $rootScope.activateOverlay = false;
-                                    }
-                                }
-                            });
-                    });
-                };
-                changeStatus();
-            };
-
-            $scope.changeProdStautsArchiveClick = function() {
-
-                $('#confirm-modal-archive').modal();
-
-                $('#modalCancel-archive,.model-close').on('click',function(e){
-                    $('#modalOk-archive').off('click');
-                }); 
-
-                $('#modalOk-archive').on('click',function(e){
-                    $('#modalCancel-archive').click();
-                    $('.modal-backdrop.fade.in').remove();
-                    $('#modalOk-archive').off('click');
-                    $scope.changeProdStautsArchive();
-                });
-
-            }
-
-            $scope.changeProdStautsArchive = function() {
-
-                $rootScope.prods = [];
-                angular.forEach($scope.myData, function(prod) {
-                    if (prod.Selected) {
-                        $rootScope.prods.push(prod.fbspSkuId)
-                    }
-                });
-                if ($rootScope.prods.length == 0) return;
-                $('#prod-bulk-archive').modal();
-                $rootScope.isBulkProductUpdating = true;
-                $rootScope.activateOverlay = true;
-                var totalCount = $rootScope.prods.length;
-                $rootScope.bulkProdUpdate = {
-                    totalProdsCount:totalCount,
-                    prodsSuccess:0,
-                    prodsFailed:0,
-                    prodsHitCount:0,
-                    slicedProdsLength:0,
-                    response:[],
-                    successSKU:[],
-                    failedSKU:[],
-                    status:''
-                };
-
-                var changeStatus = function () {
-                    var slicedProds = [];
-                    if ($rootScope.prods.length > 5) {
-                        slicedProds = $rootScope.prods.slice(0, 5);
-                        $rootScope.prods.splice(0,5);
-                    }
-                    else slicedProds = angular.copy($rootScope.prods);
-                    $rootScope.bulkProdUpdate.slicedProdsLength = slicedProds.length;
-
-
-                    angular.forEach(slicedProds, function(fbsku) {
-                        $bus.fetch({
-                            name: 'editproducts',
-                            api: 'editproducts',
-                            params: null,
-                            data: {
-                                fbspSkuId: fbsku,
-                                archived: 1
-                            }
-                        })
-                            .done(function (success) {
-                                if (success && success.response && success.response.status == 'Exception') {
-                                    $rootScope.bulkProdUpdate.prodsFailed++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    var failureMsg;
-                                    angular.forEach(success.response.errors, function(value, key){
-                                        failureMsg = value;
-                                    })
-
-                                    $rootScope.bulkProdUpdate.failedSKU.push(fbsku + ' - ' + failureMsg);
-
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-                                    }
-                                } else {
-                                    $rootScope.bulkProdUpdate.prodsSuccess++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    $rootScope.bulkProdUpdate.successSKU.push(fbsku);
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-
-                                    }
-                                }
-
-
-                            }).fail(function (error) {
-                                $rootScope.bulkProdUpdate.prodsFailed++;
-                                $rootScope.bulkProdUpdate.response.push(error);
-                                $rootScope.bulkProdUpdate.prodsHitCount++;
-                                $rootScope.bulkProdUpdate.failedSKU.push(error.params.fbspSkuId);
-                                ngProgress.complete();
-                                if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                    if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                        $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                        changeStatus();
-                                    }
-                                    else {
-                                        $rootScope.activateOverlay = false;
-                                    }
-                                }
-                            });
-                    });
-                };
-                changeStatus();
-            };
-
+            
             $scope.toggleCheckBox = function () {
 
                 $scope.toggleCheckBoxVal = ($scope.toggleCheckBoxVal) ? true : false;
@@ -1020,7 +673,12 @@ define(['app', 'utility/messages'], function (app, messages) {
 
             $('html').click(function (e) {
                 if ($scope.rangepicker && ($(e.target).closest(".dropdown-submenu").length ||
-                    $(e.target).hasClass('day') || $(e.target).hasClass('month') || $(e.target).hasClass('year'))) {
+                    $(e.target).attr('class')=='day' || $(e.target).attr('class')=='month' || $(e.target).attr('class')=='year'||
+                    $(e.target).attr('class')=='old day' || $(e.target).attr('class')=='range day'|| $(e.target).attr('class')=='old range day' ||
+                    $(e.target).attr('class')=='selected day' || $(e.target).attr('class')=='today selected day' || $(e.target).attr('class')=='today day' ||
+                    $(e.target).attr('class')=='active selected day'|| $(e.target).attr('class')=='new day' || $(e.target).attr('class')=='today active selected day'||
+                    $(e.target).attr('class')=='new active selected day' || $(e.target).attr('class')=='new selected day' || $(e.target).attr('class')=='new range day' ||
+                    $(e.target).attr('class')=='new today day' || $(e.target).attr('class')=='new today selected day')) {
                     e.stopPropagation();
                     $scope.tickSelection($scope.dateOptions, 8);
                 }
@@ -1034,19 +692,6 @@ define(['app', 'utility/messages'], function (app, messages) {
                 $rootScope.prodSKUs = prodSKUs;
             };
 
-
-            $scope.getProductScrollClassTop = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'productsPageScroll nano';
-            }
-            $scope.getProductScrollClassBot = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'nano-content';
-            }
 
             $scope.init = function () {
 
@@ -1092,9 +737,6 @@ define(['app', 'utility/messages'], function (app, messages) {
                 };
                 
                 $scope.getPagedDataAsync = function () {
-
-                    var deferred = $.Deferred();
-
                     ngProgress.start();
                     
                     $scope.loading = {
@@ -1119,6 +761,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                                
                                 var products = [];
                                 var data = success.response.data;
+                                //toaster.pop("success", messages.productList, messages.retrivedSuccess);
                                 //notify.message(messages.retrivedSuccess,true);
                                 if (data && data.products) {
                                     if (!_.isArray(data.products)) {
@@ -1135,19 +778,20 @@ define(['app', 'utility/messages'], function (app, messages) {
                                     $scope.setPageSizeClickLength();
                                 }
                             } else {
-                                $scope.myData = [];
                                 var errors = [];
                                 _.forEach(success.response.errors, function (error) {
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0);
                                     //notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.productListFetchError, "", 0);
                                     //notify.message(messages.productListFetchError);
                                 }
                             }
                             ngProgress.complete();
-                            deferred.resolve();
+                            
                         }).fail(function (error) {
                             
                             $scope.loading = {
@@ -1155,18 +799,13 @@ define(['app', 'utility/messages'], function (app, messages) {
                                 load : false
                             }
                             
+                            //toaster.pop("error", messages.productListFetchError);
                             //notify.message(messages.productListFetchError);
                             ngProgress.complete();
-                            deferred.reject();
                         });
-
-                        return deferred.promise();
                 };
-                $scope.getPagedDataAsync().done(function(){
-                    $timeout(function() {
-                        $(".productsPageScroll.nano").nanoScroller({ flash: true,preventPageScrolling: true,iOSNativeScrolling: true});
-                    }, 500);
-                });
+
+                $scope.getPagedDataAsync();
                 $scope.$watch('pagingOptions', function (newVal, oldVal) {
 
                     if (newVal !== oldVal) {
@@ -1208,6 +847,5 @@ define(['app', 'utility/messages'], function (app, messages) {
                 }
                 
             };
-
     }]);
 });

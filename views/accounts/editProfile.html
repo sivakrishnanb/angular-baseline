@@ -1,0 +1,469 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/accounts/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="propic">
+                            <img src="image.jpg" class="img-circle ">
+                        </div>
+                        <div class="proDet">
+
+                            <label class=" control-label">Karthick soolapani</label>
+                        </div>
+                        <div>
+                            <span class="pen badge admin">Admin</span>
+                        </div>
+                        <div class="panel proDet">
+                            <span
+                                class="glyphicon glyphicon-icon-MyAccount-email email-color"></span>
+                            <span class="full expOrCol proDetail">Karthik@singpost.com</span>
+                        </div>
+                        <div class="panel proDet">
+                            <span
+                                class="glyphicon glyphicon-icon-MyAccount-email email-color"></span>
+                            <span class="full expOrCol proDetail">Karthi Studios Pvt
+                                Ltd</span><br> <span class="full expOrCol uen">UEN :
+                                200823070C</span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-8">
+                        <form role="form" name="create_shipment">
+                             <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12 padd0">
+                                    <div class="thContent col-lg-11 col-sm-10"> 
+                                        You can run reports of your account activity here. You can download all data or use filters to limit results to specific ones.
+                                    </div>
+                                </div>
+                              </div>
+                            <div class="row">
+                                <div
+                                    class="panel panel-default col-md-5 col-sm-4 col-xs-4 paddnone">
+
+                                    <div>
+                                        <h4 class="header3">Account Information</h4>
+                                    </div>
+                                    <div class="panel-body editPro-head1">
+
+                                        <div id="collapseFour" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-5 col-sm-5 col-xs-5 control-label">Merchant ID</label> 
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-7 col-sm-7 col-xs-7 control-label">: 1234567</label>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-5 col-sm-5 col-xs-5 control-label">Date joined
+                                                            </label> 
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-7 col-sm-7 col-xs-7 control-label">: 15 May 2015</label>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="panel panel-default col-md-1 col-sm-1 col-xs-1 paddnone">
+                                </div>
+
+                                <!-- right panel -->
+
+                                <div
+                                    class="panel panel-default col-md-6 col-sm-4 col-xs-4 paddnone">
+
+                                    <div>
+                                        <h4 class="header3">Change Password</h4>
+                                    </div>
+                                    <div class="panel-body editPro-head1">
+
+                                        <div id="collapseFour" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group required myPwd">
+                                                            <label for="shipment-create-addressLine2"
+                                                                class=" control-label">Current Password</label> <input
+                                                                name="get-started-phone" type="tel" class="form-control"
+                                                                id="get-started-phone" placeholder="Current Password"
+                                                                ng-model="model.contactPhone"
+                                                                invalid-message="validationMessages.invalidphone"
+                                                                maxlength="30" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group required myPwd">
+                                                            <label for="shipment-create-addressLine2"
+                                                                class=" control-label">New Password</label> <input
+                                                                name="get-started-phone" type="tel" class="form-control"
+                                                                id="get-started-phone" placeholder="New Password"
+                                                                ng-model="model.contactPhone"
+                                                                invalid-message="validationMessages.invalidphone"
+                                                                maxlength="30" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group required myPwd">
+                                                            <label for="shipment-create-addressLine2"
+                                                                class=" control-label">Retype Password</label> <input
+                                                                name="get-started-phone" type="tel" class="form-control"
+                                                                id="get-started-phone" placeholder="Retype Password"
+                                                                ng-model="model.contactPhone"
+                                                                invalid-message="validationMessages.invalidphone"
+                                                                maxlength="30" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group thAppFil">
+                                                        <button class="btn btn-primary thButton changeBtn1">Change
+                                                            Password</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="container-fluid"></div> -->
+                                <!-- <div class="panel-group">  -->                                   
+                                    <div>
+                                        <h4 class="header3">Contact Details<a href="#/accounts/edit" class="edit-color"> (edit) </a></h4>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body editPro-head">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">ContactNumber</label>
+                                                                <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">:+65 9894 2230</label>                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">Country</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: Singapore</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">Address
+                                                                Line1</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: 23, Balam Road</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">Address
+                                                                Line2</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: #04 - 1009</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">City</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: Singapore</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">State/Region</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: Singapore</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">ZIP / Postal Code</label>
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: 370023</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">Landline</label>
+                                                                <label for="shipment-create-plan-name"
+                                                                class="col-md-5 col-sm-6 col-xs-12 control-label">: +65 6233 0393</label>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>                                            
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <div class="input-group thAppFil">
+                                                    <button class="btn btn-primary thButton UpdatePro-btn">Update
+                                                        Profile</button>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <!-- contact details ends-->
+                                <!-- </div> -->
+                                <div>
+                                    <h4 class="header3">Company Information</h4>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body editPro-head">
+                                            <div class="row">
+                                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-4 col-sm-4 col-xs-12 control-label">Revenue
+                                                            per annum</label> <label for="shipment-create-plan-name"
+                                                            class="col-md-8 col-sm-8 col-xs-12 control-label">:S$
+                                                            1,000,000 - 1,999,999</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-6 col-sm-6 col-xs-12 control-label">Company
+                                                            Size</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-4 col-sm-4 col-xs-12 control-label">Year
+                                                            in which company was founded</label> <label
+                                                            for="shipment-create-plan-name"
+                                                            class="col-md-8 col-sm-8 col-xs-12 control-label">:
+                                                            2007</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-6 col-sm-6 col-xs-12 control-label">Permanent
+                                                            employees</label> <label for="shipment-create-plan-name"
+                                                            class="col-md-6 col-sm-6 col-xs-12 control-label">:
+                                                            11</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-4 col-sm-4 col-xs-12 control-label">Company
+                                                            website</label> <label for="shipment-create-plan-name"
+                                                            class="col-md-8 col-sm-8 col-xs-12 control-label">:
+                                                            www.karthistudios.com.sg</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                                    <div class="form-group myPwd">
+                                                        <label for="shipment-create-plan-name"
+                                                            class="col-md-6 col-sm-6 col-xs-12 control-label">Temporary
+                                                            employees</label> <label for="shipment-create-plan-name"
+                                                            class="col-md-6 col-sm-6 col-xs-12 control-label">:
+                                                            11</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="header3">Business Information</h4>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body editPro-head">
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Orders
+                                                                per month</label> <label for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                250 - 399</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Average
+                                                                units per order</label> <label for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                less than 3</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Percentage
+                                                                of domestic orders</label> <label
+                                                                for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                90%</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Product
+                                                                Category</label> <label for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                Electroinics, Toys</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Number
+                                                                of unique SKUs handled</label> <label
+                                                                for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                11</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Number
+                                                                of online channels currently selling in</label> <label
+                                                                for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                2</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">Sales
+                                                                channel link</label> <label for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <div class="form-group myPwd">
+                                                            <label for="shipment-create-plan-name"
+                                                                class="col-md-8 col-sm-8 col-xs-12 control-label">No,
+                                                                of oversees countries currently selling in</label> <label
+                                                                for="shipment-create-plan-name"
+                                                                class="col-md-4 col-sm-5 col-xs-12 control-label">:
+                                                                4</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="header3">Close Account</h4>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body editPro-head">
+                                                <div class="row">
+                                                    <div class="col-md-11 col-sm-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="shipment-create-plan-name" class="col-sm-6">This
+                                                                action will close/delete your account permanently</label> <label
+                                                                for="shipment-create-plan-name" class="col-sm-6">:
+                                                                All inventory must be removed from the warehouse</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-11 col-sm-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="shipment-create-plan-name" class="col-sm-6"></label>
+                                                            <label for="shipment-create-plan-name" class="col-sm-6">:
+                                                                All Orders must be closed</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-11 col-sm-12 col-xs-12">
+
+                                                        <div class="form-group">
+                                                            <label for="shipment-create-plan-name" class="col-sm-6">
+
+                                                            </label> <label for="shipment-create-plan-name" class="col-sm-6">:
+                                                                An email will be sent regarding pending payments</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group thAppFil" style="">
+                                                    <button class="btn btn-primary thButton closeAcc">Close
+                                                        Account</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+        id="modal-shipment-create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Create Shipment</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please add atleast one product to create shipment</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -10,29 +10,26 @@ require.config({
         'angular-sanitize': 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.min',
         'jquery': 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min',
         'downloader': '../lib/downloader/jquery.fileDownload.min',
-        'underscore': '../lib/underscore/underscore.min',
+        'underscore': '../lib/underscore/underscore-min',
         'socketio': 'https://cdn.socket.io/socket.io-1.3.5',
         'ngProgress': '../lib/angular/ngProgress.min',
         'ngAnimate': 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-animate.min',
-
+        'ngToaster': '../lib/angular/ngToaster.min',
         'bootstrap': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min',
         'datepicker': '../lib/datepicker/bootstrap-datepicker',
-        'datetimepicker': '../lib/datepicker/bootstrap-datetimepicker.min',
-        'moment':'../lib/moment/moment.min',
-        'momentTimezone':'../lib/moment/moment-timezone.min',
+        'd3': '../lib/nvd3/d3.min',
+        'nvd3': '../lib/nvd3/nv.d3.min',
+        'angular-nvd3': '../lib/nvd3/angular-nvd3.min',
         'angular-validator': '../lib/angular/angular-validator.min',
         'ng-multiselect' : '../lib/angular/ng-multiselect.min',
         'g-map':'../lib/gmap/gmap',
+        'app': 'router/ng-route',
         'nanoScroller': '../lib/nanoscroller/nanoscroller.min',
-        'timeAgo': '../lib/timeago/timeago.min',
+        'timeAgo': '../lib/timeago/timeago',
         'jquery-ui': '../lib/jquery/jquery-ui.min',
         'aes' : '../lib/crypto/aes',
         'map' : 'utility/map',
-        'ngStorage':'../lib/angular/ngStorage.min',
-        'highcharts':'../lib/highcharts/highcharts.min',
-        'tabslideout':'../lib/tabslideout/tabSlideOut.min',
-        'html2canvas':'../lib/html2canvas/html2canvas',
-	'app': 'router/ng-route'
+        'ngStorage':'../lib/angular/ngStorage.min'
     },
     
     // Add angular modules that does not support AMD out of the box, put it in a shim
@@ -45,39 +42,34 @@ require.config({
         'socketio':{exports:'io'},
         'ngProgress':['angular'],
         'ngAnimate':['angular'],
+        'ngToaster':['angular'],
         'ng-multiselect':['angular'],
         'angular-validator':['angular'],
         'bootstrap':['jquery'],
         'downloader':['jquery'],
         'nanoScroller':['jquery'],
         'timeAgo':['jquery'],
-        'highcharts':['jquery'],
-        'tabslideout':['jquery'],
-        'html2canvas':['jquery'],
         'g-map':{
           exports: 'google'
         },
         'datepicker':{
             deps: ['jquery', 'bootstrap'],
-            exports: '$.fn.datepicker'
+    exports: '$.fn.datepicker'
         },
-        'datetimepicker':{
-            deps: ['jquery', 'bootstrap'],
-            exports: '$.fn.datepicker'
+        'nvd3':{
+          exports: 'nv',
+          deps: ['global']
         },
+        'angular-nvd3': ['angular','global','nvd3'],
         'underscore': {
-          exports: 'window._'
+          exports: '_'
         }
     },
 
-    urlArgs : "v=1.0",
+    //urlArgs : "v=1.0",
        
     // kick start application
     deps: ['app']
-});
-define(['datepicker','moment'], function(datepicker,moment) {
-      window.datepicker = datepicker;
-      window.moment = moment;
 });
 (function() {
     return (window)?window.htmlVersion="1.0":"";

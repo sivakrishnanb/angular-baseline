@@ -2,39 +2,6 @@ var app = angular.module('ezyCommerce', ['angularValidator', 'noCAPTCHA']);
 
 app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$timeout', function($scope, $rootScope, $http, $window,$timeout){
 
-        
-        $scope.currentLocation = {countryCode:'SG',currencyCode:'SGD'};
-
-        $scope.countryShortCodes = { australia : 'AU', singapore : 'SG' };
-
-        $scope.termsAndConditionFile = '/content/ezyCommerce General T&Cs.pdf';
-
-        $scope.isVisible = function(value){
-
-            switch(value){
-                case 'subsidyGrant' : 
-                    return ($scope.currentLocation.countryCode == $scope.countryShortCodes.australia)?false:true;
-                    break;
-                case 'existingSingpostCustomer' :
-                    return ($scope.currentLocation.countryCode == $scope.countryShortCodes.australia)?false:true;
-                    break;
-
-                case 'signup':
-                    return ($scope.currentLocation.countryCode == $scope.countryShortCodes.australia)?
-                        "Got questions? Contact support@au.ezycommerce.com or search for our FAQs & Help section" :
-                        "Got questions? Contact us at +65 6229 5979 or email us at support@ezycommerce.com";
-                    break;
-
-                    case 'termsAndConditionFile' :
-                    if($scope.currentLocation.countryCode == $scope.countryShortCodes.australia){
-                        $scope.termsAndConditionFile = '/content/AU/ezyCommerce General T&Cs.pdf';
-                    }
-                    break;
-                default :
-                    return true;
-            }
-        }
-
         $scope.scrollPageToTop = function () {
                 $window.scroll(0,0);
         };
@@ -349,27 +316,20 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
                 }
         };
         $scope.setDefaultCountry = function() {
-            var defaultCountryCode = $scope.currentLocation.countryCode;
+            var defaultCountryCode = "SG";
             for (var index = 0; index < $scope.countryList.length; index++) {
-
-                if ($scope.countryList[index].countryCode == defaultCountryCode){
+                if ($scope.countryList[index].countryCode == defaultCountryCode)
                     $scope.model.countryCode =  $scope.countryList[index].countryCode;
-                    $scope.countryName =  $scope.countryList[index].countryName;
-                    break;
-                }
+               
             }
-     
         }
         $scope.setDefaultDialCode = function()
         {
-            var defaultCountryCode = $scope.currentLocation.countryCode;
-            
+            var defaultCountryCode = "SG";
             for (var index = 0; index < $scope.countryList.length; index++) {
                 if ($scope.countryList[index].countryCode == defaultCountryCode){
                     $scope.model.dialCode =  $scope.countryList[index].dialCode;
                     $scope.model.contactNoCountryCode = $scope.countryList[index].dialCode;
-                    $scope.selectDialCode = index;
-                    $scope.compRegTypesText = $scope.compRegTypes.toString().split(',').join('/');
                     break;
                 }
             }
@@ -402,8 +362,7 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
             corpAccountNumber : "",
             email : "", password : "", retypePwd : "",
             gRecaptchaResponse:"",
-            applySme:"",
-            averageOrders:""
+            applySme:""
         };
         $rootScope.notificationMessages = [];
 
@@ -482,17 +441,6 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
                     });
         };
 
-
-        $scope.checkDomesticOrderPercentage = function(param) {
-            if(!param)
-                return true;
-            else if(!(/^[0-9]*(\.?[0-9]{1,2})?$/.test(param)))
-                return false;
-            else
-                return true;
-        }
-
-
         $scope.loadConstants = function() {
 
         $scope.validationMessages = {
@@ -512,8 +460,7 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
               invalidOnlineChannelsMax : "Maximum value should be 100",
               invalidSkusHandledMax : "Maximum value should be 20000",
               captchaError    : "Please verify Captcha",
-              salesChannelMaxLimit:"Max Limit is 100",
-              orderPercentageValid : "This field requires a number with two decimals"
+              salesChannelMaxLimit:"Max Limit is 100"
         };
 
             $scope.isReferralTypeValid = function (text, value) {
@@ -536,16 +483,12 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
                 $scope.constants = {
                         notAvailableText : "NA"
                 };
+
                 $scope.refTypes         = [{name:"SingPost sales", value:"spsales"},{name:"SME", value:"sme"}];
-		if($scope.currentLocation.countryCode=='AU'){
-                  $scope.compRegTypes     = ['ACN' , 'ABN'];
-		}else{
-		  $scope.compRegTypes     = ['UEN' , 'GSTN']; 
-		}
-                //$scope.unitsRange       = ['less than 250', '250-499', '500-1000', '1001-2000','2001-3000','Above 3000'];
-                $scope.unitsRange       = ['Less than 50','50-100','101-250','251-500','501-1000','1001-2000','2001-3000','Above 3000'];
+                $scope.compRegTypes     = ['UEN' , 'GSTN'];
+                $scope.unitsRange       = ['less than 250', '250-499', '500-1000', '1001-2000','2001-3000','Above 3000'];
                 $scope.orderUnitsRange  = ['less than 2', '2-3', '4-5', '6-10','Above 10'];
-                $scope.revenueRange     = ['less than '+$scope.currentLocation.currencyCode+' 500,000',$scope.currentLocation.currencyCode+' 500,000 - 999,999',$scope.currentLocation.currencyCode+' 1,000,000 - 1,999,999',$scope.currentLocation.currencyCode+' 2,000,000 - 5,000,000','Above '+$scope.currentLocation.currencyCode+' 5,000,000'];
+                $scope.revenueRange     = ['less than SGD 500,000','SGD 500,000 - 999,999','SGD 1,000,000 - 1,999,999','SGD 2,000,000 - 5,000,000','Above SGD 5,000,000'];
                 $scope.categoryOptions  = [
                                                 {name:"Electronics", value:"A" },
                                                 {name:"Apparel", value:"B"},
@@ -577,24 +520,12 @@ app.controller('myController', ['$scope', '$rootScope', '$http', '$window','$tim
                 $scope.emailAvailableSuccess = false;
                 $scope.emailFormatError=false;
 
-                $scope.isVisible('termsAndConditionFile');
-
                 $scope.clearAll();
                 $scope.pwErrorMessage1 = "";
 
                 $scope.model.isExistingCustomer=false;
-                
-		if($scope.currentLocation.countryCode=='AU'){
-                  $scope.model.companyRegType="ACN";
-		}else{
-		  $scope.model.companyRegType="UEN"; 
-		}
+                $scope.model.companyRegType="UEN";
                 $scope.setDefaultDialCode();
-
-                if($scope.currentLocation.countryCode == 'AU'){
-                    $scope.refTypes.push({name:"Others", value:"others"})
-                    $scope.refTypes = _.without($scope.refTypes,$scope.refTypes[0]);
-                }
         };
                   // For popover 
             $('[data-toggle="popover"]').popover({

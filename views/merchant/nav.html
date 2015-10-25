@@ -1,11 +1,11 @@
-<aside class="full merchantNavContainer ">
+<aside class="full">
   <article class="widget-nav">
       <ul class="list-group leftNavOne">
         <li class="zeroDim"></li>
       </ul>
   </article>
   <article class="widget-nav">
-      <ul class="list-group leftNavTwo merchantNav">
+      <ul class="list-group leftNavTwo">
         <li class="list-group-item navStatus navstatus-left">
           <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Merchant Status</span>
         </li>
@@ -32,36 +32,14 @@
           <a href="#/merchant/blocked" title="Blocked" id="merchant-nav-blocked"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Blocked</span></a>
         </li>-->
 
-
-
-
-        <li class="list-group-item navStatus navstatus-left nav-li-12" check-acl="merchantAdminDashboard" ng-if="0">
-          <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Admin Dashboard</span>
-        </li>
-
-         <li ng-class="isNavActive('merchant','orders/processmgr')" class="list-group-item nav-li-12" check-acl="merchantAdminDashboard" ng-if="0">
-          <a href="#/merchant/orders/processmgr" title="Pending Orders" id="merchant-nav-pendingOrders"><span class="glyphicon glyphicon-pending-orders"></span><span class="full expOrCol">Pending Orders</span></a>
-        </li>
-
-         <li ng-class="isNavActive('merchant','shipments/pending')" class="list-group-item nav-li-12"  check-acl="merchantAdminDashboard" ng-if="0">
-          <a href="#/merchant/shipments/pending" title="Created Shipments" id="merchant-nav-createdShipments"><span class="glyphicon glyphicon-created-shipments"></span><span class="full expOrCol">Created Shipments</span></a>
-        </li>
-
-         <li ng-class="isNavActive('merchant','shipments/intransit')"   class="list-group-item  nav-li-11" check-acl="merchantAdminDashboard" ng-if="0">
-          <a href="#/merchant/shipments/intransit" title="Shipments In Transit" id="merchant-nav-shipmentsInTransit"><span class="glyphicon glyphicon-intransit-shipments"></span><span class="full expOrCol">Shipments In Transit</span></a>
-        </li>
-       
-       
         <li class="list-group-item navStatus navstatus-left" check-acl="financeText">
           <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Finance</span>
         </li>
         <li ng-class="isNavActive('merchant','payments')" class="list-group-item" check-acl="financePayments">
-          <a href="#/merchant/payments" title="All" id="merchant-nav-payments"><span class="glyphicon glyphicon-payment"></span><span class="full expOrCol">Payments</span></a>
+       <!--   <span class="badge" ng-bind="productCount['-1'] || 0"></span>-->
+          <a href="#/merchant/payments" title="All" id="merchant-nav-payments"><span class="glyphicon glyphicon-certificate"></span><span class="full expOrCol">Payments</span></a>
         </li>
 
-
-
-        
       </ul>
   </article>
 </aside>

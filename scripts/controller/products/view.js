@@ -1,6 +1,6 @@
 define(['app', 'model/products/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('ViewProducts', ['$scope', '$bus', 'ngProgress', '$constants', '$routeParams', '$rootScope','notify',
-        function ($scope, $bus, ngProgress, $constants, $routeParams, $rootScope, notify) {
+    app.controller('ViewProducts', ['$scope', '$bus', 'ngProgress', '$constants', '$routeParams', 'toaster', '$rootScope','notify',
+        function ($scope, $bus, ngProgress, $constants, $routeParams, toaster, $rootScope, notify) {
 
             //ngProgress.start();
             $scope.model = new model();
@@ -39,9 +39,11 @@ define(['app', 'model/products/details', 'utility/messages'], function (app, mod
                         }
                         $scope.model = new model(products[0]);
                         if ($scope.model.isExportable) $scope.model.isExportable = true;
+                        //toaster.pop("success", messages.productDetail, messages.retrivedSuccess);
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.productFetchError);
                         notify.message(messages.productFetchError);
                         ngProgress.complete();
                     });

@@ -1,20 +1,12 @@
-    <section class="container-fluid" ng-init="init()">
+<section class="container-fluid" ng-init="init()">
     <div class="row">
         <div class="col-xs-12">
             <ng-include src="'views/merchant/nav.html'"></ng-include>
             <section class="content full widget-form merchantpay">
                 <h2 class="thHead">Payments</h2>
-               
-                <div class="container-fluid">
-          <div class="row">
-           
-              
-              <div class="thContent col-lg-9 col-sm-10 txtJustify paddbtm10">
-                <span ng-show="!loggedInContent.merchantCode">Please set the merchant context in the merchant table to add payments or adjustments. Once you set the context data for that merchant will be reflected here.</span>
-              </div>
-            
-          </div>
-        </div>
+                <div class="col-sm-12 row">
+                    <span ng-show="!loggedInContent.merchantCode">Please set the merchant context in the merchant table to add payments or adjustments. Once you set the context data for that merchant will be reflected here.</span>
+                </div>
                 <div class="row">
 
                     <div class="col-sm-12" >
@@ -64,7 +56,7 @@
 											<div class="col-md-9 paddnone" >
 												<div class="form-group">
 												   <label class="col-md-6 col-sm-6 control-label">Current Deposit</label>
-												  <label class="col-md-5 col-sm-5 control-label">: {{constants.currentCurrency}} 2500</label>
+												  <label class="col-md-5 col-sm-5 control-label">: SGD 2500</label>
 												</div>
 											</div>
 										</div>
@@ -87,14 +79,14 @@
                                         <div class="row" >
                                             <div class="col-md-12 col-sm-6 col-xs-12" >
                                                 <div class="form-group">
-                                                    <label>Current Outstanding Amount&nbsp:&nbsp;{{outStandingAmount ||constants.notAvailableText}}</label>
+                                                    <label>Current Outstanding Amount:</label>{{constants.notAvailableText}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row paddbtm10">
                                             <div class="col-md-12 col-sm-12 col-xs-12" >
-                                                <button id="add-new-payment-btn" type="submit" class="btn btn-primary marrgt20 " data-toggle="modal" data-target="#modal-add-new-payment" ng-disabled="!loggedInContent.merchantCode" ng-click="isPaymentEditable = true;clearPaymentModel();">Add New Payment</button>
-                                                <button id="add-new-adjustment-btn" type="submit" class="btn btn-primary"  data-toggle="modal" data-target="#modal-add-new-adjustment" ng-disabled="!loggedInContent.merchantCode" ng-click="isAdjustmentEditable = true;clearAdjustmentModel();">Add New Adjustment</button>
+                                                <button id="add-new-payment-btn" type="submit" class="btn btn-primary marrgt20 " data-toggle="modal" data-target="#modal-add-new-payment" ng-disabled="!loggedInContent.merchantCode" ng-click="isPaymentEditable = true">Add New Payment</button>
+                                                <button id="add-new-adjustment-btn" type="submit" class="btn btn-primary"  data-toggle="modal" data-target="#modal-add-new-adjustment" ng-disabled="!loggedInContent.merchantCode" ng-click="isAdjustmentEditable = true">Add New Adjustment</button>
                                             </div>
                                         </div>
                                     </div>
@@ -103,12 +95,12 @@
                                         <div class="panel-body pnlbdy-pad5" >
                                             <label>Previous Receipts</label>
                                              <div class="newGridContainer container-fluid paddbtm30 martopbtm20 merchanttblpay paddnone">
-                                                <div class="row proHeader hidden-xs">
+                                                <div class="row proHeader">
                                                     <div class="merHeaMerIdH col-md-2 col-sm-4 col-xs-12">Entry Date</div>
                                                     <div class="merHeaEmailH col-md-2 col-sm-4 col-xs-12">Payment/Adj. Date</div>
                                                     <div class="merHeaEmailH col-md-2 col-sm-4 col-xs-12">Reference Number</div>
                                                     <div class="merHeaInvoiceH col-md-2 col-sm-3 col-xs-12">Invoice Number</div>
-                                                    <div class="merHeaAmntH col-md-1 col-sm-3 col-xs-12">Amount ({{constants.currentCurrency}})</div>
+                                                    <div class="merHeaAmntH col-md-1 col-sm-3 col-xs-12">Amount (SGD)</div>
                                                     <div class="merHeaMerTypeH col-md-1 col-sm-4 col-xs-12">Type</div>
                                                     <div class="merHeaMerRemarkH  col-md-2 col-sm-4 col-xs-12">Remarks</div>
                                                 </div>
@@ -171,7 +163,7 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="control-label col-sm-4 left" for="pay-amt">Payment Amount ({{constants.currentCurrency}})</label>
+                        <label class="control-label col-sm-4 left" for="pay-amt">Payment Amount (SGD)</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="pay-amt" name="pay-amt" ng-model="paymentModel.paymentAmt" placeholder="Payment Amount"
                             ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
@@ -226,7 +218,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4 left">Payment Amount ({{constants.currentCurrency}})</label>
+                        <label class="control-label col-sm-4 left">Payment Amount (SGD)</label>
                         <div class="col-sm-6">
                             <label class="form-control-static" ng-bind="paymentModel.paymentAmt"></label>
                         </div>
@@ -248,7 +240,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearPaymentForm()">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="isPaymentEditable = true">Back</button>
-                <button type="button" class="btn btn-primary" ng-click="addNewPayment()" id="confirm-add-payment">Confirm Payment</button>
+                <button type="button" class="btn btn-primary" ng-click="addNewPayment()">Confirm Payment</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -285,7 +277,7 @@
                     </div>
 
                     <div class="form-group required">
-                        <label class="control-label col-sm-4 left">Adjustment Amount ({{constants.currentCurrency}})</label>
+                        <label class="control-label col-sm-4 left">Adjustment Amount (SGD)</label>
                         <div class="col-md-3">
                             <select class="form-control" id="adj-type" name="adj-type" ng-model="adjustmentModel.adjustmentType" ng-options="type for type in adjustmentType"></select>
                         </div>
@@ -347,7 +339,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3 left">Adjustment Amount ({{constants.currentCurrency}})</label>
+                        <label class="control-label col-sm-3 left">Adjustment Amount (SGD)</label>
 
                         <div class="col-md-3">
                             <label class="form-control-static" ng-bind="adjustmentModel.adjustmentType"></label> -
@@ -371,7 +363,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAdjustmentForm()">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="isAdjustmentEditable = true">Back</button>
-                <button type="button" class="btn btn-primary" ng-click="addNewAdjustment()" id="confirm-adjustments">Confirm Adjustments</button>
+                <button type="button" class="btn btn-primary" ng-click="addNewAdjustment()">Confirm Adjustments</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

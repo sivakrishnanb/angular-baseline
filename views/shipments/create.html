@@ -44,7 +44,7 @@
                                                                       data-toggle="popover" 
                                                                       data-placement="right" 
                                                                       data-content="This is only for your reference" 
-                                                                      data-original-title="" title="" id="reference">
+                                                                      data-original-title="" title="">
                                                                 </span>
                                                             </div>
                                                                </div>
@@ -84,7 +84,7 @@
                                                         <div class="col-md-4 col-sm-6 col-xs-12" >
                                                             <div class="form-group">
                                                                 <label for="shipment-create-addressLine2" class=" control-label">Address Line 2</label>
-                                                                <input name="shipment-create-addressLine2" type="text" class="form-control" id="shipment-create-addressLine2" placeholder="Address Line 2" maxlength="60" ng-model="model.header.address2" />
+                                                                <input name="shipment-create-addressLine2" type="text" class="form-control" id="shipment-create-addressLine2" placeholder="Address Line 2" maxlength="50" ng-model="model.header.address2" />
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 col-sm-6 col-xs-12" >
@@ -120,7 +120,7 @@
 
                                                             <div class="form-group required">
                                                                 <label for="shipment-create-zipCode" class=" control-label">ZIP/Postal Code</label>
-                                                                <input name="shipment-create-zipCode" type="text" class="form-control" id="shipment-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.header.addressPostalCode" invalid-message="invalidPostalShipment" maxlength="12" validator="postalCodeVaidate()"/>
+                                                                <input name="shipment-create-zipCode" type="text" class="form-control" id="shipment-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.header.addressPostalCode" required required-message="validationMessages.required" maxlength="60"/>
                                                             </div>
                                                         </div>
 
@@ -206,14 +206,9 @@
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="list-group suggestion-box" ng-if="emptySuggestions">
+                                                            <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
                                                                 <a href="javascript:;" class="list-group-item">
                                                                     <span class="center fnt12px">No matching products found</span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
-                                                                <a href="javascript:;" class="list-group-item">
-                                                                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
                                                                 </a>
                                                             </div>
 
@@ -240,13 +235,11 @@
                                     </div>
                                 </div>
 
-                                
-
                                 <div class="panel panel-default">
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-12 paddnone">
                                             <div class="newGridContainer container-fluid paddnone">
-                                                <div class="row proHeader hidden-xs">
+                                                <div class="row proHeader">
                                                     <div class="proHeaMerH col-sm-3 col-md-3 col-lg-3">Product</div>
                                                     <div class="proHeaCatH col-sm-2 col-md-2 col-lg-2">Category</div>
                                                     <div class="proHeaDimH col-sm-2 col-md-2 col-lg-2">Inventory</div>
@@ -338,13 +331,13 @@
 
                                                         <div class="col-sm-6">
 
-                                                            <input name="shipment-create-product-quantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1" max="10000" invalid-message="validationMessages.numberUnitsError" ng-blur="updateLabelQuantity(product, $index)"/>
+                                                            <input name="shipment-create-product-quantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1" max="1000" invalid-message="validationMessages.numberUnitsError" ng-blur="updateLabelQuantity(product, $index)"/>
                                                         </div>
 
                                                         <!-- Label Quantity-->
                                                         <div class="col-sm-6" ng-show="whoLabelsCtrl.value == 'M'">
 
-                                                            <div><input name="shipment-create-product-labelquantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-labelquantity-{{$index}}" placeholder="Quantity" ng-model="product.labelQuantity" max="10000" invalid-message="validationMessages.labelQuantityError" step="1"/></div>
+                                                            <div><input name="shipment-create-product-labelquantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-labelquantity-{{$index}}" placeholder="Quantity" ng-model="product.labelQuantity" max="1000" invalid-message="validationMessages.labelQuantityError" step="1"/></div>
                                                         </div>
                                                         <!-- for inactive products -->
                                                          <em class="text-danger paddtop3 dispInlineblk" ng-if="product.isActive == 0">Inactive Product</em>

@@ -1,6 +1,6 @@
 define(['app', 'model/orders/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('EditOrders', ['$scope', '$bus', '$location', 'ngProgress', '$constants', '$rootScope', '$timeout', '$window', '$routeParams','notify','highlight',
-        function ($scope, $bus, $location, ngProgress, $constants, $rootScope, $timeout, $window, $routeParams,notify,highlight) {
+    app.controller('EditOrders', ['$scope', '$bus', '$location', 'ngProgress', '$constants', 'toaster', '$rootScope', '$timeout', '$window', '$routeParams','notify','highlight',
+        function ($scope, $bus, $location, ngProgress, $constants, toaster, $rootScope, $timeout, $window, $routeParams,notify,highlight) {
 
             //ngProgress.start();
             $scope.model = new model();
@@ -64,9 +64,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             };
             
             $scope.updateDisplayableOrderId = function() {
+                //if(!$scope.model.displayableOrderId) {
                     $scope.model.displayableOrderId = $scope.model.merchantOrderId;
-                     if(typeof($scope.model.merchantOrderId)=='undefined' || $scope.model.merchantOrderId.length==0)
-                        $scope.isOrderExists = false;
+                //}
             };
 
             $scope.showOrdersHasIssues = function(val,title) {
@@ -107,7 +107,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $('#insufficientInventory_'+paramIndex).show().text($('#insufficientInventory_'+paramIndex).show().text()+', Archived');
                     flag = true;
                 }
-                if (param.length && typeof(param[3])!='undefined' && param[3]=='0' && $scope.countryOfOriginCtrl && $scope.countryOfOriginCtrl.countryCode!=$constants.currentLocation){
+                if (param.length && typeof(param[3])!='undefined' && param[3]=='0' && $scope.countryOfOriginCtrl.countryCode!=$constants.currentLocation){
                     $('#insufficientInventory_'+paramIndex).show().text($('#insufficientInventory_'+paramIndex).show().text()+', Non-exportable');
                     flag = true;
                 }
@@ -191,13 +191,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $scope.model.shipping.nonDeliveryInstr = "";
                     $scope.model.shipping.categoryGoodsOther = "";
                 }
-
-                for(var i = 0; i < 12; i++) {
-                    if($scope.model.additionalInfo['additionalInfo'+(i+1)] && $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] != 'Additional Information ' + (i+1)) {
-                        $scope.model.additionalInfo['additionalInfo'+(i+1)] = [$scope.model.additionalInfo['additionalInfoLabel'+(i+1)],$scope.model.additionalInfo['additionalInfo'+(i+1)]].join('|');
-                    }
-                    delete $scope.model.additionalInfo['additionalInfoLabel'+(i+1)];
-                }
             }
             
             $scope.saveAsDraft = function(next){
@@ -237,8 +230,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.orderCreateError, "", 0); commented
                                         notify.message(messages.orderDraftError);
                                     }
                                 }
@@ -250,8 +245,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 });
                                 if (errors.length) {
 
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderCreateError, "", 0); commented
                                     notify.message(messages.orderCreateError);
                                 }
                                 ngProgress.complete();
@@ -260,54 +257,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $('#orders-create-merchant-id').addClass('has-error').focus().after('<label class="control-label has-error validationMessage">' + $constants.validationMessages.orderMerchantIdError + '</label>');
                 }
             }
-
-            $scope.checkMerchantOrderIdAvail = function(){
-                ngProgress.start();
-                var param = {
-                    searchCol: 'merchOrderId',
-                    searchTerm: $scope.model.merchantOrderId
-                }
-
-                 $bus.fetch({
-                        name: 'orderexists',
-                        api: 'orderexists',
-                        params: param,
-                        data: null
-                    })
-                        .done(function (success) {
-                            if (success.response.success && success.response.success.length) {
-
-                                if((success.response.success[1]=='No orders found.')){
-                                    $scope.isOrderExists = false;
-                                }else if((success.response.success[1]=='Order found.')){
-                                    $scope.isOrderExists = true;
-                                }
-                                
-                            } else {
-                                var errors = [];
-                                _.forEach(success.response.errors, function (error) {
-                                    errors.push(error)
-                                });
-                                if (errors.length) {
-                                    //notify.message($rootScope.pushJoinedMessages(errors));
-                                } else {
-                                    //notify.message(messages.productListFetchError);
-                                }
-                                $scope.isOrderExists = false;
-                            }
-                            ngProgress.complete();
-                            
-                        }).fail(function (error) {
-                                $scope.isOrderExists = false;
-                            ngProgress.complete();
-                
-                        });
-
-
-                
-            };
-
-
             
             
             $scope.getFulfillment = function() {
@@ -402,8 +351,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.productFetchError, "", 0); commented
                                 notify.message(messages.productFetchError);
                             }
                             deferred.reject(product);
@@ -423,15 +374,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             };
 
 			$scope.phoneNumberValidate = function() {
-
-                if($rootScope.isCountriesOptionsVisible('ordersRemovePhoneValidation')){
-                    $scope.validationMessages.invalidphonecountrybased = $constants.validationMessages.invalidphone;
-                    if($scope.model.customer.shippingAddress.phone[0].number && /[a-zA-Z]+/g.test($scope.model.customer.shippingAddress.phone[0].number)){
-                        return false;
-                    }else{
-                        return true;    
-                    }
-                }
 				
 				if($scope.countryOfOriginCtrl && ($scope.countryOfOriginCtrl.countryCode==$constants.currentLocation) && $scope.model.customer.shippingAddress.phone[0].number && $scope.model.customer.shippingAddress.phone[0].number.length > 8){
 					$scope.validationMessages.invalidphonecountrybased = $constants.validationMessages.invalidphonedomestic;
@@ -442,36 +384,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 					return true;
 				}
 			}
-
-            $scope.postalCodeVaidate = function() {
-
-                if ($scope.model.customer.shippingAddress.postalCode && $rootScope.isCountriesOptionsVisible('orderPostalCode')) {
-                    if(_.isEmpty(_.findWhere($scope.australiaPostalCodes,{"value":$scope.model.customer.shippingAddress.postalCode}))) {
-                        $scope.validationMessages.invalidPostal = $constants.validationMessages.invalidPostalCode;
-                        return false;
-                    }else {
-                        return true;
-                    }
-                }
-                else if($scope.countryOfOriginCtrl  && $scope.countryOfOriginCtrl.countryCode=='SG') {
-
-                    if(!$scope.model.customer.shippingAddress.postalCode || !(/^[0-9]{6}$/.test($scope.model.customer.shippingAddress.postalCode))){
-                        $scope.validationMessages.invalidPostal = $constants.validationMessages.zipCodeNew;
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                    
-                }
-                else if(!$scope.model.customer.shippingAddress.postalCode) {
-                    $scope.validationMessages.invalidPostal = $constants.validationMessages.required;
-                    return false;
-
-                }
-
-                return true;
-            }
 			
             $scope.addProduct = function (product) {
                 if ($scope.model.lineItems.length > 0 && _.findIndex($scope.model.lineItems, {
@@ -490,9 +402,11 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             $scope.searchKey = '';
                             $scope.suggestions = [];
                         }).fail(function (product) {
+                            //toaster.pop("error", messages.addProductError); commented
                             notify.message(messages.addProductError);
                         });
                     //} else {
+                        //toaster.pop("error", messages.addActiveProducts); commented
                         //notify.message(messages.addActiveProducts);
                     //}
                 }
@@ -534,9 +448,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             
             $scope.checkOrderDValue = function (val) {
                 var reg = new RegExp('^[0-9]+[\\.]?[0-9]{0,2}$');
-                if(!$scope.model.shipping.liabilityTaken || !$scope.selectedShippingMethod.liabilityAvailable)
-                    return true;
-                else if (!val || _.isNaN(Number(val)) || !reg.test(val) || !Number(val))
+                if (!val || _.isNaN(Number(val)) || !reg.test(val) || !Number(val))
                     return false;
                 else
                     return true;
@@ -571,9 +483,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 var elMax = $scope.selectedShippingMethod ? Number($scope.selectedShippingMethod.elMax) : 0;
                 var liabilityAvail = $scope.model.shipping.liabilityTaken ? true : false;
 				
-                if((value < 0)||(base < 0 ))
-                    return false;
-                else if ((!value || value > base || value > elMax) && liabilityAvail)
+                if ((!value || value > base || value > elMax) && liabilityAvail)
                     return false;
                 else
                     return true;
@@ -658,8 +568,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.productFetchError, "", 0); commented
                                 notify.message(messages.productFetchError);
                             }
                             deferred.reject(product);
@@ -854,12 +766,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $scope.model.shipping.nonDeliveryInstr = "";
                     $scope.model.shipping.categoryGoodsOther = "";
                 }
-                for(var i = 0; i < 12; i++) {
-                    if($scope.model.additionalInfo['additionalInfo'+(i+1)] && $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] != 'Additional Information ' + (i+1)) {
-                        $scope.model.additionalInfo['additionalInfo'+(i+1)] = [$scope.model.additionalInfo['additionalInfoLabel'+(i+1)],$scope.model.additionalInfo['additionalInfo'+(i+1)]].join('|');
-                    }
-                    delete $scope.model.additionalInfo['additionalInfoLabel'+(i+1)];
-                }
+
+
+
             }
 
             $scope.updateProductBasedCalc = function () {
@@ -880,14 +789,13 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
             }
 
-            $scope.convertDateFormat = function (date, format, separator,toseperator) {
+            $scope.convertDateFormat = function (date, format, separator) {
                 var separator = separator || "/";
                 var dates = date.split(separator);
                 var dd, mm, yyyy;
                 dd   = dates[0];
                 mm   = dates[1];
                 yyyy = dates[2];
-                if(typeof(toseperator)!='undefined') { separator = toseperator; }
                 if      (format == "mm/dd/yyyy")    return mm + separator + dd + separator + yyyy;
                 else if (format == "dd/mm/yyyy")    return dd + separator + mm + separator + yyyy;
 				else if (format == "yyyy/mm/dd")    return yyyy + separator + mm + separator + dd;
@@ -1059,12 +967,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 });
                 $scope.model.shipping.liabilityValue = Number($scope.model.shipping.orderDeclaredValue);
             }*/
-
-            $scope.formatLeadTime = function(fromDt , toDt) {
-                var dateDiff = (fromDt == toDt) ? fromDt : fromDt + "-" + toDt;
-                var days = (toDt > 1) ? "days" : "day";
-                return dateDiff + " " + days;
-            };
+            
             $scope.fetchCarrier = function() {
                 var deferred = $.Deferred();
                 var elValue = 0;
@@ -1110,7 +1013,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             carrier.carrier = item.carrier;
                             carrier.currency = "$";
                             carrier.fuelSurcharge = (item.quote && item.quote.fuelSurcharge) ? item.quote.fuelSurcharge : null;
-                            carrier.elMax = _.findWhere($constants.domesticShippingOptions, {"name": carrier.name}) ?  _.findWhere($constants.domesticShippingOptions, {"name": carrier.name}).elMax : (_.findWhere($constants.internationalShippingOptions, {"name": carrier.name}) ? _.findWhere($constants.internationalShippingOptions, {"name": carrier.name}).elMax : "0");
+                            carrier.elMax = _.findWhere($constants.domesticShippingOptions, {"name": carrier.name}) ?  _.findWhere($constants.domesticShippingOptions, {"name": carrier.name}).elMax : (_.findWhere($constants.internationalShippingOptions, {"name": carrier.name}) ? _.findWhere($constants.internationalShippingOptions, {"name": carrier.name}).elMax : 0);
                              carrier.declaredValue = (item.quote && item.quote.debug && item.quote.debug.declaredValue) ? Number(Number((item.quote.debug.declaredValue)).toFixed(2)) : 0;
                             carrier.totalWeight = (item.quote && item.quote.debug && item.quote.debug.totalWeight)?Number(Number((item.quote.debug.totalWeight)).toFixed(2)):0;
                             carrier.liabilityAvailable = (item.quote && item.quote.liability && item.quote.liability.available) ? true : false;
@@ -1120,7 +1023,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             carrier.cost = (carrier.deliveryRate || 0) + (carrier.fulfillRate || 0);
                             carrier.leadFromDays = (item.quote && item.quote.transitTime && item.quote.transitTime.from) ? item.quote.transitTime.from : $constants.notAvailableText;
                             carrier.leadToDays = (item.quote && item.quote.transitTime && item.quote.transitTime.to) ? item.quote.transitTime.to : $constants.notAvailableText;
-                            carrier.leadTime =  (item.quote && item.quote.transitTime && item.quote.transitTime.from && item.quote.transitTime.to && item.quote.transitTime.to=="N/A" && item.quote.transitTime.from=="N/A") ? $constants.notAvailableText : ((item.quote && item.quote.transitTime && item.quote.transitTime.from && item.quote.transitTime.to) ? ($scope.formatLeadTime(item.quote.transitTime.from, item.quote.transitTime.to)) : $constants.notAvailableText);
+                            carrier.leadTime =  (item.quote && item.quote.transitTime && item.quote.transitTime.from && item.quote.transitTime.to && item.quote.transitTime.to=="N/A" && item.quote.transitTime.from=="N/A") ? $constants.notAvailableText : ((item.quote && item.quote.transitTime && item.quote.transitTime.from && item.quote.transitTime.to) ? (item.quote.transitTime.from + '-' + item.quote.transitTime.to + ' Days') : $constants.notAvailableText);
                             carrier.miniDate = (item.quote && item.quote.transitTime && item.quote.transitTime.minDate) ? item.quote.transitTime.minDate : $constants.notAvailableText;
                             carrier.maxiDate = (item.quote && item.quote.transitTime && item.quote.transitTime.maxDate) ? item.quote.transitTime.maxDate : $constants.notAvailableText;
                             carrier.cutoffTime = (item.quote && item.quote.transitTime && item.quote.transitTime.cutoffTime) ? item.quote.transitTime.cutoffTime : null;
@@ -1216,7 +1119,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             }
             
             $scope.calculateInsurance = function() {
-                $('.elValidation label.has-error.validationMessage').remove();
                 if(!$scope.checkLiabilityValue($scope.model.shipping.liabilityValue, $scope.model.shipping.orderDeclaredValue)) {
                     $('#orders-edit2-enhanced-liability-amount').focus().after('<label class="control-label has-error validationMessage">'+ $constants.validationMessages.orderELValueError +'</label>').closest('div').addClass('has-error');
                 } else {
@@ -1231,8 +1133,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         errors.push(error)
                     });
                     if (errors.length) {
+                        //toaster.pop("error", errors.join(', '), '', 0); commented
                         notify.message($rootScope.pushJoinedMessages(errors,1),'','',1);
                     } else {
+                        //toaster.pop("error", messages.orderCarrierServiceError, "", 0); commented
                         notify.message(messages.orderCarrierServiceError,'','',1);
                     }
                     ngProgress.complete();
@@ -1350,13 +1254,16 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                                 errors.push(error)
                                             });
                                             if (errors.length) {
+                                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                                 notify.message($rootScope.pushJoinedMessages(errors));
                                             } else {
+                                                //toaster.pop("error", messages.orderCarrierServiceError, "", 0); commented
                                                 notify.message(messages.orderCarrierServiceError);
                                             }
                                             ngProgress.complete();
                                         });
                                     } else {
+                                        //toaster.pop("error", messages.orderMerchantIdNotAvailable, "", 0); commented
                                         notify.message(messages.orderMerchantIdNotAvailable);
                                     }
                                     ngProgress.complete();
@@ -1366,8 +1273,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.orderMerchantIdServiceError, "", 0); commented
                                         notify.message(messages.orderMerchantIdServiceError);
                                     }
                                     ngProgress.complete();
@@ -1446,8 +1355,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderCarrierServiceError, "", 0); commented
                                     notify.message(messages.orderCarrierServiceError);
                                 }
                                 ngProgress.complete();
@@ -1490,6 +1401,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         .done(function (success) {
                             if (success.response.success && success.response.success.length) {
                                 $scope.orderEdited = true;
+                                //toaster.pop("success", messages.orderUpdateSucess); commented
                                 notify.message(messages.orderUpdateSucess,'','succ');
 								var redirectPath = (_.where($constants.orderStatus,{value:success.response.data.orderStatus}))?_.where($constants.orderStatus,{value:success.response.data.orderStatus})[0].name:'unapproved';
 								highlight.added($scope.model.merchantOrderId);
@@ -1508,8 +1420,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                     notify.message(messages.orderUpdateError);
                                 }
                             }
@@ -1520,8 +1434,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                 notify.message(messages.orderUpdateError);
                             }
                             ngProgress.complete();
@@ -1603,8 +1519,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             errors.push(error)
                         });
                         if (errors.length) {
+                            //toaster.pop("error", errors.join(', '), '', 0); commented
                             notify.message($rootScope.pushJoinedMessages(errors));
                         } else {
+                            //toaster.pop("error", messages.orderCreateError, "", 0); commented
                             notify.message(messages.orderCreateError);
                         }
                         ngProgress.complete();
@@ -1671,12 +1589,15 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.productFetchError, "", 0); commented
                                 notify.message(messages.productFetchError);
                             }
                         }
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.productFetchError, "", 0); commented
                         notify.message(messages.productFetchError);
                     });
             }
@@ -1706,14 +1627,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         $scope.model.additionalInfo[key] = value;
                     });
                 });
-                for(var i = 0; i < 12; i++) {
-                    if($scope.model.additionalInfo['additionalInfo'+(i+1)] && $scope.model.additionalInfo['additionalInfo'+(i+1)].indexOf('|') != -1) {
-                        $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] = $scope.model.additionalInfo['additionalInfo'+(i+1)].split('|')[0] || 'Additional Information ' + (i+1);
-                        $scope.model.additionalInfo['additionalInfo'+(i+1)] = $scope.model.additionalInfo['additionalInfo'+(i+1)].split('|')[1] || '';
-                    } else {
-                        $scope.model.additionalInfo['additionalInfoLabel'+(i+1)] = 'Additional Information ' + (i+1);
-                    }
-                }
                 _($scope.model.lineItems).forEach(function (item) {
                     item.selected = item.selected == undefined ? true : (item.selected ? true : false);
                     item.customs = new $scope.model.Customs();
@@ -1730,8 +1643,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $scope.isInternationalOrder = true;
                 }
                 $scope.model.processOrderDate = (new Date($scope.convertDateFormat($scope.model.processOrderDate,'mm/dd/yyyy', '-')) > new Date()) ? $scope.formatDate(new Date($scope.convertDateFormat($scope.model.processOrderDate,'mm/dd/yyyy', '-'))) : $scope.today;
-                if($scope.model.displayableDate)
-                    $scope.model.displayableDate = $scope.formatDate(new Date($scope.convertDateFormat($scope.model.displayableDate,'yyyy/mm/dd', '-','/')));
+                if($scope.model.displayableDate) 
+                    $scope.model.displayableDate = $scope.formatDate(new Date($scope.convertDateFormat($scope.model.displayableDate,'yyyy/mm/dd', '-')));
                 $scope.model.shipping.liabilityTaken = $scope.model.shipping.liabilityTaken ? true : false;
                 $scope.model.shipping.liabilityValue = $scope.model.shipping.liabilityValue ? Number($scope.model.shipping.liabilityValue) : 0;
                 $scope.model.customer.shippingAddress.saveToBook = $scope.model.customer.shippingAddress.saveToBook ? true : false;
@@ -1755,20 +1668,16 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             
                             $scope.mapToEdit(data.order[0]);
                             $scope.model.purchaseOrders = (data.order[0].purchaseOrders && data.order[0].purchaseOrders.length)?data.order[0].purchaseOrders:'';
+                            //toaster.pop("success", messages.orderDetail, messages.retrivedSuccess); commented
                             //notify.message(messages.retrivedSuccess);
                         } else {
+                            //toaster.pop("error", messages.orderFetchError); commented
                             notify.message(messages.orderFetchError);
                         }
-                               _($scope.model.lineItems).forEach(function (item, key) {
-                                
-                                $scope.model.lineItems[key].cancelQtyFulfillable = '0';
-                                $scope.model.lineItems[key].cancelQtyDamaged = '0';
-                                $scope.model.lineItems[key].cancelQtyMissing = '0';
-                                
-                            });
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.orderFetchError); commented
                         notify.message(messages.orderFetchError);
                         ngProgress.complete();
                     });
@@ -1815,128 +1724,12 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 $location.path(path);
             };
 
-            $scope.isTotalQtyValid = function(row) {
-                
-                var flag = true;
-
-                $('.orderCancelQuantities div').removeClass('has-error');
-                $('.cancelOrderText').hide().text('');
-                $('#order-cancel-remarks').parent('div.form-group').removeClass('has-error').children().remove('label.has-error.validationMessage');
-
-                _.forEach($scope.model.lineItems,function(value,key) {
-
-
-                    $scope.model.lineItems[key].cancelQtyFulfillable = (!$scope.model.lineItems[key].cancelQtyFulfillable)?'0':$scope.model.lineItems[key].cancelQtyFulfillable;
-                    $scope.model.lineItems[key].cancelQtyDamaged = (!$scope.model.lineItems[key].cancelQtyDamaged)?'0':$scope.model.lineItems[key].cancelQtyDamaged;
-                    $scope.model.lineItems[key].cancelQtyMissing = (!$scope.model.lineItems[key].cancelQtyMissing)?'0':$scope.model.lineItems[key].cancelQtyMissing;
-
-
-                    if((row!='' && key==row) || !row){
-
-                        var regEx = /^[0-9]+$/
-                        
-                        if(value.cancelQtyFulfillable && !regEx.test(value.cancelQtyFulfillable)){
-
-                            $('.ordcnclfull.error_'+key).addClass('has-error');
-                            $('#cancelOrder_'+key).show().text('Fulfillable quantity requires a number');
-                            flag = false;
-                        }
-                        else if(value.cancelQtyDamaged && !regEx.test(value.cancelQtyDamaged)){
-
-                            $('.ordcncldmg.error_'+key).addClass('has-error');
-                            $('#cancelOrder_'+key).show().text('Damaged quantity requires a number');
-                            flag = false;
-                        }
-                        else if(value.cancelQtyMissing && !regEx.test(value.cancelQtyMissing)){
-
-                            $('.ordcnclmiss.error_'+key).addClass('has-error');
-                            $('#cancelOrder_'+key).show().text('Missing quantity requires a number');
-                            flag = false;
-                        }
-                        else if(value.quantity && (value.cancelQtyDamaged || value.cancelQtyFulfillable || value.cancelQtyMissing)) {
-                            
-                            var totalQuantity = 0;
-
-                            totalQuantity+=parseInt(value.cancelQtyDamaged) || 0;
-                            totalQuantity+=parseInt(value.cancelQtyFulfillable) || 0;
-                            totalQuantity+=parseInt(value.cancelQtyMissing) || 0;
-
-
-
-
-                            if(parseInt(value.quantity) != parseInt(totalQuantity)) {
-                                
-                                $('.orderCancelQuantities .error_'+key).addClass('has-error');
-                                $('#cancelOrder_'+key).show().text('Fulfillable + Damaged + Missing should be equal to No.of Units');
-                                flag =  false;
-                            }
-                        }
-                        else{
-                            $('#cancelOrder_'+key).show().text('Enter any of the above value');
-                            $('.orderCancelQuantities .error_'+key).addClass('has-error');
-                            flag = false;
-                        }
-                    }
-                });
-
-                if(!$scope.remarks){
-                    $('#order-cancel-remarks').parent('div.form-group').addClass('has-error').append('<label class="control-label has-error validationMessage">This field is required</label>');
-                    flag = false;
-                }
-
-                if(!flag){
-                    return false;
-                }
-                else {
-                    return true;
-                }
-                
-            }
-
-
-            $scope.resetCancelOrder = function() {
-
-                $('.orderCancelQuantities div').removeClass('has-error');
-                $('.cancelOrderText').hide().text('');
-
-                _($scope.model.lineItems).forEach(function (item, key) {
-
-                    $scope.model.lineItems[key].cancelQtyFulfillable = '0';
-                    $scope.model.lineItems[key].cancelQtyDamaged = '0';
-                    $scope.model.lineItems[key].cancelQtyMissing = '0';
-
-                });
-            }
-            
-            $scope.checkVal =  function(){
-
-
-
-
-                if($scope.cancelOrderRemarks==null || $scope.cancelOrderRemarks.length==0){
-                    $('#order-cancel-remarks-old').focus().after('<label class="control-label has-error validationMessage" id="validation-remarks-label">'+ $constants.validationMessages.required +'</label>').closest('div').addClass('has-error');
-                    return false
-                }
-                else{
-                    $("#validation-remarks-label" ).remove();
-                    $("#order-cancel-remarks-old").closest('div').removeClass('has-error');
-                   
-                    return true;
-                }
-            }
-
             $scope.cancelOrder = function(){
 
-                   $("#validation-remarks-label" ).remove();
-                    $("#order-cancel-remarks-old").closest('div').removeClass('has-error');
 
-                //old modal-order-cancel-old  modal-order-cancel-new
-
-
-/*
                    $('#confirm-modal-cancelOrder').modal();
 
-                  
+                    
                     $('#modalCancelCancelOrder,#model-close').on('click',function(e){
                         $('#modalOk').off('click');
                     }); 
@@ -1952,86 +1745,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                             if(e.keyCode == 13){
                                 $('#modalCancelCancelOrder').click();
                             }
-                    });*/
-
-
-                    //New Modal
-
-
-
-                 
-                    if($scope.model.orderStatus=='HAS_ISSUES' || $scope.model.orderStatus=='UNAPPROVED'){
-
-                   
-                      
-                        $('#modal-order-cancel-old').modal();
-                            
-                            $('#modalCancelCancelOrder,#model-close').on('click',function(e){
-                                
-                                $('#order-cancel-modalOk').off('click');
-                            }); 
-                                    
-                            $('#modalOkButtonCancelOrder').on('click',function(e){
-
-
-                                    if($scope.checkVal()){
-
-                                        $('#modalCancelCancelOrder').click();
-                                        $('.modal-backdrop.fade.in').remove();
-                                        $('#modalOkButtonCancelOrder').off('click');
-                                            $scope.cancelOrderService();
-                                    }
-
-
-                                    
-                                 
-                                });
-                                
-                                $('#modalOkButtonCancelOrder').keypress(function(e){
-                                    if(e.keyCode == 13){
-                                        $('#order-cancel-modalOk').click();
-                                    }
-                                });
-
-
-                        
-
-
-
-                    }
-                    else{
-                            // new modal
-                            $('#modal-order-cancel-new').modal();
-                            $('#order-cancel-modalCancel,#model-close').on('click',function(e){
-                                $('#modal-order-cancel .form-group,textarea,input[type="text"],input[type="number"],div.has-error').removeClass('has-error');
-                                $('#modal-order-cancel label.control-label.has-error.validationMessage').remove();
-                                $('#order-cancel-modalOk').off('click');
-                            }); 
-                                    
-                                $('#order-cancel-modalOk').on('click',function(e){
-                                    
-                                    if($scope.isTotalQtyValid()){
-
-                                        $('#cancel-order-modalClose').click();
-                                        $('.modal-backdrop.fade.in').remove();
-                                            $scope.cancelOrderService();
-                                    }
-                                
-                                });
-                                
-                                $('#modal-order-cancel-new').keypress(function(e){
-                                    if(e.keyCode == 13){
-                                        $('#order-cancel-modalOk').click();
-                                    }
-                                });
-
-                    }
-
-                 
-
-
-             
-
+                    });
             }
 
             $scope.cancelOrderService = function(){
@@ -2048,41 +1762,19 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
            
 
-                for(i=0;i<$scope.model.lineItems.length;i++) {
+                for(i=0;i<$scope.model.lineItems.length;i++){
                     
-                    if($scope.model.orderStatus=='HAS_ISSUES' || $scope.model.orderStatus=='UNAPPROVED') {
-                        
-                        var qtyCancelled = qtyFulfillable = (!$scope.model.lineItems[i].quantity) ? 0 : parseInt($scope.model.lineItems[i].quantity);
+                    var qtyCancelled = qtyFulfillable = (!$scope.model.lineItems[i].quantity) ? 0 : parseInt($scope.model.lineItems[i].quantity);
 
-                        var eachItem = {
-                            orderLineId                     :   $scope.model.lineItems[i].orderLineId,
-                            ezcSku                          :   $scope.model.lineItems[i].ezcSku,
-                            channelLineId                   :   $scope.model.lineItems[i].channelLineId,
-                            quantityCancelled               :   qtyCancelled,
-                            orderlineQuantityDamaged        :   0,
-                            orderlineQuantityFulfillable    :   qtyFulfillable,
-                            orderlineQuantityMissing        :   0
-                        };
-                        updateJSON.lineItems.push(eachItem);
-
-                    }else {
-                        
-                        var qtyCancelled = (!$scope.model.lineItems[i].quantity) ? 0 : parseInt($scope.model.lineItems[i].quantity);
-                        var qtyFulfillable = (!$scope.model.lineItems[i].cancelQtyFulfillable) ? 0 : parseInt($scope.model.lineItems[i].cancelQtyFulfillable);
-                        var qtyDamaged = (!$scope.model.lineItems[i].cancelQtyDamaged) ? 0 : parseInt($scope.model.lineItems[i].cancelQtyDamaged);
-                        var qtyMissing = (!$scope.model.lineItems[i].cancelQtyMissing) ? 0 : parseInt($scope.model.lineItems[i].cancelQtyMissing);
-
-                        var eachItem = {
-                            orderLineId                     :   $scope.model.lineItems[i].orderLineId,
-                            ezcSku                          :   $scope.model.lineItems[i].ezcSku,
-                            channelLineId                   :   $scope.model.lineItems[i].channelLineId,
-                            quantityCancelled               :   qtyCancelled,
-                            orderlineQuantityDamaged        :   qtyDamaged, 
-                            orderlineQuantityFulfillable    :   qtyFulfillable,  
-                            orderlineQuantityMissing        :   qtyMissing,
-                        };
-                        updateJSON.lineItems.push(eachItem);
-                    }
+                    var eachItem = {
+                        orderLineId                     :   $scope.model.lineItems[i].orderLineId,
+                        ezcSku                          :   $scope.model.lineItems[i].ezcSku,
+                        quantityCancelled               :   qtyCancelled,
+                        orderlineQuantityDamaged        :   0,
+                        orderlineQuantityFulfillable    :   qtyFulfillable,
+                        orderlineQuantityMissing        :   0
+                    };
+                    updateJSON.lineItems.push(eachItem);
                 }
 
                 $bus.fetch({
@@ -2090,7 +1782,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     api : 'ordersUpdate',
                     data: JSON.stringify({
                             update: JSON.stringify(updateJSON)
-                    })
+                    }),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
                     .done(function (data) {
 
@@ -2125,7 +1818,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 date = dateStr.split('-');
                 var month_names     = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-                var dtString = date[2] + '/' + date[1] + '/' + date[0];
+                var dtString = date[1] + '-' + date[0] + '-' + date[2];
                 var day = days[new Date(dtString).getDay()];
                 if (date.length == 3) return (date[0] + ' ' + month_names[parseInt(date[1])] + ',' + date[2] + ' (' + day + ')');
             };
@@ -2161,36 +1854,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $scope.isApprove = $(this).hasClass("approve") ? true : false;
                 });
 
-                if($rootScope.isCountriesOptionsVisible('orderPostalCode')){
-
-                    $scope.australiaPostalCodes = [];
-
-                    $rootScope.getAustraliaPostalCodes().done(function(data){
-
-                        $scope.australiaPostalCodes  = data;
-
-                    });
-
-                }
-
                 $scope.admminOrderEdit = function(param) {
                     //admin edit orders
                     if(param=='PROCESS_MGR' && $rootScope.loggedInUser && _.intersection($rootScope.loggedInUser.userRole.split(','),['admin','csr']).length)
-                        return true;
-                    else
-                       return false;
-                };
-                
-                _($scope.model.lineItems).forEach(function (item, key) {
-                    $scope.model.lineItems[key].cancelQtyFulfillable = '0';
-                    $scope.model.lineItems[key].cancelQtyDamaged = '0';
-                    $scope.model.lineItems[key].cancelQtyMissing = '0';
-                    
-                });
-
-                $scope.managerOrderEditFields = function(param) {
-                    //stop manager orders editable fields
-                    if( param && param=='PROCESS_MGR' && (_.intersection($rootScope.loggedInUser.userRole.split(','),['admin','csr']).length))
                         return true;
                     else
                        return false;

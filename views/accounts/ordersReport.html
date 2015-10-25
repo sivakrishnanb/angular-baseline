@@ -1,5 +1,5 @@
 <section class="container-fluid" ng-init="init()">
-    <div class="row orderReportsContainer">
+    <div class="row">
         <div class="col-xs-12">
             <ng-include src="'views/accounts/nav.html'"></ng-include>
             <section class="content full  widget-form">
@@ -102,85 +102,68 @@
                                                     </div>
                                                 </div>
 
+
+
+
+
+
+
+
+
                                             </div>
-                             
+                                            <!-- <div class="row">
+                                             <div class="form-group">
+                                               <label for="acc-reports-ord-createDateRange" class="col-sm-3 col-md-2 col-lg-2 control-label">Order Date Range</label>
+                                               <div class="col-sm-4">
+                                                 <div class="input-group product-date thRepPro">
+                                                   <div multi-select input-model="dateOptions" output-model="date" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Created Date Range" disable-property="label" id="product-date-range"></div>
+                                                 </div>
+                                               </div>
+                                             </div>
+                                           </div> -->
                                         </div>
 
 
 
                                     </div>
+                                    <!--<div class="row">
+                                        <label class="col-sm-3 col-md-2 col-lg-2"></label>
+                                        <div class="col-sm-4 paddnone">
+
+
+                                            <div class="col-md-2 col-sm-3 col-lg-1 col-xs-3 paddnone width37 marrgt20" ng-show="selectedDateRangeOrders[0].value=='custom'" >
+                                                <div class="form-group thDateFrom" >
+                                                    <label class="sr-only" for="orders-reports-fromdate">From Date</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="orders-reports-fromdate" ng-model="repOrdFromdate" data-date-format="dd/mm/yyyy" readonly/>
+                                                        <label class="input-group-addon" for="orders-reports-fromdate"><i class="glyphicon glyphicon-calendar"></i></label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-2 col-sm-3 col-lg-1 col-xs-3 paddnone width37" ng-show="selectedDateRangeOrders[0].value=='custom'">
+                                                <div class="form-group thDateTo">
+                                                    <label class="sr-only" for="orders-reports-todate">To Date</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="orders-reports-todate" ng-model="repOrdTodate" data-date-format="dd/mm/yyyy" readonly/>
+                                                        <label class="input-group-addon" for="orders-reports-todate"><i class="glyphicon glyphicon-calendar"></i></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>-->
+
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-11">
-                                            <div class="row ordrptchkpanel">
-                                                <div class="form-group">
-                                                    <label for="acc-reports-ord-ordCat"  class="col-sm-3 col-md-2 col-lg-2 control-label paddrgt0">Filter by Order Channel</label>
-                                                    <div class="col-sm-3 col-md-width29">
 
-                                                  
-                                                        <div class="input-group product-category thCat thRepProCat">
-                                                            <div id="acc-reports-product-prodCat" multi-select input-model="orderChannelOptions" output-model="selectedOrderChannel" button-label="name" item-label="name" tick-property="ticked" max-labels="1" default-label="Order Channel" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category">
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-
-
-                                                  
-                                                </div>
-
-                                            </div>
-                             
+                                        <div class="col-sm-8 col-md-8 col-lg-9">
+                                            <button class="btn btn-primary headrTopPad col-sm-offset-5 col-md-marlft21 pull-left marrgt20" ng-click="downloadOrdersRep()"   ng-disabled="(selectedDateRange[0].value=='custom' && (!repOrdFromdate || !repOrdTodate))">Download
+                                            </button>
                                         </div>
 
-
-
                                     </div>
-
-                                     <div class="row">
-                                        <div class="col-sm-12 col-md-11">
-                                            <div class="row ordrptchkpanel">
-                                                <div class="form-group">
-                                                    <label for="acc-reports-ord-ordCat"  class="col-sm-3 col-md-2 col-lg-2 control-label paddrgt0">Filter by Order Status</label>
-                                                    <div class="col-sm-3 col-md-width29">
-
-                                                  
-                                                        <div class="input-group product-category thCat thRepProCat">
-                                                            <div id="acc-reports-product-prodCat" multi-select input-model="orderStatus" output-model="selectedOrderStatus" button-label="display" item-label="display" tick-property="ticked" max-labels="1" default-label="Order Status" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category">
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-
-
-                                                  
-                                                </div>
-
-                                            </div>
-                             
-                                        </div>
-
-
-
-                                    </div>
-
-
-
-                                      
-                                            </div>
-
-                                            
-                                   
-
-                                           <div class="row">
-
-                                                <div class="col-sm-8 col-md-8 col-lg-9">
-                                                    <button class="btn btn-primary headrTopPad col-sm-offset-5 col-md-marlft21 pull-left marrgt20" ng-click="downloadOrdersRep()"   ng-disabled="(selectedDateRange[0].value=='custom' && (!repOrdFromdate || !repOrdTodate))">Download
-                                                    </button>
-                                                </div>
-         
-                                            </div>
 
 
 
@@ -245,11 +228,9 @@
 
 
                             </div>
-                            </form>
                     </div>
-                   
+                    </form>
                 </div>
-
         </div>
 </section>
 </div>

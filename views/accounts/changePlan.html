@@ -1,0 +1,282 @@
+<link rel="stylesheet" type="text/css" href="/styles/subscriptionPlan.css">
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="create_product"
+              novalidate angular-validator
+              angular-validator-submit="createProduct(create_product)">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Change Plan</h2>
+                </div>
+              </div>
+              <p>Here you can upgrade once evry 30 days. Please call
+                customer service to downgrade your plan.</p>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div id="collapseTwo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <label for="product-create-costprice" class="control-label">Existing
+                            Plan :</label>
+                        </div>
+                        <div class="col-sm-1">
+                          <label for="product-create-costprice" class="control-label">Personal</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <label for="product-create-costprice" class="control-label">Usage</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <label for="product-create-costprice" class="control-label">No.
+                            of Products in Catalog : </label>
+                        </div>
+                        <div class="col-sm-1">
+                          <label for="product-create-costprice" class="control-label">224/400</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <label for="product-create-costprice" class="control-label">No
+                            of orders :</label>
+                        </div>
+                        <div class="col-sm-1">
+                          <label for="product-create-costprice" class="control-label">76/100</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div id="collapseTwo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="span3 master ">
+                          <div class="pricing-table-header-master">
+                            <h5>
+                              <strong>ezyFulfillment Subscription Type</strong>
+                            </h5>
+                            <h5>Monthly subscription Fee</h5>
+                            <h5>Until March 2015</h5>
+                          </div>
+                          <div class="pricing-table-features-master">
+                            <p>
+                              <strong>Products and Orders </strong>
+                            </p>
+                            <p>No. of products in Catalog</p>
+                            <p>Max. no. of orders per month</p>
+                            <p>Additional orders above maximum</p>
+                            <p>
+                              <strong>Customer Service </strong>
+                            </p>
+                            <p>Seller Support</p>
+                            <p>Customized Email Notiffications</p>
+                            <p>Analytics and Reporting</p>
+                            <p>
+                              <strong>Enhanced Platform Features </strong>
+                            </p>
+                            <p>Automate order Fulfillment Preferences</p>
+                            <p>Number of concurrent user IDs</p>
+                            <p>
+                              <strong>Data Backup </strong>
+                            </p>
+                            <p>Product Catalog Backup</p>
+                            <p>Orders Backup</p>
+                            <p>Marketplace Integration</p>
+                            <p>Sales Channel
+                            <p>
+                            <p>eBay Integration (coming soon)
+                            <p>
+                          </div>
+                        </div>
+
+                        <div class="span3 tiny ">
+                          <div class="pricing-table-header-tiny">
+                            <h5>
+                              <strong>Personal</strong>
+                            </h5>
+                            <h5>All the basics you need to get started</h5>
+                            <h5>Free for 30 days</h5>
+                          </div>
+                          <div class="pricing-table-features">
+                            <br>
+                            <p>400</p>
+                            <p>100</p>
+                            <p>SGD 2.5</p>
+                            <br> <br>
+                            <p>Email only</p>
+                            <p>No</p>
+                            <p>Dashboard Products</p>
+                            <br>
+                            <p>No</p>
+                            <p>1</p>
+                            <br> <br>
+                            <p>No Backup for detailed product</p>
+                            <p>Backup for 30 days</p>
+                            <br>
+                            <p>1 channel
+                            <p>
+                            <p>Orders
+                            <p>
+                          </div>
+                          <div class="pricing-table-signup-tiny">
+                            <button data-toggle="modal" data-target="#myModal">Select</button>
+                          </div>
+                        </div>
+
+                        <div class="span3 small">
+                          <div class="pricing-table-header-small">
+                            <h5>
+                              <strong>Professional</strong>
+                            </h5>
+                            <h5>Additional features to expand your sell</h5>
+                            <h5>SGD 99</h5>
+                          </div>
+                          <div class="pricing-table-features">
+                            <br>
+                            <p>1000</p>
+                            <p>250</p>
+                            <p>SGD 1</p>
+                            <br> <br>
+                            <p>Email and Telephone Support</p>
+                            <p>Yes</p>
+                            <p>Shipments, Orders</p>
+                            <br>
+                            <p>Yes</p>
+                            <p>2</p>
+                            <br> <br>
+                            <p>No Backup for detailed product</p>
+                            <p>Full Backup for 120 days</p>
+                            <br>
+                            <p>2 channels
+                            <p>
+                            <p>Orders
+                            <p>
+                          </div>
+                          <div class="pricing-table-signup-small">
+                            <button data-toggle="modal" data-target="#myModal">Select</button>
+                          </div>
+                        </div>
+
+                        <div class="span3 medium">
+                          <div class="pricing-table-header-medium">
+                            <h5>
+                              <strong>Power Seller</strong>
+                            </h5>
+                            <h5>For enhanced feature and felxibility in scale</h5>
+                            <h5>SGD 299</h5>
+                          </div>
+                          <div class="pricing-table-features">
+                            <br>
+                            <p>3500</p>
+                            <p>800</p>
+                            <p>SGD 0.80</p>
+                            <br> <br>
+                            <p>Email,Live chat,Telephone Support</p>
+                            <p>Yes</p>
+                            <p>Inventory Aging report</p>
+                            <br>
+                            <p>Yes</p>
+                            <p>3</p>
+                            <br> <br>
+                            <p>Full backup for 365 days</p>
+                            <p>Full backup for 365 days</p>
+                            <br>
+                            <p>3 channels
+                            <p>
+                            <p>Orders, inventory, synchronization
+                            <p>
+                          </div>
+                          <div class="pricing-table-signup-medium">
+                            <button data-toggle="modal" data-target="#myModal">Select</button>
+                          </div>
+                        </div>
+                        <div class="span3 pro">
+                          <div class="pricing-table-header-pro">
+                            <h5>
+                              <strong>Enterprise </strong>
+                            </h5>
+                            <h5>Ultimate all in one package with ultimate scale
+                              and personalized support</h5>
+                            <h5>SGD 499</h5>
+                          </div>
+                          <div class="pricing-table-features">
+                            <br>
+                            <p>Unlimited</p>
+                            <p>2500 orders</p>
+                            <p>SGD 0.20</p>
+                            <br> <br>
+                            <p>Email,Live chat,Telephone Support,Face to face
+                              Trainings</p>
+                            <p>Yes</p>
+                            <p>All reports</p>
+                            <br>
+                            <p>Yes</p>
+                            <p>5</p>
+                            <br> <br>
+                            <p>Full unlimited backup</p>
+                            <p>Full unlimited backup</p>
+                            <br>
+                            <p>5 channels
+                            <p>
+                            <p>Orders, inventory, synchronization
+                            <p>
+                          </div>
+                          <div class="pricing-table-signup-pro">
+                            <button data-toggle="modal" data-target="#myModal">Select</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Plan Changed</h4>
+      </div>
+      <div class="modal-body">
+        <p>You have selected Power Seller Plan</p>
+        <p>Effective Date</p>
+        <label for="product-create-costprice" class="control-label">23
+          December, 2013</label>
+        <hr>
+
+        <div class="row">
+          <div class="col-sm-12">
+            <label for="product-create-costprice" class="control-label">The
+              change will be effective immediately and the billing will be
+              prorated accordinlgy</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

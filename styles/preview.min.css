@@ -1111,14 +1111,3 @@
     padding: 0 10px;
   }
 }
-
-.p0{padding:0px !important;}
-.m30{margin-top:30px;}
-.calculator-container .col-sm-6 {
-  width: 48%;
-  margin-right: 10px;
-}
-.calculator-container select#country_type_delivery,.calculator-container select#country_list_delivery {
-  line-height: 30px;
-  height: 30px;
-}

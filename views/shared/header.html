@@ -3,13 +3,12 @@
       <a class="navbar-brand hidden-xs siteLogo hvr-float-shadow" href="#/home"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a>
       <a class="navbar-brand visible-xs mobsitelogo" href="#/home"></a>
       <div class="pull-left">
-        <ul class="nav navbar-nav navbar-left">
+        <ul class="nav navbar-nav">
           <li check-acl="headerDashBoard" ng-class="isTabActive('home')"><a href="#/home"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm">Dashboard</span></a></li>
           <li check-acl="headerProducts" ng-class="isTabActive('products')"><a href="#/products"><span class="glyphicon glyphicon-folder-close"></span><span class="hidden-xs hidden-sm">Products</span></a></li>
           <li check-acl="headerShipments" ng-class="isTabActive('shipments')"><a href="#/shipments"><span class="glyphicon glyphicon-share-alt"></span><span class="hidden-xs hidden-sm">Shipments</span></a></li>
           <li check-acl="headerOrders" ng-class="isTabActive('orders')"><a href="#/orders"><span class="glyphicon glyphicon-stats"></span><span class="hidden-xs hidden-sm">Orders</span></a></li>
           <li check-acl="merchantTab" ng-class="isTabActive('merchant')"><a href="#/merchant" class="merchantHeader"><span class="glyphicon glyphicon-group_add"></span><span class="hidden-xs hidden-sm">Merchant</span></a></li>
-          <li check-acl="adminTab" ng-class="isTabActive('admin')"><a href="#/admin" class="merchantHeader adminNavPadtop"><span class="glyphicon glyphicon-admin-nav"></span><span class="hidden-xs hidden-sm adminNavText">Admin</span></a></li>
         </ul>
       </div>
       <div class="pull-right">
@@ -54,7 +53,7 @@
           <li class="dropdown">
             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
               <span class="glyphicon glyphicon-user"></span>
-              <span class="hidden-md hidden-sm hidden-xs headtop3"><span ng-bind="getContext(loggedInUser)|addEllipse:20"></span></span>
+              <span class="hidden-sm hidden-xs headtop3"><span ng-bind="getContext(loggedInUser)|addEllipse:20"></span></span>
               <span class="caret"></span>
             </a>
 			
@@ -66,12 +65,8 @@
 		  
           <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
           <li ng-class="isTabActiveRight('accounts')"><a href="#/accounts" title="My Account"><span class="glyphicon glyphicon-cog"></span><span class="hidden-md hidden-sm hidden-xs headtop2">My Account</span></a></li>
-          <!--<li class="glyphicon glyphicon-nav-sep hidden-xs"></li>-->
-          <!--<li><a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a></li>-->
-            <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
-            <!-- <li><a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a></li> -->
-            <li class="support"><a href="javascript:;"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Support</span></a></li>
-
+          <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
+          <li><a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a></li>
           <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
           <li class="notifypopup">
             <a href="javascript:;" ng-click="callHeaderNotifications()" id="noti-button" data-placement="bottom"  data-toggle="popover">

@@ -9,7 +9,7 @@
                 <a href="#/orders/create" data-toggle="tooltip" id="orders-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol ezyHide">Create Order</span></a>
             </li>
 
-            <li ng-class="isNavActive('orders','upload')" class="list-group-item ezyUpload" data-toggle="tooltip" data-placement="top" title="Upload Order">
+            <li ng-class="isNavActive('orders','upload')" class="list-group-item ezyUpload" data-toggle="tooltip" data-placement="top" title="Upload File">
                 <a href="#/orders/upload" data-toggle="tooltip" id="orders-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol ezyHide">Upload Orders</span></a>
             </li>
             <li class="zeroDim"></li>
@@ -21,8 +21,8 @@
 
             
             
-            <li ng-class="isNavActive('orders','all', 'default')" class="list-group-item">
-                <span class="pen badge" ng-bind="ordersCount['SALES'] || 0"></span>
+            <li ng-class="isNavActive('orders','all')" class="list-group-item">
+                <span class="pen badge" ng-bind="ordersCountTotal || 0"></span>
                 <a class="ordersAll" href="#/orders/all" title="All" id="orders-nav-has-issues">
                     <span class="glyphicon glyphicon-exclamation-sign padd0"></span>
                     <span class="full expOrCol allTxt">All</span>
@@ -39,7 +39,7 @@
                 </li>
                 
                 <div class="pendingIndentCont collapse" ng-class="{'in':isOptionVisible('ordPendingCollapse')}">
-                    <li ng-class="isNavActive('orders','hasissues')" class="list-group-item">
+                    <li ng-class="isNavActive('orders','hasissues', 'default')" class="list-group-item">
                         <span class="pen badge" ng-bind="ordersCount['HAS_ISSUES'] || 0"></span>
                         <a href="#/orders/hasissues" title="Has issues" id="orders-nav-has-issues" class="pendingIndent">
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -104,24 +104,6 @@
                     </li>
                     
                     <div class="othersIndentCont collapse" ng-class="{'in':isOptionVisible('ordOthersCollapse')}">
-                        <li ng-class="isNavActive('orders','returns')" class="list-group-item" ng-if="isCountriesOptionsVisible('showReturns')">
-                            <span class="badge" ng-bind="ordersCount['RETURN'] || 0"></span>
-                            <a href="#/orders/returns" title="Returns" class="othersIndent">
-                            <span class="glyphicon glyphicon-orders-return-order"></span>
-                            <span class="full expOrCol">Returns</span></a>
-                        </li>
-                        <li ng-class="isNavActive('orders','removals')" class="list-group-item" ng-if="isCountriesOptionsVisible('showRemovals')">
-                            <span class="badge" ng-bind="ordersCount['REMOVAL'] || 0"></span>
-                            <a href="#/orders/removals" title="Removals" class="othersIndent">
-                            <span class="glyphicon glyphicon-orders-removals"></span>
-                            <span class="full expOrCol">Removals</span></a>
-                        </li>
-                        <li ng-class="isNavActive('orders','undeliverable')" class="list-group-item">
-                            <span class="badge" ng-bind="ordersCount['UNDELIVERABLE'] || 0"></span>
-                            <a href="#/orders/undeliverable" title="Undeliverable" class="othersIndent">
-                            <span class="glyphicon glyphicon-orders-return"></span>
-                            <span class="full expOrCol">RTS</span></a>
-                        </li>
                         <li ng-class="isNavActive('orders','drafts')" class="list-group-item">
                             <span class="badge" ng-bind="ordersCount['DRAFT'] || 0"></span>  
                             <a href="#/orders/drafts" title="Drafts" class="othersIndent">
@@ -134,10 +116,15 @@
                             <span class="glyphicon glyphicon-ban-circle"></span>
                             <span class="full expOrCol">Cancelled</span></a>
                         </li>
-                        
                     </div>
                 </div>
             </div>
+            <!--<li ng-class="isNavActive('orders','returns')" class="list-group-item"><span class="badge" ng-bind="ordersCount['RETURN'] || 0"></span>
+                <a href="#/orders/returns" title="Returns"><span class="glyphicon glyphicon-transfer"></span><span class="full expOrCol">Returns</span></a>
+            <li ng-class="isNavActive('orders','removal')" class="list-group-item"><span class="badge" ng-bind="ordersCount['REMOVAL'] || 0"></span>
+                <a href="#/orders/removal" title="Removal"><span class="glyphicon glyphicon-remove-circle"></span><span class="full expOrCol">Removal</span></a>
+            </li>-->
+
         </ul>
     </article>
 </aside>

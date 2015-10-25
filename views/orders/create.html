@@ -35,7 +35,7 @@
                                     <div id="collapseOne" class="panel-collapse collapse in">
                                         <div class="panel-body order-headid">
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-8 col-xs-12 ordrwidthtxt">
+                                                <div class="col-md-6 col-sm-8 col-xs-12">
                                                     <div class="form-group required">
                                                         <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
                                                         <label for="order-create-merchant-id" class="control-label custmrid">Merchant Order ID</label>
@@ -50,21 +50,10 @@
                                                         </div>
                                                             </div>
                                                         <div class="col-md-7 col-sm-6 col-xs-11 colwdthordr paddnone">
-                                                            <input name="order-create-merchant-id" type="text" class="form-control" id="orders-create-merchant-id" placeholder="Max. 30 characters"  ng-model="model.merchantOrderId" required required-message="validationMessages.required" invalid-message="validationMessages.invalidOrdIdMerchant" maxlength="30" ng-change="updateDisplayableOrderId()"
-                                                            ng-blur="checkMerchantOrderIdAvail()" ng-class="{'has-error':isOrderExists  && model.merchantOrderId}" validator="checkOrderids(model.merchantOrderId)"/>
+                                                            <input name="order-create-merchant-id" type="text" class="form-control" id="orders-create-merchant-id" placeholder="Max. 30 characters" ng-pattern="/^[a-zA-Z0-9\-]{0,30}$/"  ng-model="model.merchantOrderId" required required-message="validationMessages.required" invalid-message="validationMessages.orderMerchantIdError" maxlength="30" ng-change="updateDisplayableOrderId()"/>
                                                         </div>
-
-                                                        
-
                                                     </div>
                                                 </div>
-                                                 
-
-                                                <div class="col-md-6 col-sm-12 pull-left paddnone txtItalic" ng-if="isOrderExists && model.merchantOrderId.length>0">
-                                                    <span class="error-font-color" >Merchant Order ID entered is already in use.Please enter a different and unique Merchant Order ID.</span>
-                                                </div>
-
-
                                                  
                                             </div>
                                         </div>
@@ -128,7 +117,7 @@
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <div class="form-group required">
                                                         <label for="order-create-originCountry" class="control-label">Country</label>
-                                                            <select ng-disabled="isCountriesOptionsVisible('ordersDisableCountry')" class="form-control" name="order-create-originCountry" ng-model="countryOfOriginCtrl" id="order-create-originCountry" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
+                                                            <select class="form-control" name="order-create-originCountry" ng-model="countryOfOriginCtrl" id="order-create-originCountry" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
                                                               <option value="">Select</option>
                                                             </select>
                                                     </div>
@@ -136,7 +125,7 @@
                                                 <div class="col-md-6 col-sm-6 col-xs-12 paddnone">
                                                     <div class="form-group required">
                                                         <label for="orders-create-zipCode" class="control-label">ZIP/Postal Code</label>
-                                                        <input type="text" name="orders-create-zip-Code"  class="form-control" id="orders-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.customer.shippingAddress.postalCode" validator="postalCodeVaidate()" invalid-message="validationMessages.invalidPostal" maxlength="12"/>
+                                                        <input type="text" name="orders-create-zip-Code"  class="form-control" id="orders-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.customer.shippingAddress.postalCode" required required-message="validationMessages.required" maxlength="60"/>
                                                     </div>
                                                 </div>
 
@@ -212,15 +201,11 @@
                                                         </div>
                                                             
                                                             <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
-                                                                <a href="javascript:" class="list-group-item">
+                                                                <a href="javascript:;" class="list-group-item">
                                                                     <span class="center fnt12px">No matching products found</span>
                                                                 </a>
                                                             </div>
-                                                            <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
-                                                                <a href="javascript:" class="list-group-item">
-                                                                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
-                                                                </a>
-                                                            </div>
+                                                            
                                                             
                                                         </div>                                                 
                                                         
@@ -238,7 +223,7 @@
                                                     <div class="newGridContainer container-fluid  col-xs-12 paddnone">
                                                        
 														
-											<div class="row proHeader hidden-xs">
+											<div class="row proHeader">
 												<div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordrcreateprod">Product</div>
 												<div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreatecate">Category </div>
                                                 <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent">Inventory </div>
@@ -285,7 +270,7 @@
                                                 
                                                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 fullfillableContainer">
                                                     <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                                        <input ng-pattern="/^[0-9]*$/" name="order-create-product-quantity-{{$index}}" type="number" class="form-control createordrqty" id="order-create-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1" invalid-message="validationMessages.invalidOrderUnits"/>
+                                                        <input name="order-create-product-quantity-{{$index}}" type="number" class="form-control createordrqty" id="order-create-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1"/>
                                                     </div>
 
                                                     <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 paddleft20 txtCenter orderRemove">
@@ -614,13 +599,13 @@
                                         </h4>
                                         <!--<div class="popover fade right collapse" id="carrier-popover" role="tooltip"><div class="{{isInternationalOrder ? 'arrow international' : 'arrow domestic'}}"></div><div class="popover-content" ng-show="isInternationalOrder">
                                             <p><strong>International Priority</strong> - Fastest and most reliable. Includes detailed tracking. Standard coverage USD 20/kg up to USD 100 / package.  EL coverage available.</p>
-                                            <p><strong>International Standard</strong> - Quick and efficient. Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 150 per package or declared value. EL coverage  available.</p>
-                                            <p><strong>International Economy</strong> - Cost effective mail delivery. Quality of tracking varies by destination.  Standard coverage lower of {{constants.currentCurrency}} 68 or declared value. EL coverage not available.</p>
+                                            <p><strong>International Standard</strong> - Quick and efficient. Includes tracking. Standard coverage lower of SGD 150 per package or declared value. EL coverage  available.</p>
+                                            <p><strong>International Economy</strong> - Cost effective mail delivery. Quality of tracking varies by destination.  Standard coverage lower of SGD 68 or declared value. EL coverage not available.</p>
 </div>
                                         <div class="popover-content" ng-show="!isInternationalOrder">
-                                            <p><strong>Domestic Standard</strong> - Quick and efficient delivery.  Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 150 or declared value. EL coverage available.
+                                            <p><strong>Domestic Standard</strong> - Quick and efficient delivery.  Includes tracking. Standard coverage lower of SGD 150 or declared value. EL coverage available.
 </p>
-                                            <p><strong>Domestic Economy</strong> - Reliable and cost effective delivery.  Includes tracking. Standard coverage lower of {{constants.currentCurrency}} 68 or declared value. EL coverage not available.</p>
+                                            <p><strong>Domestic Economy</strong> - Reliable and cost effective delivery.  Includes tracking. Standard coverage lower of SGD 68 or declared value. EL coverage not available.</p>
 </div><span class="glyphicon glyphicon-cross" data-toggle="collapse" data-target="#carrier-popover"></span></div>-->
                                     </div>
                                     <div id="orders-create2-collapseTwo" class="panel-collapse collapse in paddtop5">
@@ -646,7 +631,7 @@
                                                                         <span ng-bind="method.name || constants.notAvailable"></span>
                                                                         <div class="popoverHldr">
                                                                         <span class="glyphicon glyphicon-info" id="{{'#carrier-popover-head' + $index}}" ng-click="toggleTooltip($index)"></span>
-                                                                        <div class="createOrder popover fade collapse right" data-html2canvas-ignore="true" id="{{'carrier-popover-' + $index}}"><div class="arrow"></div><div class="popover-content"><p ng-bind="method.description || constants.notAvailableText"></p>
+                                                                        <div class="createOrder popover fade collapse right" id="{{'carrier-popover-' + $index}}"><div class="arrow"></div><div class="popover-content"><p ng-bind="method.description || constants.notAvailableText"></p>
 </div><span class="glyphicon glyphicon-cross" ng-click="toggleTooltip($index)"></span></div></div>
                                                                     </div>
                                                                 </td>
@@ -695,7 +680,7 @@
                                                                 <label for="orders-create2-shipping-weight" class="col-sm-5 control-label">Estimated Shipping Weight</label>
                                                                 <div class="col-sm-7">
                                                                     <p id="orders-create2-shipping-weight" class="form-control-static padd0" ng-bind="(model.shipping.estShippingWeight + ' ' + model.shipping.weightUnits) || constants.notAvailable"></p>
-                                                                    <em>Product(s) weight + <span ng-bind="isCountriesOptionsVisible('dunnagePercentage')"></span> dunnage for packaging weight</em>
+                                                                    <em>Product(s) weight + 10% dunnage for packaging weight</em>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -718,7 +703,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('ordersRemoveEnhancedLiability')">
+                                                        <div class="col-sm-12 col-xs-12">
                                                             <div class="form-group">
                                                                 <label for="orders-create2-liability-charges" class="col-sm-5 control-label">Enhanced Liability Fee</label>
                                                                 <div class="col-sm-7">
@@ -846,7 +831,6 @@
 
                                                                     <span class="form-control-static" ng-bind="model.customer.shippingAddress.city || constants.notAvailable"></span><br/>
                                                                     <span class="form-control-static" ng-bind="countryOfOriginCtrl.countryName || constants.notAvailable"></span><br/>
-                                                                    <span ng-if="model.customer.shippingAddress.stateCode" class="form-control-static" ng-bind="model.customer.shippingAddress.stateCode || constants.notAvailable"></span><br/>
                                                                     <span class="form-control-static" ng-bind="model.customer.shippingAddress.postalCode || constants.notAvailable"></span><br/>
                                                                     <span class="form-control-static" ng-bind="model.customer.shippingAddress.phone[0].number || constants.notAvailable"></span><br/>
                                                                     <span class="form-control-static" ng-bind="model.customer.customerEmail || constants.notAvailable"></span>
@@ -873,7 +857,7 @@
 							</div>
 							<div class="row">	
 								<!-- Insurance-->
-                                <div class="panel panel-default col-md-7 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20" ng-if="isCountriesOptionsVisible('ordersRemoveInsuranceCoverage')">
+                                <div class="panel panel-default col-md-7 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a href="javascript:;" id="shipment-view-general">
@@ -882,7 +866,7 @@
                                                             class="pull-right control-label" ng-show="selectedShippingMethod.liabilityAvailable"> <input
                                                             type="checkbox" id="orders-create2-add-liability"
                                                             name="orders-create2-add-liability" ng-model="model.shipping.liabilityTaken" ng-disabled="!selectedShippingMethod.liabilityAvailable" ng-change="updateDeliveryCharge()">
-                                                            Add Enhanced Liability(EL) to your shipment for {{selectedShippingMethod.estEnhancedCost || 0}} {{constants.currentCurrency}}
+                                                            Add Enhanced Liability(EL) to your shipment for {{selectedShippingMethod.estEnhancedCost || 0}} SGD
                                                         </label>
                                             <label for="orders-create2-add-liability"
                                                             class="pull-right control-label" ng-show="!selectedShippingMethod.liabilityAvailable">        <input type="checkbox" id="orders-create2-add-liability" name="orders-create2-add-liability" ng-model="model.shipping.liabilityTaken" ng-disabled="!selectedShippingMethod.liabilityAvailable" ng-change="updateDeliveryCharge()">
@@ -940,7 +924,7 @@
                                                 <div class="form-group" ng-class="{required : model.shipping.liabilityTaken}">
                                                     <label for="orders-create2-enhanced-liability-amount" class="col-sm-6 control-label">Enhanced Liability Amount ({{model.shipping.estDeliveryChargeCode}})
                                                     </label>
-                                                    <div class="col-md-3 col-sm-3 col-xs-12 elValidation">
+                                                    <div class="col-md-3 col-sm-3 col-xs-12">
                                                         <input type="text" id="orders-create2-enhanced-liability-amount" name="orders-create2-enhanced-liability-amount"
                                                                class="form-control" placeholder="Enhanced Liability Amount"
                                                                ng-model="model.shipping.liabilityValue"
@@ -953,7 +937,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-8 col-xs-12 pull-right paddlft20" ng-hide="!selectedShippingMethod.liabilityAvailable">
-                                                <p>(Cannot be more than declared value. Max EL amount for {{selectedShippingMethod.name}} is {{constants.currentCurrency}} {{selectedShippingMethod.elMax}})</p>
+                                                <p>(Cannot be more than declared value. Max EL amount for {{selectedShippingMethod.name}} is SGD {{selectedShippingMethod.elMax}})</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1024,10 +1008,7 @@
 
                                 
                             <!-- product details starts-->
-                            <!-- product details ends-->
-					</div>
-							
-				    <div class="{{isInternationalOrder ? 'panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone' : 'panel panel-default col-md-5 col-sm-5 col-xs-12 paddnone'}}">
+                            <div class="{{isInternationalOrder ? 'panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone' : 'panel panel-default col-md-5 col-sm-5 col-xs-12 paddnone'}}">
                                 <!--<div data-toggle="collapse" data-target="#orders-create2-collapseSix" class="panel-heading">
                                     <h4 class="panel-title">
                                             <a href="javascript:;" id="orders-create2-product-details">
@@ -1057,82 +1038,86 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--Table start here-->
+								<!--Table start here-->
+								
+								
                                 
-                                
-                                
-                                
-                                <div class="row">
+								
+								<div class="row">
                                     <div class="col-sm-12  col-xs-12 paddnone">
                                         <div class="newGridContainer container-fluid  col-xs-12 paddnone">
-                                        
-                                         <div class="row proHeader">
+										
+										 <div class="row proHeader">
                                             <div class="proShipHeaEditH col-xs-12 col-sm-12 col-md-1 col-lg-1">
-                                              <div ng-show="isInternationalOrder"><input checked type="checkbox" name="create-order-international-product-select-all" id="create-order-international-product-select-all" ng-model="internationalProductSelectAll" ng-change="checkUncheckAll(internationalProductSelectAll)"/></div>
-                                            </div>                                          
+											  <div ng-show="isInternationalOrder"><input checked type="checkbox" name="create-order-international-product-select-all" id="create-order-international-product-select-all" ng-model="internationalProductSelectAll" ng-change="checkUncheckAll(internationalProductSelectAll)"/></div>
+                                            </div>											
                                               <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}">SKU/Product</div>
                                               <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-2' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-4'}}">Product Name</div>
                                               <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}">Number of Units</div>
-                                              <div ng-show="isInternationalOrder" class="inline-required proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Customs Item Description</div>
+											  <div ng-show="isInternationalOrder" class="inline-required proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Customs Item Description</div>
                                               <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-1 col-lg-1">HS Code <span class="glyphicon glyphicon-question-sign"></span></div>
-                                              <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Declared value for all units ({{customs.dvalueCurrencyCode || constants.currentCurrency}})<span class="reqStar">&nbsp;*</span></div>
+                                              <div ng-show="isInternationalOrder" class="proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Declared value for all units ({{customs.dvalueCurrencyCode || "SGD"}})<span class="reqStar">&nbsp;*</span></div>
                                               <div ng-show="isInternationalOrder" class="inline-required proShipHeaCatH col-xs-12 col-sm-12 col-md-2 col-lg-2">Country of Origin</div>
                                               
                                           </div>
                                           <div class="clear"></div>
-                                        <div class="row proRow" ng-repeat="product in model.lineItems">
-                                           <!--chk box -->
-                                            <div class="proShipHeaEditH col-xs-12 col-sm-12 col-md-1 col-lg-1">
-                                                    <span ng-show="isInternationalOrder">
-                                                        <input type="checkbox"  ng-model="product.selected" id="order-create2-product-select-{{$index}}" name="order-create2-product-select-{{$index}}" ng-click="updateProductBasedCalc()" />
-                                                    </span>
-                                            </div>
-                                            <!--Product -->
-                                            <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}" ng-bind="product.ezcSku || constants.notAvailable" id="order-create2-product-sku-{{$index}}"></div>
-                                            <!--Product Name-->
-                                            <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-2' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-4'}}" ng-bind="product.description || constants.notAvailable | addEllipse:20" id="order-create2-product-desc-{{$index}}">
+										<div class="row proRow" ng-repeat="product in model.lineItems">
+										   <!--chk box -->
+											<div class="proShipHeaEditH col-xs-12 col-sm-12 col-md-1 col-lg-1">
+													<span ng-show="isInternationalOrder">
+														<input type="checkbox"  ng-model="product.selected" id="order-create2-product-select-{{$index}}" name="order-create2-product-select-{{$index}}" ng-click="updateProductBasedCalc()" />
+													</span>
+											</div>
+											<!--Product -->
+											<div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}" ng-bind="product.ezcSku || constants.notAvailable" id="order-create2-product-sku-{{$index}}"></div>
+											<!--Product Name-->
+											<div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-2' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-4'}}" ng-bind="product.description || constants.notAvailable | addEllipse:20" id="order-create2-product-desc-{{$index}}">
                                                </div>
-                                               <!--No of Units -->
+											   <!--No of Units -->
                                             <div class="{{isInternationalOrder ? 'proShipHeaCatH col-xs-12 col-sm-12 col-md-1' : 'proShipHeaCatH col-xs-12 col-sm-12 col-md-3'}}" ng-bind="product.quantity || constants.notAvailable" id="order-create2-product-qty-{{$index}}"></div>
-                                            <!--Description -->
-                                            <div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2 col-lg-2" ng-show="isInternationalOrder" id="order-create2-product-custom-desc-{{$index}}">
+											<!--Description -->
+											<div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2 col-lg-2" ng-show="isInternationalOrder" id="order-create2-product-custom-desc-{{$index}}">
                                                                 
-                                                <input  ng-disabled="!product.selected" name="orders-create2-item-description-{{$index}}" type="text" class="form-control" id="orders-create2-item-description-{{$index}}" placeholder="Customs Item Description" ng-model="product.customs.customsDescription" validator="checkInternationalOrderCustomDesc(product.selected, {{$index}})" invalid-message="validationMessages.required" />
-                                            </div>
-                                            <!--HSC code -->
-                                            <div class="hscodeErrorShow proShipHeaCatH col-xs-11 col-sm-12 col-md-1 col-lg-1" ng-show="isInternationalOrder" id="order-create2-product-hscode-{{$index}}">
-                                                
-                                                <input ng-disabled="!product.selected" name="orders-create2-hscode-{{$index}}" type="text" class="form-control" id="orders-create2-hscode-{{$index}}" placeholder="HS Code" ng-model="product.customs.hsCode" validator="checkInternationalOrderCustomHsCode(product.selected, {{$index}})" invalid-message="validationMessages.invalidhscodemin" maxlength="30" />                                               
-                                            </div>
-                                            
-                                            <div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-create2-product-decvalue-{{$index}}">
+												<input  ng-disabled="!product.selected" name="orders-create2-item-description-{{$index}}" type="text" class="form-control" id="orders-create2-item-description-{{$index}}" placeholder="Customs Item Description" ng-model="product.customs.customsDescription" validator="checkInternationalOrderCustomDesc(product.selected, {{$index}})" invalid-message="validationMessages.required" />
+											</div>
+											<!--HSC code -->
+											<div class="hscodeErrorShow proShipHeaCatH col-xs-11 col-sm-12 col-md-1 col-lg-1" ng-show="isInternationalOrder" id="order-create2-product-hscode-{{$index}}">
+												
+												<input ng-disabled="!product.selected" name="orders-create2-hscode-{{$index}}" type="text" class="form-control" id="orders-create2-hscode-{{$index}}" placeholder="HS Code" ng-model="product.customs.hsCode" validator="checkInternationalOrderCustomHsCode(product.selected, {{$index}})" invalid-message="validationMessages.invalidhscodemin" maxlength="30" />                                               
+											</div>
+											
+											<div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-create2-product-decvalue-{{$index}}">
                                                                 
-                                                <input ng-disabled="!product.selected" name="orders-create2-total-value-{{$index}}" type="text" class="form-control" id="orders-create2-total-value-{{$index}}" placeholder="Total Value ({{constants.currentCurrency}})" ng-model="product.customs.itemDeclaredValue" validator="checkInternationalOrderDValue({{product.selected}}, {{$index}})" invalid-message="validationMessages.invalidDeclaredValue"  ng-change="updateProductBasedCalc()"/>
-                                                </div>
-                                            
-                                            <div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-create2-product-origin-country-{{$index}}">
-                                                
-                                                <select ng-disabled="!product.selected" class="form-control" name="order-create2-originCountry-{{$index}}" ng-model="product.countryOfOriginCtrl" id="order-create2-originCountry-{{$index}}" ng-options="item as item.countryName for item in countryList track by item.countryCode" validator="checkInternationalOrderOCountry({{product.selected}}, {{$index}})" invalid-message="validationMessages.required">
-                                                      <option value="">Select</option>
-                                                </select>
-                                            </div>
+												<input ng-disabled="!product.selected" name="orders-create2-total-value-{{$index}}" type="text" class="form-control" id="orders-create2-total-value-{{$index}}" placeholder="Total Value (SGD)" ng-model="product.customs.itemDeclaredValue" validator="checkInternationalOrderDValue({{product.selected}}, {{$index}})" invalid-message="validationMessages.invalidDeclaredValue"  ng-change="updateProductBasedCalc()"/>
+												</div>
+											
+											<div class="proShipHeaCatH col-xs-11 col-sm-12 col-md-2" ng-show="isInternationalOrder" id="order-create2-product-origin-country-{{$index}}">
+												
+												<select ng-disabled="!product.selected" class="form-control" name="order-create2-originCountry-{{$index}}" ng-model="product.countryOfOriginCtrl" id="order-create2-originCountry-{{$index}}" ng-options="item as item.countryName for item in countryList track by item.countryCode" validator="checkInternationalOrderOCountry({{product.selected}}, {{$index}})" invalid-message="validationMessages.required">
+													  <option value="">Select</option>
+												</select>
+											</div>
                                                             
-                                        </div>
-                                        
-                                        <div class="row proRow" ng-if="!model.lineItems.length">
+										</div>
+										
+										<div class="row proRow" ng-if="!model.lineItems.length">
 
                                             <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
                                               No products added
                                             </div>
 
                                           </div>
-                                        
-                                        <div class="clearfix"></div>
+										
+										<div class="clearfix"></div>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
+                            <!-- product details ends-->
+					</div>
+							
+							
                     </div>
         <div class="btn-grp pull-right">
             <button type="submit" name="orders-create2-button1-btm" id="orders-create2-button1-btm" class="btn btn-primary">Create Order
@@ -1206,7 +1191,7 @@
                                         </label>
                                         <div class="col-sm-7">
                                             <p id="orders-create2-shipping-weight" class="form-control-static padd0" ng-bind="(model.shipping.estShippingWeight + ' ' + model.shipping.weightUnits) || constants.notAvailable"></p>
-                                            <em>Product(s) weight + <span ng-bind="isCountriesOptionsVisible('dunnagePercentage')"></span> dunnage for packaging weight</em>
+                                            <em>Product(s) weight + 10% dunnage for packaging weight</em>
                                         </div>
                                     </div>
                                 </div>
@@ -1230,7 +1215,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('ordersRemoveEnhancedLiability')">
+                                <div class="col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label for="orders-create2-liability-charges" class="col-sm-5 control-label">Enhanced Liability Fee<span class="glyphicon glyphicon-question-sign"></span>
                                         </label>

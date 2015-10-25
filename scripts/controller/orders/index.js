@@ -1,6 +1,6 @@
 define(['app', 'model/orders/details', 'utility/messages'], function (app, model, messages) {
-    app.controller('Orders', ['$scope', '$bus', 'ngProgress', '$rootScope', '$routeParams', '$constants', '$location', '$timeout','notify',  '$localStorage',
-        function ($scope, $bus, ngProgress, $rootScope, $routeParams, $constants, $location, $timeout,notify,$localStorage) {
+    app.controller('Orders', ['$scope', '$bus', 'ngProgress', 'toaster', '$rootScope', '$routeParams', '$constants', '$location', '$timeout','notify',  '$localStorage',
+        function ($scope, $bus, ngProgress, toaster, $rootScope, $routeParams, $constants, $location, $timeout,notify,$localStorage) {
 
 
             $scope.orderFilterOptions = angular.copy($constants.orderFilterOptions);
@@ -19,107 +19,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
             $scope.constants = $constants;
 
-
-            $scope.isOptionReturns = function(param) {
-
-                switch (param) {
-                    
-                    case 'searchOrderText':
-                        if ($routeParams) {
-                            if      ($routeParams.status=='returns')  return 'Search Returns';
-                            else if ($routeParams.status=='removals') return 'Search Removals';
-                            else return 'Search Orders';
-                        }
-                    break;
-
-                    case 'createdDateRange':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))?false:true;
-                    break;
-
-                    case 'createReturn':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-                    break;
-
-                    case 'sortCategory':
-                    return ($routeParams && $routeParams.status=='returns')?false:true;
-                    break;
-
-                    case 'createRemovals':
-                        return ($routeParams && $routeParams.status=='removals')?true:false;
-                        break;
-
-                    case 'orderChannel':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))?false:true;
-                    break;
-
-                    case 'orderType':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))? false : true;
-                    break;
-
-                    case 'actionsMenu':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))?false:true;
-                    break;
-
-                    case 'orderFilterOptions':
-                    if($routeParams && $routeParams.status=='returns' || $routeParams.status == 'removals')
-                        $scope.orderFilterOptions =  angular.copy($constants.orderReturnsFilterOptions);
-                    break;
-
-                    case 'ordersGrid':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))?false:true;
-                    break;
-
-                    case 'ordersReturnsGrid':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-                    break;
-
-                    case 'suggestionContainer':
-                    return ($routeParams && $routeParams.status=='returns')?false:true;
-                    break;
-
-                    case 'suggestionReturnsContainer':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-                    break;
-
-                    case 'ordersCountryCode':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-
-                    case 'ordersRemovalsGrid':
-                    return ($routeParams && $routeParams.status=='removals')?true:false;
-                    break;
-
-                    case 'ordersCountryCode':
-                    return ($routeParams && ($routeParams.status=='returns' || $routeParams.status=='removals'))?true:false;
-                    break;
-
-                    case 'searchOrderSuggestion':
-                    if($routeParams && $routeParams.status=='returns')
-                        return 'No matching returns found';
-                    else 
-                        return 'No matching orders found';
-
-                    case 'sortCol':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-                    break;
-
-                    case 'sortOrder':
-                    return ($routeParams && $routeParams.status=='returns')?true:false;
-                    break;
-
-                    case 'getSuggestionClass':
-                    return ($routeParams && $routeParams.status=='returns')?'create-returns-suggestions':'';
-                    break;
-
-                    case 'getPagingClass':
-                    return ($routeParams && $routeParams.status=='returns')?'pull-right':'';
-                    break;
-
-                    default:
-                    return false;
-                }
-
-            }
-
             //
             $scope.getOrderStatus = function()
             {
@@ -135,10 +34,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 if($routeParams && ($routeParams.scol || $routeParams.skey || $routeParams.date || $routeParams.type || $routeParams.c || $routeParams.inv)){
                     return messages.noOrdersHeaderTextFilter;
                 
-                }else if ($routeParams.status=='hasissues' ) {
+                }else if ($routeParams.status=='hasissues' || !($routeParams.status)) {
                     return messages.noOrdersHeaderTextHasIssues;
                 
-                }else if ($routeParams.status=='all' || !($routeParams.status)) {
+                }else if ($routeParams.status=='all') {
                     return messages.noOrdersHeaderTextAll;
                 
                 }else if ($routeParams.status=='unapproved') {
@@ -161,14 +60,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
                 }else if ($routeParams.status=='cancelled') {
                     return messages.noOrdersHeaderTextCancelled;
-                }else if ($routeParams.status=='undeliverable') {
-                    return messages.noOrdersHeaderTextUndeliverable;
-                }
-                else if ($routeParams.status=='returns') {
-                    return messages.noOrdersHeaderTextReturns;
-                }
-                else if ($routeParams.status=='removals') {
-                    return messages.noOrdersHeaderTextRemovals;
                 }
             }
 
@@ -180,18 +71,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     return false;
 
             }
-
-            $scope.showRemovalPoOrderNumber = function(orderStatus,order){
-                
-                if(order && order.purchaseOrders && order.purchaseOrders[0].poNumber && orderStatus && (orderStatus=='IN_PROCESS' || orderStatus=='FULFILLMENT' || orderStatus=='SHIPPED' || orderStatus=='DELIVERED') && $rootScope.loggedInUser && _.intersection($rootScope.loggedInUser.userRole.split(','),['admin']).length)
-                    return true;
-                else 
-                    return false;
-
-            }
             $scope.showInventoryType = function(){
                 
-                if (($routeParams && $routeParams.status=='hasissues') || ($routeParams && $routeParams.status=='unapproved')) {
+                if ((_.isEmpty($routeParams))||($routeParams && !$routeParams.status)||($routeParams && $routeParams.status=='hasissues') || ($routeParams && $routeParams.status=='unapproved')) {
                     return true;
                 }else{
                     return false;
@@ -204,10 +86,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 if($routeParams && ($routeParams.scol || $routeParams.skey || $routeParams.date || $routeParams.type || $routeParams.c || $routeParams.inv)){
                     return messages.noOrderssHeaderSubTextFilter;
                 
-                }else if ($routeParams.status=='hasissues') {
+                }else if ($routeParams.status=='hasissues' || !($routeParams.status)) {
                     return messages.noOrdersHeaderSubTextHasIssues;
                 
-                }else if ($routeParams.status=='all'  || !($routeParams.status)) {
+                }else if ($routeParams.status=='all') {
                     return messages.noOrdersHeaderSubTextAll;
                 
                 }else if ($routeParams.status=='unapproved') {
@@ -230,11 +112,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
                 }else if ($routeParams.status=='cancelled') {
                     return messages.noOrdersHeaderSubTextCancelled;
-                }else if ($routeParams.status=='undeliverable') {
-                    return messages.noOrdersHeaderSubTextCancelled;
-                }
-                else if ($routeParams.status=='returns') {
-                    return messages.noOrdersHeaderSubTextReturns;
                 }
             }
 
@@ -320,18 +197,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                         }
                     }
                     return 'Cancelled : '+date;
-                }else if(order.orderStatus=='UNDELIVERABLE'){
-
-                    for(i=0;i<order.history.length;i++){
-                        if(order.history[i].historyTag=='Undeliverable'){
-                             var date = (order.history[i].historyDate) ? order.history[i].historyDate : $constants.notAvailableText;
-                        }
-                    }
-                    return 'Returned : '+date;
                 }
-
-
-
 
             }
 
@@ -392,16 +258,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     return 'Created : '+date;
 
                 }
-                else if(order.orderStatus=='UNDELIVERABLE'){
-
-                    for(i=0;i<order.history.length;i++){
-                        if(order.history[i].historyTag=='Undeliverable'){
-                             var date = (order.history[i].historyDate) ? order.history[i].historyDate : $constants.notAvailableText;
-                        }
-                    }
-                    return 'Shipped : '+date;
-
-                }
 
             }
 
@@ -429,6 +285,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     })
                         .done(function (success) {
                             if (success.response.success.length) {
+                                //toaster.pop("success", messages.orderUpdateSucess); commented
                                 notify.message(messages.orderApproveSuccess.replace('##',data.merchantOrderId),'','succ','1');
                                 order.orderStatus = 'IN_PROCESS';
                             } else {
@@ -437,8 +294,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors),'','',1);
                                 } else {
+                                    //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                     notify.message(messages.orderApproveError,'','',1);
                                 }
                             }
@@ -449,8 +308,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors),'','',1);
                             } else {
+                                //toaster.pop("error", messages.orderUpdateError, "", 0); commented
                                 notify.message(messages.orderApproveError,'','',1);
                             }
                             ngProgress.complete();
@@ -636,154 +497,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
             };
 
-            $scope.closeUpdateModal = function() {
-                $('#order-bulk-approve').modal('hide');
-                $('.modal-backdrop.fade.in').remove();
-                $location.path('/orders/inprocess');
-                $scope.getPagedDataAsync();
-            };
-
-            $scope.getBulkApprovePercentage = function(key) {
-                if (!$rootScope.bulkProdUpdate) return;
-                if      (key == 'total')    return Math.round(($rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount)*100);
-                else if (key == 'success')  return Math.round($rootScope.bulkProdUpdate.prodsSuccess  / $rootScope.bulkProdUpdate.totalProdsCount*100);
-                else if (key == 'failed')   return Math.round($rootScope.bulkProdUpdate.prodsFailed   / $rootScope.bulkProdUpdate.totalProdsCount*100)
-            }
-
-
-            $scope.changeOrderStauts = function() {
-
-                $rootScope.prods = [];
-                angular.forEach($scope.myData, function(prod) {
-                    if (prod.Selected) {
-                        $rootScope.prods.push(prod)
-                    }
-                });
-                if ($rootScope.prods.length == 0) return;
-                $('#order-bulk-approve').modal();
-                $rootScope.isBulkProductUpdating = true;
-                $rootScope.activateOverlay = true;
-                var totalCount = $rootScope.prods.length;
-                $rootScope.bulkProdUpdate = {
-                    totalProdsCount:totalCount,
-                    prodsSuccess:0,
-                    prodsFailed:0,
-                    prodsHitCount:0,
-                    slicedProdsLength:0,
-                    response:[],
-                    successSKU:[],
-                    failedSKU:[],
-                };
-
-                var changeStatus = function () {
-                    var slicedProds = [];
-                    if ($rootScope.prods.length > 5) {
-                        slicedProds = $rootScope.prods.slice(0, 5);
-                        $rootScope.prods.splice(0,5);
-                    }
-                    else slicedProds = angular.copy($rootScope.prods);
-                    $rootScope.bulkProdUpdate.slicedProdsLength = slicedProds.length;
-
-
-                    angular.forEach(slicedProds, function(orders) {
-
-                        $scope.mapToEdit(orders);
-
-                        if(orders.orderStatus=='UNAPPROVED') {
-                            $scope.model.isApproved = true;
-                            $scope.model.isMgrApproved = false;
-                        }
-
-                        if(orders.orderStatus=='PROCESS_MGR') {
-                            $scope.model.isApproved = false;
-                            $scope.model.isMgrApproved = true;
-                        }
-
-                        var params = {
-                            id: orders.orderHeaderId || ''
-                        };
-
-                        $bus.fetch({
-
-                            name: 'editorders',
-                            api: 'editorders',
-                            resturl: true,
-                            params: params,
-                            data: JSON.stringify({
-                                order: JSON.stringify($scope.model)
-                            })
-
-                        })
-                            .done(function (success) {
-
-                                // {"status":1,"errors":null,"success":["OrderCreate","Order created successfully"],"data":{"orderHeaderId":"2322","ezcOrderNumber":"FL00003134","orderStatus":"PROCESS_MGR"}}
-                                // {"status":0,"errors":["Error","We found more than one non-Draft order that already has a merchantOrderId of: #1031. This should never happen.  Please notify the system admin immediately."],"success":null,"data":null}
-
-                                if (success && success.response && success.response.errors && success.response.errors.length) {
-
-                                    $rootScope.bulkProdUpdate.prodsFailed++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    var failureMsg = success.response.errors.join(',').replace('Error,','');
-                                    $rootScope.bulkProdUpdate.failedSKU.push(orders.ezcOrderNumber + ' - ' + failureMsg);
-
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-                                    }
-                                } else {
-
-                                    $rootScope.bulkProdUpdate.prodsSuccess++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    $rootScope.bulkProdUpdate.successSKU.push(orders.ezcOrderNumber);
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatus();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-
-                                    }
-                                }
-
-                            }).fail(function (error) {
-
-                                $rootScope.bulkProdUpdate.prodsFailed++;
-                                $rootScope.bulkProdUpdate.response.push(error);
-                                $rootScope.bulkProdUpdate.prodsHitCount++;
-
-                                var failureMsg = error.response.errors.join(',').replace('Error,','');
-                                $rootScope.bulkProdUpdate.failedSKU.push(orders.ezcOrderNumber + ' - ' + failureMsg);
-
-                                ngProgress.complete();
-                                if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                    if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                        $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                        changeStatus();
-                                    }
-                                    else {
-                                        $rootScope.activateOverlay = false;
-                                    }
-                                }
-
-                            });
-                    });
-                };
-                changeStatus();
-            };
-
 
             $scope.isOptionVisible = function (option) {
 
@@ -791,7 +504,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 case 'products':
                     return ($routeParams.status == 'hasissues' || $routeParams.status == 'unapproved' ||
                         $routeParams.status == 'inprocess' || $routeParams.status == 'fulfillment' || $routeParams.status == 'drafts' ||
-                        $routeParams.status == 'drafts' || $routeParams.status == 'cancelled');
+                        $routeParams.status == 'drafts' || $routeParams.status == 'cancelled' || (!$routeParams.status));
                     break;
                 case 'action':
                     return ($routeParams.status == 'drafts');
@@ -799,46 +512,35 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 case 'approve':
                     return ($routeParams.status == 'delivered');
                     break;
-                
-                case 'bulkApprove':
-                    return (!$routeParams.status || $routeParams.status=='all' || $routeParams.status=='unapproved' || ($routeParams.status == 'inprocess' && _.intersection($rootScope.loggedInUser.userRole.split(','),['admin','csr']).length));
-                    break;
-                    
-                case 'orderBulkDelete':
-                    return (!$routeParams.status || $routeParams.status=='all' || $routeParams.status == 'drafts' || $routeParams.status == 'cancelled');
-                    break;
-
                 case 'cancel':
-                    return ($routeParams.status != 'delivered' || $routeParams.status != 'cancelled');
+                    return (!$routeParams.status || $routeParams.status != 'delivered' || $routeParams.status != 'cancelled');
                     break;
                 case 'restore':
                     return ($routeParams.status == 'cancelled');
                     break;
                 case 'orderStatus':
-                    return ($routeParams.status == 'all' || !$routeParams.status);
+                    return ($routeParams.status == 'all');
                     break;
                 case 'remarks':
                     return ($routeParams.status == 'hasissues' || $routeParams.status == 'unapproved' || $routeParams.status == 'inprocess' || $routeParams.status == 'fulfillment' || $routeParams.status == 'drafts');
                     break;
                 case 'trackingNumber':
-                    return ($routeParams.status == 'shipped' || $routeParams.status == 'delivered' || $routeParams.status == 'undeliverable');
+                    return ($routeParams.status == 'shipped' || $routeParams.status == 'delivered');
                     break;
                 case 'ordAccQtyShipped':
                     return ($routeParams.status == 'shipped' || $routeParams.status == 'delivered');
                         break;
                 case 'ordersView':
-                    return ($routeParams.status == 'cancelled' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped' || $routeParams.status == 'fulfillment' || $routeParams.status == 'inprocess' || $routeParams.status == 'undeliverable' );
+                    return ($routeParams.status == 'cancelled' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped' || $routeParams.status == 'fulfillment' || $routeParams.status == 'inprocess');
                     break;
                 case 'ordersEdit':
                     return ($routeParams.status == 'all' || $routeParams.status == 'hasissues' || $routeParams.status == 'unapproved' || $routeParams.status == 'drafts' || !$routeParams.status);
                     break;
-
                 case 'ordOthersCollapse':
-                     return ($routeParams.status == 'returns' || $routeParams.status == 'removals' || $routeParams.status == 'drafts' || $routeParams.status == 'cancelled'  || $routeParams.status == 'undeliverable' );
+                     return ($routeParams.status == 'drafts' || $routeParams.status == 'cancelled');
                     break;
-
                 case 'ordPendingCollapse':
-                     return ($routeParams.status == 'hasissues' || $routeParams.status == 'unapproved');
+                     return ($routeParams.status == 'hasissues' || $routeParams.status == 'unapproved' || !$routeParams.status);
                     break;
                 case 'ordApprovedCollapse':
                     return ($routeParams.status == 'delivered' || $routeParams.status == 'shipped' || $routeParams.status == 'fulfillment' || $routeParams.status == 'inprocess');
@@ -849,10 +551,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     }
                     break;
                 case 'trackingNumberFilter':
-                    return (!$routeParams.status || $routeParams.status == 'all' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped');
+                    return ($routeParams.status == 'all' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped');
                     break;
                 case 'poNumberFilter':
-                    return (!$routeParams.status || $routeParams.status == 'all' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped' || $routeParams.status == 'fulfillment' || $routeParams.status == 'inprocess');
+                    return ($routeParams.status == 'all' || $routeParams.status == 'delivered' || $routeParams.status == 'shipped' || $routeParams.status == 'fulfillment' || $routeParams.status == 'inprocess');
                     break;
                 default:
                     return false;
@@ -867,14 +569,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                      return false;
 
             };
-
-            $scope.showDeleteOrder = function(param) {
-                
-                if(param=='DRAFT' || param=='CANCELLED')
-                    return true;
-                else
-                     return false;
-            }
             
             $scope.getOrderSuggestionsIcon = function(val) {
                 
@@ -883,10 +577,10 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
             $scope.getHeaderText = function() {
                 
-                if ($routeParams.status=='hasissues') {
+                if ($routeParams.status=='hasissues' || !($routeParams.status)) {
                     return messages.headerOrdersHasIssue;
                 
-                }else if ($routeParams.status=='all'  || !($routeParams.status)) {
+                }else if ($routeParams.status=='all') {
                     return messages.headerOrdersAll;
                 
                 }else if ($routeParams.status=='unapproved') {
@@ -909,22 +603,14 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
                 }else if ($routeParams.status=='cancelled') {
                     return messages.headerOrdersCancelled;
-                }else if ($routeParams.status=='undeliverable') {
-                    return messages.headerOrdersUndeliverable;
-                }
-                else if ($routeParams.status=='returns') {
-                    return messages.headerOrdersReturns;
-                }
-                else if ($routeParams.status=='removals') {
-                    return messages.headerOrdersRemovals;
                 }
             }
              $scope.getTitleText = function() {
                 
-                if ($routeParams.status=='hasissues') {
+                if ($routeParams.status=='hasissues' || !($routeParams.status)) {
                     return messages.headerTitleOrdersHasIssue;
                 
-                }else if ($routeParams.status=='all'  || !($routeParams.status)) {
+                }else if ($routeParams.status=='all') {
                     return messages.headerTitleOrdersAll;
                 
                 }else if ($routeParams.status=='unapproved') {
@@ -947,17 +633,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
                 }else if ($routeParams.status=='cancelled') {
                     return messages.headerTitleOrdersCancelled;
-                }else if ($routeParams.status=='undeliverable') {
-                    return messages.headerTitleOrdersUndeliverable;
-                }
-                else if ($routeParams.status=='returns') {
-                    return messages.headerTitleOrdersReturns;
-                }
-                else if ($routeParams.status=='removals') {
-                    return messages.headerTitleOrdersRemovals;
                 }
             }
-
+            
             $scope.formatOrderStatus = function (val) {
 
                 if (val == '') {
@@ -972,11 +650,11 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
             }
 
-            $scope.toggleCheckBox = function (val) {
+            $scope.toggleCheckBox = function () {
 
-                var checkboxValue = (val) ? true : false;
+                $scope.toggleCheckBoxVal = ($scope.toggleCheckBoxVal) ? true : false;
                 angular.forEach($scope.myData, function (order) {
-                    order.Selected = checkboxValue;
+                    order.Selected = $scope.toggleCheckBoxVal;
                 });
 
             }
@@ -1018,10 +696,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
                 } else if ($routeParams.status == 'cancelled' && $routeParams.status != '') {
                     return (typeof ($scope.ordersCount) != 'undefined') ? $scope.ordersCount['CANCELLED'] : "0";
-                } else if ($routeParams.status == 'hasissues' && $routeParams.status != '') {
+
+                } else {
                     return (typeof ($scope.ordersCount) != 'undefined') ? $scope.ordersCount['HAS_ISSUES'] : "0";
-                }else {
-                    return (typeof ($scope.ordersCount) != 'undefined') ? $scope.ordersCount['UNDELIVERABLE'] : "0";
                 }
 
             }
@@ -1123,8 +800,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 
                 var retVal = false;
                 
-                $rootScope.isCountriesOptionsVisible('ordersLandingDomShippintMethod');
-
                 _.each($constants.internationalShippingOptions, function (option) {
                     if(option.name==value){ retVal=true; }
                 });
@@ -1148,9 +823,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 if(suggest) {
                   if(suggest.orderStatus == 'IN_PROCESS' || suggest.orderStatus == 'UNAPPROVED' || suggest.orderStatus == 'DRAFT' || suggest.orderStatus == 'HAS_ISSUES') {
                       var url = 'orders/edit/' + suggest.orderHeaderId;
-                  } else if ($routeParams && $routeParams.status && $routeParams.status=='returns'){
-                      var url = 'orders/returns/view/' + suggest.ezcReturnId;
-                  }else {
+                  } else {
                       var url = 'orders/view/' + suggest.orderHeaderId;
                   }
                   $location.url(url);
@@ -1195,14 +868,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 "value": c
                             });
                             if (c) c.ticked = true;
-                        });
-                    }
-                    if (param.cn) {
-                        _(param.cn.split(',')).forEach(function (cn) {
-                            var cn = _.findWhere($scope.orderChannelOptions, {
-                                "value": cn
-                            });
-                            if (cn) cn.ticked = true;
                         });
                     }
                     if (param.type) {
@@ -1271,19 +936,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
                 var filterQuery = $routeParams;
                 
-                $scope.tempChannel = [];
-                $scope.tempChannelName = [];
-
-                _.each($scope.channel,function(data) {
-
-                    if(data && (data.value=='Shopify'||data.value=='eBay')){
-                        $scope.tempChannelName.push(data);
-                    }else {
-                        $scope.tempChannel.push(data);
-                    }
-                });
-
-                var query = ($scope.pagingOptions.currentPage ? 'p=' + pageToFetch + '&' : '') + ($scope.pagingOptions.pageSize ? 's=' + $scope.pagingOptions.pageSize + '&' : '') + (((applyClicked || (filterQuery.scol && filterQuery.skey)) && $scope.searchColumn.length && $scope.searchKey) ? 'scol=' + _.pluck($scope.searchColumn, 'value') + '&' : '') + (((applyClicked || filterQuery.skey) && $scope.searchKey) ? 'skey=' + $scope.searchKey + '&' : '') + (((applyClicked || (filterQuery.date)) && $scope.date.length) ? 'date=' + _.pluck($scope.date, 'value') + '&' : '') + (((applyClicked || filterQuery.fromdate) && $scope.date.length && $scope.date[0].value == 'custom' && $scope.fromdate) ? 'fromdate=' + $scope.fromdate + '&' : '') + (((applyClicked || filterQuery.todate) && $scope.date.length && $scope.date[0].value == 'custom' && $scope.todate) ? 'todate=' + $scope.todate + '&' : '') + ($scope.sortingOptions.field ? 'f=' + $scope.sortingOptions.field + '&' : '') + ($scope.sortingOptions.direction ? 'd=' + $scope.sortingOptions.direction + '&' : '') + (((applyClicked || filterQuery.type) && $scope.type && $scope.type.length) ? 'type=' + _.pluck($scope.type, 'value') + '&' : '') + (((applyClicked || filterQuery.c) && $scope.tempChannel && $scope.tempChannel.length) ? 'c=' + _.pluck($scope.tempChannel, 'value') + '&' : '') + (((applyClicked || filterQuery.cn) && $scope.tempChannelName && $scope.tempChannelName.length) ? 'cn=' + _.pluck($scope.tempChannelName, 'value') + '&' : '')+ (((applyClicked || filterQuery.inv) && $scope.inventory && $scope.inventory.length) ? 'inv=' + _.pluck($scope.inventory, 'value') : '');
+                var query = ($scope.pagingOptions.currentPage ? 'p=' + pageToFetch + '&' : '') + ($scope.pagingOptions.pageSize ? 's=' + $scope.pagingOptions.pageSize + '&' : '') + (((applyClicked || (filterQuery.scol && filterQuery.skey)) && $scope.searchColumn.length && $scope.searchKey) ? 'scol=' + _.pluck($scope.searchColumn, 'value') + '&' : '') + (((applyClicked || filterQuery.skey) && $scope.searchKey) ? 'skey=' + $scope.searchKey + '&' : '') + (((applyClicked || (filterQuery.date)) && $scope.date.length) ? 'date=' + _.pluck($scope.date, 'value') + '&' : '') + (((applyClicked || filterQuery.fromdate) && $scope.date.length && $scope.date[0].value == 'custom' && $scope.fromdate) ? 'fromdate=' + $scope.fromdate + '&' : '') + (((applyClicked || filterQuery.todate) && $scope.date.length && $scope.date[0].value == 'custom' && $scope.todate) ? 'todate=' + $scope.todate + '&' : '') + ($scope.sortingOptions.field ? 'f=' + $scope.sortingOptions.field + '&' : '') + ($scope.sortingOptions.direction ? 'd=' + $scope.sortingOptions.direction + '&' : '') + (((applyClicked || filterQuery.type) && $scope.type.length) ? 'type=' + _.pluck($scope.type, 'value') + '&' : '') + (((applyClicked || filterQuery.c) && $scope.channel.length) ? 'c=' + _.pluck($scope.channel, 'value') + '&' : '') + (((applyClicked || filterQuery.inv) && $scope.inventory && $scope.inventory.length) ? 'inv=' + _.pluck($scope.inventory, 'value') : '');
+                
                 if (query && ($location.url() != $location.path() + '?' + query)) {
                     $location.url($location.path() + '?' + query);
                     $scope.readQueryParam($routeParams);
@@ -1291,7 +945,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             };
 
             $scope.getQueryParam = function () {
-                
                 if ($routeParams.p)
                     $scope.pagingOptions.currentPage = Number($routeParams.p);
                 $scope.pagingOptions.pageSize = $scope.showingSize = $localStorage.pagingOptions.orders.pageSize;
@@ -1299,7 +952,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 var params = {
                     status: $routeParams.status ? _.findWhere($scope.orderStatus, {
                         "name": $routeParams.status
-                    }).value : 'ALL',
+                    }).value : 'HAS_ISSUES',
                     page: $routeParams.p || null,
                     rcdsPerPage: $scope.pagingOptions.pageSize || null,
                     searchCol: $routeParams.scol || null,
@@ -1310,18 +963,9 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     sortCol: $localStorage.pagingOptions.orders.sortingOption,
                     sortOrder: $localStorage.pagingOptions.orders.sortDir,
                     channel: $routeParams.c || null,
-                    channelName: $routeParams.cn || null,
                     isDomestic: $routeParams.type || null,
                     hasInventory: $routeParams.inv || null
                 };
-
-                if ($routeParams && $routeParams.status == 'removals') params.status = '';
-
-                if($scope.isOptionReturns('sortCol') && $scope.isOptionReturns('sortOrder') && !_.isEmpty(params)){
-                    params.sortCol = 'createdDate';
-                    params.sortOrder = 'desc';
-                }
-
                 return _.omit(params, function (value, key) {
                     return !value || (key == 'isDomestic' && value == 'all') || (key == 'isDomestic' && value == 'none') || (key == 'channel' && value == 'none') || (key == 'channel' && value == 'all') || (key == 'dateRange' && value == 'all') || (key == 'dateRange' && value == 'none') || (key == 'hasInventory' && value == 'all') || (key == 'hasInventory' && value == 'none');
                 });
@@ -1393,8 +1037,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
             
             $scope.getSuggestionStatus = function() {
                 if (_.isEmpty($routeParams)) {
-                    return 'ALL';
-                }else if($routeParams && $routeParams.status){
+                    return 'HAS_ISSUES';
+                }else if($routeParams && $routeParams.status && $routeParams.status!='all'){
                     return (_.findWhere($constants.orderStatus,{name:$routeParams.status})?_.findWhere($constants.orderStatus,{name:$routeParams.status}).value:'')
                 }
             }
@@ -1405,8 +1049,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     $timeout(function () {
                         if (txt == $scope.searchKey) {
                             $bus.fetch({
-                                name: $scope.getSuggestionApiUrl(),
-                                api: $scope.getSuggestionApiUrl(),
+                                name: 'suggestorders',
+                                api: 'suggestorders',
                                 params: {
                                     skey: txt,
                                     scol: col[0].value,
@@ -1502,7 +1146,12 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
 
             $('html').click(function (e) {
                 if ($scope.rangepicker && ($(e.target).closest(".dropdown-submenu").length ||
-                    $(e.target).hasClass('day') || $(e.target).hasClass('month') || $(e.target).hasClass('year'))) {
+                    $(e.target).attr('class')=='day' || $(e.target).attr('class')=='month' || $(e.target).attr('class')=='year'||
+                    $(e.target).attr('class')=='old day' || $(e.target).attr('class')=='range day'|| $(e.target).attr('class')=='old range day' ||
+                    $(e.target).attr('class')=='selected day' || $(e.target).attr('class')=='today selected day' || $(e.target).attr('class')=='today day' ||
+                    $(e.target).attr('class')=='active selected day'|| $(e.target).attr('class')=='new day' || $(e.target).attr('class')=='today active selected day'||
+                    $(e.target).attr('class')=='new active selected day' || $(e.target).attr('class')=='new selected day' || $(e.target).attr('class')=='new range day' || 
+                    $(e.target).attr('class')=='new today day' || $(e.target).attr('class')=='new today selected day')) {
                     e.stopPropagation();
                     $scope.tickSelection($scope.dateOptions, 8);
                 }
@@ -1525,131 +1174,6 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     }
                 }
 
-
-            $scope.getProcessedDate = function(removal) {
-                if (removal && removal.history) {
-                    for (var index = 0; index < removal.history.length; index++) {
-                        if (removal.history[index].historyTag == 'Processed') {
-                            return removal.history[index].historyDate;
-                        }
-                    }
-                }
-                else return null;
-            };
-
-
-            $scope.getClosedDate = function(removal) {
-                if (removal && removal.history) {
-                    for (var index = 0; index < removal.history.length; index++) {
-                        if (removal.history[index].historyTag == 'Closed') {
-                            return removal.history[index].historyDate;
-                        }
-                    }
-                }
-                else return null;
-            };
-
-            $scope.getCancelledDate = function (removal) {
-                if (removal.cancelDate) return removal.cancelDate;
-                else if (removal.history) {
-                    for (var index = 0; index < removal.history.length; index++) {
-                        if (removal.history[index].historyTag == 'Cancelled') {
-                            return removal.history[index].historyDate;
-                        }
-                    }
-                }
-                else return null;
-            };
-
-            $scope.getFullfillmentDate = function (removal) {
-                if (removal.cancelDate) return removal.cancelDate;
-                else if (removal.history) {
-                    for (var index = 0; index < removal.history.length; index++) {
-                        if (removal.history[index].historyTag == 'Fulfilled') {
-                            return removal.history[index].historyDate;
-                        }
-                    }
-                }
-                else return null;
-            };
-
-            $scope.deleteOrder = function(order) {
-                
-                $('#confirm-delete-order-modal').modal();
-                    
-                $('#deleteOrdermodalCancel,#delete-order-model-close').on('click',function(e){
-                   $('#delete-order-modalOk').off('click');
-                }); 
-
-                $('#delete-order-modalOk').on('click',function(e){
-                    $('#deleteOrdermodalCancel').click();
-                    $('.modal-backdrop.fade.in').remove();
-                    $('#delete-order-modalOk').off('click');
-                    $scope.deleteOrderService(order);
-                });
-            }
-
-            $scope.deleteOrderService = function(order) { 
-
-                var request = {
-                   "delete":{   
-                      "orderHeaderId":order.orderHeaderId,
-                      "merchantOrderId":"",
-                      "ezcOrderId":""
-                  }
-              }
-                $bus.fetch({
-                    name: 'deleteOrders',
-                    api: 'deleteOrders',
-                    params: null,
-                    data: {"delete":JSON.stringify(request)}
-                })
-                    .done(function (success) {
-                        
-                        if (success.response && success.response.success && success.response.success.length) {
-
-                            notify.message(messages.orderDeleteSuccess,'','succ');
-                            $scope.getPagedDataAsync();
-                        } else {
-                            var errors = [];
-                            _.forEach(success.response.errors, function (error) {
-                                errors.push(error)
-                            });
-                            if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors),'','',1);
-                            } else {
-                                notify.message(messages.orderDeleteSuccess,'','',1);
-                            }
-                        }
-
-                    }).fail(function (error) {
-                        
-                        var errors = [];
-                        _.forEach(error.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors),'','',1);
-                        } else {
-                            notify.message(messages.orderApproveError,'','',1);
-                        }
-
-                    });
-            }
-
-            $scope.getorderScrollClassTop = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'ordersPageScroll nano';
-            }
-            $scope.getorderScrollClassBot = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'nano-content';
-            }
-            
             $scope.init = function () {
 
                 $scope.routeBasedFilter();
@@ -1702,27 +1226,15 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                 $scope.setPagingData = function (data, page, pageSize, totalSize) {
                     
                     $rootScope.getCountryList().done(function(){
-
-                        if($scope.isOptionReturns('ordersCountryCode')) {
-
-
-                        }else{
-                            _(data).forEach(function (item) {
-                                item.lineItemsUnits = 0;
-
-                                if(item.customer && item.customer.shippingAddress && item.customer.shippingAddress.countryCode) {
-
-                                $rootScope.getCountryNameByCode(item.customer.shippingAddress.countryCode).done(function(name){
-                                    item.customer.shippingAddress.countryName = name;
-                                });    
-                                _(item.lineItems).forEach(function (i) {
-                                    item.lineItemsUnits += Number(i.quantity);
-                                });
-
-                                }
-                            }); 
-                        }
-
+                        _(data).forEach(function (item) {
+                            item.lineItemsUnits = 0;
+                            $rootScope.getCountryNameByCode(item.customer.shippingAddress.countryCode).done(function(name){
+                                item.customer.shippingAddress.countryName = name;
+                            });    
+                            _(item.lineItems).forEach(function (i) {
+                                item.lineItemsUnits += Number(i.quantity);
+                            });
+                        });
                     });
                     
                     $scope.myData = data;
@@ -1737,156 +1249,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     return (val) ? val:$constants.unidentified;
                 }
 
-                $scope.getRestApiUrl = function() {
-
-                    if($routeParams && $routeParams.status && $routeParams.status=='returns')  return 'ordersReturn';
-                    else if ($routeParams && $routeParams.status && $routeParams.status=='removals') return 'ordersRemovals';
-                    else return 'orders';
-                }
-
-                $scope.getSuggestionApiUrl = function() {
-
-                    if($routeParams && $routeParams.status && $routeParams.status=='returns')
-                        return 'suggestordersreturns';
-                    else 
-                        return 'suggestorders';
-                }
-
-
-            $scope.closeUpdateModalBulkDelete = function() {
-                $('#order-bulk-delete').modal('hide');
-                $('.modal-backdrop.fade.in').remove();
-                $scope.getPagedDataAsync();
-            };
-
-            $scope.getBulkDeletePercentage = function(key) {
-                if (!$rootScope.bulkProdUpdate) return;
-                if      (key == 'total')    return Math.round(($rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount)*100);
-                else if (key == 'success')  return Math.round($rootScope.bulkProdUpdate.prodsSuccess  / $rootScope.bulkProdUpdate.totalProdsCount*100);
-                else if (key == 'failed')   return Math.round($rootScope.bulkProdUpdate.prodsFailed   / $rootScope.bulkProdUpdate.totalProdsCount*100)
-            }
-
-
-            $scope.changeBulkOrderDeleteStauts = function() {
-
-                $rootScope.prods = [];
-                angular.forEach($scope.myData, function(prod) {
-                    if (prod.Selected) {
-                        $rootScope.prods.push(prod)
-                    }
-                });
-                if ($rootScope.prods.length == 0) return;
-                $('#order-bulk-delete').modal();
-                $rootScope.isBulkProductUpdating = true;
-                $rootScope.activateOverlay = true;
-                var totalCount = $rootScope.prods.length;
-                $rootScope.bulkProdUpdate = {
-                    totalProdsCount:totalCount,
-                    prodsSuccess:0,
-                    prodsFailed:0,
-                    prodsHitCount:0,
-                    slicedProdsLength:0,
-                    response:[],
-                    successSKU:[],
-                    failedSKU:[],
-                };
-
-                var changeStatusBulkDelete = function () {
-                    var slicedProds = [];
-                    if ($rootScope.prods.length > 5) {
-                        slicedProds = $rootScope.prods.slice(0, 5);
-                        $rootScope.prods.splice(0,5);
-                    }
-                    else slicedProds = angular.copy($rootScope.prods);
-                    $rootScope.bulkProdUpdate.slicedProdsLength = slicedProds.length;
-
-
-                    angular.forEach(slicedProds, function(orders) {
-
-                        var request = {
-                           "delete":{   
-                              "orderHeaderId":orders.orderHeaderId,
-                              "merchantOrderId":"",
-                              "ezcOrderId":""
-                            }
-                        }
-
-                        $bus.fetch({
-                            name: 'deleteOrders',
-                            api: 'deleteOrders',
-                            params: null,
-                            data: {"delete":JSON.stringify(request)}
-                        }).done(function (success) {
-
-                                if (success && success.response && success.response.errors && success.response.errors.length) {
-
-                                    $rootScope.bulkProdUpdate.prodsFailed++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    var failureMsg = success.response.errors.join(',').replace('Error,','');
-                                    $rootScope.bulkProdUpdate.failedSKU.push(orders.ezcOrderNumber + ' - ' + failureMsg);
-
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatusBulkDelete();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-                                    }
-                                } else {
-
-                                    $rootScope.bulkProdUpdate.prodsSuccess++;
-                                    $rootScope.bulkProdUpdate.response.push(success);
-                                    $rootScope.bulkProdUpdate.prodsHitCount++;
-                                    $rootScope.bulkProdUpdate.successSKU.push(orders.ezcOrderNumber);
-                                    ngProgress.complete();
-                                    if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                        if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                            $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                            changeStatusBulkDelete();
-                                        }
-                                        else {
-                                            $rootScope.isBulkProductUpdating = false;
-                                            $rootScope.activateOverlay = false;
-                                        }
-
-                                    }
-                                }
-
-                            }).fail(function (error) {
-
-                                $rootScope.bulkProdUpdate.prodsFailed++;
-                                $rootScope.bulkProdUpdate.response.push(error);
-                                $rootScope.bulkProdUpdate.prodsHitCount++;
-
-                                var failureMsg = error.response.errors.join(',').replace('Error,','');
-                                $rootScope.bulkProdUpdate.failedSKU.push(orders.ezcOrderNumber + ' - ' + failureMsg);
-
-                                ngProgress.complete();
-                                if ($rootScope.bulkProdUpdate.prodsHitCount ==  $rootScope.bulkProdUpdate.slicedProdsLength) {
-                                    if ( $rootScope.bulkProdUpdate.prodsSuccess +  $rootScope.bulkProdUpdate.prodsFailed !=  $rootScope.bulkProdUpdate.totalProdsCount) {
-                                        $rootScope.bulkProdUpdate.prodsHitCount = 0;
-                                        changeStatusBulkDelete();
-                                    }
-                                    else {
-                                        $rootScope.activateOverlay = false;
-                                    }
-                                }
-
-                            });
-                    });
-                };
-                changeStatusBulkDelete();
-            };
-
                 $scope.getPagedDataAsync = function () {
-
-                    var deferred = $.Deferred();
-
                     ngProgress.start();
                     
                     $scope.loading = {
@@ -1895,8 +1258,8 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                     }
                     
                     $bus.fetch({
-                        name: $scope.getRestApiUrl(),
-                        api: $scope.getRestApiUrl(),
+                        name: 'orders',
+                        api: 'orders',
                         params: $scope.getQueryParam(),
                         data: null
                     })
@@ -1911,17 +1274,7 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 var orders = [];
                                 var data = success.response.data;
                                 //notify.Message(messages.orderList+' '+messages.retrivedSuccess);
-                                if(data && data.returns){
-                                    data.orders = [];
-                                    data.orders = data.returns;
-                                }
-
-
-                                if (data && data.removals) {
-                                    data.orders = [];
-                                    data.orders = data.removals;
-                                }
-
+                                //toaster.pop("success", messages.orderList, messages.retrivedSuccess);
                                 if (data && data.orders) {
                                     if (!_.isArray(data.orders)) {
                                         _.forEach(data.orders, function (order) {
@@ -1936,21 +1289,20 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                     $scope.setPagingData(orders, (data.toRecord / (data.toRecord - data.fromRecord + 1)), (data.toRecord - data.fromRecord + 1), data.totalRecords);
                                     $scope.setPageSizeClickLength();
                                 }
-
-
                             } else {
                                 var errors = [];
                                 _.forEach(success.response.errors, function (error) {
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     //notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.orderFetchError, "", 0); commented
                                     //notify.message(messages.orderFetchError);
                                 }
                             }
                             ngProgress.complete();
-                            deferred.resolve();
                         }).fail(function (error) {
                             
                             $scope.loading = {
@@ -1963,24 +1315,17 @@ define(['app', 'model/orders/details', 'utility/messages'], function (app, model
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 //notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.orderFetchError, "", 0); commented
                                 //notify.message(messages.orderFetchError);
                             }
                             ngProgress.complete();
-                            deferred.reject();
                         });
-
-                        return deferred.promise();
                 };
 
-                $scope.getPagedDataAsync().done(function(){
-                    $timeout(function() {
-                        $(".ordersPageScroll.nano").nanoScroller({ flash: true,preventPageScrolling: true,iOSNativeScrolling: true});
-                    }, 500);
-                });
-                $scope.isOptionReturns('orderFilterOptions');
-
+                $scope.getPagedDataAsync();
                 $scope.$watch('pagingOptions', function (newVal, oldVal) {
 
                     if (newVal !== oldVal) {

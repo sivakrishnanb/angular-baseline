@@ -1,0 +1,185 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="edit_product"
+              novalidate angular-validator angular-validator-submit="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Edit Profile</h2>
+                </div>
+              </div>
+               <div class="panel-group">
+                <div class="panel panel-default">
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="col-sm-2">
+                       <label for="eanType" class="col-sm-12 control-label">Email Address</label>
+                      </div>
+                      <div class="col-sm-2">
+                       <label for="eanType" class="col-sm-5 control-label">krishnakumar.tce@gmail.com</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="product-edit-product-defaults">
+                        Change Password </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="eanType" class="col-sm-5 control-label">Current
+                              Password</label>
+                            <div class="col-sm-7">
+                              <input name="oldPassword" type="text"
+                                class="form-control" id="oldPassword"
+                                placeholder="Current Password" ng-model="model.oldPassword"
+                                required required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="eanType" class="col-sm-5 control-label">New
+                              Password</label>
+                            <div class="col-sm-7">
+                              <input name="newPassword" type="text"
+                                class="form-control" id="newPassword"
+                                placeholder="New Password" ng-model="model.newPassword"
+                                required required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="eanType" class="col-sm-5 control-label">Retype
+                              Password</label>
+                            <div class="col-sm-7">
+                              <input name="confirmPassword" type="text"
+                                class="form-control" id="confirmPassword"
+                                placeholder="Retype Password"
+                                ng-model="model.confirmPassword" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary pull-right col-sm-6"
+                            type="submit">Change Password</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div data-toggle="collapse" data-target="#collapseOne"
+                    class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="product-edit-product-defaults">
+                        Edit Basic Information </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="userType" class="col-sm-5 control-label">Individual / Business
+                              </label>
+                            <div class="col-sm-7">
+                              <input name="userType" type="text" class="form-control"
+                                id="userType" placeholder="Individual / Business"
+                                ng-model="model.userType" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="lastName" class="col-sm-5 control-label">Company Name
+                              </label>
+                            <div class="col-sm-7">
+                              <input name="lastName" type="text" class="form-control"
+                                id="lastName" placeholder="Company Name"
+                                ng-model="model.lastName" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <label for="lastName" class="col-sm-5 control-label">Your Last Name</label>
+                            <div class="col-sm-7">
+                              <input name="lastName" type="text" class="form-control"
+                                id="lastName" placeholder="Last Name"
+                                ng-model="model.lastName" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="email" class="col-sm-5 control-label">Company regn. Number (UEN/GSTN)
+                              </label>
+                            <div class="col-sm-7">
+                              <input name="email" type="text" class="form-control"
+                                id="email" placeholder="Company Regn No."
+                                ng-model="model.email" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="form-group">
+                            <label for="firstName" class="col-sm-5 control-label">Your First Name</label>
+                            <div class="col-sm-7">
+                              <input name="firstName" type="text" class="form-control"
+                                id="firstName" placeholder="First Name"
+                                ng-model="model.firstName" required
+                                required-message="validationMessages.required" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary pull-right col-sm-6"
+                            type="submit">Save Changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

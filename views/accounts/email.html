@@ -186,113 +186,7 @@
                       </div>
                     </div>
                   </div>
-                  
-<!-- -->
-<div class="panel panel-default col-md-6 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a href="javascript:;" id="pref-order">Customer Emails</a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                      <div class="panel-body padall2">
-                         <div class="row">
-                          
-                              <div class="col-md-10 col-sm-11 col-xs-10" >
-                                 <div class="form-group " >
-                                    <label class="control-label">Do you want ezyCommerce to send order status emails to your customer</label>   
-                                </div> 
-                              </div>
-                              <div class="col-md-1 col-sm-1 col-xs-1">
-
-                                 <div class="onoffswitch pref no-margin">
-                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="model.isSendOrderEmail">
-                                        <label class="onoffswitch-label" for="myonoffswitch">
-                                            <span class="onoffswitch-inner"></span>
-                                            <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.isSendOrderEmail}"></span>
-                                        </label>
-                                    </div>
-                              </div>
-                          </div>
-                      <div class="row">
-                        <div class="col-md-1 col-sm-1 col-xs-1">
-                          <input type="checkbox" ng-disabled="isSendEmailTo()" id="customer-mail-order-fulfillment" class="chkpadd" name="customer-mail-order-fulfillment" ng-model="model.emailOrderChangedFulfilled">
-                        </div>
-                        <div class="col-md-11 col-sm-11 col-xs-10">
-                           <div class="form-group">
-                              <label class="control-label">Email my customer when Order status changes to Fulfillment</label>              
-                          </div> 
-                        </div>
-                      </div>
-                      <div class="row" >
-                        <div class="col-md-1 col-sm-1 col-xs-1">
-                          <input type="checkbox"  ng-disabled="isSendEmailTo()" id="customer-mail-order-shipped" class="chkpadd" name="customer-mail-order-fulfillment" ng-model="model.emailOrderChangedShipped">
-                        </div>
-                        <div class="col-md-11 col-sm-11 col-xs-10">
-                           <div class="form-group">
-                              <label class="control-label">Email my customer when Order status changes to Shipped</label>              
-                          </div> 
-                        </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-md-12 col-sm-12 required mar-left-30">
-                                <div class="form-group required">
-                                    <label for="customerEmail-company-name" class="col-sm-4 control-label ">Store/Company Name</label>
-                                    <div class="col-md-6 col-sm-6" ng-class=""> 
-                                        <input id="customerEmail-company-name" ng-disabled="isSendEmailTo()" name="customerEmail-company-name" ng-model="model.storeName" type="text" class="form-control" maxlength="20"  invalid-message="validationMessages.required" validator="isSendEmailTo(model.storeName)"  />
-                                     </div>
-                                </div>
-                            </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col-md-12 col-sm-12 required">
-                                <div class="form-group required mar-left-30">
-                                    <label for="customerEmail-signOff-text" class="col-sm-4 control-label ">Sign-off text</label>
-                                    <div class="col-md-6 col-sm-6" ng-class=""> 
-                                        <input id="customerEmail-signOff-text" ng-disabled="isSendEmailTo()" name="customerEmail-signOff-text" ng-model="model.signOffText" type="text" class="form-control" maxlength="20" invalid-message="validationMessages.required" validator="isSendEmailTo(model.signOffText)"/>
-                                     </div>
-                                </div>
-                            </div>
-                      </div>
-
-
-                      <div class="row">
-                          <div class="col-md-12 col-sm-12 ">
-                                <div class="form-group required mar-left-30">
-                                    <label for="customerEmail-footer-text" class="col-sm-4 control-label ">Footer text</label>
-                                    <div class="col-md-6 col-sm-6" ng-class=""> 
-                                        <input id="customerEmail-footer-text" ng-disabled="isSendEmailTo()" name="customerEmail-footer-text" ng-model="model.footerText" type="text" class="form-control" maxlength="100"  invalid-message="validationMessages.required" validator="isSendEmailTo(model.footerText)">
-                                     </div>
-                                </div>
-                            </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col-md-12 col-sm-12 ">
-                                <div class="form-group mar-left-30">
-                                   <a href="/content/Sample Email.pdf" class="blog-nav-item" target="_blank">View a Sample Email</a>
-                                </div>
-                            </div>
-                      </div>
-
-
-
-
-
-                    </div>
-                  </div>
-                </div>
-<!-- -->
-
-                </div>
-
-
-
-
-  <div class="row paddbtm20 xstxt-padd0">
-
-  <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
+                  <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
                     <div class="panel-heading">
                       <h4 class="panel-title">
                         <a href="javascript:;" id="pref-others">Others</a>
@@ -300,7 +194,7 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                       <div class="panel-body padall2">
-            <div class="row" >
+					  <div class="row" >
                         <div class="col-md-1 col-sm-1 col-xs-1">
                           <input type="checkbox" ng-disabled="true" id="pref-others-summary-pendingItems" class="chkpadd" name="pref-others-summary-pendingItems" ng-model="model.isSummaryPendingItems">
                         </div>
@@ -309,7 +203,7 @@
                               <label class="control-label">Email me a daily summary on all Pending items (Shipments and Orders) </label>              
                           </div> 
                         </div>
-            </div>
+						</div>
              <div class="row">
                          <div class="col-md-1 col-sm-1 col-xs-1" >
                           <input type="checkbox" ng-disabled="true" id="pref-others-monthly-invoice" class="chkpadd" name="pref-others-monthly-invoice" ng-model="model.isMonthlyInvoice">
@@ -323,14 +217,7 @@
                       </div>
                     </div>
                   </div>
-
-                  
-              </div>
-
-
-
-
-
+                </div>
               </div>
               <div class="btn-grp pull-right formbtn">
                 <div class="form-xsbtnbtm pull-right">

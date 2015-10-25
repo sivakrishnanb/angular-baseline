@@ -1,186 +1,5 @@
-<div class="slide-out-div print-hide" ng-controller="Base" ng-if="isLoggedIn" data-html2canvas-ignore="true">
-    <!--<div class="nano">
-      <div class="nano-content">-->
-    <!--<a class="handle" href="javascript:;">Support</a>-->
-	<a class="hidesupport handle" href="javascript:;"><span class="glyphicon glyphicon-hidesupport"></span>Hide Support</a>
-    <div class="feedback-cnt">
-    <div class="nano">
-    <div class="nano-content">
-        <h5>Questions? Feedback? Concerns?</h5>
-
-        <p class="linehgt20">Please explain your query by choosing the right category and we will get back within 1 working day
-        </p>
-        <form name="supportForm" id="supportForm" enctype="multipart/form-data" novalidate angular-validator angular-validator-submit="supportFormSubmit()">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group merid">
-                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Merchant ID</label>
-                        <label class="col-md-5 col-sm-5 control-label lblcln"> {{loggedInContent.merchantCode  || constantsBase.notAvailableText}}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group merid">
-                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Email</label>
-                        <label class="col-md-8 col-sm-8 control-label lblcln"> {{loggedInContent.email || constantsBase.notAvailableText}}</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12 paddtop10">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Subject</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <input name="sidebar-info" type="text" ng-model="supportSubject" class="form-control" id="sidebar-info-sub" required required-message="popUpValidationMessages.required">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Category</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <!--<select class="form-control" ng-model="category" ng-options="key as value for (key , value) in constantsBase.supportTypes"> -->
-                            <select class="form-control" name="support-category" ng-model="category" ng-change="supportSubTypes2 = '';supportSubType1=''" required required-message="popUpValidationMessages.required">
-                                <option value="">Select</option>
-                                <option ng-repeat="(key, value) in caseList" value="{{key}}">{{key | camelCase}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Sub-Type 1</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <select class="form-control" ng-model="supportSubType1" name="supportSubType1" ng-change="supportSubTypes2 = ''; setSubType2(category, supportSubType1)" required required-message="popUpValidationMessages.required">
-                                <option value="">Select</option>
-                                <option ng-repeat="subType in getSubType1(category) track by $index" value="{{subType}}">{{subType | camelCase}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" ng-hide="!supportSubTypes2">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Sub-Type 2</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <select class="form-control" ng-model="supportSubType2" name="supportSubType2" validator="subType2Val(supportSubTypes2)" invalid-message="popUpValidationMessages.required">
-                                <option value="">Select</option>
-                                <option ng-repeat="subType in supportSubTypes2 track by $index" value="{{subType}}">{{subType | camelCase}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Message</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <textarea name="message" type="text" ng-model="supportMsg" class="form-control" row="4" id="message"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Attachment</label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <input class="attachments" type="file" file-model="attachment1" id="attachment1" name="attachment1">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Screenshot</label>
-                        <div></div>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <button type="button" class="btn btn-primary col-sm-9" ng-click="takescrnshot()">Capture Screen</button>
-                            <button ng-if="isScreenCaptured" type="button" class="btn btn-danger col-sm-3" ng-click="deleteScrnshot()"><i class="glyphicon glyphicon-connection-deleted"></i></button>
-                            <div class="screenshot-loader ezyHide"><span class="dataget glyphicon glyphicon-cog spin"></span></div>
-                            <div id="canvasImg" ng-click="openImageModel()"></div>
-                            <!--<input name="screenshot" type="text" class="form-control" id="screenshot">-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group merid">
-                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label"></label>
-                        <div class="col-md-7 col-sm-6 col-xs-11">
-                            <button type="submit" class="btn btn-primary" id="supportform-submit-button">Submit</button><em class="submitMessage"></em>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </form>
-
-        <h5>Contact Us</h5>
-
-        <p ng-if="isCountriesOptionsVisible('supportCallUs')">Call us @ <span class="highlgt">+65 62295979</span></p>
-        <p>Chat with us @ <a href="http://www.ezycommerce.com" class="highlgt" target="_blank">www.ezycommerce.com</a></p>
-        <p><em ng-bind="isCountriesOptionsVisible('supportCallTimings')"></em></p>
-        <h5>Help</h5>
-
-        <div class="form-group">
-            <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Search</label>
-            <div class="col-md-7 col-sm-6 col-xs-11">
-                <div class="right-inner-addon">
-                    <i class="icon-search"></i>
-                    <input name="sidebar-info" id ="support-search" placeholder="Ask a question" ng-model="supportSearchText" type="search" class="form-control" id="sidebar-info">
-					<span ng-click="(supportSearchText)?openTab(supportSearchText):''" class="glyphicon glyphicon-slideout-search form-control-feedback"></span>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-
-        <p>Browse our Help Section</p>
-        <!--<a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a>-->
-        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides" target="_blank" title="Quick start guide">Quick start guide</a></p>
-        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/product-management/" target="_blank" title="Quick start guide">Product Management</a></p>
-        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides/#create-shipment" target="_blank" title="Quick start guide">Sending products to warehouse</a></p>
-        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides/#order" target="_blank" title="Quick start guide">Order Fulfillment</a></p>
-        <p><a href="javascript:;" target="_blank" title="Quick start guide" ng-click="openTab('integrations')">Integrations</a></p>
-        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/billing-invoicing" target="_blank" title="Quick start guide">Billing & Invoicing</a></p>
-
-
-    </div>
-    </div>
-  </div>
-</div>
-
 <div id="page-overlay" class="overlay" ng-show="activateOverlay"><i class="glyphicon glyphicon-cog spin"></i></div>
-
-
-<!-- Image Popover starts -->
-<div class="modal fade" id="img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" id="img-modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header canvas-img-mdl">
-                <p><span class="model-close" data-dismiss="modal">X</span></p>
-            </div>
-            <div class="modal-body" id="canvas-img-modal">
-            </div>
-        </div>
-    </div>
-</div>
-<!--Image Popover ends-->
+<toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
 
 <!-- model starts -->
 <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -203,29 +22,6 @@
     </div>
 </div>
 <!-- model ends -->
-
-<!-- no permission model starts -->
-<div class="modal fade" id="no-permission-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <p>No Permission <span class="model-close" data-dismiss="modal">X</span></p>
-            </div>
-
-            <div class="modal-body">
-                <p>You don't have access to perform this operation.</p>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger danger thButton modelButtonOk"  data-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- no permission model ends -->
-
-
 
 <div  class="notificationContainer" ng-class="[getOneMsgClass(),getLoginClass()]"><div class="innerContainer" notification-messages></div></div>
 <!-- model starts for archive-->
@@ -436,7 +232,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <p> Delete Sales Channel <span class="removeChannel-model-close" data-dismiss="modal">X</span></p>
+                    <p> Update Tracking Status - eBay <span class="removeChannel-model-close" data-dismiss="modal">X</span></p>
                 </div>
                 
                 <div class="modal-body">
@@ -451,6 +247,7 @@
         </div>
 </div>
 <!-- delete channel ends-->
+
 
 <!-- model starts for Remove User-->
 <div class="modal fade" id="delete-user-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -535,15 +332,42 @@
                 <p class="txtBold">Hello, <span ng-bind="loggedInContent.lastName+' '+loggedInContent.firstName"></span></p><div class="martop5"></div>
                 <div style="clear"></div>
 
-                <ng-include src="'views/dashboard/welcome-pop-'+isCountriesOptionsVisible('welcomePopUpFile')+'.html'"></ng-include>
+                <p class="contentFont">Now that you are signed in to your ezyCommerce account, we'd like to highlight some important points before you send in your inventory and place your orders. It's important you understand this clearly so you can plan ahead and we can always ensure a great experience for your customers.</p><br>
+                <div style="clear"></div>
 
-           </div>
+                <p class="contentFont"><b>Sending Shipments to our warehouse</b></p><div class="martop5"></div>
+                <div style="clear"></div>
+
+                <p class="contentFont">For all Inbound Shipments received by the warehouse on business day 0 by 4pm - goods will be received and ready for fulfilment <b>latest</b> on business day 2 by 4pm. However, we strive to receive all shipments within 1 business day and update you as soon as shipment is closed.</p><br>
+                <div style="clear"></div>
+
+                <p class="contentFont">Please follow the shipment preparation guidelines to ensure a smooth and timely receiving process.</p><br>
+                <div style="clear"></div>
+
+                <p class="contentFont"><b>Shipping Orders from our warehouse</b></p><div class="martop5"></div>
+                <div style="clear"></div>
+
+                <p class="contentFont">For all Outbound orders approved on business day 0 by 9am, Orders will be shipped out of warehouse <b>latest</b> on business day 1 by 5pm. However, we strive to ship out all orders received until 8 AM on business day 1 on the same day.</p><br>
+                <div style="clear"></div>
+
+                <p class="contentFont"><b>Delivery of orders to customers</b></p><div class="martop5"></div>
+                <div style="clear"></div>
+
+                <p class="contentFont">Depending upon the delivery method chosen by you, the delivery service level agreement will start from the time your order is shipped out of our warehouse. For example, when using Domestic Standard delivery, all orders shipped out by 5 PM on business day 0 will get delivered latest on business day 1, by 6 PM.</p><br>
+                <div style="clear"></div>
+
+                <p class="contentFont">Please refer to our <a class="helpLink" href="http://www.ezycommerce.com/help">Help</a> section for detailed SLAs and other guidelines.</p><div class="martop5"></div>
+                <div style="clear"></div>
+
+                <p>Now you're all set, get started and get ready to transform the way you sell online.</p>
+
+
+
+            </div>
 
             <div class="modal-footer">
 
-                <p class="do-not-show-text">
-                    <input type="checkbox" id="do-not-show" class="chkpadd xstxt-padd0 ng-pristine ng-untouched ng-valid" name="do-not-show" ng-model="doNotShow" ng-click="changeShowPriority(doNotShow)"> Do not show again
-                </p>
+
                 <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="dashboard-modalClose">Close</button>               
             </div>
         </div>
@@ -583,7 +407,3 @@
         </div>
     </div>
 </div>
-
-<!-- channel preference popup -->
-
-<!-- channel preference popup -->

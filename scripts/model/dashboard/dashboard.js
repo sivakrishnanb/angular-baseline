@@ -1,4 +1,4 @@
-define(['utility/map'], function (map) {
+define(['map'], function (map) {
         var model = function () {
             this.message = 'Hello';
             this.name = '';

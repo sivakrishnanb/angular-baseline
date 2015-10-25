@@ -1,5 +1,5 @@
-define(['app', 'jquery', 'jquery-ui'], function (app, $) {
-    app.controller('Dashboard',['$rootScope','$scope', '$bus', '$dal', '$constants', 'ngProgress','notify', '$http','$timeout','$routeParams', function ($rootScope,$scope, $bus, $dal, $constants, ngProgress,notify, $http,$timeout,$routeParams) {
+define(['app', 'model/dashboard/dashboard', 'jquery'], function (app, model, $) {
+    app.controller('Dashboard',['$rootScope','$scope', '$bus', '$dal', '$constants', 'ngProgress', 'toaster','notify', '$http','$timeout','$routeParams', function ($rootScope,$scope, $bus, $dal, $constants, ngProgress, toaster,notify, $http,$timeout,$routeParams) {
 
 
         $scope.constants = $constants;
@@ -18,6 +18,8 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             if ($scope.inboundRcvd)$scope.getQuickLook();
         };
 
+        $scope.model = new model();
+
         $scope.getMaxOrders = function(orders) {
             if(!orders) return $scope.maxOrders = 0;
             var maxCount = 0;
@@ -27,13 +29,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             $scope.maxOrders = maxCount;
         };
 
-        $scope.getTopSellingClass = function(param){
-            if(param && param < 6){
-                return 'topsellunitsold-'+param;
-            }else{
-                return 'topsellunitsold-all';
-            }
-        }
         $scope.getAvgOrders = function() {
 
             if (!$scope.inboundRcvd) {
@@ -72,28 +67,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             return (retailValue/ordersCount).toFixed(2);
         }
 
-        $scope.getMaxIndexLine = function(series){
-            var maxVal = 0, indexVal = 0;
-            angular.forEach(series, function(data, index){
-                if(maxVal < data.y) {
-                    maxVal = data.y;
-                    indexVal = index;
-                }
-            });
-            return indexVal;
-        };
-        $scope.getMinIndexLine= function(series){
-            var minVal, indexVal = 0;
-            angular.forEach(series, function(data, index){
-                if (index == 0) minVal = data.y;
-                if(minVal > data.y) {
-                    minVal = data.y;
-                    indexVal = index;
-                }
-            });
-            return indexVal;
-        };
-
         $scope.populateProdLineChart= function() {
 
             //$scope.prodAggrData = [];
@@ -103,7 +76,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 angular.forEach($scope.barSampleData, function(prod, $index){
                     
 
-                    prodData.push({x: Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth()), new Date(prod[0]).getDate()   )           , y:prod[1]});
+                    prodData.push({x: Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth())+1, new Date(prod[0]).getDate()   )           , y:prod[1]});
                 });
             }
             else {
@@ -114,19 +87,11 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 angular.forEach($scope.prodAggrData, function(prod, $index){
 
 
-                    prodData.push({x: Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth()), new Date(prod[0]).getDate()   ), y:prod[1]});
+                    prodData.push({x: Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth())+1, new Date(prod[0]).getDate()   ), y:prod[1]});
                 });
             }
             //$scope.lineChartHC.series[0].setData(prodData);
-
-            if (prodData.length >= 2) {
-                var maxIndx = $scope.getMaxIndexLine(prodData);
-                var minIndx = $scope.getMinIndexLine(prodData);
-
-                prodData[maxIndx] = {x:prodData[maxIndx].x, y:prodData[maxIndx].y, color:'#ff6c60'};
-                prodData[minIndx] = {x:prodData[minIndx].x, y:prodData[minIndx].y, color:'#F8D347'};
-            }
-
+            
             $scope.prodLineProdData = prodData;
             $scope.lineChartHC.series[0].remove();
             $scope.lineChartHC.addSeries({ lineWidth: 1,color: '#fff',data:prodData});
@@ -155,35 +120,8 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
            
         };
 
-        Highcharts.setOptions({
-            colors: ['#F8D347', '#EF6F66', '#41CAC0', '#A8D76F', '#8075C4']
-        });
-
         $scope.lineChartHC =  new Highcharts.Chart({
             chart: {
-                zoomType: 'x',
-                resetZoomButton: {
-                    theme: {
-                        fill: '#455a64',
-                        stroke: 'silver',
-                        style: {
-                            color: 'white'
-                        },
-                        r: 0,
-                        states: {
-                            hover: {
-                                fill: '#455a64',
-                                style: {
-                                    color: 'white'
-                                }
-                            }
-                        }
-                    },
-                    position: {
-                        x: -10,
-                        y: -10
-                    }
-                },
                 renderTo: 'line-chart',
                 height: 220,
                 backgroundColor: '#41cac0',
@@ -213,7 +151,8 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
 
                 formatter: function () {
-                      return this.y + ' <b>Products Sold</b><br/>' + 'On ' +  Highcharts.dateFormat('%e - %b',new Date(this.x));
+                      return  '<b>' +  Highcharts.dateFormat('%e - %b',new Date(this.x)) +'</b><br/>' 
+                        + this.y ;
                 },
                 shared: true,
                 crosshairs: true,
@@ -239,16 +178,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 series: {
                     animation: {
                         duration: 2000
-                    },
-                    states: {
-                        hover: {
-                            enabled: false
-                        }
-                    },
-                    //
-                    marker: {
-                        radius: 3,
-                        symbol: 'circle'
                     }
                 }
             },
@@ -266,10 +195,10 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             },
             yAxis: {
                 gridLineWidth: 0,
-                tickInterval:1,
-                min:1,
+                tickInterval:20,
+                min:20,
                 title: {
-                    text: 'Units'
+                    text: ''
                 }
 
             },
@@ -283,29 +212,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
         $scope.areaChartHC = new Highcharts.Chart({
 
             chart: {
-                zoomType: 'x',
-                resetZoomButton: {
-                    theme: {
-                        fill: '#455a64',
-                        stroke: 'silver',
-                        style: {
-                            color: 'white'
-                        },
-                        r: 0,
-                        states: {
-                            hover: {
-                                fill: '#455a64',
-                                style: {
-                                    color: 'white'
-                                }
-                            }
-                        }
-                    },
-                    position: {
-                        x: -10,
-                        y: -10
-                    }
-                },
                 renderTo:'area-chart',
                 backgroundColor:null,
                 height:330,
@@ -348,14 +254,15 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             },
             yAxis: {
                 title: {
-                    text: 'Cubic Meters (cbm)'
+                    text: ''
                 },
                 min:0,
                 tickInterval:10
             },
             tooltip: {
                  formatter: function() {
-                      return  (this.y).toFixed(2) + ' <b>(cbm) Used</b><br/>' + 'On ' +  Highcharts.dateFormat('%e - %b',new Date(this.x)) + '<br/>';
+                      return  '<b>' +  Highcharts.dateFormat('%e - %b',new Date(this.x)) + '</b><br/>' 
+                        + 'Storage '  + this.y ;
                 },
                 borderColor:'#fff',
                 borderWidth:1,
@@ -369,20 +276,13 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             },
             plotOptions: {
                 area: {
-
-                    states: {
-                        hover: {
-                            enabled: false
-                        }
-                    },
-
                     marker: {
                         enabled: true,
                         symbol: 'circle',
-                        radius:3,
+                        radius:4,
                         states: {
                             hover: {
-                                enabled: true
+                                enabled: false
                             }
                         }
                     },
@@ -422,7 +322,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
             if (!$scope.inboundRcvd) {
                 angular.forEach($scope.barSampleData, function(prod, $index){
-                    values.push([ Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth()), new Date(prod[0]).getDate()   )  , prod[1] ]);
+                    values.push([ Date.UTC( new Date(prod[0]).getFullYear() , (new Date(prod[0]).getMonth())+1, new Date(prod[0]).getDate()   )  , prod[1] ]);
                 });
             }
             else {
@@ -432,37 +332,13 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 }
                 angular.forEach($scope.areaChartData, function(doc){
                     //values.push([new Date(doc.createdDate), (type == '$') ? doc.totalStorageVol : doc.totalInventory]);
-                    values.push([ Date.UTC( new Date(doc.createdDate).getFullYear() , (new Date(doc.createdDate).getMonth()), new Date(doc.createdDate).getDate()   )  , (type == '$') ? doc.totalStorageVol : doc.totalInventory ]);
+                    values.push([ Date.UTC( new Date(doc.createdDate).getFullYear() , (new Date(doc.createdDate).getMonth())+1, new Date(doc.createdDate).getDate()   )  , (type == '$') ? doc.totalStorageVol : doc.totalInventory ]);
                 });
             }
             //$scope.areaChartHC.series[0].setData(values);
-            var avgLine = $scope.getAvgLine(values);
-
             $scope.populateStorageUsedData = values;
             $scope.areaChartHC.series[0].remove();
-            $scope.areaChartHC.yAxis[0].removePlotLine();
             $scope.areaChartHC.addSeries({ name: '',color:'#9ACAE6',lineWidth: 2,data:values});
-            if (values && values[0] && values[0][0] && values[values.length-1] && values[values.length-1][0]) {
-
-                $scope.areaChartHC.yAxis[0].addPlotLine({
-                        color: 'red',
-                        value:avgLine,
-                        width: '1',
-                        zIndex: 3,
-
-                    tooltipText: 'Average : ' + avgLine.toFixed(2) + ' Between '+ Highcharts.dateFormat('%e - %b',new Date(values[0][0])) + ' to ' + Highcharts.dateFormat('%e - %b',new Date(values[values.length-1][0])),
-                    dashStyle: 'solid',
-                    events: {
-                        mouseover: function (e) {
-                            $scope.areaChartHC.tooltip.hide();
-                            $scope.displayTooltip('area', this.options.tooltipText, e.layerX, e.layerY);
-                        },
-                        mouseout: function(e) {
-                            $scope.hideTooltip();
-                        }
-                    },
-                });
-            }
             /*$scope.stackAreaData = [{
              key:"Storage",
              values:values,
@@ -487,8 +363,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             $scope.deliveryMethodsChart = [];
 
             if (!$scope.inboundRcvd) {
-                var sampleData = $rootScope.isCountriesOptionsVisible('pieChart') ? $scope.deliverySampleDataAU : $scope.deliverySampleData;
-                angular.forEach(sampleData, function(value, key){
+                angular.forEach($scope.deliverySampleData, function(value, key){
                     var data = {
                         name: key,
                         y: (type == '#') ? value.count : value.sum
@@ -529,7 +404,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             chart: {
                 renderTo: 'bar-chart',
                 backgroundColor:'#f1f2f7',
-                height:300,
+                height:250,
                 type: 'column',
                 events: {
                     load: function () {
@@ -579,12 +454,13 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 tickInterval:10,
                 gridLineDashStyle: 'Dash',
                 title: {
-                    text: 'Units'
+                    text: ''
                 }
             },
             tooltip: {
                 formatter: function() {
-                      return  this.y + ' <b>Orders</b><br/>' +  'On ' + Highcharts.dateFormat('%e - %b',new Date(this.x));
+                      return  '<b> Orders </b><br/>' 
+                        + this.y + ' on ' + Highcharts.dateFormat('%e - %b',new Date(this.x));
                 },
                 borderColor:'#fff',
                 borderWidth:1,
@@ -611,8 +487,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 },
                 series: {
                     animation: {
-                        duration: 2000,
-                        easing: 'easeOutBounce'
+                        duration: 1000
                     }
                 }
             },
@@ -624,81 +499,13 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
         });
 
 
-        $scope.getAvgLine = function(series) {
-            var total = 0, count = 0;
-            angular.forEach(series, function(data){
-                total += data[1];
-                count ++;
-            })
-            return total/count;
-        };
-
-        $scope.getMaxYindex = function(series){
-            var maxVal = 0, indexVal = 0;
-            angular.forEach(series, function(data, index){
-                if(maxVal < data[1]) {
-                    maxVal = data[1];
-                    indexVal = index;
-                }
-            });
-            return indexVal;
-        };
-        $scope.getMinYindex = function(series){
-            var minVal, indexVal = 0;
-            angular.forEach(series, function(data, index){
-                if (index == 0) minVal = data[1];
-                if(minVal > data[1]) {
-                    minVal = data[1];
-                    indexVal = index;
-                }
-            });
-            return indexVal;
-        };
-
-        var $avgTooltiBbar = $('#tooltip-bar');
-        var $avgTooltipArea = $('#tooltip-area');
-        $avgTooltiBbar.hide();
-        $avgTooltipArea.hide();
-
-        $scope.displayTooltip = function (chartType, text, left, top) {
-            var $text;
-            $scope.isAvgLineTooltipVisible = true;
-            if (chartType == 'bar') {
-                $text = $('#tooltiptext-bar');
-                $text.text(text);
-                $avgTooltiBbar.show();
-                var x = (($('#bar-chart').width() - 300) > parseInt(left)) ? parseInt(left) : $('#bar-chart').width() - 300;
-                $avgTooltiBbar.css('left', x + 24 + 'px');
-                $avgTooltiBbar.css('top', parseInt(top) + 27 + 'px');
-            }
-            else {
-                $text = $('#tooltiptext-area');
-                $text.text(text);
-                $avgTooltipArea.show();
-                $avgTooltipArea.css('left', x + 24 + 'px');
-                var x = (($('#area-chart').width() - 300) > parseInt(left)) ? parseInt(left) : $('#area-chart').width() - 300;
-                $avgTooltipArea.css('left', x + 24 + 'px');
-                $avgTooltipArea.css('top', parseInt(top) + 32 + 'px');
-            }
-            $scope.$apply();
-        };
-        var timer;
-        $scope.hideTooltip = function (e) {
-            clearTimeout(timer);
-            timer = setTimeout(function () {
-                $avgTooltiBbar.fadeOut();
-                $avgTooltipArea.fadeOut();
-                $scope.isAvgLineTooltipVisible = false;
-            }, 400);
-        };
-
         $scope.populateBarChart = function() {
             $scope.orderAggrDataChart = [];
             var orderData = [];
 
             if (!$scope.inboundRcvd) {
                 angular.forEach($scope.barSampleData, function(order, $index){
-                     var dt = Date.UTC( new Date(order[0]).getFullYear() , (new Date(order[0]).getMonth()), new Date(order[0]).getDate()   )
+                     var dt = Date.UTC( new Date(order[0]).getFullYear() , (new Date(order[0]).getMonth())+1, new Date(order[0]).getDate()   ) 
 
                     //var dateString = dt.getDate() + '-' + (dt.getMonth() + 1) + '-' + dt.getFullYear();
                     temp = [];
@@ -714,8 +521,8 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                     return;
                 }
 
-                angular.forEach($scope.orderAggrData, function(order, $index) {
-                    var dt = Date.UTC( new Date(order[0]).getFullYear() , (new Date(order[0]).getMonth()), new Date(order[0]).getDate());
+                angular.forEach($scope.orderAggrData, function(order, $index){
+                    var dt = Date.UTC( new Date(order[0]).getFullYear() , (new Date(order[0]).getMonth())+1, new Date(order[0]).getDate()   ) 
                     //var dateString = dt.getDate() + '-' + (dt.getMonth() + 1) + '-' + dt.getFullYear();
                     temp = [];
                     temp.push(dt);
@@ -725,46 +532,11 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 });
 
             }
-
-            var avgLine = $scope.getAvgLine(orderData);
-            if (orderData.length >= 2) {
-                var maxIndx = $scope.getMaxYindex(orderData);
-                var minIndx = $scope.getMinYindex(orderData);
-
-                orderData[maxIndx] = {x:orderData[maxIndx][0], y:orderData[maxIndx][1], color:'#41CAC0', hover:'#fff'};
-                orderData[minIndx] = {x:orderData[minIndx][0], y:orderData[minIndx][1], color:'#F8D347'};
-            }
-
+            
             $scope.orderDataScrollIn = orderData;
 
             $scope.barChartHC.series[0].remove();
-            $scope.barChartHC.yAxis[0].removePlotLine();
-            $scope.barChartHC.addSeries({color: '#bfc2cd',data:orderData, hover:'#FF6C60'});
-
-            if (orderData && orderData[0] && orderData[orderData.length-1] && orderData[orderData.length-1][0]) {
-
-                $scope.barChartHC.yAxis[0].addPlotLine(
-                    {
-                        color: 'red',
-                        value: avgLine,
-                        width: '1',
-                        zIndex: 3,
-
-                    tooltipText: 'Average : ' + avgLine.toFixed(2) + ' Between '+ Highcharts.dateFormat('%e - %b',new Date(orderData[1][0])) + ' to ' + Highcharts.dateFormat('%e - %b',new Date(orderData[orderData.length-1][0])),
-                    dashStyle: 'solid',
-                    events: {
-                        mouseover: function (e) {
-                            $scope.barChartHC.tooltip.hide();
-                            $scope.displayTooltip('bar', this.options.tooltipText, e.layerX, e.layerY);
-                        },
-                        mouseout: function(e) {
-                            $scope.hideTooltip();
-                        }
-
-                    }
-
-                    });
-            }
+            $scope.barChartHC.addSeries({color: '#bfc2cd',data:orderData});
         };
 
 
@@ -786,12 +558,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 backgroundColor: null,
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
-                plotShadow: false,
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                }
+                plotShadow: false
             },
             lang: {
                 noData: "No Data Available"
@@ -835,22 +602,14 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    depth: 35,
                     dataLabels: {
                         enabled: false
                     },
-                    showInLegend: false,
-                    states: {
-                        hover: {
-                            brightness:.2
-                        }
-                    },
-                    colors: ['#F8D347', '#8075C4', '#A8D76F', '#EF6F66', '#41CAC0']
+                    showInLegend: false
                 },
                 series: {
                     animation: {
-                        duration: 2000,
-                        easing: 'easeOutBounce'
+                        duration: 2000
                     }
                 }
             },
@@ -866,12 +625,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 backgroundColor: null,
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
-                plotShadow: false,
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                }
+                plotShadow: false
             },
             lang: {
                 noData: "No Data Available"
@@ -916,22 +670,14 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    depth: 35,
                     dataLabels: {
                         enabled: false
                     },
-                    showInLegend: false,
-                    states: {
-                        hover: {
-                            brightness:.2
-                        }
-                    },
-                    colors: ['#A8D76F', '#8075C4', '#F8D347', '#EF6F66', '#41CAC0']
+                    showInLegend: false
                 },
                 series: {
                     animation: {
-                        duration: 2000,
-                        easing: 'easeOutBounce'
+                        duration: 2000
                     }
                 }
             },
@@ -943,19 +689,13 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
         $scope.pieDeliveryHC = new Highcharts.Chart({
             chart: {
-                type: 'pie',
                 renderTo: 'pie-chart-delivery',
-                marginTop: 10,
-                height:340,
+                marginTop: 55,
+                height:310,
                 backgroundColor: null,
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
-                plotShadow: false,
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                }
+                plotShadow: false
             },
             lang: {
                 noData: "No Data Available"
@@ -999,23 +739,14 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    depth: 35,
-                    innerSize: 100,
                     dataLabels: {
                         enabled: false
                     },
-                    showInLegend: false,
-                    states: {
-                        hover: {
-                            brightness:.2
-                        }
-                    },
-                    colors: ['#EF6F66', '#F8D347', '#41CAC0', '#A8D76F', '#8075C4']
+                    showInLegend: false
                 },
                 series: {
                     animation: {
-                        duration: 2000,
-                        easing: 'easeOutBounce'
+                        duration: 2000
                     }
                 }
             },
@@ -1040,9 +771,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                     $scope.pieChannelData.push(data);
 
                 });
-
-                var shipSampleData = $rootScope.isCountriesOptionsVisible('pieChart') ? $scope.shipmentSampleDataAU : $scope.shipmentSampleData;
-                angular.forEach(shipSampleData, function(value, key){
+                angular.forEach($scope.shipmentSampleData, function(value, key){
                     var data = {
                         name: key,
                         y: (val == '#') ? value.count : value.sum
@@ -1095,25 +824,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
         };
 
-        $scope.getTopCountries = function(list, val) {
-
-            var topCountries = [], count = 0;
-            var tempList = angular.copy(list);
-            while (!jQuery.isEmptyObject(tempList) && count < 3) {
-                var max = 0, indexVal = 0;
-                angular.forEach(tempList, function(item, index) {
-                    if (item.count > max) {
-                        max = item.count;
-                        indexVal = index;
-                    }
-                });
-                topCountries.push([$scope.parseCountryName(indexVal), (val == '$')? tempList[indexVal].sum : tempList[indexVal].count]);
-                delete tempList[indexVal];
-                count++;
-            }
-            $scope.topCountries = topCountries;
-        };
-
         $scope.populateGeoChart = function(val) {
             $scope.geoSortByDollar = (val == '$');
             $scope.geoLocations = [];
@@ -1124,7 +834,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                     $scope.geoLocations.push([$scope.parseCountryName(key),(val=='#') ? value.count : value.sum]);
 
                 });
-                $scope.getTopCountries($scope.geoSampleData, val);
             }
             else {
                 if ($scope.geoChartData) {
@@ -1132,7 +841,6 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                         $scope.geoLocations.push([$scope.parseCountryName(key),(val=='#') ? value.count : value.sum]);
 
                     });
-                    $scope.getTopCountries($scope.geoChartData, val);
                 }
             }
         };
@@ -1559,29 +1267,14 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 "Webstore": {"count": 100,"sum": 10000}
             };
             $scope.shipmentSampleData = {
-                "Domestic": {"count": 300,"sum": 30000},
-                "International": {"count": 700,"sum": 70000}
+                "A": {"count": 300,"sum": 30000},
+                "B": {"count": 700,"sum": 70000}
             };
-            $scope.shipmentSampleDataAU = {
-                "Sydney":   {"count": 250,"sum": 26000},
-                "Melbourne":{"count": 300,"sum": 30000},
-                "Brisbane": {"count": 700,"sum": 21000},
-                "Perth":    {"count": 680,"sum": 88000},
-                "Adelaide": {"count": 100,"sum": 10000},
-                "Others":   {"count": 540,"sum": 45000}
-            };
-
             $scope.deliverySampleData = {
-                "Domestic Saver": {"count": 20,"sum": 200},
-                "Domestic Standard": {"count": 35,"sum": 200},
-                "Domestic Economy": {"count": 50,"sum": 1000},
-                "International Priority": {"count": 65,"sum": 2000},
-                "International Standard": {"count": 45,"sum": 1000},
-                "International Economy": {"count": 65,"sum": 6000}
-            };
-            $scope.deliverySampleDataAU = {
-                "Domestic Standard": {"count": 36,"sum": 600},
-                "Domestic Expedited": {"count": 50,"sum": 1000},
+                "A": {"count": 20,"sum": 200},
+                "B": {"count": 35,"sum": 200},
+                "C": {"count": 50,"sum": 1000},
+                "D": {"count": 65,"sum": 5000}
             };
 
             $scope.topSellingProds = [
@@ -1598,11 +1291,36 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
 
             $scope.barSampleData =  [
-                ["2015-03-01T00:00:00Z",51], ["2015-03-02T00:00:00Z",40], ["2015-03-03T00:00:00Z",27],
-                ["2015-03-04T00:00:00Z",49], ["2015-03-05T00:00:00Z",37], ["2015-03-06T00:00:00Z",27],
-                ["2015-03-07T00:00:00Z",47], ["2015-03-08T00:00:00Z",59], ["2015-03-09T00:00:00Z",60],
-                ["2015-03-10T00:00:00Z",56], ["2015-03-11T00:00:00Z",43], ["2015-03-12T00:00:00Z",46],
-                ["2015-03-13T00:00:00Z",43], ["2015-03-14T00:00:00Z",27], ["2015-03-15T00:00:00Z",50]
+                ["2015-01-01T00:00:00Z",44], ["2015-01-02T00:00:00Z",36], ["2015-01-03T00:00:00Z",29],
+                ["2015-01-04T00:00:00Z",54], ["2015-01-05T00:00:00Z",46], ["2015-01-06T00:00:00Z",46],
+                ["2015-01-07T00:00:00Z",39], ["2015-01-08T00:00:00Z",51], ["2015-01-09T00:00:00Z",46],
+                ["2015-01-10T00:00:00Z",36], ["2015-01-11T00:00:00Z",52], ["2015-01-12T00:00:00Z",46],
+                ["2015-01-13T00:00:00Z",29], ["2015-01-14T00:00:00Z",40], ["2015-01-15T00:00:00Z",56],
+                ["2015-01-16T00:00:00Z",37], ["2015-01-17T00:00:00Z",49], ["2015-01-18T00:00:00Z",35],
+                ["2015-01-19T00:00:00Z",33], ["2015-01-20T00:00:00Z",36], ["2015-01-21T00:00:00Z",25],
+                ["2015-01-22T00:00:00Z",45], ["2015-01-23T00:00:00Z",30], ["2015-01-24T00:00:00Z",42],
+                ["2015-01-25T00:00:00Z",40], ["2015-01-26T00:00:00Z",55], ["2015-01-27T00:00:00Z",45],
+                ["2015-01-28T00:00:00Z",48], ["2015-01-29T00:00:00Z",28], ["2015-01-30T00:00:00Z",50],
+                ["2015-01-31T00:00:00Z",54], ["2015-02-01T00:00:00Z",49], ["2015-02-02T00:00:00Z",57],
+                ["2015-02-03T00:00:00Z",57], ["2015-02-04T00:00:00Z",27], ["2015-02-05T00:00:00Z",53],
+                ["2015-02-06T00:00:00Z",31], ["2015-02-07T00:00:00Z",27], ["2015-02-08T00:00:00Z",34],
+                ["2015-02-09T00:00:00Z",59], ["2015-02-10T00:00:00Z",48], ["2015-02-11T00:00:00Z",36],
+                ["2015-02-12T00:00:00Z",49], ["2015-02-13T00:00:00Z",32], ["2015-02-14T00:00:00Z",35],
+                ["2015-02-15T00:00:00Z",59], ["2015-02-16T00:00:00Z",40], ["2015-02-17T00:00:00Z",37],
+                ["2015-02-18T00:00:00Z",34], ["2015-02-19T00:00:00Z",35], ["2015-02-20T00:00:00Z",41],
+                ["2015-02-21T00:00:00Z",54], ["2015-02-22T00:00:00Z",48], ["2015-02-23T00:00:00Z",33],
+                ["2015-02-24T00:00:00Z",58], ["2015-02-25T00:00:00Z",55], ["2015-02-26T00:00:00Z",60],
+                ["2015-02-27T00:00:00Z",36], ["2015-02-28T00:00:00Z",28], ["2015-03-01T00:00:00Z",51],
+                ["2015-03-02T00:00:00Z",40], ["2015-03-03T00:00:00Z",27], ["2015-03-04T00:00:00Z",49],
+                ["2015-03-05T00:00:00Z",37], ["2015-03-06T00:00:00Z",27], ["2015-03-07T00:00:00Z",47],
+                ["2015-03-08T00:00:00Z",59], ["2015-03-09T00:00:00Z",60], ["2015-03-10T00:00:00Z",56],
+                ["2015-03-11T00:00:00Z",43], ["2015-03-12T00:00:00Z",46], ["2015-03-13T00:00:00Z",43],
+                ["2015-03-14T00:00:00Z",27], ["2015-03-15T00:00:00Z",50], ["2015-03-16T00:00:00Z",52],
+                ["2015-03-17T00:00:00Z",51], ["2015-03-18T00:00:00Z",47], ["2015-03-19T00:00:00Z",32],
+                ["2015-03-20T00:00:00Z",25], ["2015-03-21T00:00:00Z",27], ["2015-03-22T00:00:00Z",33],
+                ["2015-03-23T00:00:00Z",43], ["2015-03-24T00:00:00Z",27], ["2015-03-25T00:00:00Z",27],
+                ["2015-03-26T00:00:00Z",57], ["2015-03-27T00:00:00Z",54], ["2015-03-28T00:00:00Z",39],
+                ["2015-03-29T00:00:00Z",59], ["2015-03-30T00:00:00Z",28], ["2015-03-31T00:00:00Z",49]
             ];
 
 
@@ -1660,7 +1378,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 $scope.qlRetailValue   = $scope.qlRetailValue - $scope.qlRetailValue;
                 $scope.maxOrders   = $scope.maxOrders - $scope.maxOrders;
                 if (!$scope.inboundRcvd) $scope.topSellingCount = 0;
-                //else $scope.topSellingProds = [];
+                else $scope.topSellingProds = [];
             },10);
 
             $timeout(function() {
@@ -1669,28 +1387,12 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                 $scope.qlRetailValue   = $scope.qlRetailValue + tempQlRetailValue ;
                 $scope.maxOrders   = $scope.maxOrders + tempMaxOrders;
                 if (!$scope.inboundRcvd) $scope.topSellingCount = $scope.topSellingCount + tempTopSellingProd;
-                //else $scope.topSellingProds = [];
+                else $scope.topSellingProds = [];
             },50);
         };
 
-        $scope.getDashboardScrollClassTop = function(){
-            if(Number($(document).width() >= 992))
-                return '';
-            else
-                return 'dashboardPageScroll nano';
-        }
-        $scope.getDashboardScrollClassBot = function(){
-            if(Number($(document).width() >= 992))
-                return '';
-            else
-                return 'nano-content';
-        }
-
         $scope.init = function () {
 
-            $timeout(function() {
-                $(".dashboardPageScroll.nano").nanoScroller({ flash: true,preventPageScrolling: true,iOSNativeScrolling: true});
-            }, 2000);
 
             (function ($) {
 
@@ -1759,6 +1461,7 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
                             break;
                         }
                     }
+                    console.log( _watch );
                 }
 
                 var pluginName = 'scrolledIntoView',
@@ -1868,7 +1571,11 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
 
             $('html').click(function (e) {
                 if ($scope.rangepicker && !($(e.target).closest("#datetimepicker7").length ||
-                    $(e.target).hasClass('day') || $(e.target).hasClass('month') || $(e.target).hasClass('year'))) {
+                    $(e.target).attr('class')=='day' || $(e.target).attr('class')=='month' || $(e.target).attr('class')=='year'||
+                    $(e.target).attr('class')=='old day' || $(e.target).attr('class')=='range day'|| $(e.target).attr('class')=='old range day' ||
+                    $(e.target).attr('class')=='selected day' || $(e.target).attr('class')=='today selected day' || $(e.target).attr('class')=='today day' ||
+                    $(e.target).attr('class')=='active selected day'|| $(e.target).attr('class')=='new day' || $(e.target).attr('class')=='today active selected day'||
+                    $(e.target).attr('class')=='new active selected day' || $(e.target).attr('class')=='new selected day' || $(e.target).attr('class')=='new range day')) {
                     $scope.rangepicker.hide();
                     $scope.isRangepickerShowing = false;
                 }
@@ -1961,6 +1668,22 @@ define(['app', 'jquery', 'jquery-ui'], function (app, $) {
             $scope.stackAreaData = [];
             $scope.geoLocations = [];
 
+
+            $bus.fetch({
+                name: 'dashboard',
+                api: 'dashboard',
+                params: null,
+                data: null
+            })
+                .done(function (success) {
+                    $scope.model = new model(success.response);
+                    ngProgress.complete();
+
+                    //console.log(JSON.stringify($scope.model));
+                }).fail(function (error) {
+                    $scope.model = new model();
+                    //console.log(JSON.stringify($scope.model));
+                });
 
             $scope.setShipmentReceived()
                 .done(function(data){

@@ -46,7 +46,7 @@
                     <div id="collapseOne" class="panel-collapse collapse in">
                       <div class="panel-body pnlbdy-pad5" >
                         <div class="">
-                          <div class="row proHeader txtLeft hidden-xs">
+                          <div class="row proHeader txtLeft">
                             <div class="userAccNameH col-xs-12 col-sm-2 col-md-2">Name</div>
                             <div class="userAccEmailH col-xs-12 col-sm-3 col-md-3">Email / User ID</div>
                             <div class="userAccLastLoginH col-xs-12 col-sm-2 col-md-2">Last Login</div>
@@ -54,7 +54,7 @@
                             <div class="userAccActionsH col-xs-12 col-sm-2 col-md-2">Actions</div>
                           </div>
 
-                          <div class="row proRow  noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-if="!users.length">
+                          <div class="row proRow  noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-show="!users">
                               <div class="fleft noDataRightContent">
                                 <p class="noProd txtBold">You don't have any sub-user set up for this account.</p>
                                 <p class="noStart">Create a sub user account for your sub-ordinates to manage your business. You can control their permissions at all times.</p>
@@ -63,7 +63,7 @@
 
                           <div class="clear"></div>
 
-                          <div ng-repeat="user in users" class="row proRow">
+                          <div ng-repeat="user in users" class="row userAccRow">
                             <div class="userAccName col-xs-12 col-sm-2 col-md-2">{{(user.lastName+' '+user.firstName) || constants.notAvailableText}}</div>
                             <div class="userAccEmail col-xs-12 col-sm-3 col-md-3">{{user.email || user.userId || constants.notAvailableText}}</div>
                             <div class="userAccLastLogin col-xs-12 col-sm-2 col-md-2">{{user.lastLogin || constants.notAvailableText}}</div>
@@ -72,7 +72,7 @@
                               <a id="userAccounts-edit" ng-href="#/accounts/editUser/{{user.userId}}" title="Edit">
                                 <span class="glyphicon glyphicon-edit-circle-grid"></span>
                               </a>
-                              <a id="userAccounts-delete" href="javascript:;" ng-click="deleteUser(user)" title="Delete">
+                              <a id="userAccounts-delete" ng-href="javascript:;" ng-click="deleteUser(user)" title="Delete">
                                 <span class="glyphicon glyphicon-cross-grid"></span>
                               </a>
                             </div>

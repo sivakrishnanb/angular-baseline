@@ -1,15 +1,5 @@
 [
   {
-    "header":"New Release 1.0.1",
-    "message":"First version of ezyCommerce is now officially live for Australia!",
-    "time":"2015-07-20 00:00:01"
-  },
-  {
-    "header":"ezyCommerce Support",
-    "message":"Click on Support on the top navigation bar to raise a ticket. You can also search for your questions in our help section using the integrated search box.",
-    "time":"2015-06-26 16:00:00"
-  },
-  {
     "header":"New Release 1.0000.02282015",
     "message":"First version of ezyCommerce is now officially live for Singapore!",
     "time":"2015-02-01 16:00:00"
@@ -17,16 +7,16 @@
   {
     "header":"My Account section",
     "message":"Take a moment to verify your account information and review your preferences under My Account section.",
-    "time":"2015-04-01 16:00:00"
+    "time":"2015-02-01 16:00:00"
   },
   {
     "header":"ezyCommerce Help",
     "message":"Click on Help on the top navigation bar to view detailed help content on every section.",
-    "time":"2015-04-01 16:00:00"
+    "time":"2015-02-01 16:00:00"
   },
   {
     "header":"Dashboard",
     "message":"As you perform transactions, your dashboard will start showing insights.",
-    "time":"2015-04-01 16:00:00"
+    "time":"2015-02-01 16:00:00"
   }
 ]

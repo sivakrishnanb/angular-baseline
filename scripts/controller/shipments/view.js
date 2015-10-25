@@ -1,6 +1,6 @@
 define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'utility/messages'], function (app, model, downloader, restapi, messages) {
-    app.controller('ViewShipments', ['$window','$scope', '$bus', 'ngProgress', '$constants', '$routeParams', '$rootScope','notify','highlight','$location',
-        function ($window,$scope, $bus, ngProgress, $constants, $routeParams, $rootScope,notify,highlight,$location) {
+    app.controller('ViewShipments', ['$window','$scope', '$bus', 'ngProgress', '$constants', '$routeParams', 'toaster', '$rootScope','notify','highlight','$location',
+        function ($window,$scope, $bus, ngProgress, $constants, $routeParams, toaster, $rootScope,notify,highlight,$location) {
 
             $scope.constants = $constants;
 
@@ -79,6 +79,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                 if (success.response.success.length && success.response.data && success.response.data.shipment) {
                                     $scope.model.header.cancelledDate = success.response.data.shipment.header.cancelledDate;
                                     $scope.model.header.status = success.response.data.shipment.header.status;
+                                    //toaster.pop("success", messages.shipmentCancelSuccess); commented
 									highlight.added($scope.model.header.inboundCode);
                                     notify.message(messages.shipmentCancelSuccess,'','succ');
 									$location.path('shipments/cancelled');
@@ -89,12 +90,15 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.shipmentCancelError, "", 0); commented
                                         notify.message(messages.shipmentCancelError);
                                     }
                                 }
                             }).fail(function (error) {
+                                //toaster.pop("error", messages.shipmentCancelError); commented
                                 notify.message(messages.shipmentCancelError);
                             });
                         $('#shipcancel-modalCancel').click();
@@ -135,6 +139,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                 if (success.response.success.length && success.response.data && success.response.data.shipment) {
                                     $scope.model.header.cancelledDate = success.response.data.shipment.header.cancelledDate;
                                     $scope.model.header.status = success.response.data.shipment.header.status;
+                                    //toaster.pop("success", messages.shipmentRestoreSuccess); commented
                                     notify.message(messages.shipmentRestoreSuccess,'','succ');
                                 } else {
                                     var errors = [];
@@ -142,12 +147,15 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                         errors.push(error)
                                     });
                                     if (errors.length) {
+                                        //toaster.pop("error", errors.join(', '), '', 0); commented
                                         notify.message($rootScope.pushJoinedMessages(errors));
                                     } else {
+                                        //toaster.pop("error", messages.shipmentRestoreError, "", 0); commented
                                         notify.message(messages.shipmentRestoreError);
                                     }
                                 }
                             }).fail(function (error) {
+                                //toaster.pop("error", messages.shipmentRestoreError); commented
                                 notify.message(messages.shipmentRestoreError);
                             });
                         $('#shiprestore-modalCancel').click();
@@ -167,6 +175,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                     var url = $constants.baseUrl + restapi[label].url + '?inboundCode=' + $scope.model.header.inboundCode + '&standardCode=' + type.value;
                     $.fileDownload(url, {
                         successCallback: function (url) {
+                            //toaster.pop("success", messages.labelDownloadSuccess); commented
                             notify.message(messages.labelDownloadSuccess,'','succ');
                         },
                         failCallback: function (error, url) {
@@ -177,16 +186,20 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                   // toaster.pop("error", messages.labelDownloadError); commented
                                    notify.message(messages.labelDownloadError);
                                 }
                             } else {
+                                //toaster.pop("error", messages.labelDownloadError); commented
                                 notify.message(messages.labelDownloadError);
                             }
                         }
                     });
                 } else {
+                    //toaster.pop("error", messages.labelInvalid); commented
                     notify.message(messages.labelInvalid);
                 }
             }
@@ -381,6 +394,7 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
                             $scope.model = new model(data.shipment);
                             $scope.model.history = data.shipment.history;
 							$scope.getCountryName($scope.model.header.addressCountry);
+                            //toaster.pop("success", messages.shipmentDetail, messages.retrivedSuccess);
                             $scope.getStatus($scope.model.header.status);
                             $scope.getLabel($scope.model.header.labelBy);
 							angular.forEach($scope.model.products,function(val,key){
@@ -391,11 +405,13 @@ define(['app', 'model/shipments/details', 'downloader', 'utility/restapi', 'util
 								});
 							});						
                         } else {
+                            //toaster.pop("error", messages.shipmentFetchError); commented
                             notify.message(messages.shipmentFetchError);
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
                         $scope.model = new model();
+                        //toaster.pop("error", messages.shipmentFetchError); commented
                         notify.message(messages.shipmentFetchError);
                         ngProgress.complete();
                     });

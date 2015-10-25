@@ -1,4 +1,4 @@
-define(['map','utility/config'], function (map,config) {
+define(['map'], function (map) {
             
         
             
@@ -20,7 +20,7 @@ define(['map','utility/config'], function (map,config) {
             this.leadTime="";
             this.fulfillRate=null;
             this.estDeliveryCharge=null;
-            this.estDeliveryChargeCode=config.currentLocation.currencyCode;
+            this.estDeliveryChargeCode="SGD";
             this.estFulfillmentCharge=null;
             this.estEnhancedCost=null;
             this.totalCharge=null;
@@ -67,29 +67,17 @@ define(['map','utility/config'], function (map,config) {
         
         this.AdditionalInfo = function() {
             this.additionalInfo1="";
-            this.additionalInfoLabel1="";
             this.additionalInfo2="";
-            this.additionalInfoLabel2="";
             this.additionalInfo3="";
-            this.additionalInfoLabel3="";
             this.additionalInfo4="";
-            this.additionalInfoLabel4="";
             this.additionalInfo5="";
-            this.additionalInfoLabel5="";
             this.additionalInfo6="";
-            this.additionalInfoLabel6="";
             this.additionalInfo7="";
-            this.additionalInfoLabel7="";
             this.additionalInfo8="";
-            this.additionalInfoLabel8="";
             this.additionalInfo9="";
-            this.additionalInfoLabel9="";
             this.additionalInfo10="";
-            this.additionalInfoLabel10="";
             this.additionalInfo11="";
-            this.additionalInfoLabel11="";
             this.additionalInfo12="";
-            this.additionalInfoLabel12="";
             
             map.apply(this, arguments);
         }
@@ -99,7 +87,7 @@ define(['map','utility/config'], function (map,config) {
                 this.customsDescription="";
                 this.hsCode=null;
                 this.itemDeclaredValue=null;
-                this.dvalueCurrencyCode=config.currentLocation.currencyCode;
+                this.dvalueCurrencyCode="SGD";
                 this.originCountry=null;
 
                 map.apply(this, arguments);
@@ -161,7 +149,6 @@ define(['map','utility/config'], function (map,config) {
             this.history = null;
             this.additionalInfo = arg ? new self.AdditionalInfo(arg.additionalInfo || null) : new self.AdditionalInfo();
             this.hasIssues = null;
-            this.merchantCode = "";
             
             map.apply(this, arguments);
         }

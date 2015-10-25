@@ -20,7 +20,7 @@ define(['angularAMD','g-map'], function (angularAMD, google) {
 			   	function drawRegionsMap() {
 			   		if(google.visualization && google.visualization.arrayToDataTable && scope.geoLoactions) {
 				   		var data 	= google.visualization.arrayToDataTable(scope.geoLoactions);
-				   		var options = {displayMode: 'markers', datalessRegionColor: 'f1f1f1', colorAxis: {minValue: 1, maxValue:1, colors: ['#4C87B9']}, legend: 'none'};
+				   		var options = {displayMode: 'region', datalessRegionColor: 'B2D396', colorAxis: {minValue: 0, colors: ['#C6C6C6']}, legend: 'none'};
 				   		var chart 	= new google.visualization.GeoChart(el[0]);
 				   		chart.draw(data, options);
 				   	}

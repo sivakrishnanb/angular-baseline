@@ -27,28 +27,19 @@ cvars: gruntConfig.configVars,
       separator: ' ',
     },
     production: {
-      src: ['<%= cvars.productionDir %>/lib/bootstrap/css/bootstrap.min.css','<%= cvars.productionDir %>/lib/bootstrap/css/bootstrap-theme.min.css','<%= cvars.productionDir %>/lib/datepicker/datepicker.min.css','<%= cvars.productionDir %>/styles/preview.min.css','<%= cvars.productionDir %>/lib/jquery/jquery-ui.css','<%= cvars.productionDir %>/styles/base.css','<%= cvars.productionDir %>/styles/theme.css'],
+      src: ['<%= cvars.productionDir %>/lib/bootstrap/css/bootstrap.min.css','<%= cvars.productionDir %>/lib/bootstrap/css/bootstrap-theme.min.css','<%= cvars.productionDir %>/lib/nvd3/nv.d3.min.css','<%= cvars.productionDir %>/lib/datepicker/datepicker.min.css','<%= cvars.productionDir %>/styles/preview.min.css','<%= cvars.productionDir %>/lib/jquery/jquery-ui.css','<%= cvars.productionDir %>/styles/base.css','<%= cvars.productionDir %>/styles/theme.css'],
       dest: '<%= cvars.productionDir %>/styles/styles.css',
     },
   },
 
   cssmin: {
-    for_bundle_files: {
+    production: {
       files: [{
         expand: true,
         cwd: '<%= cvars.productionDir %>/',
         src: ['styles/styles.css'],
         dest: '<%= cvars.productionDir %>/',
         ext: '.min.css',
-      }]
-    },
-    for_individual_files: {
-      files: [{
-        expand: true,
-        cwd: '<%= cvars.productionDir %>/',
-        src: ['styles/*.css'],
-        dest: '<%= cvars.productionDir %>/',
-        ext: '.css',
       }]
     }
   },
@@ -75,16 +66,6 @@ cvars: gruntConfig.configVars,
       files: [
         {src: ['grunt/cdn-links.main.js'], dest: '<%= cvars.productionDir %>/scripts/main.js'},
         {src: ['grunt/cdn-production.index.html'], dest: '<%= cvars.productionDir %>/index.html'},
-      ],
-    },
-    change_to_cdn_js_only: {
-      files: [
-        {src: ['grunt/cdn-links.main.js'], dest: '<%= cvars.productionDir %>/scripts/main.js'},
-      ],
-    },
-    change_au_config_file: {
-      files: [
-        {src: ['grunt/production.config.au.js'], dest: '<%= cvars.productionDir %>/scripts/utility/config.js'},
       ],
     },
   },
@@ -196,18 +177,6 @@ cvars: gruntConfig.configVars,
             }
         ]
       },
-      production_indexhtmldatamain: {
-        src: ['<%= cvars.productionDir %>/index.html'],
-        dest: '<%= cvars.productionDir %>/index.html',             
-        replacements: [
-            {
-              from: /scripts\/main/g,
-              to: function (matchedWord) {
-                return 'scripts/main.js?v='+getProductionIndexhtmlVersion(getBuildVersion,'.js');
-              }
-            }
-        ]
-      },
       production_indexjs: {
         src: ['<%= cvars.productionDir %>/index.html'],
         dest: '<%= cvars.productionDir %>/index.html',             
@@ -226,12 +195,6 @@ cvars: gruntConfig.configVars,
         replacements: [
           {
             from: /styles.min.css(\?v=[\d.]+)?\"/g,
-            to: function (matchedWord) {
-              return matchedWord.split(".css")[0]+'.css?v='+getProductionIndexhtmlVersion(getBuildVersion,'.css')+'"';
-            }
-          },
-          {
-            from: /theme.css(\?v=[\d.]+)?\"/g,
             to: function (matchedWord) {
               return matchedWord.split(".css")[0]+'.css?v='+getProductionIndexhtmlVersion(getBuildVersion,'.css')+'"';
             }
@@ -255,20 +218,7 @@ cvars: gruntConfig.configVars,
               }
             }
         ]
-      },
-      production_au_change: {
-        src: ['<%= cvars.productionDir %>/scripts/signup.js'],
-        dest: '<%= cvars.productionDir %>/scripts/signup.js',             
-        replacements: [
-            {
-              from: /countryCode:'SG',currencyCode:'SGD'/,
-              to: function (matchedWord) {
-                return "countryCode:'AU',currencyCode:'AUD'";
-              }
-            }
-        ]
       }
-
     }
 
 });
@@ -323,23 +273,17 @@ var getBuildVersion = grunt.option('build');
 grunt.registerTask('default', ['copy:production','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','concat','cssmin','htmlmin:production','uglify','imagemin']);
 */
 
-grunt.registerTask('default', ['copy:production_default','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','concat','cssmin:for_bundle_files','htmlmin:production','uglify','imagemin']);
+grunt.registerTask('default', ['copy:production_default','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','concat','cssmin','htmlmin:production','uglify','imagemin']);
 
 grunt.registerTask('getversion', ['replace:production_versions']);
 
-grunt.registerTask('minifyonly', ['replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','cssmin:for_bundle_files','htmlmin:production','uglify']);
+grunt.registerTask('minifyonly', ['replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','cssmin','htmlmin:production','uglify']);
 
 
-grunt.registerTask('versiononly', ['copy:production_default','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexhtmldatamain','replace:production_indexjs','replace:production_indexcss']);
+grunt.registerTask('versiononly', ['replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss']);
 
-grunt.registerTask('versiononly-cdn', ['copy:production_default','copy:change_to_cdn','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss']);
+grunt.registerTask('versiononly-cdn', ['copy:change_to_cdn','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss']);
 
-grunt.registerTask('concatall', ['copy:production_default','copy:production','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','htmlmin:production_concatall']);
-
-grunt.registerTask('version-cdn-minify', ['copy:production_default','copy:change_to_cdn_js_only','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexhtmldatamain','replace:production_indexjs','replace:production_indexcss','cssmin:for_individual_files','htmlmin:production','uglify']);
-
-grunt.registerTask('version-cdn-minify-au', ['copy:production_default','copy:change_to_cdn_js_only','copy:change_au_config_file','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexhtmldatamain','replace:production_indexjs','replace:production_indexcss','replace:production_au_change','cssmin:for_individual_files','htmlmin:production','uglify']);
-
-grunt.registerTask('version-only-au', ['copy:production_default','copy:change_au_config_file','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexhtmldatamain','replace:production_indexjs','replace:production_indexcss','replace:production_au_change']);
+grunt.registerTask('concatall', ['copy:production','replace:production_js','replace:production_html','replace:production_indexhtml','replace:production_indexjs','replace:production_indexcss','requirejs','htmlmin:production_concatall']);
 
 };

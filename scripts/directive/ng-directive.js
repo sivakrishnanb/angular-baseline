@@ -62,18 +62,8 @@ define(['angularAMD'], function (angularAMD) {
                 controller: ['$rootScope','$scope', '$element', '$attrs','role','$cookieStore', function($rootScope,$scope, $element, $attrs,role,$cookieStore) {
 
                     if(!role.checkSection($route,$attrs.checkAcl,$cookieStore.get('loggedInUser'))){
-                        if($attrs && $attrs.aclDisable) {
-                            $element.bind('click',function(e){
-                                e.stopImmediatePropagation();
-                            });
-                        }
-                        else if($attrs && $attrs.showmessage && $attrs.showmessage=='hide'){
+                        if($attrs && $attrs.showmessage && $attrs.showmessage=='hide'){
                             $element.show().text('You don\'t have access to perform this operation.');
-                        }else if($attrs && $attrs.openpopup && $attrs.openpopup=='open'){
-                            $element.bind('click',function(e){
-                                $('#no-permission-popup').modal();
-                                e.stopImmediatePropagation();
-                            });
                         }else if($element[0] && $element[0].tagName.toLowerCase()=='button'){
                             $compile($element.removeAttr('check-acl').removeAttr('ng-disabled').addClass('disabled').removeAttr('ng-click').attr('disabled',true).attr('ng-disabled',1).attr('ng-click','checkAcl($event)'))($scope);
                         }else{
@@ -151,15 +141,6 @@ define(['angularAMD'], function (angularAMD) {
                         if(/#INBR#/.test(frameBodyText)){
                             var frameBodyText = frameBodyText.replace('#INBR#',scope.formTemplateData.passTemplateData.inboundCode);
                         }
-
-                        /*channels status */
-                        if(/#CHNL#/.test(frameBodyText)){
-                            var frameBodyText = frameBodyText.replace('#CHNL#',scope.formTemplateData.passTemplateData.channelCode);
-                        }
-                        if(/#CHNLSTAT#/.test(frameBodyText)){
-                            var frameBodyText = frameBodyText.replace('#CHNLSTAT#',scope.formTemplateData.passTemplateData.status);
-                        }
-
                         /*inbound receipt */
 
                         // if (!_.isEmpty(frameLinkText)&& !_.isEmpty(frameLink)) {
@@ -212,7 +193,7 @@ define(['angularAMD'], function (angularAMD) {
 
                         var headerIcon = scope.frameTemplate().headerIcon;
 
-                        return (bodyText)?'<a href='+scope.viewRowLink+' class="notificationRowLink"><span class="templateContainer"><span class="iconContainers"><span class=\"'+headerIcon+'\"></span></span><span>'+'<strong class=\"headerText\">'+headerText+'<span class=\"notiticationTimeAgo\" title=\"'+$rootScope.changeDateTimeAgo(createdTime)+'\"><span title=\"'+$.timeago($rootScope.changeDateTimeAgo(createdTime))+'\">'+$.timeago($rootScope.changeDateTimeAgo(createdTime))+'</span></span></strong>'+'<span class="bodyTextContent">'+bodyText+'</span>'+'</span><span class="clear"></span>':'';
+                        return (bodyText)?'<a href='+scope.viewRowLink+' class="notificationRowLink"><span class="templateContainer"><span class="iconContainers"><span class=\"'+headerIcon+'\"></span></span><span>'+'<strong class=\"headerText\">'+headerText+'<span class=\"notiticationTimeAgo\" title=\"'+$rootScope.changeDateTimeAgo(createdTime)+'\"></span></strong>'+'<span>'+bodyText+'</span>'+'</span><span class="clear"></span>':'';
                     };
                 },
                 template : '<span ng-bind-html="internalControl()" class="internalControl"></span></span></a>'

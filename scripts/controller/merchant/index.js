@@ -1,6 +1,6 @@
 define(['app','downloader'], function (app,downloader) {
-    app.controller('Merchant', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', '$routeParams','$window', '$rootScope', '$timeout','notify', '$localStorage',
-        function ($scope, $bus, $location, ngProgress, $http, $constants, $routeParams,$window, $rootScope, $timeout, notify, $localStorage) {
+    app.controller('Merchant', ['$scope', '$bus', '$location', 'ngProgress', '$http', '$constants', '$routeParams','$window', 'toaster', '$rootScope', '$timeout','notify', '$localStorage',
+        function ($scope, $bus, $location, ngProgress, $http, $constants, $routeParams,$window, toaster, $rootScope, $timeout, notify, $localStorage) {
 
             $scope.merchantSearchOptions = angular.copy($constants.merchantSearchOptions);
             $scope.constants = $constants;
@@ -8,70 +8,6 @@ define(['app','downloader'], function (app,downloader) {
             $scope.resetForm = function (form) {
                 document.getElementById(form).reset();
             };
-
-            $scope.checkVal = function(){
-                
-                $("#validation-remarks-label" ).remove();
-                $("#merchant-remarks").closest('div').removeClass('has-error');
-
-                if($scope.merchant.remarks==null || $scope.merchant.remarks.length==0){
-                    $('#merchant-remarks').focus().after('<label class="control-label has-error validationMessage" id="validation-remarks-label">'+ $constants.validationMessages.required +'</label>').closest('div').addClass('has-error');
-                    return false
-                }
-                else{
-                    $("#validation-remarks-label" ).remove();
-                    $("#merchant-remarks").closest('div').removeClass('has-error');
-                   
-                    return true;
-                }
-            }
-
-            $scope.editRemarks = function(){
-
-            		$scope.isRemarksEditable=true;
-            }
-
-            $scope.addRemarks = function(){
-
-                $("#validation-remarks-label" ).remove();
-                $("#merchant-remarks").closest('div').removeClass('has-error');
-
-                if($scope.merchant.remarks==null || $scope.merchant.remarks.length==0){
-                      $('#merchant-remarks').focus().after('<label class="control-label has-error validationMessage" id="validation-remarks-label">'+ $constants.validationMessages.required +'</label>').closest('div').addClass('has-error');
-                      return false;
-                }
-
-                // Code for calling the service - adding remarks
-                $scope.isRemarksEditable=false;
-   
-                $bus.fetch({
-                name: 'remarks',
-                api: 'remarks',
-                params: null,
-                data: {merchantCode : $scope.merchant.merchantCode?$scope.merchant.merchantCode:'',remarks  : $scope.merchant.remarks?$scope.merchant.remarks:''}
-                })
-                .done(function (success) {
-                    if (success.response.success.length) {
-                      notify.message(messages.merchantRemarksSuccess,'','succ');
-                    } else {
-                     
-                        var errors = [];    
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-                        } else {
-                            notify.message(messages.merchantRemarksError);
-                        }
-                    }
-                }).fail(function (error) {
-                    notify.message(messages.merchantRemarksError);
-                });
-               
-            };
-
-
 
             //Suggest
             $scope.getFirstMatchSuggest = function(param,match){
@@ -92,15 +28,6 @@ define(['app','downloader'], function (app,downloader) {
                 return str
             };
 
-            $scope.getReferralType = function(param){
-
-                if(param){
-                    return _.findWhere($scope.constants.refTypes,{value:param})?_.findWhere($scope.constants.refTypes,{value:param}).name:$scope.constants.notAvailableText;
-                }else{
-                    return $scope.constants.notAvailableText;
-                }
-
-            };
 
             $scope.parseCountryName = function (countryCode) {
                 if (!countryCode) return "";
@@ -211,7 +138,6 @@ define(['app','downloader'], function (app,downloader) {
                         else if (param.blocked && item.key == 'blocked') item.ticked = true;
                         else if (param.status && item.key == 'status') item.ticked = true;
                         else if (param.verificationPending && item.key == 'verificationPending') item.ticked = true;
-                        else if (param.payingMerchants && item.key == 'payingMerchants') item.ticked = true;
                         else item.ticked = false;
                     });
 		    
@@ -243,7 +169,6 @@ define(['app','downloader'], function (app,downloader) {
                     query = query + (filterQuery.status  ? '&status=1' : '') +
                     (filterQuery.blocked ? '&blocked=1' : '') +
                     (filterQuery.verificationPending ? '&verificationPending=1' : '') +
-                    (filterQuery.payingMerchants ? '&payingMerchants=1' : '') +
                     (filterQuery.activationPending   ? '&activationPending=1' : '');
                 }
 
@@ -430,8 +355,6 @@ define(['app','downloader'], function (app,downloader) {
                     "remarks"      : ""
                 };
                 $scope.addNewPaymentError = '';
-                $('.model-paydate').find('input[type="text"],div,textarea').removeClass('has-error');
-                $('.model-paydate').find('label.has-error').remove();
             };
 
             $scope.clearAdjustmentModel = function() {
@@ -444,14 +367,9 @@ define(['app','downloader'], function (app,downloader) {
                     "remarks"           : ""
                 };
                 $scope.addNewAdjError = '';
-                $('.model-paydate').find('input[type="text"],div,textarea').removeClass('has-error');
-                $('.model-paydate').find('label.has-error').remove();
             };
             $scope.addNewPayment = function () {
-                
                 ngProgress.start();
-                $('#confirm-add-payment').addClass('disabled');
-
                 $bus.fetch({
                     name: 'addnewpayment',
                     api : 'addnewpayment',
@@ -459,7 +377,6 @@ define(['app','downloader'], function (app,downloader) {
                     data: $scope.paymentModel
                 })
                     .done(function (data) {
-                        $('#confirm-add-payment').removeClass('disabled');
                         var successMessages = [];
                         if (data.response.success && data.response.success.length) {
                             successMessages = data.response.success;
@@ -483,7 +400,6 @@ define(['app','downloader'], function (app,downloader) {
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
-                        $('#confirm-add-payment').removeClass('disabled');
                         //notify.message(messages.merchantListFetchError);
                         $scope.addNewPaymentError = error.response.errors.join(', ');
                         ngProgress.complete();
@@ -491,7 +407,6 @@ define(['app','downloader'], function (app,downloader) {
             };
 
             $scope.addNewAdjustment = function() {
-                $('#confirm-adjustments').addClass('disabled');
                 ngProgress.start();
                 $bus.fetch({
                     name: 'addnewadjustments',
@@ -500,7 +415,6 @@ define(['app','downloader'], function (app,downloader) {
                     data: $scope.adjustmentModel
                 })
                     .done(function (data) {
-                        $('#confirm-adjustments').removeClass('disabled');
                         var successMessages = [];
                         if (data.response.success && data.response.success.length) {
                             successMessages = data.response.success;
@@ -524,8 +438,7 @@ define(['app','downloader'], function (app,downloader) {
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
-
-                        $('#confirm-adjustments').removeClass('disabled');
+                        //toaster.pop("error", messages.merchantListFetchError);
                         //notify.message(messages.merchantListFetchError);
                         $scope.addNewAdjError = error.response.errors.join(', ');
                         ngProgress.complete();
@@ -556,6 +469,7 @@ define(['app','downloader'], function (app,downloader) {
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.merchantListFetchError);
                         notify.message(messages.merchantListFetchError);
                         ngProgress.complete();
                     });
@@ -619,6 +533,7 @@ define(['app','downloader'], function (app,downloader) {
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.merchantListFetchError);
                         notify.message(messages.merchantListFetchError);
                         ngProgress.complete();
                     });
@@ -687,6 +602,7 @@ define(['app','downloader'], function (app,downloader) {
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.merchantListFetchError);
                         notify.message(messages.merchantListFetchError);
                         ngProgress.complete();
                     });
@@ -722,7 +638,6 @@ define(['app','downloader'], function (app,downloader) {
                     blocked: $routeParams.blocked ? 1 : null,
                     verificationPending: $routeParams.verificationPending ? 1 : null,
                     activationPending: $routeParams.activationPending ? 1 : null,
-                    payingMerchants: $routeParams.payingMerchants ? 1 : null,
                     scol: $routeParams.scol || null,
                     skey: $routeParams.skey || null,
 		    
@@ -782,13 +697,16 @@ define(['app','downloader'], function (app,downloader) {
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0);
                                 notify.message($rootScope.pushJoinedMessages(errors));
                             } else {
+                                //toaster.pop("error", messages.merchantListFetchError, "", 0);
                                 notify.message(messages.merchantListFetchError);
                             }
                         }
                         ngProgress.complete();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.merchantListFetchError);
                         notify.message(messages.merchantListFetchError);
                         ngProgress.complete();
                     });
@@ -824,14 +742,12 @@ define(['app','downloader'], function (app,downloader) {
                             load : false
                         }
                         
-                        if (success.response.data.payments){
-                            $scope.outStandingAmount = success.response.data.outStandingAmount?success.response.data.outStandingAmount:'';
+                        if (success.response.data.payments)
                             $scope.payments = success.response.data.payments;
-                        }
-                        else{
+                        else
                             $scope.payments = {};
-                        }
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.productCountFetchError); commented
                         notify.message(messages.paymentFetchError);
                         $scope.payments = {};
                     });
@@ -884,9 +800,10 @@ define(['app','downloader'], function (app,downloader) {
 
             $scope.getFileUrl = function (url) {
 
-                $rootScope.notificationMessages = [];//to clear error 
+                $rootScope.notificationMessages = [];//to clear error toaster
                 $.fileDownload(url, {
                     successCallback: function (url) {
+                        //toaster.pop("success", messages.labelDownloadSuccess); commented
                         notify.message(messages.labelDownloadSuccess,'','succ');
                     },
                     failCallback: function (error, url) {
@@ -897,12 +814,15 @@ define(['app','downloader'], function (app,downloader) {
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors))
                                 //notify.message(errors.join());
                             } else {
+                                //toaster.pop("error", messages.labelDownloadError); commented
                                 notify.message(messages.labelDownloadError);
                             }
                         } else {
+                            //toaster.pop("error", messages.labelDownloadError); commented
                             notify.message(messages.labelDownloadError);
                         }
                         $scope.$apply();
@@ -1442,7 +1362,7 @@ define(['app','downloader'], function (app,downloader) {
             };
             
             $scope.getCountryList = function () {
-                var url = $constants.baseUrl + "/content/country.json";
+                var url = "/content/country.json";
                 $http({method: 'get', url: url, params : null, data: null,  cache: false}).
                     success(function(data, status, headers, config) {
                             angular.forEach(data, function(item){
@@ -1458,7 +1378,6 @@ define(['app','downloader'], function (app,downloader) {
 
             $scope.init = function () {
 
-            	$scope.isRemarksEditable=false;
                  $timeout(function () {
                     $('[data-toggle="tooltip"]').tooltip();
                 }, 2000);

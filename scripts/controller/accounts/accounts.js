@@ -1,12 +1,8 @@
-define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicker'], function (app, downloader,moment,momentTimezone,datetimepicker) {
-    app.controller('Accounts',['$scope', '$bus', 'ngProgress', '$location', '$http', '$window', 'notify', '$cookieStore', '$constants', '$rootScope', '$routeParams', '$timeout',
-        function ($scope, $bus, ngProgress, $location, $http,$window,notify,$cookieStore,$constants,$rootScope,$routeParams,$timeout) {
-
+define(['app', 'downloader','jquery-ui'], function (app, downloader) {
+    app.controller('Accounts',['$scope', '$bus', 'ngProgress', '$location', '$http', 'toaster', '$window', 'notify', '$cookieStore', '$constants', '$rootScope', '$routeParams', '$timeout',
+        function ($scope, $bus, ngProgress, $location, $http, toaster,$window,notify,$cookieStore,$constants,$rootScope,$routeParams,$timeout) {
+        
         $scope.ebaySiteIds = $constants.ebaySiteIds;
-
-        $scope.amazonChannelCountries = $constants.amazonChannelCountries;
-
-        $scope.rakutenChannelCountries = $constants.rakutenChannelCountries;
         
         $scope.validationMessages = $constants.validationMessages;
         
@@ -16,90 +12,36 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
         $scope.dateOptionsOrders = $constants.dateOptionsReportsOrders;
 
         $scope.categoryOptions = $constants.categoryOptions;
-        $scope.transReportRange = angular.copy($constants.transReportRange);
+        $scope.transReportRange = $constants.transReportRange;
         
-
-         $scope.transactionType = $constants.transactionType;
-        
-
-      
-        $scope.orderStatus = $constants.orderStatus;
-
-        $scope.orderChannelOptions = $constants.orderChannelOptionsReportsFilter;
-        $scope.orderChannelOptions = _.without($scope.orderChannelOptions,_.findWhere($scope.orderChannelOptions,{value:'all'}));
-        $scope.orderChannelOptions = _.without($scope.orderChannelOptions,_.findWhere($scope.orderChannelOptions,{value:'none'}));
-
-        $scope.orderStatus = $constants.orderStatusReportsFilter;
-        
-
         $scope.resetForm = function (form) {
             document.getElementById(form).reset();
         };
         
 
-        $scope.$on('listChannels', function () {
-            $scope.listChannels();
-        });
 
-        $scope.getEbaySiteId = function() {
-          return !_.isEmpty(_.findWhere($constants.ebaySiteIds,{countryshort:$constants.currentLocation}))?_.findWhere($constants.ebaySiteIds,{countryshort:$constants.currentLocation}).value:''
-        }
-
-		    $scope.addEbayChannel = function() {
+		$scope.addEbayChannel = function() {
           
-              $cookieStore.put('ebaySessionData','');
-
               $rootScope.activateOverlay = true;
-              $rootScope.ebayChannelId = '';
-
+              
+              //$cookieStore.put('ebaySiteCountry',$scope.ebaySiteCountry.value);
+              $cookieStore.put('ebaySiteCountry','US');
+              
               $bus.fetch({
-                      name: 'getebaysession',
-                      api: 'getebaysession',
-                      data: {
-                        channelCode: 'ebay',
-                        interactionId: '1',
-                        merchantChannelName: $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        queryParams: {
-                          shopName: '',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:$scope.getEbaySiteId(),
-                          channelSessionId: ''                        
-                        } 
-                      }
+                    name: 'getebaysession',
+                    api: 'getebaysession',
+                    //params: {site:$scope.ebaySiteCountry.value}
+                    params: {site:'US'}
                   })
                 .done(function (success) {
                   
                     $rootScope.activateOverlay = false;
                     
                     if(success.response.success.length && success.response.status=='Success') {
-                       
-                       if(success.response.data.includedata && success.response.data.includedata.channelsessioid){
-
-                          var ebaySessionData = {
-                                ebaySessionId : success.response.data.includedata.channelsessioid?success.response.data.includedata.channelsessioid:'',
-                                merchantChannelName : $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                          }
-
-                          $cookieStore.put('ebaySessionData',ebaySessionData);
-
-                          } 
-                            
-                          $window.location = success.response.data.AppUrl;
+                        $window.location = success.response.data;
                     } else {
                       
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-
-                        } else {
-                            notify.message(messages.ebayChannelError);
-                        }
+                      notify.message(messages.ebayChannelError);
                     }
                 }).fail(function (error) {
                     $rootScope.activateOverlay = false;
@@ -108,259 +50,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
         }
         
         
-        $scope.addShopifyChannel = function() {
-
-              $rootScope.activateOverlay = true;
-
-              $cookieStore.put('shopifySessionData','');
-              
-              $scope.model.merchantStoreName = ($scope.model.merchantStoreName)?$scope.model.merchantStoreName.replace(/(http:\/\/|https:\/\/)/,''):'';
-
-              $bus.fetch({
-                      name: 'getebaysession',
-                      api: 'getebaysession',
-                      data: {
-                        channelCode: 'shopify',
-                        interactionId: '1',
-                        merchantChannelName: $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        queryParams: {
-                          pollingStartDate:$scope.orderPollingDate?$scope.orderPollingDate:'',
-                          shopName: $scope.model.merchantStoreName?$scope.model.merchantStoreName:'',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:'',
-                          channelSessionId: ''                        
-                        } 
-                      }
-                  })
-                .done(function (success) {
-                    
-                    $rootScope.activateOverlay = false;
-                    $scope.orderPollingDate = '';
-                    $('#merchant-order-pulling-date-reauth').val('');
-
-                    if(success.response.success.length && success.response.status=='Success') {
-                      
-                      if(success.response.data && success.response.data.AppUrl){
-
-                        var shopifySessionData = {
-                            merchantChannelName : $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        }
-
-                        $cookieStore.put('shopifySessionData',shopifySessionData);
-
-                      } 
-
-                      $window.location = success.response.data.AppUrl;
-                    } else {
-                      
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-
-                        } else {
-                            notify.message(messages.ebayChannelError);
-                        }
-                        
-                    }
-                }).fail(function (error) {
-                    $rootScope.activateOverlay = false;
-                    $scope.orderPollingDate = '';
-                    $('#merchant-order-pulling-date-reauth').val('');
-                    notify.message(messages.ebayChannelError);
-                });
-
-        }
-
-
-        $scope.getAmazonToken = function() {
-              
-              $rootScope.activateOverlay = true;
-              
-              $bus.fetch({
-                      name: 'getamazontoken',
-                      api: 'getamazontoken',
-                      data: {
-                        channelCode: 'amazon',
-                        interactionId: '1',
-                        merchantChannelName: $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        queryParams: {
-                          shopName: '',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:!_.isEmpty($scope.model.channelCountry)?$scope.model.channelCountry.code:'',
-                          channelSessionId: null,
-                          sellerId: '',
-                          marketPlaceId: '',
-                          merchantToken:'',
-                          authToken:''
-                        } 
-                      }
-                  })
-                .done(function (success) {
-                    
-                    $rootScope.activateOverlay = false;
-                    
-                    if(success.response.success.length && success.response.status=='Success') {
-                      
-                      if(success.response.data && success.response.data.AppUrl) {
-                          $scope.amazonRedirectUrl = success.response.data.AppUrl;
-                          $('#amazon-channel-confirm').modal();
-                      }else {
-                          notify.message(messages.amazonChannelError);
-                      }
-
-                    } else {
-                      
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-
-                        } else {
-                            notify.message(messages.amazonChannelError);
-                        }
-                        
-                    }
-                }).fail(function (error) {
-                    $rootScope.activateOverlay = false;
-                    notify.message(messages.amazonChannelError);
-                });
-
-        }
-
-
-
-        $scope.getRakutenToken = function() {
-
-              $rootScope.activateOverlay = true;
-
-              $bus.fetch({
-                      name: 'getrakutentoken',
-                      api: 'getrakutentoken',
-                      data: {
-                        channelCode: 'rakuten',
-                        interactionId: '1',
-                        merchantChannelName:$scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        queryParams: {
-                          shopName: $scope.model.merchantChannelShopName?$scope.model.merchantChannelShopName:'',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:'',
-                          channelUserId: $scope.model.merchantChannelUserId?$scope.model.merchantChannelUserId:'',
-                          email: $scope.model.merchantChannelEmail?$scope.model.merchantChannelEmail:'',
-                          channelSessionId: null,
-                          sellerId: '',
-                          marketPlaceId: !_.isEmpty($scope.model.merchantMarketPlaceId)?$scope.model.merchantMarketPlaceId.code:'',
-                          authToken: $scope.model.merchantChannelAuthToken?$scope.model.merchantChannelAuthToken:'',
-                        }
-                      }
-                  })
-                .done(function (success) {
-
-                    $rootScope.activateOverlay = false;
-
-                    if(success.response.success && success.response.success.length) {
-
-                      notify.message(messages.rakutenSuccessTokenAdd,'','succ');
-                      $location.path('accounts/connections');
-
-                    } else {
-
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-                        } else {
-                            notify.message(messages.rakutenChannelError);
-                        }
-
-                    }
-                }).fail(function (error) {
-                    $rootScope.activateOverlay = false;
-                    notify.message(messages.rakutenChannelError);
-                });
-
-        }
-
-        $scope.checkEmail = function(param) {
-
-            var patt = new RegExp("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
-            return patt.test(param) ? true : false;
-
-        }
-        
-        $scope.addAmazonChannel = function() {
-
-              $rootScope.activateOverlay = true;
-
-              $bus.fetch({
-                      name: 'addamazonchannel',
-                      api: 'addamazonchannel',
-                      data: {
-                        channelCode: 'amazon',
-                        interactionId: '2',
-                        merchantChannelName: $scope.model.merchantChannelName?$scope.model.merchantChannelName:'',
-                        queryParams: {
-                          shopName: '',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:!_.isEmpty($scope.model.channelCountry)?$scope.model.channelCountry.code:'',
-                          channelUserId: $scope.model.channelUserId?$scope.model.channelUserId:'',
-                          email: $scope.model.email?$scope.model.email:'',
-                          channelSessionId: null,
-                          sellerId: $scope.model.sellerId?$scope.model.sellerId:'',
-                          marketPlaceId: $scope.model.marketPlaceId?$scope.model.marketPlaceId:'',
-                          merchantToken:$scope.model.merchantToken?$scope.model.merchantToken:'',
-                          authToken:$scope.model.marketPlaceAuthToken?$scope.model.marketPlaceAuthToken:''
-                        }
-                      }
-                  })
-                .done(function (success) {
-
-                    if(success.response.success.length && success.response.status=='Success') {
-                          $rootScope.activateOverlay = false;
-                          $('#amazon-channel-confirm').modal('toggle');
-                          $('.modal-backdrop.fade.in').remove();
-                          notify.message(messages.amazonSuccessTokenAdd,'','succ');
-                          $location.path('accounts/connections');
-                    } else {
-
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-
-                        } else {
-                            notify.message(messages.amazonChannelError);
-                        }
-
-                    }
-                }).fail(function (error) {
-                    $rootScope.activateOverlay = false;
-                    notify.message(messages.amazonChannelError);
-                });
-
-        }
-
         $scope.isOptionVisible = function (option) {
                var curPath = $location.path();
 
@@ -390,259 +79,45 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
         $scope.getEbayToken = function() {
             
             $rootScope.activateOverlay = true;
-
-            var ebayData = (!_.isEmpty($cookieStore.get('ebaySessionData')))?$cookieStore.get('ebaySessionData'):'';
-
+            
             $bus.fetch({
                 name: 'getebaytoken',
                 api: 'getebaytoken',
-                data: {
-                        channelCode: 'ebay',
-                        interactionId: '2',
-                        merchantChannelName: (!_.isEmpty(ebayData) && ebayData.merchantChannelName)?ebayData.merchantChannelName:'',
-                        queryParams: {
-                          shopName: '',
-                          hmac: '',
-                          signature: '',
-                          timeStamp: '',
-                          code: '',
-                          site:$scope.getEbaySiteId(),
-                          channelSessionId: (!_.isEmpty(ebayData) && ebayData.ebaySessionId)?ebayData.ebaySessionId:'',
-                        } 
-                      }
+                params: {site:$cookieStore.get('ebaySiteCountry')}
               })
               .done(function (success) {
                
                   $rootScope.activateOverlay = false;
                   if(success.response.success.length && success.response.status=='Success') {
-                      $cookieStore.remove('ebaySessionData');
-                      $location.path('accounts/connections').search("success","true");
-                      notify.message(messages.channelProcessing,'','succ');
+                      $cookieStore.remove('ebaySiteCountry');
+                      $location.path('accounts/connections');
+                      notify.message(messages.ebaySuccessTokenAdd,'','succ');
                   } else {
+                      //$scope.getEbayToken();
                       notify.message(messages.ebayChannelError);
-                      $rootScope.activateOverlay = false;
+                      $rootScope.activateOverlay = true;
                   }
               }).fail(function (error) {
+                  //$scope.getEbayToken();
                   notify.message(messages.ebayChannelError);
-                  $rootScope.activateOverlay = false;
+                  $rootScope.activateOverlay = true;
               });
         }
-
-
         
-	$scope.getShopifyToken = function() {
-            
-            $rootScope.activateOverlay = true;
-
-            var shopifyData = (!_.isEmpty($cookieStore.get('shopifySessionData')))?$cookieStore.get('shopifySessionData'):'';
-
-            var shopifyData = (!_.isEmpty($cookieStore.get('shopifySessionData')))?$cookieStore.get('shopifySessionData'):'';
-
-            var returnUrl = $location.absUrl();
-            var extractUrl = returnUrl.substring(returnUrl.lastIndexOf("?")+1,returnUrl.length);
-            var splitUrl = (extractUrl.length)?extractUrl.split('&'):'';
-            var returnData = {};
-            _.each(splitUrl,function(val){
-              if(val){
-                returnData[val.split('=')[0]]=val.split('=')[1];
-              }
-            });
-      
-
-            $bus.fetch({
-                name: 'getshopifytoken',
-                api: 'getshopifytoken',
-                data: {
-                        channelCode: 'shopify',
-                        interactionId: '2',
-                        merchantChannelName: (!_.isEmpty(shopifyData) && shopifyData.merchantChannelName)?shopifyData.merchantChannelName:'',
-                        queryParams: {
-                          pollingStartDate:returnData.orderPollingDate?returnData.orderPollingDate:'',
-                          shopName: returnData.shop?returnData.shop:'',
-                          hmac: returnData.hmac?returnData.hmac:'',
-                          signature: returnData.signature?returnData.signature:'',
-                          timeStamp: returnData.timestamp?returnData.timestamp:'',
-                          code: returnData.code?returnData.code:'',
-                          site: '',
-                          channelSessionId:''
-                        } 
-                      }
-              })
-              .done(function (success) {
-               
-                  $rootScope.activateOverlay = false;
-                  if(success.response.success.length && success.response.status=='Success') {
-                      $cookieStore.remove('shopifySessionData');
-                      $location.path('accounts/connections').search("success","true");
-                      notify.message(messages.channelProcessing,'','succ');
-                  } else {
-                      var errors = [];
-                        _.forEach(success.response.errors, function (error) {
-                            errors.push(error)
-                        });
-                        if (errors.length) {
-                            notify.message($rootScope.pushJoinedMessages(errors));
-
-                        } else {
-                            notify.message(messages.ebayChannelError);
-                        }
-                      $rootScope.activateOverlay = false;
-                  }
-              }).fail(function (error) {
-                  notify.message(messages.ebayChannelError);
-                  $rootScope.activateOverlay = false;
-              });
-        }
-
-
-        $scope.formatOrderPollDate = function (nowTemp) {
-          
-          var dd = nowTemp.getDate();
-          var mm = nowTemp.getMonth() + 1; //January is 0!
-          var yyyy = nowTemp.getFullYear();
-          
-          var hours = nowTemp.getHours();
-          var minutes = nowTemp.getMinutes();
-
-          if (dd < 10) {
-              dd = '0' + dd
-          }
-
-          if (mm < 10) {
-              mm = '0' + mm
-          }
-
-          if(hours < 10){
-              hours = '0' + hours;
-          }
-
-          if(minutes < 10){
-              minutes = '0' + minutes;
-          }
-
-          return yyyy+'-'+mm+'-'+dd+' '+hours+':'+minutes;
-        }
-
-
-        $scope.getShopifyTimeZone = function() {
-          
-           return _.findWhere($constants.orderPullingData,{code:$constants.currentLocation}).text;
-
-        }
-        $scope.initTimePicker = function(id){
-
-            var moment = window.moment;
-
-            var pickZone = _.findWhere($constants.orderPullingData,{code:$constants.currentLocation});
-
-            moment.tz.add([pickZone.timeZone]);
-
-            var timeZone = moment.tz(new Date(), pickZone.text).format('YYYY-MM-DD HH:mm:ss');
-
-            var minDate = new Date(timeZone);
-            minDate.setDate(minDate.getDate() - pickZone.frequency);
-
-            var maxDate = new Date(timeZone);
-
-            var selectId = id?id:'merchant-order-pulling-date';
-
-            $scope.orderPollingDate = '';
-
-            $timeout(function() {
-
-              $('#'+selectId).datetimepicker({
-
-                format : "DD/MM/YYYY HH:mm:ss",
-                maxDate : maxDate,
-                minDate : minDate,
-                toolbarPlacement : 'top',
-                sideBySide: true
-
-              }).on('dp.show',function(e) {
-
-                $('#'+selectId).data("DateTimePicker").date();
-
-              }).on('dp.hide',function(e) {
-
-                $('#'+selectId).data("DateTimePicker").date();
-
-              }).on('dp.change', function (ev) {
-
-                  $scope.orderPollingDate = (new Date(ev.date).getFullYear()!='1970')?$scope.formatOrderPollDate(new Date(ev.date)):'';
-
-              });
-
-
-            }, 100);
-                  
-        }
-
-        $scope.forcePullOrders = function(param){
-
-          if(!_.isEmpty(param)){
-               
-               $bus.fetch({
-                  name: 'forcepullorders',
-                  api: 'forcepullorders',
-                  data: {
-                      "channelCode" : param.channelCode?param.channelCode:'',
-                      "merchantChannelName" : param.merchantChannelName?param.merchantChannelName:'',
-                      "merchantCode" : ($rootScope.loggedInContent && $rootScope.loggedInContent.merchantCode)?$rootScope.loggedInContent.merchantCode:''
-                  }
-                })
-                .done(function (success) {
-
-                  if (success.response.success && success.response.success.length) {
-
-                      notify.message(messages.channelForcePullSuccess,'','succ');
-
-                  } else {
-                      var errors = [];
-                      _.forEach(success.response.errors, function (error) {
-                        errors.push(error)
-                      });
-
-                      if (errors.length) {
-                        notify.message($rootScope.pushJoinedMessages(errors));
-                      } else {
-                        notify.messages(messages.channelForcePullError);
-                      }
-                  }
-               }).fail(function (error) {
-                  notify.messages(messages.channelForcePullError);
-               });
-
-             }else{
-                notify.messages(messages.channelForcePullError);
-             }
-
-        }
-
-        $scope.initPopOver = function() {
-            $('[data-toggle="popover"]').popover();
-        };
-
         $scope.listChannels = function(){
-
               $scope.hideEbay = false;
-              
+              $scope.getChannelList = [];
               $scope.model = {};
 
               $bus.fetch({
                 name: 'getebaychannels',
                 api: 'getebaychannels',
-                params: {status:'ALL'}
+                params: ''
               })
               .done(function (success) {
-                
-                $scope.getChannelList = [];
 
-                if (success.response && success.response.success.length) {
-                  
-                  _.each(success.response.data,function(channel){
-                    $scope.getChannelList.push(channel);
-                  });
-                  //$scope.getChannelList = success.response.data;
+                if (success.response.status && success.response.status=='Success') {
+                  $scope.getChannelList = success.response.data;
                   $scope.hideEbay = (_.filter(success.response.data,{channelCode:'ebay_sandbox'||'ebay'})).length?true:false;
                   _.map(success.response.data,function(param) {
                       if(param && param.channelCode && ['ebay_sandbox','ebay_live','ebay'].indexOf(param.channelCode)!=-1)
@@ -657,233 +132,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
 
         };
 
-        $scope.activateDeactivateChannel = function(param){
 
-              $('#activate-deactivate-sales-channel').modal();
-              $('.current-channel-status').html((param.ezycStatus=='1')?'Pause':'Resume');
-
-              $scope.showPollDate = false;
-
-              if(param.ezycStatus!=1 && param.channelCode=='shopify') {
-                  $scope.showPollDate = true;
-                  $scope.initTimePicker();
-              }
-
-              $('#activate-deactivate-modalOk').click(function(e) {
-                  $('#activate-deactivate-modalOk').off('click');
-
-                  if(!_.isEmpty(param)){
-
-                    var restObj = {
-                        name: 'activateDeactivateChannels',
-                        api: 'activateDeactivateChannels',
-                        params: null,
-                        data: { 
-                            merchantChannelId:param.merchantChannelId?param.merchantChannelId:'',
-                            ezycStatus:(param.ezycStatus=='1')?'0':'1',
-                         }
-                      }
-
-                      if($scope.showPollDate) {
-                            restObj.data.channelCode = param.channelCode?param.channelCode:'';
-                            restObj.data.merchantChannelName = param.merchantChannelName?param.merchantChannelName:'';
-                            restObj.data.merchantCode = ($rootScope.loggedInContent && $rootScope.loggedInContent.merchantCode)?$rootScope.loggedInContent.merchantCode:'';
-                            restObj.data.pollingStartDate = $scope.orderPollingDate?$scope.orderPollingDate:'';
-                      }
-
-                      $bus.fetch(restObj)
-                      .done(function (success) {
-                            
-                          $('#merchant-order-pulling-date').val('');
-                          $scope.orderPollingDate = '';
-
-                          if (success.response.data.length) {
-
-                              notify.message((param.ezycStatus=='1')?messages.channelDeactivated:messages.channelActivated,'','succ');
-                              $scope.listChannels();
-
-                          } else {
-
-                              var errors = [];
-                              _.forEach(success.response.errors, function (error) {
-                                errors.push(error)
-                              });
-
-                              if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors));
-                              } else {
-                                notify.message((param.ezycStatus=='1')?messages.channelDeactivateError:messages.channelDeactivateError);
-                              }
-                        }
-
-                      }).fail(function (error) {
-                            $('#merchant-order-pulling-date').val('');
-                            $scope.orderPollingDate = '';
-                            notify.message((param.ezycStatus=='1')?messages.channelDeactivateError:messages.channelDeactivateError);
-                      });
-                  }
-            });
-
-        }
-
-        $scope.updateOrderStatus = function(param,channelList) {
-
-              $bus.fetch({
-                name: 'updateOrderStatusChannels',
-                api: 'updateOrderStatusChannels',
-                params: null,
-                data: { updateOrderStatusToChannel:param?1:0, channelId:channelList?channelList:'' }
-              })
-              .done(function (success) {
-
-                if (success.response && !_.isEmpty(success.response.data)) {
-                  notify.message(messages.channelOrderStatus,'','succ',1);
-                } else {
-
-                  var errors = [];
-                  _.forEach(success.response.errors, function (error) {
-                    errors.push(error)
-                  });
-
-                  if (errors.length) {
-                    notify.message($rootScope.pushJoinedMessages(errors));
-                  } else {
-                    notify.message(messages.channelOrderStatusError);
-                  }
-                }
-
-              }).fail(function (error) {
-                notify.message(messages.channelOrderStatusError);
-              });
-        }
-
-        $scope.updateTrackNumber = function(param,channelList) {
-
-              $bus.fetch({
-                name: 'updateOrderStatusChannels',
-                api: 'updateOrderStatusChannels',
-                params: null,
-                data: { updateTracknoToChannel:param?1:0, channelId:channelList?channelList:'' }
-              })
-              .done(function (success) {
-
-                if (success.response && !_.isEmpty(success.response.data)) {
-                  notify.message(messages.channelOrderStatus,'','succ',1);
-                } else {
-
-                  var errors = [];
-                  _.forEach(success.response.errors, function (error) {
-                    errors.push(error)
-                  });
-
-                  if (errors.length) {
-                    notify.message($rootScope.pushJoinedMessages(errors));
-                  } else {
-                    notify.message(messages.channelOrderStatusError);
-                  }
-                }
-
-              }).fail(function (error) {
-                notify.message(messages.channelOrderStatusError);
-              });
-        }
-
-
-        $scope.deleteSalesChannel = function(param){
-              
-              $('#remove-sales-channel').modal();
-              
-              $('#removeChannel-modalOk').click(function(e) {
-                  $('#removeChannel-modalOk').off('click');
-                  
-                  if(!_.isEmpty(param)){
-
-                      $bus.fetch({
-                        name: 'deleteSalesChannels',
-                        api: 'deleteSalesChannels',
-                        params: null,
-                        data: { merchantChannelId:param.merchantChannelId?param.merchantChannelId:'', isDeleted:1 },
-                        headers: {'Content-Type': 'application/json'}
-                      })
-                      .done(function (success) {
-
-                          if (success.response.success.length) {
-                              notify.message(messages.channelDeleted,'','succ');
-                              $scope.listChannels();
-
-                          } else {
-
-                              var errors = [];
-                              _.forEach(success.response.errors, function (error) {
-                                errors.push(error)
-                              });
-
-                              if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors));
-                              } else {
-                                notify.message(messages.channelDeleteError);
-                              }
-                        }
-
-                      }).fail(function (error) {
-                            notify.message(messages.channelDeleteError);
-                      });
-                  }
-            });
-
-        }
-
-        $scope.reAuthenticateChannel = function(param){
-            $scope.showPollDate = false;
-
-            if(!_.isEmpty(param)) {
-
-              if(param.channelCode && param.channelCode=='ebay'){
-                  $scope.model.merchantChannelName = param.merchantChannelName ? param.merchantChannelName : '';
-                  $scope.addEbayChannel();
-              }
-              if(param.channelCode && param.channelCode=='shopify') {
-                $scope.model.merchantChannelName = param.merchantChannelName ? param.merchantChannelName : '';
-                $scope.model.merchantStoreName = param.storeName ? param.storeName : '';
-
-                $('#reauth-sales-channel').modal();
-                $scope.showPollDate = true;
-                $scope.initTimePicker('merchant-order-pulling-date-reauth');
-
-                $('#reauth-modalOk').click(function(e) {
-                    $scope.addShopifyChannel();
-                    $('#reauth-modalOk').off('click');
-                });
-
-              }
-              if(param.channelCode && param.channelCode=='rakuten') {
-
-                $scope.model.merchantChannelName = param.merchantChannelName ? param.merchantChannelName : '';
-                $scope.model.merchantChannelShopName = param.storeName?param.storeName:'';
-                $scope.model.merchantChannelUserId = param.channelUserId?param.channelUserId:'';
-                $scope.model.merchantChannelEmail = param.email?param.email:'';
-                
-                $scope.model.merchantMarketPlaceId = '';
-                $scope.model.merchantChannelAuthToken = '';
-
-                $scope.getRakutenToken();
-              }
-
-            }else {
-              notify.message(messages.channelReAuthError);
-            }
-        }
-
-        $scope.getChannelDate = function(param){
-
-          if(param){
-            var retDate = param.split(' ')[0];
-            var retDate = retDate.split('-');
-            return retDate[2]+'-'+retDate[1]+'-'+retDate[0];
-          }else{
-            return $scope.constants.notAvailableText;
-          }
-        }
             $('#updateTracking-modalOk').on('click',function(e){
               $('#myonoffswitch').attr('checked',false);
             }); 
@@ -920,19 +169,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 }
             };
 
-          $scope.getOrderClassUpdate = function(param){
 
-              if(!param) {
-                return 'onoffswitch-switch-inverted';
-              }else {
-                return '';
-              }
-          }
-
-        $scope.channelPreferencePopup = function (index) {
-            $('.channel-pref-container .settings-container').hide();
-            $('#channel-preference-popover-content-'+index).show();
-        };
 
         $scope.billingSummary = function() {
             
@@ -1154,8 +391,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
 		
         $scope.getFulfillment = function() {
             
-            $scope.isCountriesOptionsVisible('domesticShippingMethod');
-
+            
             $scope.model = {}
             
             $scope.fulfillmentPref = [];
@@ -1184,8 +420,8 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                     
                     //$scope.model.isShippingDefaults = ($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefDeliveryOptions) ? true : false,
 					$scope.model.isShippingDefaults = true;
-                    $scope.domesticOrderOption = [{name:($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefDelOptDomOrders) ? $scope.fulfillmentPref.ordDefDelOptDomOrders:$constants.domesticShippingOptions[1].name}];
-                    $scope.internationalOrderOption = [{name:($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefDelOptIntOrders) ? $scope.fulfillmentPref.ordDefDelOptIntOrders:$constants.internationalShippingOptions[1].name}];
+                    $scope.domesticOrderOption = [{name:($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefDelOptDomOrders) ? $scope.fulfillmentPref.ordDefDelOptDomOrders:$constants.domesticShippingOptions[0].name}];
+                    $scope.internationalOrderOption = [{name:($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefDelOptIntOrders) ? $scope.fulfillmentPref.ordDefDelOptIntOrders:$constants.internationalShippingOptions[0].name}];
                     
                     
                     $scope.model.isEL = ($scope.fulfillmentPref && $scope.fulfillmentPref.ordDefAddEl) ? true:false;
@@ -1279,20 +515,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                   if($scope.domesticOrder.name!='Domestic Standard' || $scope.internationalOrder.name!='International Priority')
                       $scope.showElDisabledText = true;
 
-                  if($rootScope.isCountriesOptionsVisible('internationalAUShippingMethod'))
-                      $scope.internationalOrder = '';
-
-
-                }else if(success.response.errors){
-                    var errors = [];
-                    _.forEach(success.response.errors, function (error) {
-                        errors.push(error)
-                    });
-                    if (errors.length) {
-                        notify.message($rootScope.pushJoinedMessages(errors));
-                    } else {
-                        notify.message(messages.fulfillmentFetchError);
-                    }
+                  
                 }
             })
             .fail(function (error) {
@@ -1368,16 +591,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
           });
               
         };
-
-        $scope.isSendEmailTo = function(param) {
-
-          if(!param && $scope.model && $scope.model.isSendOrderEmail){
-            return false;
-          }else{
-            return true;
-          }
-
-        }
         
         $scope.getEmail = function() {
            
@@ -1413,15 +626,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                             isShipmentInTransit:($scope.emailgetPref && $scope.emailgetPref.shipStatusTransit) ? true:false,
                             isShipmentReceived:($scope.emailgetPref && $scope.emailgetPref.shipStatusReceived) ? true:false,
                             isSummaryPendingItems:($scope.emailgetPref && $scope.emailgetPref.othersDailySummary) ? true:false,
-                            isMonthlyInvoice:($scope.emailgetPref && $scope.emailgetPref.othersMonthlyInvoice) ? true:false,
-
-                            isSendOrderEmail : ($scope.emailgetPref && $scope.emailgetPref.isSendOrderEmail) ? true:false,
-                            emailOrderChangedFulfilled : ($scope.emailgetPref && $scope.emailgetPref.emailOrderChangedFulfilled) ? true:false,
-                            emailOrderChangedShipped : ($scope.emailgetPref && $scope.emailgetPref.emailOrderChangedShipped) ? true:false,
-                            storeName : ($scope.emailgetPref && $scope.emailgetPref.storeName) ? $scope.emailgetPref.storeName:'',
-                            signOffText : ($scope.emailgetPref && $scope.emailgetPref.signOffText) ? $scope.emailgetPref.signOffText:'',
-                            footerText : ($scope.emailgetPref && $scope.emailgetPref.footerText) ? $scope.emailgetPref.footerText:'',
-
+                            isMonthlyInvoice:($scope.emailgetPref && $scope.emailgetPref.othersMonthlyInvoice) ? true:false
                           
                         }
                     }
@@ -1442,7 +647,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
         
         $scope.saveEmail = function() {
 
-
           $scope.models = {
             
             preferenceType : "email",
@@ -1461,15 +665,8 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
             shipStatusTransit : $scope.model.isShipmentInTransit ? true:false,
             shipStatusReceived : $scope.model.isShipmentReceived ? true:false,
             othersDailySummary : $scope.model.isSummaryPendingItems ? true:false,
-            othersMonthlyInvoice : $scope.model.isMonthlyInvoice ? true:false,
+            othersMonthlyInvoice : $scope.model.isMonthlyInvoice ? true:false
             
-            isSendOrderEmail : $scope.model.isSendOrderEmail ? true:false,
-            emailOrderChangedFulfilled : $scope.model.emailOrderChangedFulfilled ? true:false,
-            emailOrderChangedShipped : $scope.model.emailOrderChangedShipped ? true:false,
-            storeName : $scope.model.storeName ? $scope.model.storeName:'',
-            signOffText : $scope.model.signOffText ? $scope.model.signOffText:'',
-            footerText : $scope.model.footerText ? $scope.model.footerText:'',
-
           }
           
           $bus.fetch({
@@ -1492,11 +689,8 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
           
         }
         
-        $scope.checkContextValidation = function(val,context,aureturnval) {
+        $scope.checkContextValidation = function(val,context) {
           
-          if(aureturnval && $rootScope.isCountriesOptionsVisible('internationalAUShippingMethod'))
-            return true;
-
           if (context && !val)
             return false;
           
@@ -1660,8 +854,10 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                         errors.push(error)
                     });
                     if (errors.length) {
+                        //toaster.pop("error", errors.join(', '), '', 0); commented
                         notify.message(errors.join(', '));
                     } else {
+                        //toaster.pop("error", messages.orderFetchError, "", 0); commented
                         notify.Message(messages.editMerchantError);
                     }
                     ngProgress.complete();
@@ -1673,7 +869,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 $scope.tempMerchant = [];
                 $scope.tempMerchant = angular.copy($scope.merchant);
                 $scope.tempMerchant.contactNoCountryCode = $scope.merchant.contactNoCountryCode?$scope.merchant.contactNoCountryCode:'+65';
-                $scope.tempMerchant.countryCode = $scope.merchant.countryCode?$scope.merchant.countryCode:$constants.currentLocation;
+                $scope.tempMerchant.countryCode = $scope.merchant.countryCode?$scope.merchant.countryCode:'SG';
             };
 
             $scope.validatePhone = function (phone) {
@@ -1702,7 +898,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 $scope.merchant.landline     = merch.landline;
                 $scope.merchant.state        = merch.state;
                 $scope.merchant.zipCode      = merch.zipCode;
-                $scope.merchant.contactNoCountryCode      = merch.contactNoCountryCode;
             }
 
             var merchantEdited = {
@@ -1713,9 +908,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 "countryCode"   : $scope.tempMerchant.countryCode,
                 "zipCode"       : $scope.tempMerchant.zipCode,
                 "contactPhone"  : $scope.tempMerchant.contactPhone,
-                "landline"      : $scope.tempMerchant.landline,
-                "contactNoCountryCode" : $scope.tempMerchant.contactNoCountryCode
-
+                "landline"      : $scope.tempMerchant.landline
             };
 
             ngProgress.start();
@@ -1749,8 +942,10 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                         errors.push(error)
                     });
                     if (errors.length) {
+                        //toaster.pop("error", errors.join(', '), '', 0); commented
                         notify.message(errors.join(', '));
                     } else {
+                        //toaster.pop("error", messages.orderFetchError, "", 0); commented
                         notify.Message(messages.editMerchantError);
                     }
                     ngProgress.complete();
@@ -1951,8 +1146,10 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                         errors.push(error)
                     });
                     if (errors.length) {
+                        //toaster.pop("error", errors.join(', '), '', 0); commented
                         notify.message(errors.join(', '));
                     } else {
+                        //toaster.pop("error", messages.orderFetchError, "", 0); commented
                         notify.Message(messages.fulfillmentFetchError);
                     }
                     ngProgress.complete();
@@ -1964,8 +1161,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
             $scope.reportsShipments = function() {
 
                 $timeout(function () {
-
-                    $scope.reportsShipmentsDateRanges();
 
                     var nowTemp = new Date();
                     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -2125,45 +1320,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
         }
         
         $scope.reportsPayments = function() {
-                $scope.getBillingDates = function() {
-                    
-                    $('.transReportsContainer .thCreDate ul.dropdown-menu li').eq(1).find('span a span.currentBillingCycle').remove();
-
-                    var today = new Date();
-                    var month_names_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                    var todayDate = today.getDate();
-                    var month = month_names_short[today.getMonth()];
-
-                    $scope.billCycleStart = '';
-                   var currentDate = today.getDate() + ' ' + month + ' ' + today.getFullYear();
-                  
-
-                    if (todayDate>26) {
-                        if (today.getMonth() + 1 <= 11)
-                             $scope.billCycleStart = '26'+ ' ' + month_names_short[today.getMonth()] + ' ' + today.getFullYear();
-                        else
-                             $scope.billCycleStart = '26'+ ' ' + month_names_short[today.getMonth()] + ' ' + today.getFullYear();
-                    }
-                    else
-                    {
-
-                          if (today.getMonth() - 1 >= 0){
-                             $scope.billCycleStart = '26'+ ' ' + month_names_short[today.getMonth() - 1] + ' ' + today.getFullYear();
-                          }
-                          else if (today.getMonth() + 1 <= 11){
-                            var lastYr = today.getFullYear()-1;
-                             $scope.billCycleStart = '26'+ ' ' + month_names_short[11] + ' ' + lastYr;
-                          }
-                    }
-                    
-                    var billingCycleDate = $scope.billCycleStart + ' to ' + currentDate ;
-                    
-                    $timeout(function(){
-                      $('.transReportsContainer .thCreDate ul.dropdown-menu li').eq(1).find('span a').append('<span class="currentBillingCycle">'+billingCycleDate+'</span>');  
-                    },100)
-                    
-
-                };
           
 
                 $scope.repPayDate       = [];
@@ -2302,7 +1458,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
             $('#delete-user-modal').modal();
 
             $('#delete-user-modalCancel,#delete-user-modal-close').on('click',function(e){
-                $('#delete-user-modalOk').off('click');
+                $('delete-user-modalOk').off('click');
             });
 
             $('#delete-user-modalOk').on('click',function(e){
@@ -2310,12 +1466,12 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 $scope.removeUser(user);
                 $('#delete-user-modalCancel').click();
                 $('.modal-backdrop.fade.in').remove();
-                $('#delete-user-modalOk').off('click');
+                $('delete-user-modalOk').off('click');
             });
 
             $('#delete-user-modal').keypress(function(e){
                 if(e.keyCode == 13 || e.keyCode == 32){
-                    $('#delete-user-modalOk').click();
+                    $('delete-user-modalOk').click();
                 }
             });
         };
@@ -2329,7 +1485,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
 
         $scope.getCountryList = function () {
             $scope.countryList = [];
-            var url = $constants.baseUrl + "/content/country.json";
+            var url = "/content/country.json";
             $http({method: 'get', url: url, params : null, data: null,  cache: false}).
                 success(function(data, status, headers, config) {
                     angular.forEach(data, function(item){
@@ -2360,7 +1516,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
             })
                 .done(function (success) {
 
-                    if (success.response && !_.isEmpty(success.response.data)) {
+                    if (success.response && success.response.success.length) {
 
                         $scope.users = [];
                         var data = success.response.data;
@@ -2794,29 +1950,6 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 $scope.getFileUrl(url);
             };
 
-
-            $scope.downloadShipmentRepDate = function (inboundReference) {
-                
-                var date;
-                if ($scope.selectedDateRange[0] && $scope.selectedDateRange[0].value) {
-                    if ($scope.selectedDateRange[0].value == "custom") {
-                        date = $scope.selectedDateRange[0].value;
-                        $scope.customFromDate   = $scope.prodCustomFromDate;
-                        $scope.customToDate     = $scope.prodCustomToDate;
-                    }
-                    else date = (!$scope.selectedDateRange[0] || $scope.selectedDateRange[0].value == 'all')? '' : $scope.selectedDateRange[0].value;
-                }
-
-                if($rootScope.loggedInUser && _.intersection($rootScope.loggedInUser.userRole.split(','),['admin']).length)
-                  var type = '&type=adminShipmentReport';
-                else
-                  var type = '';
-
-                var url= $constants.baseUrl + restapi['reports'].url + '?reportType=inbounds'+ type + '&inboundReference=' + (inboundReference?inboundReference:'') + (date?'&date='+date:'') + '&fromdate=' + $scope.customFromDate + '&todate=' + $scope.customToDate;
-                $scope.getFileUrl(url);
-                
-            };
-
             $scope.downloadAllProdRep = function() {
                 var url = $constants.baseUrl + restapi['reports'].url + '?reportType=products';
                 $scope.getFileUrl(url);
@@ -2825,22 +1958,9 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
             // Order Report - Download
 
             $scope.downloadOrdersRep = function () {
-                var url='';
-                var ordChannel = null;
-                var orderStatus =null;
 
-                angular.forEach($scope.selectedOrderChannel, function(ord) {
-                    if (!ordChannel) ordChannel = ord.value;
-                    else ordChannel = ordChannel + ',' + ord.value;
-                });
-                var ordChannel = (ordChannel) ? ordChannel : null;
-
-               angular.forEach($scope.selectedOrderStatus, function(ord) {
-                    if (!orderStatus) orderStatus = ord.value;
-                    else orderStatus = orderStatus + ',' + ord.value;
-                });
-                var orderStatus = (orderStatus) ? orderStatus : null;
-          
+            
+                
                 var status = ($scope.isDomestic && $scope.isInternational) ? "0,1" : ($scope.isDomestic) ? "1" : ($scope.isInternational) ? "0" : null;
 
                 //"custom"
@@ -2855,14 +1975,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 }
                 if(status=="0,1")
                     status="";
-
-                if(date=='custom')
-                  date = '&date='+date + '&fromdate='+$scope.customFromDate+ '&todate=' + $scope.customToDate;
-                else
-                  date = (date?'&date='+date:'') ;
-
-                url= $constants.baseUrl + restapi['reports'].url + '?reportType=orders' + (status?'&isDomestic='+status:'') + (ordChannel?'&channel='+ordChannel:'') + (orderStatus?'&status='+orderStatus:'') + date;
-              
+                url= $constants.baseUrl + restapi['reports'].url + '?reportType=orders' + (date?'&date='+date:'') + '&fromdate=' + $scope.customFromDate + '&todate=' + $scope.customToDate + (status?'&isDomestic='+status:'');
                 $scope.getFileUrl(url);
             };
 
@@ -2871,24 +1984,8 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
 
             $scope.downloadTransRep = function() {
 
-               var transCat = null;
-                
-
-                 angular.forEach($scope.selectedTransType, function(trans) {
-                    if (!transCat) 
-                        transCat = trans.value + "=1";
-                    else 
-                        transCat = transCat + '&' + trans.value + "=1";
-                });
-
-    
                 if (!$scope.repPayDate[0]) {
-                  
-                  if(!transCat)
                     var url = $constants.baseUrl + restapi['reports'].url + '?reportType=transactions';
-                  else
-                    var url = $constants.baseUrl + restapi['reports'].url + '?reportType=transactions'+'&' + transCat;
-
                     $scope.getFileUrl(url);
                     return
                 }
@@ -2933,11 +2030,7 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 }
 
                 //url= $constants.baseUrl + restapi['reports'].url + '?reportType=transactions' + '&date=' + $scope.repPaydate[0].value + '&fromdate=' + $scope.repPayFromDate + '&todate=' + $scope.repPayToDate;
-                if(transCat==null)
                 var url= $constants.baseUrl + restapi['reports'].url + '?reportType=transactions' + '&date=custom' + '&fromdate=' + transFromDate + '&todate=' + transToDate;
-              else
-                var url= $constants.baseUrl + restapi['reports'].url + '?reportType=transactions' + '&date=custom' + '&fromdate=' + transFromDate + '&todate=' + transToDate+'&' + transCat;
-              
                 $scope.getFileUrl(url);
             };
 
@@ -3038,92 +2131,12 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                 });
             };
 
-
-            $scope.reportsShipmentsDateRanges = function() {
-                    
-                    if($rootScope.loggedInUser && _.intersection($rootScope.loggedInUser.userRole.split(','),['admin']).length)
-                      $scope.shipmentAdmin = true;
-                    else
-                      $scope.shipmentAdmin = false;
-
-                    $scope.selectedProdCat    = null;
-                    $scope.selectedDateRange  = [];
-                    $scope.isActive           = true;
-                    $scope.isInActive         = null;
-                    $scope.customFromDate     = null;
-                    $scope.customToDate       = null;
-                    $scope.prodCustomFromDate = $scope.prodCustomFromDate ? $scope.prodCustomFromDate : $scope.formatDate(new Date());
-                    $scope.prodCustomToDate   = $scope.prodCustomToDate ? $scope.prodCustomToDate : $scope.formatDate(new Date());
-
-                    angular.forEach($scope.dateOptionsProducts, function(option){
-                        if (option.value == 'all') {
-                            option.ticked = true;
-                            $scope.selectedDateRange[0] = option;
-                        }
-                        else option.ticked = false;
-                    });
-                    angular.forEach($scope.categoryOptions, function(option){
-                        option.ticked = true;
-                    });
-
-                    $scope.prodTickSelection = function(options, tickIndex) {
-                        if (!$scope.selectedDateRange) $scope.selectedDateRange = [];
-                        $scope.selectedDateRange[0] = options[tickIndex];
-                        angular.forEach($scope.dateOptionsProducts, function(option, index){
-                            if (index == tickIndex) {
-                                $scope.dateOptionsProducts[index].ticked = true;
-                            }
-                            else $scope.dateOptionsProducts[index].ticked = false;
-                        });
-                    };
-
-                   
-
-                    $timeout(function () {
-                        $scope.rangepicker;
-                        $scope.isRangepickerShowing = !$scope.isRangepickerShowing;
-                        if (!$scope.isRangepickerShowing && $scope.rangepicker) $scope.rangepicker.hide();
-                        else if ($scope.isRangepickerShowing && $scope.rangepicker) $scope.rangepicker.show();
-
-                        $scope.rangepicker =  $('.input-daterange').datepicker({
-                            inputs: $('#product-reports-fromdate, #product-reports-todate'),
-                            format: "dd/mm/yyyy",
-                            endDate: new Date(),
-                            todayHighlight:true
-
-                        }).on('changeDate', function (ev) {
-                            $scope.$apply();
-                            $scope.prodTickSelection($scope.dateOptionsProducts, 8);
-                            if ($('#product-reports-fromdate').datepicker('getDate') != "Invalid Date" && $('#product-reports-todate').datepicker('getDate') != "Invalid Date") {
-                                $scope.prodCustomFromDate = $scope.formatDate($('#product-reports-fromdate').datepicker('getDate'));
-                                $scope.prodCustomToDate   = $scope.formatDate($('#product-reports-todate').datepicker('getDate'));
-                            }
-                            else if ($('#product-reports-fromdate').datepicker('getDate') == "Invalid Date" && $('#product-reports-todate').datepicker('getDate') != "Invalid Date") {
-                                $scope.prodCustomFromDate = $scope.formatDate($('#product-reports-todate').datepicker('getDate'));
-                                $scope.prodCustomToDate   = $scope.formatDate($('#product-reports-todate').datepicker('getDate'));
-                            }
-                            else {
-                                $scope.prodCustomFromDate = $scope.formatDate(($('#product-reports-fromdate').datepicker('getDate') != "Invalid Date")? $('#product-reports-fromdate').datepicker('getDate'): new Date());
-                                $scope.prodCustomToDate = ($('#product-reports-todate').datepicker('getDate') != "Invalid Date") ? $scope.formatDate($('#product-reports-todate').datepicker('getDate')) : $scope.prodCustomFromDate;
-                            }
-                            $('#product-reports-fromdate').datepicker('update', $scope.prodCustomFromDate);
-                            $('#product-reports-todate').datepicker('update', $scope.prodCustomToDate);
-                            $('.input-daterange').datepicker('updateDates');
-                        });
-
-                        $('#product-reports-fromdate').datepicker('update', ($scope.prodCustomFromDate || $scope.formatDate(new Date())));
-                        $('#product-reports-todate').datepicker('update', ($scope.prodCustomToDate || $scope.formatDate(new Date())));
-                        $('.input-daterange').datepicker('updateDates');
-
-                    });
-                
-            };
-
             $scope.getFileUrl = function (url) {
 
-                $rootScope.notificationMessages = [];//to clear error 
+                $rootScope.notificationMessages = [];//to clear error toaster
                 $.fileDownload(url, {
                     successCallback: function (url) {
+                        //toaster.pop("success", messages.labelDownloadSuccess); commented
                         notify.message(messages.labelDownloadSuccess,'','succ');
                     },
                     failCallback: function (error, url) {
@@ -3134,12 +2147,15 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                                 errors.push(error)
                             });
                             if (errors.length) {
+                                //toaster.pop("error", errors.join(', '), '', 0); commented
                                 notify.message($rootScope.pushJoinedMessages(errors))
                                 //notify.message(errors.join());
                             } else {
+                                //toaster.pop("error", messages.labelDownloadError); commented
                                 notify.message(messages.labelDownloadError);
                             }
                         } else {
+                            //toaster.pop("error", messages.labelDownloadError); commented
                             notify.message(messages.labelDownloadError);
                         }
                         $scope.$apply();
@@ -3201,27 +2217,12 @@ define(['app', 'downloader','jquery-ui','moment','momentTimezone','datetimepicke
                         animate:true,
                         slide: function(event, ui) {
 
-        $("#ex6SliderVal").text(range[ui.values[0]]);
-        $("#max_orders_per_month").val(range[ui.values[0]]);
-    },
-    stop: function(event, ui) {
-        ajaxPOSTRequest(successResponse);
-    }
-
-});
-$("#my-delivery-slider").slider({
-    min: 0.1,
-    max: 10,
-    step: 0.1,
-    animate:true,
-    values: [0.1],
-    slide: function(event, ui) {
-        $("#amount1").text(ui.values[0]);
-        $("#items_per_order_delivery_new").val(ui.values[0]);
-    },
-    stop: function(event, ui) {
-        ajaxPOSTRequestHandling(successResponse);
-    }
+                            $("#ex6SliderVal").text(range[ui.values[0]]);
+                            $("#max_orders_per_month").val(range[ui.values[0]]);
+                        },
+                        stop: function(event, ui) {
+                            ajaxPOSTRequest(successResponse);
+                        }
 
                     });
 
@@ -3282,7 +2283,7 @@ $("#my-delivery-slider").slider({
                     //console.log(">>"+formData);
                     $.ajax({
                         type: "POST",
-                        url: $constants.baseUrl+'/calculator/pricing.php',
+                        url: '/calculator/pricing.php',
                         data: formData,
                     //contentType: "application/json",
                     success: function(data, textStatus, request) {
@@ -3293,56 +2294,31 @@ $("#my-delivery-slider").slider({
                     successCallback(data);
                     }
 
-    });
-}
-function ajaxPOSTRequestHandling(successCallback) {
-    var formData = $('#calculator_data').serialize(); //new FormData("#calculator_data");
-    //console.log(">>"+formData);
-    $.ajax({
-        type: "POST",
-        url: $constants.baseUrl+'/calculator/pricing.php',
-        data: formData,
-        //contentType: "application/json",
-        success: function(data, textStatus, request) {
-         
-            if (data.status && data.status == 'failure' && data.reason == 'User session expired') {
-                sessionExpireModal();
-            }
-            //$("#spinner").hide();
-            successCallback(data);
-        }
+                    });
+                    }
 
-    });
-}
-function successResponse(data) {
-    $("#total_price").html("S$ " + data.price).css("display","none");
-  $("#total_price").fadeIn();
-  $("#total_price_new").val(data.price);  
-    $("#cost_order").html("S$ " + data.price_per_order);
-    $("#International_Priority").html("S$ " + data.international_priority);
-    $("#International_Standard").html("S$ " + data.international_standard);
-    $("#International_Economy").html(data.international_economic);
-    $("#Domestic_Standard").html("S$ " + data.domestic_value);
-    $("#Domestic_Economy").html( data.domestic_eco_value);
-    $("#cost_unit").html("S$" + data.price_per_item);
-    $("#handling_cost_month").html("S$ " + data.handlingPrice);
-    $("#cost_month").html("S$ " + data.storagePrice);
+                    function successResponse(data) {
+                        $("#total_price").html("$" + data.price).css("display","none");
+                        $("#total_price").fadeIn();
+                        $("#cost_order").html("$" + data.price_per_order);
+                        $("#cost_unit").html("$" + data.price_per_item);
+                        $("#handling_cost_month").html("$" + data.handlingPrice);
+                        $("#cost_month").html("$" + data.storagePrice);
 
-    $("#cost_order1").html("S$ " + data.price_per_order);
-    $("#cost_unit1").html("S$ " + data.price_per_item);
-    $("#handling_cost_month1").html("S$ " + data.handlingPrice);
-    $("#cost_month1").html("S$ " + data.storagePrice);
+                        $("#cost_order1").html("$" + data.price_per_order);
+                        $("#cost_unit1").html("$" + data.price_per_item);
+                        $("#handling_cost_month1").html("$" + data.handlingPrice);
+                        $("#cost_month1").html("$" + data.storagePrice);
 
-    $("#cost_order2").html("S$ " + data.price_per_order);
-    $("#cost_unit2").html("S$ " + data.price_per_item);
-    $("#handling_cost_month2").html("S$ " + data.handlingPrice);
-    $("#cost_month2").html("S$ " + data.storagePrice);
-}
+                        $("#cost_order2").html("$" + data.price_per_order);
+                        $("#cost_unit2").html("$" + data.price_per_item);
+                        $("#handling_cost_month2").html("$" + data.handlingPrice);
+                        $("#cost_month2").html("$" + data.storagePrice);
+                    //alert(data);
+                    }
 
-$( document ).ready(function() {
-  ajaxPOSTRequestHandling(successResponse);
-     ajaxPOSTRequest(successResponse);
-    
+                    $( document ).ready(function() {
+                        ajaxPOSTRequest(successResponse);
 
                         $(".numbers_only").keypress(function (e) {
                     //if the letter is not digit then display error and don't type anything
@@ -3388,129 +2364,39 @@ $( document ).ready(function() {
                                         $("#max_storage_ft3").val(ui.values[0]);
 
 
-                },
-                stop: function(event, ui) {
-                    ajaxPOSTRequest(successResponse);
-                }
-            });
-            ajaxPOSTRequest(successResponse);
-        }
-    })
-  
-});
-   $(".span6.contact_message_per").css("display","none");
-$("#country_type_delivery").on('change',function(){   
-    var countryTypeVal=$(this).val();
-   var selected = $("#country_list_delivery").val();
-    $(".span6.contact_message_per").css("display","none");
-    if(countryTypeVal == 2){  
-        $(".slider-delivery").css("display","block");
-            $("#country_list_delivery_container").css("display","none"); 
-            $(".domestic_container").css("display","block"); 
-        $(".international_container").css("display","none"); 
-           $(".span6.contact_message_per").css("display","none");
-    }else if(countryTypeVal == 1){ 
-         if(selected ==''){ 
-           $("#International_Economy").html("S$ 0");  
-           $(".slider-delivery").css("display","none");
-        }      
-           $("#country_list_delivery_container").css("display","block"); 
-       $(".domestic_container").css("display","none"); 
-       $(".international_container").css("display","block"); 
-             $(".contact_message_per").css("display","block");          
-    }else{         
-           $(".international_container").css("display","none"); 
-            $(".span6.contact_message_per").css("display","none");
+                                    },
+                                    stop: function(event, ui) {
+                                        ajaxPOSTRequest(successResponse);
+                                    }
+                                });
+                                ajaxPOSTRequest(successResponse);
+                            }
+                        })
 
-    }
-
-});
-$("#country_list_delivery").on('change',function(){
- var selected = $(this).find('option:selected');
-    var countryListVal=$(this).val();
-  var country_code=$("#country_list_delivery option:selected").attr('data-id');
-  $("#country_code_for_delivery").val(country_code);
-    if(countryListVal != ''){          
-        $(".slider-delivery").css("display","block");   
-         $(".contact_message_per").css("display","block");         
-        ajaxPOSTRequestHandling(successResponse);
-    }else{
-         $(".slider-delivery").css("display","none");
-    }
-
-});
-$("li.third_tabs a").on('click',function(){    
-$("li.fourth_tabs").css('display','none');
-});
-$("li.first_tabs a").on('click',function(){    
-$("li.fourth_tabs").css('display','block');
-});
-$("li.secound_tabs a").on('click',function(){    
-$("li.fourth_tabs").css('display','block');
-});
-
-
+                    });
 
             };
 
             $('html').click(function (e) {
                 if ($scope.rangepicker && ($(e.target).closest(".dropdown-submenu").length ||
-                    $(e.target).hasClass('day') || $(e.target).hasClass('month') || $(e.target).hasClass('year'))) {
+                    $(e.target).attr('class')=='day' || $(e.target).attr('class')=='month' || $(e.target).attr('class')=='year'||
+                    $(e.target).attr('class')=='old day' || $(e.target).attr('class')=='range day'|| $(e.target).attr('class')=='old range day' ||
+                    $(e.target).attr('class')=='selected day' || $(e.target).attr('class')=='today selected day' || $(e.target).attr('class')=='today day' ||
+                    $(e.target).attr('class')=='active selected day'|| $(e.target).attr('class')=='new day' || $(e.target).attr('class')=='today active selected day'||
+                    $(e.target).attr('class')=='new active selected day' || $(e.target).attr('class')=='new selected day' || $(e.target).attr('class')=='new range day' || 
+                    $(e.target).attr('class')=='new today day' || $(e.target).attr('class')=='new today selected day')) {
                     e.stopPropagation();
                 }
             });
 
             $scope.init = function () {
 
-              $('[data-toggle="popover"]').popover({
-                  title: function() {
-                      return '<span class="glyphicon glyphicon-cross"></span>';
-                  },
-                  html:true
-              });
-
-              $('body').on('click', function (e) {
-                  $('[data-toggle="popover"]').each(function () {
-                      if ((($(e.target).attr('class'))=='glyphicon glyphicon-cross') || (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)) {
-                          $(this).popover('hide');
-                      }
-                  });
-              });
-
-
-              $(document).mouseup(function (e) {
-                var container = $(".settings-container");
-                if (!container.is(e.target) && container.has(e.target).length === 0) {
-                  container.hide();
-                }
-              });
-
-
-
                 $timeout(function () {
                     $('[data-toggle="tooltip"]').tooltip();
                 }, 1000);
                 
-
-                // For popover 
-                $('[data-toggle="popover"]').popover({
-                  title: function() {
-                    return '<span class="glyphicon glyphicon-cross"></span>';
-                  },
-                  html:true
-                });
-
-                $('body').on('click', function (e) {
-                  $('[data-toggle="popover"]').each(function () {
-
-                    if ((($(e.target).attr('class'))=='glyphicon glyphicon-cross') || (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)) {
-                      $(this).popover('hide');
-                    }
-                  });
-                });
-
                 var currentRoute = $scope.readQueryParam($routeParams);
-                 $scope.billCycleStart='';
+
                 $scope.selectedProdCat      = null;
                 $scope.selectedDateRange    = null;
                 var path = $location.path();
@@ -3536,23 +2422,11 @@ $("li.fourth_tabs").css('display','block');
                 case '/accounts/connections/ebay/success':
                     $scope.getEbayToken();
                     break;
-
-                case '/accounts/connections/shopify':
-                    $scope.getShopifyToken();
-                    break;
                 
-                case '/accounts/connections/shopify/success':
-                    $scope.getShopifyToken();
-                    break;
-
                 case '/accounts/connections':
                     $scope.listChannels();
                     break;
                 
-                case '/accounts/connections/integrateShopify':
-                    $scope.initTimePicker();
-                    break;
-
                 case '/accounts/billingSummary':
                     $scope.billingSummary();
                     break;

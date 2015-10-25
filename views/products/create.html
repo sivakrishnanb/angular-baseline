@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <ng-include src="'views/products/nav.html'"></ng-include>
-      <section class="content full widget-form createpanel">
+      <section class="content full widget-form">
         <div class="row">
           <div class="col-sm-12">
             <form role="form"  name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">
@@ -11,7 +11,7 @@
               <div class="container-fluid">
                 <div class="row paddbtm30">
                   <div class="col-sm-12 col-lg-9 paddnone">
-                    <div class="thHeadIco glyphicon glyphicon-folder-close col-lg-1 col-sm-1 hidden-xs" id="product-create-glypcon"></div>
+                    <div class="thHeadIco glyphicon glyphicon-folder-close col-lg-1 col-sm-1 hidden-xs"></div>
                     <div class="thContent col-lg-11 col-sm-10">
                       Manually fill up the fields to create a product. No two products must have the same Merchant SKU. Apply Customs declaration information to be used in future orders. Fields marked with asterisk ( * ) are mandatory
                     </div>
@@ -35,7 +35,7 @@
                     <div id="collapseOne" class="panel-collapse collapse in">
                       <div class="panel-body">
                         <div class="row">
-<div class="row">
+
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group required">
                               <label for="product-create-productCategory" class="control-label">Product Category</label>
@@ -51,14 +51,13 @@
                               <input name="product-create-productName" type="text" class="form-control" id="product-create-productName" placeholder="Max. 60 characters" ng-model="model.productName" maxlength="60" required required-message="validationMessages.required" ng-change="updateCustomItemDesc()"/>
                             </div>
                           </div>
-						</div>
-<div class="row">
+
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group required">
                               <label for="product-create-merchantSku" class=" control-label">Merchant SKU</label>
 
                                    <div class="popoverHldr marg-left7">
-                                      <span class="glyphicon glyphicon-info" id="product-create-merchanticon"
+                                      <span class="glyphicon glyphicon-info" 
                                             data-container="body" 
                                             data-toggle="popover" 
                                             data-placement="right" 
@@ -77,34 +76,23 @@
                               <label for="product-create-retailPrice" class="control-label iconPad">Retail Price</label>
                               <div class="one-input-select">
                                 <div class="col-md-5 col-sm-5 col-xs-12 xstxt-marbtm">
-                                  <select ng-disabled="disableCurrency" id="product-create-retailPriceCurrency" name="product-create-retailPriceCurrency" class="form-control" ng-model="retailPriceCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                  <select ng-disabled="selectSGD" id="product-create-retailPriceCurrency" name="product-create-retailPriceCurrency" class="form-control" ng-model="retailPriceCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
                                     <option value="">Select</option>
                                   </select>
                                 </div>
                                 <div class="col-md-7 col-sm-7 col-xs-12 paddrgt0">
-
-                                  <input type="number" name="product-create-retailPrice"
-                                         min="0.01"
-                                         step="10" class="form-control" id="product-create-retailPrice"
-                                         placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"
-                                         ng-model="model.retailPrice"
-                                         validator="{{(model.retailPrice <= isCountriesOptionsVisible('createProductMaxLimit').max) && isPatternMatched('^[0-9]+[\\.]?[0-9]{0,2}$', model.retailPrice)}}"
-                                         invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"  required-message="validationMessages.invalidnumber" required ng-change="model.declaredValue=model.retailPrice"/>
+                                  <input type="number" name="product-create-retailPrice" min="0.01" step="10" class="form-control" id="product-create-retailPrice" placeholder="Max. 20000" ng-model="model.retailPrice" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.invalidnumber" required ng-change="model.declaredValue=model.retailPrice"/>
                                 </div>
 
                               </div>
                             </div>
-                          </div>   
-                   </div>
-				   
-				   <div class="row">
+                          </div>                      
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="col-md-5 col-sm-5 col-xs-12">
                               <div class="form-group required">
                                 <label for="product-create-weight" class="control-label iconPad">Weight (kg)</label>
                                 <div class="small-input">
-                                  <input string-to-number id="product-create-weight" name="product-create-weight" type="number" min="0.01" step="1" max="{{isCountriesOptionsVisible('createProductWeight').max}}" class="form-control" ng-model="model.weight" placeholder="{{isCountriesOptionsVisible('createProductWeight').placeholder}}" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="isCountriesOptionsVisible('createProductWeight').invalid_message" required-message="validationMessages.invalidnumber" required />
-
+                                  <input string-to-number id="product-create-weight" name="product-create-weight" type="number" min="0.01" step="1" max="30.00" class="form-control" ng-model="model.weight" placeholder="Max. 30 kg" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidweight" required-message="validationMessages.invalidnumber" required />
                                 </div>
                               </div>
                             </div>
@@ -115,19 +103,12 @@
                                 <label for="product-create-declaredValue" class="control-label iconPad">Declared value</label>
                                 <div class=" one-input-select">
                                   <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
-                                    <select ng-disabled="disableCurrency" name="product-create-declaredValueCurrency" id="product-create-declaredValueCurrency" class="form-control" ng-model="declaredValueCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                    <select ng-disabled="selectSGD" name="product-create-declaredValueCurrency" id="product-create-declaredValueCurrency" class="form-control" ng-model="declaredValueCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
                                       <option value="">Select</option>
                                     </select>
                                   </div>
                                   <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
-
-                                    <input type="number" id="product-create-declaredValue" name="product-create-declaredValue" ng-model="model.declaredValue"
-                                           min="0.00"
-                                           max="{{isCountriesOptionsVisible('createProductMaxLimit').max}}" class="form-control" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
-                                           placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"
-                                           invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"
-                                           required-message="validationMessages.invalidnumber"
-                                           step="10" required/>
+                                    <input type="number" id="product-create-declaredValue" name="product-create-declaredValue" ng-model="model.declaredValue" class="form-control" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" placeholder="Max. 20000" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.invalidnumber" step="10" required/>
                                   </div>
 
                                 </div>
@@ -139,7 +120,7 @@
                             <div class="form-group required">
                               <label for="product-create-length" class="control-label">Dimensions L X W X H (cm)</label>
                                 <div class="popoverHldr marg-left7">
-                                      <span class="glyphicon glyphicon-info" id="product-create-dimensionsicon"
+                                      <span class="glyphicon glyphicon-info" 
                                             data-container="body" 
                                             data-toggle="popover" 
                                             data-placement="right" 
@@ -157,26 +138,26 @@
                                         name="product-create-length" 
                                         min="0.01" 
                                         step="1" 
-                                        max="105.00"
-                                        placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
-                                        invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidLength"
-                                        type="number"
+                                        max="105.00" 
+                                        type="number" 
                                         class="form-control" ng-class="{'has-error':isDimensionValid}"
-                                        ng-model="model.length"
+                                        placeholder="Max. 105 cm" 
+                                        ng-model="model.length" 
                                         ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                        invalid-message="validationMessages.invalidLength"
                                         validator="isDimensionValidFunction(model.length,model.width,model.height)"
                                         required/>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-12 xstxt-marbtm">
                                   <input id="product-create-width" string-to-number
                                          name="product-create-width" 
-                                         min="0.01" step="1"
-                                         max="105.00" type="number"
-                                         placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
-                                         invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidWidth"
+                                         min="0.01" step="1"  
+                                         max="105.00" type="number" 
                                          class="form-control" ng-class="{'has-error':isDimensionValid}"
-                                         ng-model="model.width"
-                                         ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                         placeholder="Max. 105 cm" 
+                                         ng-model="model.width" 
+                                         ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" 
+                                         invalid-message="validationMessages.invalidWidth" 
                                          validator="isDimensionValidFunction(model.length,model.width,model.height)"
                                          required />
                                 </div>
@@ -184,12 +165,12 @@
                                   <input id="product-create-height" string-to-number
                                         name="product-create-height" 
                                         min="0.01" step="1"   
-                                        max="105.00" type="number"
-                                        placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
-                                        invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidHeight"
+                                        max="105.00" type="number" 
                                         class="form-control last" ng-class="{'has-error':isDimensionValid}"
-                                        ng-model="model.height"
-                                        ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                        placeholder="Max. 105 cm" 
+                                        ng-model="model.height" 
+                                        ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" 
+                                        invalid-message="validationMessages.invalidHeight" 
                                         validator="isDimensionValidFunction(model.length,model.width,model.height)"
                                         required />
                                 </div>
@@ -197,7 +178,7 @@
                               <div class="error-message-prodDim" ng-if="isDimensionValid" ng-bind="validationMessages.invalidDimensiontotal"></div>
                             </div>
                           </div>
-</div>
+
 
                         </div>
                       </div>
@@ -215,8 +196,6 @@
                     <div id="collapseTwo" class="panel-collapse collapse in">
                       <div class="panel-body">
                         <div class="row">
-						 <div class="row">
-						
                           <div class="col-md-7 col-sm-7 col-xs-12">
                             <div class="form-group">
                               <label for="product-create-product-id" class="control-label">Product ID (EAN/JAN/UPC/ISBN)</label>
@@ -238,22 +217,17 @@
                               <label for="product-create-costprice" class="control-label">Cost Price</label>
                               <div class="one-input-select">
                                 <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
-                                  <select ng-disabled="disableCurrency" class="form-control" id="product-create-costPriceCurrency" name="product-create-costPriceCurrency" ng-model="costPriceCurrencyCtrl" ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode" validator="isCodeValid(costPriceCurrencyCtrl.currencyCode, model.costPrice)" invalid-message="validationMessages.required">
+                                  <select ng-disabled="selectSGD" class="form-control" id="product-create-costPriceCurrency" name="product-create-costPriceCurrency" ng-model="costPriceCurrencyCtrl" ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode" validator="isCodeValid(costPriceCurrencyCtrl.currencyCode, model.costPrice)" invalid-message="validationMessages.required">
                                     <option value="">Select</option>
                                   </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
-                                  <input type="number" name="product-create-costprice" class="form-control" id="product-create-costprice"
-                                         placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"  min="0.01"
-                                         max="{{isCountriesOptionsVisible('createProductMaxLimit').max}}" ng-model="model.costPrice"
-                                         invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"
-                                         step="10" validator="isCodeValidPrice(costPriceCurrencyCtrl.currencyCode, model.costPrice)"/>
+                                  <input type="number" name="product-create-costprice" class="form-control" id="product-create-costprice" placeholder="Max. 20000" ng-model="model.costPrice" invalid-message="validationMessages.invalidnumber" step="10" validator="isCodeValidPrice(costPriceCurrencyCtrl.currencyCode, model.costPrice)"/>
                                 </div>
                               </div>
                             </div>
                           </div>
-</div>
- <div class="row">
+
                           <div class="col-md-7 col-sm-7 col-xs-12">
                             <div class="form-group">
                               <label for="product-create-manufacturer" class="control-label iconPad">Manufacturer</label>
@@ -264,7 +238,7 @@
                             <div class="form-group">
                               <label for="product-create-inventoryLevel" class="control-label">Inventory Alert Level</label>
                                   <div class="popoverHldr">
-                                      <span class="glyphicon glyphicon-info" id="product-create-inventoryicon"
+                                      <span class="glyphicon glyphicon-info" 
                                             data-container="body" 
                                             data-toggle="popover" 
                                             data-placement="top" 
@@ -273,10 +247,10 @@
                                       </span>
                                   </div> 
                               </label>
-                              <input type="number" name="product-create-inventoryLevel" class="form-control" id="product-create-inventoryLevel" ng-pattern="/^([0-9\\]{0,3}|1000)$/" placeholder="Inventory Alert Level" ng-model="model.inventoryAlertLevel" invalid-message="validationMessages.invalidnumber" min="0" step="1" />
+                              <input type="number" name="product-create-inventoryLevel" class="form-control" id="product-create-inventoryLevel" ng-pattern="/^[0-9\\]{0,4}$/" placeholder="Inventory Alert Level" ng-model="model.inventoryAlertLevel" invalid-message="validationMessages.invalidnumber" min="0" step="1" />
                             </div>
                           </div>
-</div>
+
                           <div class="col-md-7 col-sm-7 col-xs-12">
                             <div class="form-group">
                               <label for="remarks" class="control-label">Remarks</label>

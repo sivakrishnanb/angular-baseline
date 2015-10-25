@@ -2,134 +2,64 @@
   <div class="row">
     <div class="col-xs-12">
       <ng-include src="'views/accounts/nav.html'"></ng-include>
-      <section class="content full widget-form">
+      <section class="content full">
         <div class="row">
           <div class="col-sm-12">
-            
-            
-            <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="addShopifyChannel()">
-              
-              <h2 class="thHead">Connections</h2>
-              <div class="container-fluid">
-                <div class="row paddbtm30">
-                 <div class="col-sm-12 col-lg-9 paddnone" >
-                      <div class="thHeadIco glyphicon glyphicon-con col-lg-1 col-sm-1 hidden-xs"></div>
-                        <div class="thContent col-lg-11 col-sm-10">
-                          You can manage connections to external sales channels - marketplaces and shopping carts here.
-                      </div>
-                    </div>
+            <form role="form" class="form-horizontal" name="edit_product"
+              novalidate angular-validator angular-validator-submit="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="pull-left">Integrate with Shopify</h2>
                 </div>
               </div>
-              <div class="clear"></div>
-        
               <div class="panel-group">
                 <div class="panel panel-default">
-                  <h4 class="panelbrdr" id="con-saleschannels-header"><span class="txtBold">Connect to your Shopify Seller Account</span> <img src="images/shopify.jpg" alt="Shopify"
-                                class="wdth4 ebayImg"></h4>
-                    <div class="panel-body paddleft10">
-                      
-                      
-                      
-                        
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
                       <div class="row">
-              
-              <p>With ezyCommerce, you can sell on shopify and use ezyCommerce as the fulfillment solution for your shopify orders. In order to do this, you need to add 
-your shopify seller account on the ezyCommerce platform. </p>
-
-<ul class="cnct-ebay">
-We can synchronize the following information with shopify –
-<li class="paddtop10">-  <span class="txtBold">Fulfillment Orders</span> - Once you are connected, we will start polling shopify servers periodically to check for new orders under your account. 
-        All new and modified orders will be downloaded into your ezyCommerce account.</li>
-<li>-  <span class="txtBold">Order Status</span> – When an order is shipped, status and tracking information is pushed to shopify.</li>
-
-</ul>
-<ol class="cnct-ebay">
-Follow the procedure below to add your shopify account to ezyCommerce.
-<li>Click <span class="txtBold">‘Connect to shopify’</span>, you’ll be directed to the shopify.com website. Simply enter your shopify credentials and it will link up. shopify has unified 
-    logins between all their individual websites for different countries.</li>
-<li>Enter the required account information – your username and password. Shopify uses oAuth security authentication mechanism hence nobody 
-    including us will not have access to your account password.</li>
-    <li>After logging in, select <span class="txtBold">“I agree”</span> to grant access for ezyCommerce to access your shopify account and you’ll be redirected back to the 
-    ezyCommerce Connections page.</li>
-    <li>You need to make sure that your shopify listings have the same <span class="txtBold">Merchant SKU in the ‘SKU’ field</span> so that when we import an order from shopify, 
-    we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products 
-    with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item, click <a href="" class="ebayClick">here</a> to know the process to setup variant 
-    SKUs in your shopify listing.</li>
-    <li>If you would like to update shipment tracking information back to shopify, check <span class="txtBold">“Update Order Tracking Status”</span> in the Connections page. 
-    Once your orders have shipped, we will automatically push tracking information into shopify and change the order status to “Shipped”.</li>   
-
-</ol>
-<span class="txtBold">Note:</span> At this time, we support only Direct shopify connection. We do not support shopify via Paypal IPN connection.
-
+                        <div class="col-sm-4">
+                          <img src="images/shopify.jpg" height="75" width="75" alt="Shopify"
+                                class="img-rounded">
                         </div>
-                        
-                        <div class="col-sm-9 martop15 paddlft0">
-                          <div class="col-sm-4 text-left">
-                            <label for="merchant-channel-name" class=" control-label inline-required">ezyCommerce Channel Name<span class="reqStar">&nbsp;*</span></label>
-                            <span class="shopifyReference glyphicon glyphicon-info" data-container="body" data-toggle="popover" data-placement="right" data-content="For your reference it should be unique across all the accounts you hold in ezyCommerce" data-original-title="" title=""></span>
-                          </div>
-                          <div class="col-sm-3 paddnone">
-                            <div class="form-group required">
-                              <input name="merchant-channel-name" type="text" class="form-control" id="merchant-channel-name" placeholder="Max. 60 characters" ng-model="model.merchantChannelName" maxlength="60" required="" required-message="validationMessages.required">
-                            </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group required">
+                            <label for="product-create-productName" class="col-sm-5 control-label">Shopify Domain</label>
+                            <div class="col-sm-7">
+                              <input name="product-create-productName" type="text" class="form-control" id="product-create-productName" placeholder="Product Name" ng-model="model.productName" maxlength="30"  required required-message="validationMessages.required" />
+                           </div>
                           </div>
                         </div>
+                       </div>
 
-                        <div class="col-sm-9 paddlft0">
-                          <div class="col-sm-4 text-left">
-                            <label for="merchant-store-name" class=" control-label inline-required">Store Name<span class="reqStar">&nbsp;*</span></label>
-                          </div>
-                          <div class="col-sm-3 paddnone">
-                            <div class="form-group required marbtm0">
-                              <input name="merchant-store-name" type="text" class="form-control" id="merchant-store-name" placeholder="Max. 60 characters" ng-model="model.merchantStoreName" maxlength="60" required="" required-message="validationMessages.required">
-                            </div>
-                          </div>
-                          <span class="myshopify">.myshopify.com</span>
-
+                      <div class="row">
+                        <div class="col-sm-12">
+                         <label  class="col-sm-12 control-label">
+                           Enter you Shopify store domain and proceed to click ‘Connect’. You will be redirected to Shopify’s site to authorize ezyFulfillment by providing your login credentials.
+                          </label>
                         </div>
+                      </div>
 
-
-                        <div class="col-sm-9 demoStore paddlft0">
-                          <div class="col-sm-12 text-left">
-                            <em class="text-muted">Note : if your store URL is http://demo-store.myshopify.com, enter only demo-store</em>
-                          </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-sm-7 pull-right">
+                          <button class="btn btn-primary"
+                           type="submit">Connect to Shopify</button>
                         </div>
-
-
-                        <div class="col-sm-9 paddlft0">
-                          <div class="col-sm-4 text-left paddtop5">
-                            <label for="merchant-order-pulling-date" class="control-label inline-required">Order Pulling Date</label>
-                          </div>
-                          <div class="col-sm-3 paddnone dateTimePickerContainer">
-                            <div class="form-group required">
-                              <div class="input-group datelbl">
-                                <input name="merchant-order-pulling-date" type="text" class="form-control marbtm0" id="merchant-order-pulling-date" ng-model="model.orderPullingDate" maxlength="60">
-                                <label class="input-group-addon" for="merchant-order-pulling-date"><i class="glyphicon glyphicon-calendar"></i></label>
-                              </div>
-                            </div>
-                          </div>
-                          <span class="shopifyTimezone" ng-bind="'Time Zone : '+getShopifyTimeZone()"></span>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-1 pull-right">
+                          <button class="btn btn-default"
+                           type="submit">Cancel</button>
                         </div>
-                        
-                        <div class="col-sm-7 paddlft0">
-                          <div class="col-sm-12 text-left paddtop5">
-                            <em class="text-muted">Note : Order created / modified on or after the above date will be pulled. If left empty Orders created / modified after adding the channel in ezyCommerce will be pulled.</em>
-                          </div>
-                        </div>
-
-                        <div class="col-sm-9 martopbtm20 paddlft0">
-                          <button class="btn btn-primary" type="submit">Connect to shopify</button>
-                        </div>
-                        
-                        
                       </div>
                     </div>
-                  
+                  </div>
                 </div>
               </div>
             </form>
-            
-            
           </div>
         </div>
       </section>

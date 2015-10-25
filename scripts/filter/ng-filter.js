@@ -8,16 +8,5 @@ define(['angularAMD'], function (angularAMD) {
                     return input;   
                 }
             }
-        })
-        .filter('camelCase', function() {
-            return function(input) {
-                input = input || '';
-                return input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-            }
-		})
-        .filter('toTrusted', ['$sce',function ($sce) {
-            return function (value) {
-                return $sce.trustAsHtml(value);
-            };
-        }]);
+		});
 });

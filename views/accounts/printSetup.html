@@ -1,0 +1,107 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" class="form-horizontal" name="create_product"
+              novalidate angular-validator
+              angular-validator-submit="createProduct(create_product)">
+              <div class="panel-group panel-default ">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Print Setup</h3>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+
+                       <div class="row">
+                        <div class="col-sm-12">
+                          <div class="checkbox">
+                            <label class="control-label"><input type="checkbox">Product Label</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-2" >
+                          <label>Paper Size</label> 
+                        </div>
+                        <div class="col-sm-2">
+                          <select class="form-control">
+                            <option value="">Select</option>
+                            <option value="">A4</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-1"></div>
+                          <div class="col-sm-2">
+                            <label>Template</label> 
+                          </div>
+                          <div class="col-sm-2">
+                           <select class="form-control">
+                            <option value="">Select</option>
+                            <option value="">45.7mm X 21.2mm</option>
+                          </select>
+                        </div>
+                      </div>
+
+
+
+
+
+                       <div class="row">
+                        <div class="col-sm-12">
+                          <div class="checkbox">
+                            <label class="control-label"><input type="checkbox">Box Label</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-2" >
+                          <label>Paper Size</label> 
+                        </div>
+                        <div class="col-sm-2">
+                          <select class="form-control">
+                            <option value="">Select</option>
+                            <option value="">Plain Paper</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-1"></div>
+                          <div class="col-sm-2" >
+                            <label>Template</label> 
+                          </div>
+                          <div class="col-sm-2">
+                           <select class="form-control">
+                            <option value="">Select</option>
+                            <option value="">4" X 6"</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="btn-grp">
+                            <button type="button" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+

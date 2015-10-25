@@ -1,11 +1,5 @@
 define(['angularAMD'], function (angularAMD) {
 		angularAMD.service('$exceptionManager', ['$location', '$rootScope', '$cookieStore', function($location, $rootScope, $cookieStore) {
-			$rootScope.$on('$routeChangeStart', function(event, next, current) {
-				var timeOutPath  = next.$$route.originalPath;
-				if($rootScope.constantsBase.loginRedirectRoutes.indexOf('/'+timeOutPath.split('/')[1])==-1) {
-					$rootScope.timeOutPath = $location.path();
-				}
-			});
 	    	this.init = function(status) {
 		    	var deferred = $.Deferred();
                 $rootScope.unAuthorized = false;

@@ -127,8 +127,7 @@
                                         </div>
                                         <!-- Status -->
                       <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12">
-                        <span class="{{data.duTxnFileStatus == 0 ? '' : (data.duTxnFileStatus == 1 ? 'text-success' : (data.duTxnFileStatus == 3 ? 'text-warning' : 'text-danger'))}}" ng-bind="data.duTxnFileStatus == 0 ? 'Processing' : (data.duTxnFileStatus == 1 ? 'Successful' : (data.duTxnFileStatus == 3 ? 'Partially Successful' : 'Failed'))"></span><a class="paddlft5" ng-show="(data.duTxnFileStatus==2 || data.duTxnFileStatus==3)" id="{{'shipment-upload-status-' + data.duTxnId}}" ng-href="{{data.duTxnErrorFiles3 || constants.notAvailable}}" title="Report"> Report</a>
-                        <a ng-if="data.duTxnFiles3" href="javascript:;" ng-click="downloadSourceFile('dataImport',data.duTxnId)" title="Source File" class="sourcefileDownload">Source File</a>
+                        <span class="{{data.duTxnFileStatus == 0 ? '' : (data.duTxnFileStatus == 1 ? 'text-success' : (data.duTxnFileStatus == 3 ? 'text-warning' : 'text-danger'))}}" ng-bind="data.duTxnFileStatus == 0 ? 'Processing' : (data.duTxnFileStatus == 1 ? 'Successful' : (data.duTxnFileStatus == 3 ? 'Partially Successful' : 'Failed'))"></span><a ng-show="(data.duTxnFileStatus==2 || data.duTxnFileStatus==3)" id="{{'shipment-upload-status-' + data.duTxnId}}" ng-href="{{data.duTxnErrorFiles3 || constants.notAvailable}}" title="Report"> Report</a>
                       </div>
                                         </div>
                                         <div class="row proRow" ng-if="!myData.length">

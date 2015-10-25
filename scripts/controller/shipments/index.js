@@ -1,6 +1,6 @@
 define(['app', 'utility/messages'], function (app, messages) {
-    app.controller('Shipments', ['$scope', '$bus', 'ngProgress', '$rootScope', '$routeParams', '$constants', '$location', '$timeout','notify', '$localStorage',
-        function ($scope, $bus, ngProgress, $rootScope, $routeParams, $constants, $location, $timeout,notify, $localStorage) {
+    app.controller('Shipments', ['$scope', '$bus', 'ngProgress', 'toaster', '$rootScope', '$routeParams', '$constants', '$location', '$timeout','notify', '$localStorage',
+        function ($scope, $bus, ngProgress, toaster, $rootScope, $routeParams, $constants, $location, $timeout,notify, $localStorage) {
 
             $scope.shipmentFilterOptions = $constants.shipmentFilterOptions;
 
@@ -28,13 +28,13 @@ define(['app', 'utility/messages'], function (app, messages) {
 								if ($routeParams && ($routeParams.date || $routeParams.scol || $routeParams.skey)) {
                     return messages.noShipmentsHeaderTextFilter;
                 }else if ($routeParams.status=='pending' || !($routeParams.status)) {
-                    return messages.noShipmentsHeaderTextPending;
+                    return messages.noShipmentsHeaderTextPending;;
                 }else if ($routeParams.status=='intransit') {
-                    return messages.noShipmentsHeaderTextInTransit;
+                    return messages.noShipmentsHeaderTextInTransit;;
                 }else if ($routeParams.status=='received') {
-                    return messages.noShipmentsHeaderTextReceived;
+                    return messages.noShipmentsHeaderTextReceived;;
                 }else if ($routeParams.status=='cancelled') {
-                    return messages.noShipmentsHeaderTextCancelled;
+                    return messages.noShipmentsHeaderTextCancelled;;
                 } 
             }
 
@@ -44,13 +44,13 @@ define(['app', 'utility/messages'], function (app, messages) {
                 if ($routeParams && ($routeParams.date || $routeParams.scol || $routeParams.skey)) {
                     return messages.noShipmentsHeaderSubTextFilter;
                 }else if ($routeParams.status=='pending' || !($routeParams.status)) {
-                    return messages.noShipmentsHeaderSubTextPending;
+                    return messages.noShipmentsHeaderSubTextPending;;
                 }else if ($routeParams.status=='intransit') {
-                    return messages.noShipmentsHeaderSubTextInTransit;
+                    return messages.noShipmentsHeaderSubTextInTransit;;
                 }else if ($routeParams.status=='received') {
-                    return messages.noShipmentsHeaderSubTextReceived;
+                    return messages.noShipmentsHeaderSubTextReceived;;
                 }else if ($routeParams.status=='cancelled') {
-                    return messages.noShipmentsHeaderSubTextCancelled;
+                    return messages.noShipmentsHeaderSubTextCancelled;;
                 } 
 
                 
@@ -161,100 +161,11 @@ define(['app', 'utility/messages'], function (app, messages) {
                 return ($localStorage.pagingOptions.shipments.sortDir == 'asc') ? true : false;
             }
 			
-			$scope.getFirstMatchSuggest = function(param,match,type){
-
-				if(!_.isEmpty(param) && match && type){
-                    
-                    var index=patt='';
-                    var filteredData = [];
-
-                    var skuIndexArray = prIdIndexArray = merSkuIndexArray = prodDesIndexArray = [];
-
-                    if(param.inbPrdSkus){
-                        
-                        var skuIndexArray = param.inbPrdSkus.substr(0,param.inbPrdSkus.length-1).split(',,');
-                        
-                        if(!_.isEmpty(skuIndexArray)){
-                            if(index=='' || index==-1) {
-                                var patt = new RegExp(match,'gi');
-                                    var filteredData = _.filter(skuIndexArray,function(data){
-                                        if(patt.test(data)){
-                                           index = _.indexOf(skuIndexArray,data);
-                                        }
-                                });
-                            }
-                        }
-                    }
-                    if(param.inbProductIds){
-                        
-                        var prIdIndexArray = param.inbProductIds.substr(0,param.inbProductIds.length-1).split(',,');
-                        
-                        if(!_.isEmpty(prIdIndexArray)) {
-                            
-                            if(index=='' || index==-1) {
-                                var patt = new RegExp(match,'gi');
-                                var filteredData = _.filter(prIdIndexArray,function(data){
-                                    if(patt.test(data)){
-                                       index = _.indexOf(prIdIndexArray,data);
-                                    }
-                                });
-
-                            }
-                        }
-                    }
-                    if(param.inbMerchantSkus){
-                                      
-                        var merSkuIndexArray = param.inbMerchantSkus.substr(0,param.inbMerchantSkus.length-1).split(',,');
-
-                        if(!_.isEmpty(merSkuIndexArray)){
-                            
-                             if(index=='' || index==-1) {
-                                var patt = new RegExp(match,'gi');
-                                var filteredData = _.filter(merSkuIndexArray,function(data){
-                                    if(patt.test(data)){
-                                       index = _.indexOf(merSkuIndexArray,data);
-                                    }
-                                });
-                            }
-                            
-                        }
-                    }
-                    if(param.inbPrdDesc){
-                        
-                        var prodDesIndexArray = param.inbPrdDesc.substr(0,param.inbPrdDesc.length-1).split(', ,');
-
-                        if(!_.isEmpty(prodDesIndexArray)){
-       
-                            if(index=='' || index==-1) {
-                                var patt = new RegExp(match,'gi');
-                                var filteredData = _.filter(prodDesIndexArray,function(data){
-                                    if(patt.test(data)){
-                                       index = _.indexOf(prodDesIndexArray,data);
-                                    }
-                                });
-                            }
-                            
-                        }
-                    }
-
-                    if(type=='merSku'){
-
-                        return (index!=-1 && index!='')?merSkuIndexArray[index]:merSkuIndexArray[0];
-                    }
-                    else if(type=='ezySku'){
-
-                        return (index!=-1 && index!='')?skuIndexArray[index]:skuIndexArray[0];
-                    }
-                    else if(type=='prodName'){
-
-                        return (index!=-1 && index!='')?prodDesIndexArray[index]:prodDesIndexArray[0];
-                    }
-                    else if(type=='prodId'){
-
-                        return (index!=-1 && index!='')?prIdIndexArray[index]:prIdIndexArray[0];
-                    }
-
-                
+			$scope.getFirstMatchSuggest = function(param,match){
+				if (param && match) {
+					var patt =  new RegExp(match,'gi');
+					var loopData = _.filter(_.compact(param.split(',')),function(n){ return patt.test(n); });
+					return (loopData.length)?_.first(loopData):_.first(_.compact(param.split(',')));
 				}else{
 					return $constants.notAvailableText;
 				}
@@ -263,7 +174,7 @@ define(['app', 'utility/messages'], function (app, messages) {
             $scope.highlightSuggest = function (str, match) {
 				if (str && match) {
 					var regex = new RegExp("(" + match + ")", 'gi');
-                    return str.replace(regex, '<strong>$1</strong>');
+					return str.replace(regex, '<strong>$1</strong>');
 				}
                 return str
             };
@@ -282,7 +193,7 @@ define(['app', 'utility/messages'], function (app, messages) {
             $scope.readQueryParam = function (param) {
                 var deferred = $.Deferred();
                 $timeout(function () {
-                    $scope.sortingOptions.field = _.findWhere($constants.shipmentSortingOptions, {"value": $localStorage.pagingOptions.shipments.sortingOption}) ? $localStorage.pagingOptions.shipments.sortingOption : $constants.shipmentSortingOptions[0].value;
+                    $scope.sortingOptions.field = $localStorage.pagingOptions.shipments.sortingOption;
                     $scope.sortingOptions.name = _.findWhere($constants.shipmentSortingOptions, {"value": $scope.sortingOptions.field}).name;
                     param.fromdate ? $scope.fromdate = param.fromdate : '';
                     param.todate ? $scope.todate = param.todate : '';
@@ -572,7 +483,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                                 params: {
                                     skey: txt,
                                     scol: col[0].value,
-                                    status: $scope.getSuggestionStatus()
+																		status: $scope.getSuggestionStatus()
                                 },
                                 data: null
                             })
@@ -583,7 +494,6 @@ define(['app', 'utility/messages'], function (app, messages) {
                                             $scope.suggestions = success.response.data.docs;
 											$timeout(function(){
                                                 $(".nano").nanoScroller({ flash: true,preventPageScrolling: true});
-                                                $(".nano").nanoScroller();
                                             },100);
                                         }else{
                                             $('#shipment-search-suggestion').hide();
@@ -686,7 +596,12 @@ define(['app', 'utility/messages'], function (app, messages) {
 
             $('html').click(function (e) {
                 if ($scope.rangepicker && ($(e.target).closest(".dropdown-submenu").length ||
-                    $(e.target).hasClass('day') || $(e.target).hasClass('month') || $(e.target).hasClass('year'))) {
+                    $(e.target).attr('class')=='day' || $(e.target).attr('class')=='month' || $(e.target).attr('class')=='year'||
+                    $(e.target).attr('class')=='old day' || $(e.target).attr('class')=='range day'|| $(e.target).attr('class')=='old range day' ||
+                    $(e.target).attr('class')=='selected day' || $(e.target).attr('class')=='today selected day' || $(e.target).attr('class')=='today day' ||
+                    $(e.target).attr('class')=='active selected day'|| $(e.target).attr('class')=='new day' || $(e.target).attr('class')=='today active selected day'||
+                    $(e.target).attr('class')=='new active selected day' || $(e.target).attr('class')=='new selected day' || $(e.target).attr('class')=='new range day' || 
+                    $(e.target).attr('class')=='new today day' || $(e.target).attr('class')=='new today selected day')) {
                     e.stopPropagation();
                     $scope.tickSelection($scope.dateOptions, 8);
                 }
@@ -700,19 +615,6 @@ define(['app', 'utility/messages'], function (app, messages) {
                 $rootScope.shipInbounds = inboundCode;
             };
 
-            $scope.getshipmentScrollClassTop = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'shipmentsPageScroll nano';
-            }
-            $scope.getshipmentScrollClassBot = function(){
-                if(Number($(document).width() >= 992))
-                    return '';
-                else
-                    return 'nano-content';
-            }
-            
             $scope.init = function () {
                 $scope.date = [];
                 //$scope.dateinit();
@@ -738,7 +640,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                 };
 
                 $scope.sortingOptions = {
-                    field: 'createdOn',
+                    field: 'createdDate',
                     name: 'Date Created',
                     direction: 'desc'
                 };
@@ -777,9 +679,6 @@ define(['app', 'utility/messages'], function (app, messages) {
 				}
 			
                 $scope.getPagedDataAsync = function () {
-
-                    var deferred = $.Deferred();
-
                     ngProgress.start();
 					
 					$scope.loading = {
@@ -804,6 +703,7 @@ define(['app', 'utility/messages'], function (app, messages) {
                                 var shipments = [];
                                 var data = success.response.data;
 								//notify.Message(messages.shipmentList+' '+messages.retrivedSuccess);
+                                //toaster.pop("success", messages.shipmentList, messages.retrivedSuccess);
                                 if (data && data.shipments) {
                                     if (!_.isArray(data.shipments)) {
                                         _.forEach(data.shipments, function (shipment) {
@@ -824,13 +724,14 @@ define(['app', 'utility/messages'], function (app, messages) {
                                     errors.push(error)
                                 });
                                 if (errors.length) {
+                                    //toaster.pop("error", errors.join(', '), '', 0); commented
                                     //notify.message($rootScope.pushJoinedMessages(errors));
                                 } else {
+                                    //toaster.pop("error", messages.shipmentListFetchError, "", 0); commented
                                     //notify.message(messages.shipmentListFetchError);
                                 }
                             }
                             ngProgress.complete();
-                            deferred.resolve();
                         }).fail(function (error) {
 							
 							$scope.loading = {
@@ -838,18 +739,13 @@ define(['app', 'utility/messages'], function (app, messages) {
                                 load : false
                             }
 							
+                            //toaster.pop("error", messages.shipmentListFetchError); commented
                             //notify.message(messages.shipmentListFetchError);
                             ngProgress.complete();
-                            deferred.reject();
                         });
-                        return deferred.promise();
                 };
 
-                $scope.getPagedDataAsync().done(function(){
-                    $timeout(function() {
-                        $(".shipmentsPageScroll.nano").nanoScroller({ flash: true,preventPageScrolling: true,iOSNativeScrolling: true});
-                    }, 500);
-                });
+                $scope.getPagedDataAsync();
                 $scope.$watch('pagingOptions', function (newVal, oldVal) {
 
                     if (newVal !== oldVal) {

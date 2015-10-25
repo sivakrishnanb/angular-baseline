@@ -1,20 +1,25 @@
 
 define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtemplates'], function (angularAMD, io, messages, notificationTemplates) {
-    angularAMD.controller('Base', ['$scope', '$bus', '$location', 'ngProgress', '$rootScope', '$window', '$constants', '$timeout', '$cookieStore', 'notify','highlight', '$localStorage',
-        function ($scope, $bus, $location, ngProgress, $rootScope, $window, $constants, $timeout, $cookieStore, notify,highlight, $localStorage) {
-
-            $scope.termsAndConditionFile = '/content/ezyCommerce General T&Cs.pdf';
+    angularAMD.controller('Base', ['$scope', '$bus', '$location', 'ngProgress', '$rootScope', '$window', 'toaster', '$constants', '$timeout', '$cookieStore', 'notify','highlight', '$localStorage', '$translate','$filter',
+        function ($scope, $bus, $location, ngProgress, $rootScope, $window, toaster, $constants, $timeout, $cookieStore, notify,highlight, $localStorage, $translate, $filter) {
+            $rootScope.messages = $filter('translate');
+            $rootScope.setLang = function(langKey) {
+                // You can change the language during runtime
+                var promise = $translate.use(langKey);
+                if (promise.$$state && !promise.$$state.status) {
+                    $translate.use('en');
+                }
+                else {
+                    $localStorage.preferredLanguage = langKey;
+                }
+            };
 
             $scope.isTabActive = function (tabName) {
 				if ($location.path().indexOf('/accounts') != -1) {
                     return "";
                 }
-
-		        else if ($location.path().indexOf('/' + tabName) == 0) {
+                else if ($location.path().indexOf('/' + tabName) != -1) {
                     return "active";
-
-                /*else if ($location.path().indexOf('/' + tabName) != -1) {
-                    return "active";*/
                 }
             };
 			
@@ -32,17 +37,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                 }
             };
 			
-            $rootScope.changeShowPriority = function(param){
-                
-                $localStorage.dashboardPopUp = false;
-
-                if(param)
-                    $localStorage.dashboardPopUp = true;
-                else
-                    $localStorage.dashboardPopUp = false;
-            }
-
-
+		
 			$scope.notificationTemplates = notificationTemplates;
 			
 			$rootScope.constantsBase = $scope.constantsBase = $constants;
@@ -66,10 +61,12 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                         else
                             $rootScope.productCount = {};
                     }).fail(function (error) {
-                        notify.message(messages.productCountFetchError);
+                        //toaster.pop("error", messages.productCountFetchError); commented
+
+                        notify.message($messages('productCountFetchError'));
                         $rootScope.productCount = {};
                     });
-            };
+            }
 
             $rootScope.checkAcl = function (e) {
                 e.stopImmediatePropagation();
@@ -81,14 +78,6 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 					return 'overFlowHidden';
 				}
 			}
-
-            $rootScope.checkOrderids = function(param) {
-
-                if(param && /\s/g.test(param))
-                    return false;
-                else
-                    return true;
-            }
 			
 			$rootScope.getLoginClass = function() {
 				
@@ -114,6 +103,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                         else
                             $rootScope.shipmentCount = {};
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.shipmentCountFetchError); commented
                         notify.message(messages.shipmentCountFetchError);
                         $rootScope.shipmentCount = {};
                     });
@@ -165,6 +155,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                             $rootScope.ordersCount = {};
                         }
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.orderCountFetchError); commented
                         notify.message(messages.orderCountFetchError);
                         $rootScope.ordersCount = {};
                     });
@@ -185,7 +176,6 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 					return true;
 				}
 			};
-
 			
 			$rootScope.$watch('notificationMessages',function(newVal, oldVal){
 				
@@ -258,72 +248,15 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                                 countries = success.response;
                             }
                             $rootScope.countryList = countries;
-							//$rootScope.countryListOrders = _.compact(_.map(countries,function(val){return (val.isOrderEnabled==1)?val:''}));
-                            $rootScope.countryListOrders = countries;
+							$rootScope.countryListOrders = _.compact(_.map(countries,function(val){return (val.isOrderEnabled==1)?val:''}));
                         } else {
                             $rootScope.countryList = [];
                         }
                         deferred.resolve();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.countryFetchError); commented
                         notify.message(messages.countryFetchError);
                         $rootScope.countryList = {};
-                        deferred.reject();
-                    });
-                return deferred.promise();
-            };
-
-
-            $rootScope.getAustraliaPostalCodes = function () {
-
-                var deferred = $.Deferred();
-
-                var postalCodes = [];
-
-                $bus.fetch({
-                    name: 'aupostalcodes.static',
-                    api: 'aupostalcodes',
-                    params: null,
-                    data: null
-                })
-                    .done(function (success) {
-
-                        if (success.response) {
-                            postalCodes = success.response;
-                        } else {
-                            postalCodes = [];
-                        }
-                        deferred.resolve(postalCodes);
-
-                    }).fail(function (error) {
-
-                        notify.message(messages.countryPostalCodeError);
-
-                        deferred.reject(postalCodes);
-
-                    });
-
-                return deferred.promise();
-            };
-
-
-            $rootScope.getCaseList = function () {
-                var deferred = $.Deferred();
-                $bus.fetch({
-                    name: 'cases.static',
-                    api: 'cases',
-                    params: null,
-                    data: null
-                })
-                    .done(function (success) {
-                        var cases = [];
-                        if (success.response) {
-                            $rootScope.caseList = success.response;
-                        } else {
-                            $rootScope.caseList = {};
-                        }
-                        deferred.resolve();
-                    }).fail(function (error) {
-                        $rootScope.caseList = {};
                         deferred.reject();
                     });
                 return deferred.promise();
@@ -342,7 +275,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 				return deferred.promise();
 			}
 			
-			$rootScope.disableCurrency = true; //select only one and disable
+			$rootScope.selectSGD = true; //select SGD only and disable
 			
             $rootScope.getCurrencyList = function () {
                 var deferred = $.Deferred();
@@ -363,12 +296,13 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                                 currencies = data;
                             }
                             $rootScope.currencyList = currencies;
-							$rootScope.retailPriceCurrencyCtrl = $rootScope.declaredValueCurrencyCtrl = $rootScope.costPriceCurrencyCtrl = !_.isEmpty(_.findWhere($rootScope.currencyList,{currencyCode:$constants.currentCurrency}))?_.findWhere($rootScope.currencyList,{currencyCode:$constants.currentCurrency}):'';
+							$rootScope.retailPriceCurrencyCtrl = $rootScope.declaredValueCurrencyCtrl = $rootScope.costPriceCurrencyCtrl = $rootScope.currencyList['43'];
                         } else {
                             $rootScope.currencyList = [];
                         }
                         deferred.resolve();
                     }).fail(function (error) {
+                        //toaster.pop("error", messages.currencyFetchError); commented
                         notify.message(messages.currencyFetchError);
                         $rootScope.currencyList = {};
                         deferred.reject();
@@ -433,15 +367,17 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                             //$scope.getPagedDataAsync();
                             /*
                             if(data.type==1) {
+                            //toaster.pop("success", "", "<a href='#/products/upload' title='" + messages.viewStatus + "'><em>" + messages.productFileProcessingCompleted + "</em></a>", 0, "trustedHtml");
 							notify.message("<a href='#/products/upload' title='" + messages.viewStatus + "'><em>" + messages.productFileProcessingCompleted + "</em></a>",'','succ');
                             } else if(data.type==2) {
+                            //toaster.pop("success", "", "<a href='#/shipments/upload' title='" + messages.viewStatus + "'><em>" + messages.shipmentFileProcessingCompleted + "</em></a>", 0, "trustedHtml");
 							notify.message("<a href='#/shipments/upload' title='" + messages.viewStatus + "'><em>" + messages.shipmentFileProcessingCompleted + "</em></a>",'','succ');
                             } else if(data.type==3) {
+                            //toaster.pop("success", "", "<a href='#/orders/upload' title='" + messages.viewStatus + "'><em>" + messages.orderFileProcessingCompleted + "</em></a>", 0, "trustedHtml");
 							notify.message("<a href='#/orders/upload' title='" + messages.viewStatus + "'><em>" + messages.orderFileProcessingCompleted + "</em></a>",'','succ');
                             }
                             */
                             $scope.$broadcast('refreshUploadList');
-                            $scope.$broadcast('listChannels');
                             $rootScope.getNotificationsCount();
                         });
                     }
@@ -451,6 +387,8 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
             $scope.attachEvents = function () {
                 $('body').on("click mousemove keyup", _.debounce(function () {
                     if ($cookieStore.get('isLoggedIn')) {
+                        toaster.clear();
+                        //toaster.pop("warning", "", "<em>" + messages.warnSessionExpire + "</em>&nbsp;&nbsp;&nbsp;<a href='javascript:;' title='" + messages.continueBrowsing + "'>" + messages.continueBrowsing + "</a>&nbsp;&nbsp;&nbsp;<a href='#/logout' title='" + messages.logOut + "'>" + messages.logOut + "</a>", 0, "trustedHtml");
 						notify.message("<em>" + messages.warnSessionExpire + "</em>&nbsp;&nbsp;&nbsp;<a href='javascript:;' title='" + messages.continueBrowsing + "'>" + messages.continueBrowsing + "</a>&nbsp;&nbsp;&nbsp;<a href='#/logout' title='" + messages.logOut + "'>" + messages.logOut + "</a>");
                         if (!$scope.$$phase) {
                             $scope.$apply();
@@ -551,14 +489,6 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 					return $constants.notAvailableText;
 				}
 			};
-
-            $rootScope.getTimeAgoAnnouncement = function(param,toolTipParam) {
-                if (param) {
-                    return $.timeago(param);
-                }else{
-                    return $constants.notAvailableText;
-                }
-            };
 			
 			$rootScope.changeDateTimeAgo = function(param) {
 				var paramSplit = param.split(' ');
@@ -566,7 +496,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 				var paramTime = paramSplit[1];
 				var changeDate = paramDate.split('-');
 				var dd = changeDate[0],mm = changeDate[1], yyyy = changeDate[2];
-                return(yyyy +'-'+ mm +'-'+ dd +'T'+ paramTime+$rootScope.isCountriesOptionsVisible('timeagoTime'));
+                return(yyyy +'-'+ mm +'-'+ dd +'T'+ paramTime+'+08.00');
 				//return (yyyy +'-'+ mm +'-'+ dd +'T'+ paramTime+'Z');
 			};
 			
@@ -802,11 +732,11 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
 
                 $rootScope.currentNotificationPage = 1;
                 
-                $rootScope.myNotifications = [];
+                $scope.myNotifications = [];
 
                 $scope.getHeaderNotifications().done(function(data){
 
-                    $rootScope.myNotifications = data;
+                    $scope.myNotifications = data;
 
                     $timeout(function() {
 
@@ -836,7 +766,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                                         
                                         $scope.getHeaderNotifications($rootScope.currentNotificationPage).done(function(data){
                                             _.each(data,function(val) { 
-                                                $rootScope.myNotifications.push(val);
+                                                $scope.myNotifications.push(val);
                                             });
                                             $timeout(function() {
                                                 $('a#noti-button').popover('show');
@@ -890,109 +820,6 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                 $('#contactForm')[0].reset();
             };
 
-            $scope.cleanSupportForm  = function(){
-                $scope.supportSubject=$scope.category=$scope.supportSubType1=$scope.supportSubType2=$scope.supportMsg='';
-                $('#supportForm')[0].reset();
-                $('.handle').click();
-                $scope.$apply();
-            };
-
-            $scope.supportFormSubmit = function() {
-		/*
-                if(!_.isEmpty($scope.attachment1) && !$scope.popupSupportFileCheck($scope.attachment1)){
-                    notify.message(messages.supportFileError);
-                    return false;
-                }
-		*/
-                var data = new FormData();
-
-                $.each($('.attachments'),function(i){
-
-                    $.each($('.attachments')[i].files, function(j, file) {
-                        data.append('attachment'+(i+1), file);
-                    });
-
-                });
-
-                data.append('formCode','ezc-support');
-                data.append('email', $rootScope.loggedInContent.email);
-                data.append('Subject',      $scope.supportSubject   ? $scope.supportSubject:'');
-                data.append('Category',     $scope.category         ? $scope.category:'');
-                data.append('SubCategory',  $scope.supportSubType1  ? $scope.supportSubType1:'');
-                data.append('Details',      $scope.supportSubType2  ? $scope.supportSubType2:'');
-                data.append('Description',  $scope.supportMsg       ? $scope.supportMsg:'');
-                data.append('screenShot',   $scope.canvasCode       ? $scope.canvasCode:'');
-
-                notify.message(messages.supportSubmitInprocess,'','succ');
-                $('#supportform-submit-button').addClass('disabled');
-
-                $.ajax({
-                    url: $constants.baseUrl+'/dynform',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    success: function(response){
-                        
-                        $('#supportform-submit-button').removeClass('disabled');
-
-                        if(response && response.success && response.success.length){
-                            notify.message(messages.supportSubmitSuccess,'','succ');
-                            $scope.cleanSupportForm();
-                            $scope.deleteScrnshot();
-                            $('#supportForm').find('.has-error').removeClass('has-error');
-                            $('#supportForm').find('label.control-label.validationMessage').remove();
-                        } else if (response && response.errors) {
-                            var errors = [];
-                            _.forEach(response.errors,function(val, key){
-                                errors.push(val)
-                            })
-                            if (errors.length){
-                                $rootScope.notificationMessages = [];
-                                notify.message($rootScope.pushJoinedMessages(errors));
-                            }
-                            else {
-                                $rootScope.notificationMessages = [];
-                                notify.message(messages.supportSubmitError);
-                            }
-                            $scope.$apply();
-                        }
-                    },
-                    error: function(error) {
-                        
-                        $('#supportform-submit-button').removeClass('disabled');
-
-                        if (error && error.response && error.response.errors) {
-                            var errors = [];
-                            _.forEach(error.response.errors, function (error) {
-                                errors.push(error)
-                            });
-                            if (errors.length) {
-                                notify.message($rootScope.pushJoinedMessages(errors));
-                            }
-                        }
-                        else {
-                            notify.message(messages.supportSubmitError);
-                        }
-                        $scope.$apply();
-                    }
-                });
-
-            };
-
-            $scope.subType2Val = function(param){
-                
-                if(!param){
-                    return true;
-                }
-                else if(param && param.length && $scope.supportSubType2){
-                    return true;
-                }
-                else {
-                    return false;
-                }
-
-            }
             $scope.popUpSubmit = function() {
 
                 $('.footerPopUpContainer .submitMessage').text('').removeClass('txtGreen').removeClass('txtRed');
@@ -1048,7 +875,7 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                       type: 'POST',
                       success: function(response){
                         
-                        if(response && response.success && response.success.length){
+                        if(response.success.length){
                             $scope.cleanPopUpform();
                             $('.footerPopUpContainer .submitMessage').text(messages.popUpSubmitSuccess).addClass('txtGreen');
                         }else{
@@ -1064,334 +891,11 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                     });
 
             };
-            $('.slide-out-div').tabSlideOut({
-                tabHandle: '.hidesupport',                     //class of the element that will become your tab
-                pathToTabImage: '', //path to the image for the tab //Optionally can be set using css
-                imageHeight: '28px',                     //height of tab image           //Optionally can be set using css
-                imageWidth: '118px',                       //width of tab image            //Optionally can be set using css
-                tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
-                speed: 300,                               //speed of animation
-                action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-                topPos: '10%',                          //position from the top/ use if tabLocation is left or right
-                leftPos: '120px',                          //position from left/ use if tabLocation is bottom or top
-                fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
-            });
 
-            $scope.getSubType1 = function (categoroy) {
-                if (!categoroy) return;
-                var subType = $rootScope.caseList[categoroy];
-                var typeKeys = [];
-                for (var index = 0; index < subType.length; index++) {
-                    var type = subType[index];
-                    if (typeof type === 'string') {
-                        typeKeys.push(subType[index]);
-                    }
-                    if (typeof type === 'object') {
-                        _.each(type,function(val, key){
-                            typeKeys.push(key);
-                        })
-                    }
-                }
-                return typeKeys
-            };
-            
-            $rootScope.getProductUploadTemplatesUrl = function(param) {
-
-                if($constants.currentLocation == $constants.countryShortCodes.australia){
-                    return 'content/AU/Product Template v 1.0.0.xlsx';
-                }else{
-                    return param;
-                }
-            }
-
-            $rootScope.getShipmentUploadTemplatesUrl = function(param) {
-
-                if($constants.currentLocation == $constants.countryShortCodes.australia){
-                    return 'content/AU/Shipment Template v 1.0.0.xlsx';
-                }else{
-                    return param;
-                }
-            }
-
-            $rootScope.getOrdersUploadTemplatesUrl = function(param) {
-
-                if($constants.currentLocation == $constants.countryShortCodes.australia){
-                    return 'content/AU/Order Template v 1.0.1.xlsx';
-                }else{
-                    return param;
-                }
-            }
-
-            $rootScope.isCountriesOptionsVisible = function(param) {
-
-                switch(param) {
-
-                    case 'pieChart':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'timeagoTime':
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) return '+10.00';
-                        else return '+08.00';
-                    break;
-
-                    case 'showRemovals':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:true;
-                    break;
-
-                    case 'showReturns':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'ordersDisableCountry':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'ordersRemovePhoneValidation':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'ordersRemoveEnhancedLiability':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'ordersRemoveInsuranceCoverage':
-                            return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'preferencesCustomsDecl':
-                            return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-
-                    case 'preferencesInternationalOrders':
-                            return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;                            
-                    break;
-
-                    case 'preferencesEnhancedLiability':
-                            return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;                            
-                    break;
-
-                    case 'supportCallUs':
-                            return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;                            
-                    break;
-
-                    case 'supportCallTimings':
-                            if($constants.currentLocation == $constants.countryShortCodes.australia) { return '9:30 am – 5:30 pm AEST except on weekends & public holidays'; }
-                            else { return '9:30 am - 5:30 pm except on weekends & public holidays'; }
-                    break;
-
-                    case 'supportHelpLinks':
-                            return ($constants.currentLocation).toLowerCase();
-                    break;
-
-                    case 'welcomePopUpFile':
-                            return $constants.currentLocation;
-                    break;
-
-                    case 'createProductWeight':
-
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            return { max:'22.00', placeholder:'Max. 22 kg', invalid_message:$constants.validationMessages.invalidweightau  }
-                        }else { return {max:'30.00', placeholder:'Max. 30 kg', invalid_message:$constants.validationMessages.invalidweight  } }
-
-                    break;
-
-		            case 'createProductMaxLimit':
-
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            return { max:'5000.00', placeholder:'Max. 5000', invalid_message:$constants.validationMessages.invalidMaxLimitAu}
-                        }else { return {max:'20000.00', placeholder:'Max. 20000', invalid_message:$constants.validationMessages.invalidMaxLimit} }
-
-                    break;
-
-                    case 'productDimensionLmt':
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            return {max:'',  placeholder:'Max. 105', invalid_message:$constants.validationMessages.invalidFieldValue}
-                        }else { return {max:'105.00', placeholder:'Max. 105', invalid_message:$constants.validationMessages.invalidDimensiontotal} }
-
-                    break;
-
-                    case 'pieShipmentHeader':
-
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            return 'Order Distribution';
-                        }
-                        else return 'Domestic / International';
-
-                    break;
-
-                    case 'springGrant':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'corpAccNo':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'refType':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'domesticShippingMethod':
-
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            $constants.domesticShippingOptions = [];
-                            $constants.domesticShippingOptions = [{name:"Domestic Standard"},{name:"Domestic Expedited"}];
-                        }
-
-                    break;
-
-                    case 'internationalAUShippingMethod':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'orderPostalCode':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'productDimensions':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?true:false;
-                    break;
-
-                    case 'activate':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?
-                            "Have questions? Contact us at support@au.ezycommerce.com or browse our FAQs and Help section" :
-                            "Have questions? Contact us at <b> +65 62295979</b> or email us at <b>support@ezycommerce.com</b>";
-                    break;
-
-                    case 'ordersLandingDomShippintMethod':
-                        if($constants.currentLocation == $constants.countryShortCodes.australia) {
-                            $constants.domesticShippingOptions.push({name:"Domestic Expedited"});
-                        }
-
-                    break;
-
-                    case 'ordersViewEnhancedLiability':
-                        return ($constants.currentLocation == $constants.countryShortCodes.australia)?false:true;
-                    break;
-
-                    case 'termsAndConditionDoc':
-                        if($constants.currentLocation == $constants.countryShortCodes.australia){
-                            $scope.termsAndConditionFile = '/content/AU/ezyCommerce General T&Cs.pdf';
-                        }
-                    break;
-
-                    case 'dunnagePercentage':
-                        if($constants.currentLocation == $constants.countryShortCodes.australia){
-                           return '10%';
-                        }else{
-                            return '10%';
-                        }
-                    break;
-
-                    default:
-                        return false;
-                }
-            }
-            
-            $scope.popupSupportFileCheck = function(file_name){
-                
-                if(file_name){
-                    var name = file_name.name;
-                    var aValidExtensions = ["jpg", "JPG","jpeg","JPEG","png","PNG","bmp","BMP","gif","GIF"];
-                    var aFileNameParts = name.split(".");
-                    if (aFileNameParts.length > 1) {
-                        var sExtension = aFileNameParts[aFileNameParts.length - 1];
-                        return ($.inArray(sExtension, aValidExtensions) >= 0) ? true : false;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-            $scope.setSubType2 = function (categoroy, subType) {
-                if (!categoroy && !subType) return;
-                var subTypes = $rootScope.caseList[categoroy];
-                var typeKeys = [];
-                var flag = 0;
-                for (var index = 0; index < subTypes.length; index++) {
-                    var type = subTypes[index];
-                    if (typeof type === 'object') {
-                        _.each(type,function(val, key){
-                            if (subType == key) {
-                                typeKeys=val;
-                                flag = 1;
-                            }
-                        })
-                    }
-                }
-                if (flag) $scope.supportSubTypes2 = typeKeys;
-            };
-
-            $scope.openTab = function (searchKey) {
-                var url = "http://www.ezycommerce.com/" + $scope.constantsBase.currentLocation.toLowerCase() + "/?s=" + searchKey;
-                var win = window.open(url, '_blank');
-                win.focus();
-            };
-
-            $("#support-search").on('keypress', function(e){
-                if (e.which == 13) $scope.openTab($scope.supportSearchText);
-            });
-
-            $scope.deleteScrnshot = function() {
-                $('#canvas-img').remove();
-                $scope.canvasCode = '';
-                $scope.isScreenCaptured = false;
-            };
-
-            $scope.openImageModel = function() {
-                $('#img-modal').modal();
-                $('#canvas-img-modal').html('<img class="canvas-img-mdl" src="'+$rootScope.canvasImg+'" alt="">');
-            };
-
-            $scope.takescrnshot = function() {
-                
-                $('.screenshot-loader').show();
-                $('#canvas-img').remove();
-                $('.ezyBase').addClass('screenshot');
-                html2canvas($('body'), {
-                    onrendered: function (canvas) {
-                        $('.screenshot-loader').hide();
-                        $scope.isScreenCaptured = true;
-                        $rootScope.canvasImg = canvas.toDataURL("image/jpg");
-                        $scope.canvasCode = canvas.toDataURL();
-                        $('#canvasImg').html('<img id="canvas-img" class="canvas-img" src="'+$rootScope.canvasImg+'" alt="">');
-                        //$('#canvasImg').html(canvas);
-                        $('.ezyBase').removeClass('screenshot');
-                        $scope.$apply();
-                    }
-                });
-            };
 
             $scope.init = function () {
 
-                /* time ago settings string */
-                $.timeago.settings.strings = {
-                    
-                    prefixAgo: null,
-                    prefixFromNow: null,
-                    suffixAgo: "",
-                    suffixFromNow: "from now",
-                    inPast: 'any moment now',
-                    seconds: "just now",
-                    minute: "a min",
-                    minutes: "%d mins",
-                    hour: "an hr",
-                    hours: "%d hrs",
-                    day: "a day",
-                    days: "%d days",
-                    week: "a week",
-                    weeks: "%d weeks",
-                    month: "a month",
-                    months: "%d months",
-                    year: "a year",
-                    years: "%d years",
-                }
-                $.timeago.settings.allowFuture = true;
-                /* time ago settings string */
-
-                $rootScope.isCountriesOptionsVisible('termsAndConditionDoc');
-
                 if ($cookieStore.get('loggedInUser')) {
-                    $rootScope.getCaseList();
                     $rootScope.loggedInUser = $cookieStore.get('loggedInUser');
                     if (!$cookieStore.get('loggedInContent')) {
                         $rootScope.loggedInContent = $rootScope.loggedInUser;
@@ -1473,9 +977,9 @@ define(['angularAMD', 'socketio', 'utility/messages', 'utility/notificationtempl
                     });
 
                },1000);
-				    
-                
-                $(".feedback-cnt .nano").nanoScroller({ preventPageScrolling:true });
+				
+
+
             };
             $scope.init();
     }]);

@@ -7,8 +7,6 @@ define([], function () {
          *  #RC# - REJECTED COUNT
          *  #FS# - FILE STATUS (processing or success or error or partial success or rejected)
          *  #INBR# - SHIPMNET RECEIVED
-         *  #CHNL# - SHIPMNET RECEIVED
-         *  #CHNLSTAT# - SHIPMNET RECEIVED
          **************************/
         
 		return templates  = [
@@ -20,8 +18,6 @@ define([], function () {
            {eventName:'dataImportDone', eventType:3, headerText:'Order Upload completed', bodyText:'Order upload #FS#. #CC#  #RC#', linkText:'Summary', link:'#/orders/upload', cssClass:'glyphicon orderUploadIcon'},
            
            {eventName:'inboundReceiptUpdateInventory', eventType:null, headerText:'Shipment Received', bodyText:'Shipment ##INBR# received.', linkText:'Summary', link:'#/shipments/view/', cssClass:'glyphicon shipmentUploadIcon'},
-
-           {eventName:'merchantAddChannel', eventType:null, headerText:'Add Channels', bodyText:'#CHNL# channel #CHNLSTAT#.', linkText:'Summary', link:'#/accounts/connections/', cssClass:'glyphicon addChannelIcon'},
                 
         ];
 });

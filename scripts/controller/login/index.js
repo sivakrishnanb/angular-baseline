@@ -1,5 +1,5 @@
 define(['app', 'utility/messages','socketio','utility/config'], function (app, messages,io,configConst) {
-    app.controller('Login',['$scope', '$bus', 'ngProgress', '$location', '$http', '$rootScope', '$cookieStore','notify','$constants', '$localStorage','$routeParams', function ($scope, $bus, ngProgress, $location, $http, $rootScope, $cookieStore,notify,$constants, $localStorage,$routeParams) {
+    app.controller('Login',['$scope', '$bus', 'ngProgress', '$location', '$http', 'toaster', '$rootScope', '$cookieStore','notify','$constants', '$localStorage','$routeParams', function ($scope, $bus, ngProgress, $location, $http, toaster, $rootScope, $cookieStore,notify,$constants, $localStorage,$routeParams) {
 
         $scope.constants = $constants;
         $scope.validationMessages = $constants.validationMessages;
@@ -119,22 +119,15 @@ define(['app', 'utility/messages','socketio','utility/config'], function (app, m
                         $rootScope.loggedInContent = success.response.data;
                         $cookieStore.put('loggedInUser', $rootScope.loggedInUser);
                         $rootScope.notifyUpload();
-                        $rootScope.getCaseList();
-                        $scope.storeLoginCookieInfo($scope.loginRemember);
                         
+                        $scope.storeLoginCookieInfo($scope.loginRemember);
+
                         if($rootScope.redirectUrlAfterLogin){
                             $location.path($rootScope.redirectUrlAfterLogin);
                             $rootScope.redirectUrlAfterLogin = '';
-                        }else if($rootScope.timeOutPath && $location.search().error){
-                            $location.search({'error':null});
-                            $location.path($rootScope.timeOutPath);
-                            $rootScope.timeOutPath = '';
                         }
                         else{
-
-                            if(!$localStorage.dashboardPopUp)
-                                $('#dashboard-modal').modal(); //added
-                            
+                            $('#dashboard-modal').modal(); //added
                             $location.path('home');
                         }
                         if (!$localStorage.pagingOptions) {

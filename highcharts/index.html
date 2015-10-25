@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="highcharts">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ezyCommerce - High Charts</title>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/signup.css" />
+    <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../lib/angular/highcharts-ng.js"></script>
+    <script type="text/javascript" src="../lib/angular/highcharts.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular-validator.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="../scripts/highcharts/index.js"></script>
+</head>
+
+<body ng-controller="highChartController">
+
+<!--<header class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand hidden-xs siteLogo" href="javascript:;"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a>
+        <a class="navbar-brand visible-xs mobsitelogo" href="javascript:;"></a>
+    </div>
+</header>-->
+
+<div>
+    <h2>High Charts:</h2>
+</div>
+<br/><br/>
+<hr/>
+
+<h5>Pie Chart</h5>
+<highchart id="pie-chart" config="pieChart"></highchart>
+<hr/><br/><br/><br/><br/>
+
+<div style="margin-left: 200px; width:500px; height: 450px">
+    <h5>Line Chart</h5>
+    <highchart id="line-chart" config="lineChart" ></highchart>
+</div>
+
+<hr/><br/><br/><br/><br/>
+
+<h5>Bar Chart</h5>
+<highchart id="bar-chart" config="barChart"></highchart>
+<hr/><br/><br/><br/><br/>
+
+
+<h5>Area Chart</h5>
+<highchart id="area-chart" config="areaChart"></highchart>
+<hr/><br/><br/><br/><br/>
+
+
+</body>
+</html>
