@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html ng-app="ezyCommerce">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ezyCommerce</title>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/signup.css" />
+    <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular-validator.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore/underscore.min.js"></script>
+    <script type="text/javascript" src="../scripts/signup.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular-no-captcha.js"></script>
+</head>
+
+<body ng-controller="myController">
+
+<header class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">  
+        <a class="navbar-brand siteLogo" href="#/home"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a> 
+       
+    </div>
+</header>
+<section class="container-fixed">
+    <!--step 1-->
+    <div class="row" ng-show = "currentStep == 1">
+        <div class="col-xs-12">
+            <div class="panel-group">
+                <div class="row">
+                    <ul class="steps">
+                        <li class="select col-xs-12 col-sm-4 xstxt-marbtm"><span><img src="../images/step1-select.png"></span><span>Account Setup</span></li>
+                        <li class="col-xs-12 col-sm-4 xstxt-marbtm signupheadpadd"><span><img src="../images/step2.png"></span><span>Business Information</span></li>
+                        <li class="col-xs-12 col-sm-4 xstxt-marbtm signupheadtxtRight"><span><img src="../images/step3.png"></span><span>Verify & Create Account</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div notification-messages class="notificationContainer"></div>
+            <h2>Get Started Now!</h2>
+            <div class="row">
+                <div class="col-sm-12 paddnone">We&#146;re really excited that you&#146;re interested to sign up for ezyCommerce. Please have the following information ready before you begin</div>
+            </div>
+            <div class="paddnone">
+                <ul >
+                    <li>A valid email that you have access to</li>
+                    <li>Your registered company name and address</li>
+                    <li>Your Company registration identification ({{compRegTypesText}})</li>
+                    <li>A valid contact number that will allow us to reach you during the registration process</li>
+                </ul>
+            </div>
+            <form class="signuppanel" name="formStep1" id="formStep1" novalidate angular-validator angular-validator-submit="next()">
+                <div class="panel-group marbtm0">
+                    <div class="row">
+                        <h3>Credentials Setup</h3>
+
+                        <div class="row emailuserlbl">
+
+                            <div class="col-xs-11 col-md-5 col-sm-5">
+                                <div class="form-group required" ng-class="{'has-error':(!emailAvailableSuccess  && emailFormatError)}">
+                                    <label for="accountSetupEmail" class="control-label">Email Address</label>
+                                    <input name="accountSetupEmail" type="email" class="form-control" ng-class="{'has-success':(emailAvailableSuccess  && !emailFormatError)}" id="accountSetupEmail" placeholder="abc@xyz.com"
+                                           ng-model="model.email" required required-message="validationMessages.required" invalid-message="validationMessages.invalidemail" maxlength="60" ng-blur="checkEmailAvail()">
+                                </div>
+                            </div>
+                              
+                           <div class="col-md-1 col-sm-1 pull-left paddnone">
+                                <span ng-show="(emailAvailableSuccess && !emailFormatError) && model.email.length>0" class="glyphicon glyphicon-ok-tick"></span>
+                                <span ng-show="(emailAvailableError || emailFormatError) && model.email.length>0" class="glyphicon glyphicon-remove-cross"></span>
+                            </div>
+                            
+                                <!-- <span ng-show="!emailFormatError" ng-if="emailFormatError" class="glyphicon glyphicon-ok-tick"></span>
+                                <span ng-show="emailAvailableError"   ng-if="emailAvailableError" class="glyphicon glyphicon-remove-cross"></span>-->
+                                
+                               
+
+                            <div class="col-md-6 col-sm-6 help-note-right">
+                                <em class="text-grey">This will be your username. Kindly make sure that you can access this email. We will send a verification link to this email after you SignUp.</em>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-11 col-md-5 col-sm-5">
+                                <div class="form-group required signupbtm">
+                                    <label for="account-setup-password" class="control-label">Password</label>
+
+                                    <input
+                                            name="account-setup-password"
+                                            type="password"
+                                            class="form-control"
+                                            id="account-setup-password"
+                                            ng-model="model.password"
+                                            required required-message="validationMessages.required"
+                                            maxlength="20"
+                                            validator="isPasswordFormat(model.password)"
+                                            invalid-message="pwErrorMessage1" ng-class="{'has-success':isPasswordFormat(model.password)}" 
+                                            />
+                                </div>
+                            </div>
+                             <div class="col-md-1 col-sm-1 pull-left paddnone">
+                                <span ng-show="isPasswordFormat(model.password)" class="glyphicon glyphicon-ok-tick"></span>
+                                <span ng-hide="isPasswordFormat(model.password)" ng-if="model.password.length" class="glyphicon glyphicon-remove-cross"></span>
+                            </div>
+                            
+                           <div class="clear-fix"></div>
+                         
+
+                            <div class="col-xs-11 col-md-5 col-sm-5">
+                                <div class="form-group required marbtm0">
+                                    <label for="account-setup-retype-password" class="control-label">Retype Password</label>
+
+                                    <input
+                                            name="account-setup-retype-password"
+                                            type="password"
+                                            class="form-control"
+                                            id="account-setup-retype-password"
+                                            ng-model="model.retypePwd"
+                                            required
+                                            validator="isPasswordMatch(model.password, model.retypePwd)"
+                                            invalid-message="pwErrorMessage"
+                                            required-message="validationMessages.required" 
+                                            maxlength="20" 
+                                            ng-class="{'has-success':checkRetypePasswordError(model.password, model.retypePwd)}" 
+                                            />
+                                </div>
+                            </div>
+
+                           <div class="col-md-1 col-sm-1 pull-left paddnone">
+                                <span ng-show="isPasswordMatch(model.password, model.retypePwd)" class="glyphicon glyphicon-ok-tick"></span>
+                                <span ng-hide="isPasswordMatch(model.password, model.retypePwd)" ng-if="model.retypePwd.length&&model.password.length" class="glyphicon glyphicon-remove-cross"></span>
+                            </div>
+
+                             <div class="clear-fix"></div>
+                         
+                        </div>
+                        <div class="row">
+                            <em class="text-muted text-descrip-close text-grey">Password should be 8 - 20 characters long. At least one upper case alphabet, one number and one special character like '@', '_', '!'.</em>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <h3>Account Information</h3>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-company-name" class="control-label">Company Name</label>
+                                    <input name="account-setup-company-name" type="text" class="form-control" id="account-setup-company-name" placeholder="Company Name" ng-model="model.companyName"
+                                           required required-message="validationMessages.required" invalid-message="validationMessages.invalidemail" maxlength="100"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group required">
+                                    <label for="account-setup-company-regno-select" class="control-label">Company Registration Number</label>
+                                    <div class="one-input-select">
+                                        <div class="col-md-5 col-sm-5 xstxt-marbtm paddnone">
+                                            <select id="account-setup-company-regno-select" name="account-setup-company-regno-select" class="form-control" ng-model="model.companyRegType"
+                                                    required-message="validationMessages.required" required ng-options="regType for regType in compRegTypes">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-sm-offset-1 paddnone">
+                                            <input type="text"
+                                                   name="product-create-retailPrice"
+                                                   class="form-control"
+                                                   id="account-setup-company-regno"
+                                                   placeholder="Reg No"
+                                                   ng-model="model.companyRegNumber"
+                                                   validator="isRegEmailMatched(model.companyRegNumber,model.email)"
+                                                   invalid-message="regErrorMessage"
+                                                   required
+                                                   required-message="validationMessages.required"
+                                                   maxlength="20"
+                                                    />
+                                            <!-- invalid-message="validationMessages.required" -->
+                                        </div>
+                                    </div>
+                                    <em class="text-muted text-descrip-close text-grey">You need to be a registered company in <span >{{countryName}}</span> and provide a valid {{compRegTypesText}}</em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-first-name" class="control-label">First Name</label>
+                                    <input name="account-setup-first-name" type="text" class="form-control" id="account-setup-first-name" placeholder="First Name" ng-model="model.merFirstName"
+                                           required required-message="validationMessages.required" maxlength="60" />
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group required">
+                                    <label for="account-setup-last-name" class="control-label">Last Name</label>
+                                    <input name="account-setup-last-name" type="text" class="form-control" id="account-setup-last-name" placeholder="Last Name" ng-model="model.merLastName"
+                                           required required-message="validationMessages.required" maxlength="60" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required signupbtm">
+                                    <label for="account-setup-security-question" class="control-label">Security Question</label>
+                                    <input name="account-setup-security-question" type="text" class="form-control" id="account-setup-security-question" placeholder="Security Question" ng-model="model.securityQuestion"
+                                           required required-message="validationMessages.required" maxlength="300" />
+                                </div>
+                            </div>
+                             <div class="col-md-5 col-sm-5  col-sm-offset-1">
+                                <div class="form-group required marbtm0">
+                                    <label for="account-setup-security-answer" class="control-label">Security Answer</label>
+                                    <input name="account-setup-security-answer" type="text" class="form-control" id="account-setup-security-answer" placeholder="Security Answer" ng-model="model.securityAnswer"
+                                           required required-message="validationMessages.required" maxlength="60" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                           <em class="text-muted text-descrip-close text-grey">Please choose a security question and an answer that is simple to remember yet difficult to be guessed by others.</em>
+                        </div>
+                  
+
+                        
+
+
+                    </div>
+
+                    <div class="row">
+                        <h3>Contact Details</h3>
+                        <em class="text-muted textmutepadd"> Give us your contact details below. Our Merchant Support Team might use the information you enter to contact you.</em>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-dialCode" class="control-label">Contact Number</label>
+                                    <div class="one-input-select">
+                                        <div class="col-md-5 col-sm-5 xstxt-marbtm paddnone">
+                                            <!--<select id="account-setup-dialCode" name="account-setup-dialCode" class="form-control" ng-model="model.contactNoCountryCode"
+                                                    required-message="validationMessages.required" required ng-options="item.dialCode as item.dialCode for item in countryList">
+                                            </select>-->
+                                            <!--dial code with country name-->
+                                            <select id="account-setup-dialCode" name="account-setup-dialCode" class="form-control" ng-model="model.contactNoCountryCode">
+                                                <option ng-repeat="item in countryList" value="{{item.dialCode}}" ng-selected="{{$index==selectDialCode}}">{{' ( '+item.dialCode+' ) '+item.countryName}}</option>
+                                            </select>
+                                            <em class="text-muted text-descrip-close text-grey">Country code</em>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-sm-offset-1 paddnone">
+                                                   <!--<input name="account-setup-phone" type="tel" class="form-control" id="account-setup-phone" placeholder="Phone" ng-model="model.contactPhone"
+                                                    required required-message="validationMessages.required" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidphone" maxlength="60"/>-->
+                                            <input name="account-setup-phone" type="tel" class="form-control" id="account-setup-phone" placeholder="Phone" ng-model="model.contactPhone"
+                                                    required required-message="validationMessages.required" maxlength="60"/>
+                                            <em class="text-muted text-descrip-close text-grey col-xs-12">Number without country code</em>
+                                            <!-- invalid-message="validationMessages.required" -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group required">
+                                    <label for="account-setup-country" class="control-label">Country</label>
+                                    <select class="form-control" name="account-setup-country" ng-model="model.countryCode" id="account-setup-country" required required-message="validationMessages.required" ng-options="item.countryCode as item.countryName for item in countryList">
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-addressLine1" class="control-label">Address Line 1</label>
+                                    <input name="account-setup-addressLine1" type="text" class="form-control" id="account-setup-addressLine1" placeholder="Address Line 1" ng-model="model.addressLine1" required required-message="validationMessages.required" maxlength="60"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="account-setup-addressLine2" class="control-label">Address Line 2</label>
+                                    <input name="account-setup-addressLine2" type="text" class="form-control" id="account-setup-addressLine2" placeholder="Address Line 2" ng-model="model.addressLine2" maxlength="60"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-city" class="control-label">City</label>
+                                    <input name="account-setup-city" type="text" class="form-control" id="account-setup-city" placeholder="City" ng-model="model.city"
+                                           required required-message="validationMessages.required" maxlength="60"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="account-setup-province" class="control-label">State/Region</label>
+                                    <input name="account-setup-province" type="text" class="form-control" id="account-setup-province" placeholder="Province/Region" ng-model="model.state" maxlength="60"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group required">
+                                    <label for="account-setup-zipcode" class="control-label">ZIP / Postal Code</label>
+                                    <input type="text" name="account-setup-zipcode"  class="form-control" id="account-setup-zipcode" placeholder="ZIP/Postal Code" ng-model="model.zipCode"
+                                           required required-message="validationMessages.required" maxlength="60"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="account-setup-landline" class="control-label">Alternate Contact Number</label>
+                                    <!--<input name="account-setup-landline" type="tel" class="form-control" id="account-setup-landline" placeholder="Phone" ng-model="model.landline" invalid-message="validationMessages.invalidphone" ng-pattern="/^[0-9\-\+ ]*$/" maxlength="60"/>-->
+                                    <input name="account-setup-landline" type="tel" class="form-control" id="account-setup-landline" placeholder="Phone" ng-model="model.landline" maxlength="60"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-grp pull-right">
+                    <button id="nxtbtn-step1" type="submit" class="btn btn-primary marrgt69">Next</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Step 2-->
+
+    <div class="row" class="row" ng-show = "currentStep == 2">
+        <div class="col-xs-12">
+            <div class="panel-group">
+                <div class="row">
+                    <ul class="steps">
+                        <li class="select col-xs-12  col-sm-4 xstxt-marbtm"><span><img src="../images/step1-select.png"></span><span>Account Setup</span></li>
+                        <li class="select col-xs-12  col-sm-4 xstxt-marbtm signupheadpadd"><span><img src="../images/step2-select.png"></span><span>Business Information</span></li>
+                        <li class="col-xs-12  col-sm-4 xstxt-marbtm signupheadtxtRight"><span><img src="../images/step3.png"></span><span>Verify &amp; Create Account</span></li>
+                    </ul>
+                </div>
+            </div>
+            <h2 ng-if="isVisible('subsidyGrant')">ezyCommerce-SPRING SME subsidy grant</h2>
+            
+            <form class="signuppanel" name="signuppanel2" id="signuppanel2" novalidate angular-validator angular-validator-submit="next()">
+                <div class="panel-group">
+
+                    <div class="row">
+
+                        <!--<h3>ezyCommerce-SPRING SME subsidy grant</h3>-->
+                        <div ng-if="isVisible('subsidyGrant')">
+                            <div class="row">
+                                <div class="col-sm-12 padBtm15px pad-left-none">Please provide us more information about your business to help us serve you better.  You may be eligible for the ezyCommerce-SPRING SME subsidy grant which will provide you rebates up to 70% of your monthly fulfillment charges.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 padBtm15px pad-left-none">To be eligible for the grant - </div>
+                            </div>
+                            <div class="paddnone">
+                                <ol >
+                                    <li>Your company should be incorporated in Singapore, in which Singaporean citizens hold at least 30% of the shares</li>
+                                    <li>
+                                        When aggregated with its parent company and its subsidiaries (i.e. considered with other members of its group), have :
+                                        <ul>
+                                            <li>Annual sales of not more than S$100,000,000 OR</li>
+                                            <li>Not more than 200 employees</li>
+                                        </ul>
+                                    </li>
+                                    <li>An average order volume at least 150-1500 per month</li>
+                                </ol>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 padBtm15px pad-left-none">Your application will be reviewed within 3 working days and you will be informed on the outcome. SP eCommerce reserves the right to revise applicable eligibility terms, accept or refuse the grant without providing any reason.</div>
+                                <div class="col-sm-12 padBtm15px pad-left-none font-strong">If you do not meet the eligibility criteria, you can still go ahead and sign-up for ezyCommerce without the grant.</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 paddnone">
+                                    <label>
+                                        <input type="checkbox" id="verify-agree" class="chkpadd applyCheckBox" name="verify-agree" ng-model="model.applySme">
+                                        <span class="applyCheckText">I wish to apply for the ezyCommerce-SME subsidy grant and confirm that I meet the above criteria for the application.</span>
+                                    </label>
+                                    <div>Sign the <a href="/content/ezyCommerce SPRING Grant - Eligibility One-pager.pdf" target="_blank">One-Pager</a> and send it to support@ezycommerce.com</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h2>Please provide the below information for our reference</h2>
+                        <h3>Company Information</h3>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="form-group" >
+                                    <label for="business-info-rev-pa" class="control-label pad-top7">Company Size</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-xs-12 pull-right marrgt69">
+                                <div class="form-group" >
+                                    <label for="business-info-rev-pa" class="control-label">Revenue per annum</label>
+                                    <select id="business-info-rev-pa" name="business-info-rev-pa" class="form-control" ng-model="model.revPerAnnum" ng-options="item for item in revenueRange" > <!-- ng-disabled="model.isExistingSPCustomer" -->
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 ">
+                                <div class="form-group">
+                                    <label for="business-info-permanent-emp" class="control-label">Permanent employees</label>
+                                    <!--<input name="business-info-permanent-emp" type="text" class="form-control" id="business-info-permanent-emp" ng-model="model.permanentEmp" maxlength="30" ng-pattern="/^[0-9]*$/" invalid-message="validationMessages.invalidnumber"/>-->
+                                    <input name="business-info-permanent-emp" type="text" class="form-control" id="business-info-permanent-emp" ng-model="model.permanentEmp" maxlength="30"/>
+                                    <!-- ng-disabled="model.isExistingSPCustomer" -->
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-yr-founded" class="control-label">Year in which company was founded</label>
+                                    <!--<input name="business-info-yr-founded" type="text" class="form-control" id="business-info-yr-founded" ng-model="model.compFoundedYear" maxlength="4"  validator="isYearFormat(model.compFoundedYear)" invalid-message="yearErrorMessage"/>-->
+                                    <input name="business-info-yr-founded" type="text" class="form-control" id="business-info-yr-founded" ng-model="model.compFoundedYear" maxlength="4"/>
+                                    <!-- ng-disabled="model.isExistingSPCustomer" -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group">
+                                    <label for="business-info-temp-emp" class="control-label">Temporary employees</label>
+                                    <!--<input name="business-info-temp-emp" type="text" class="form-control" id="business-info-temp-emp" ng-model="model.temporaryEmp" maxlength="30" ng-pattern="/^[0-9]*$/" invalid-message="validationMessages.invalidnumber"/>-->
+                                    <input name="business-info-temp-emp" type="text" class="form-control" id="business-info-temp-emp" ng-model="model.temporaryEmp" maxlength="30"/>
+                                    <!-- ng-disabled="model.isExistingSPCustomer" -->
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-website" class="control-label">Company website</label>
+                                    <input name="business-info-website" type="text" class="form-control" id="business-info-website" ng-model="model.companyWebsite" maxlength="200"  />  <!-- ng-disabled="model.isExistingSPCustomer" -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <h3>Business Information</h3>
+                        <em class="text-muted textmutepadd"> Tell us a little more about your business. This will help us to serve you better and customize special offers or packages exclusively for you.</em>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group">
+                                    <label for="business-info-orders-pm" class="control-label">Orders per month</label>
+                                    <select id="business-info-orders-pm" name="business-info-orders-pm" class="form-control" ng-model="model.ordersPerMonth" ng-options="item for item in unitsRange">
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-avg-units" class="control-label">Average units per order</label>
+                                    <select id="business-info-avg-units" name="business-info-avg-units" class="form-control" ng-model="model.avgUnitsPerOrder" ng-options="item for item in orderUnitsRange"><!-- changed -->
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+
+                                <div class="form-group">
+                                    <label for="business-info-avg-orders" class="control-label">Average Order value</label>
+                                    <input name="business-info-avg-orders" type="text" class="form-control" id="business-info-avg-orders"  ng-model="model.averageOrders" maxlength="12"/>
+                                </div>
+                               
+                            </div>
+							 <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-domestic-orders" class="control-label">Percentage of Domestic Orders</label>
+                                    <!--<input name="business-info-domestic-orders" type="text" class="form-control" id="business-info-domestic-orders"  ng-model="model.domesticOrdersPercentage" maxlength="3"  validator="isDomestOrderFormat(model.domesticOrdersPercentage)"  invalid-message="domesticOrdErrorMessage" />-->
+                                    <input name="business-info-domestic-orders" type="text" class="form-control" id="business-info-domestic-orders"  ng-model="model.domesticOrdersPercentage" invalid-message="validationMessages.orderPercentageValid" validator="checkDomesticOrderPercentage(model.domesticOrdersPercentage)" maxlength="7" />
+                                </div>
+                               
+                            </div>
+                           
+                        </div>
+                        <div class="row">
+						 <div class="col-md-5 col-sm-5">
+						 <div class="form-group">
+                                    <label for="business-info-skus-handled" class="control-label">Number of unique Products (SKUs) sold</label>
+                                    <!--<input name="business-info-skus-handled" type="text" class="form-control" id="business-info-skus-handled" ng-model="model.noOfUniqueSkus" maxlength="5" validator="isSKUsHandledFormat(model.noOfUniqueSkus)" invalid-message="skusHandledError"/>-->
+                                    <input name="business-info-skus-handled" type="text" class="form-control" id="business-info-skus-handled" ng-model="model.noOfUniqueSkus" maxlength="5"/>
+                                </div>
+                        
+                                <div class="form-group">
+                                    <label for="business-info-avg-units" class="control-label">URL of Website where you are currently selling</label>
+                                    <!--<input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" 
+
+                                    validator="checkSalesChannelMaxLimit(model.salesChannelLink)" invalid-message="checkSalesChannelMaxLimitErrorMessage" 
+
+
+                                    />-->
+                                    <input name="business-info-sales-channel-link" type="text" class="form-control" id="business-info-sales-channel-link"  ng-model="model.salesChannelLink" maxlength="100" />
+                                </div>
+                            </div>
+							
+							 <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-prod-cat" class="control-label">Product Category</label>
+
+
+                                       <div class="popoverHldr marg-left7">
+                                               <span class="glyphicon glyphicon-info" 
+                                                    data-container="body" 
+                                                    data-toggle="popover" 
+                                                    data-placement="right" 
+                                                    data-content="You can select multiple categories by holding down the CTRL key" 
+                                                    data-original-title="" title="">
+                                              </span>
+                                        </div>
+                                    
+                                    <select multiple id="business-info-prod-cat" data-toggle="tooltip" data-placement="top" title="Press CTRL key to select multiple Product Category"
+                                            name="business-info-prod-cat" class="form-control" ng-model="model.merCategory" ng-options="categoryOption.value as categoryOption.name for categoryOption in categoryOptions">
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+							
+							
+							
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <div class="form-group">
+                                    <label for="business-info-orders-pm" class="control-label">Number of overseas countries currently selling</label>
+                                    <!--<input name="business-info-oversees-channel" type="text" class="form-control" id="business-info-oversees-channel"  ng-model="model.noOfOverseasSelling" maxlength="3"  validator="isOverseasCountriesFormat(model.noOfOverseasSelling)"  invalid-message="overseasCountriesErrorMessage" />-->
+                                    <input name="business-info-oversees-channel" type="text" class="form-control" id="business-info-oversees-channel"  ng-model="model.noOfOverseasSelling" maxlength="100" />
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                <div class="form-group">
+                                    <label for="business-info-avg-units" class="control-label">Number of online channels currently selling in</label>
+                                    <input name="business-info-channels-currently-selling" type="text" class="form-control" id="business-info-channels-currently-selling"  ng-model="model.noOfOnlineChannels" maxlength="100" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="isVisible('existingSingpostCustomer')">
+                            <div class="row paddtop20">
+                                <div class="row paddtop20">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-5 col-sm-5 paddtop5">
+                                            <input type="checkbox" id="business-info-singpost-customer" class="chkpadd xstxt-padd0 businessCheckBox" name="business-info-singpost-customer" ng-model="model.isExistingCustomer">
+                                            <span class="businessCheckText"> Are you an existing Singpost Corporate customer?</span>
+                                        </label>
+                                        <div class="col-md-5 col-sm-5 col-sm-offset-1">
+                                            <input name="business-info-corporate-account-no" type="text" class="form-control" id="business-info-corporate-account-no" ng-model="model.corpAccountNumber" ng-disabled="!model.isExistingCustomer" placeholder="Corporate Account Number" maxlength="60" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="btn-grp pull-right">
+                            <button id="prev-pg-2" type="button" class="btn btn-primary marrgt69 btn-back" ng-click="back()">Back</button>
+                            <button id="nxtbtn-step2" type="submit" class="btn btn-primary marrgt69">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Step 3-->
+    <div class="row" ng-show = "currentStep == 3">
+        <div class="col-xs-12">
+            <div class="panel-group">
+                <div class="row">
+                    <ul class="steps">
+                        <li class="select col-xs-12  col-sm-4 xstxt-marbtm"><span><img src="../images/step1-select.png"></span><span>Account Setup</span></li>
+                        <li class="select col-xs-12  col-sm-4 xstxt-marbtm signupheadpadd"><span><img src="../images/step2-select.png"></span><span>Business Information</span></li>
+                        <li class="select col-xs-12  col-sm-4 xstxt-marbtm signupheadtxtRight"><span><img src="../images/step3-select.png"></span><span>Verify & Create Account</span></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div notification-messages class="notificationContainer"></div>
+            <h2>Review your information</h2>
+            <div class="row">
+                <div class="col-sm-12 padBtm15px pad-left-none">All the information you entered in Steps 1 and 2 are shown here. Please make sure they are correct and agree to the standard T&Cs before you register. Click on the Back button to modify any information. If you are all set, click Sign Up Now to complete your registration.</div>
+
+                <div class="col-sm-12 padBtm15px pad-left-none" ng-if="isVisible('subsidyGrant')">If you have applied for an ezyCommerce-SPRING SME subsidy grant, you will be separately notified on the outcome of this application.</div>
+
+                <!--<div class="col-sm-12 padBtm15px pad-left-none font-strong">Welcome to ezyCommerce!</div>-->
+
+            </div>
+
+
+            <form class="signuppanel" id="signuppanel2" name="signuppanel2" novalidate angular-validator angular-validator-submit="signup()">
+                <div class="panel-group singupview">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 paddnone">
+                            <div class="form-group">
+                                <label for="verify-email" class="col-sm-3 signupEmail control-label paddnone">Email</label>
+                                <div class="col-sm-8"> <span id="verify-email" class="form-control-static lblcln" ng-bind="model.email || constants.notAvailableText"></span> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Account Information</h3>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-company-name" class="col-sm-7 control-label paddnone">Company Name</label>
+                                    <div class="col-sm-5">
+                                        <span id="verify-company-name" class="form-control-static lblcln" ng-bind="model.companyName || constants.notAvailableText"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-first-name" class="col-sm-7 control-label paddnone">First Name</label>
+                                    <div class="col-sm-5"> <span id="verify-first-name" class="form-control-static lblcln" ng-bind="model.merFirstName || constants.notAvailableText">Karthik</span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-regno-type" class="col-sm-7 control-label paddnone">Company Registration Number Type</label>
+                                    <div class="col-sm-5"> <span id="verify-regno-type" class="form-control-static lblcln" ng-bind="model.companyRegType || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-last-name" class="col-sm-7 control-label paddnone">Last Name</label>
+                                    <div class="col-sm-5"> <span id="verify-last-name" class="form-control-static lblcln" ng-bind="model.merLastName || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-regno" class="col-sm-7 control-label paddnone">Company Registration Number</label>
+                                    <div class="col-sm-5"> <span id="verify-regno" class="form-control-static lblcln" ng-bind="model.companyRegNumber || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-security-question" class="col-sm-7 control-label paddnone">Security Question</label>
+                                    <div class="col-sm-5">
+                                        <span id="verify-security-question" class="form-control-static lblcln" ng-bind="model.securityQuestion || constants.notAvailableText"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-security-answer" class="col-sm-7 control-label paddnone">Security Answer</label>
+                                    <div class="col-sm-5"> <span id="verify-security-answer" class="form-control-static lblcln" ng-bind="model.securityAnswer || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Contact Details</h3>
+                        <div>
+                           <!-- <em class="text-muted textmutepadd"> Give us your contact details below. Our Merchant Support Team might use the information you enter to contact you.</em>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-cont-no" class="col-sm-7 control-label paddnone">Contact Number</label>
+                                    <div class="col-sm-5"> <span id="verify-cont-no" class="form-control-static lblcln" ng-bind="model.contactPhone || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-country" class="col-sm-7 control-label paddnone">Country</label>
+                                    <div class="col-sm-5"> <span id="verify-country" class="form-control-static lblcln" ng-bind="parseCountryName(model.countryCode) || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-addressLine1" class="col-sm-7 control-label paddnone">Address Line 1</label>
+                                    <div class="col-sm-5"> <span id="verify-addressLine1" class="form-control-static lblcln" ng-bind="model.addressLine1 || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-addressLine2" class="col-sm-7 control-label paddnone">Address Line 2</label>
+                                    <div class="col-sm-5"> <span id="verify-addressLine2" class="form-control-static lblcln" ng-bind="model.addressLine2 || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-state" class="col-sm-7 control-label paddnone">State</label>
+                                    <div class="col-sm-5"> <span id="verify-state" class="form-control-static lblcln" ng-bind="model.state || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-city" class="col-sm-7 control-label paddnone">City</label>
+                                    <div class="col-sm-5"> <span id="verify-city" class="form-control-static lblcln" ng-bind="model.city || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="account-setup-zipcode1" class="col-sm-7 control-label paddnone">ZIP / Postal Code</label>
+                                    <div class="col-sm-5"> <span id="account-setup-zipcode1" class="form-control-static lblcln" ng-bind="model.zipCode || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-landline" class="col-sm-7 control-label paddnone">Alternate Contact Number</label>
+                                    <div class="col-sm-5"> <span id="verify-landline" class="form-control-static lblcln" ng-bind="model.landline || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Company Information</h3>
+                        <h5>Company size</h5>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-rev-pa" class="col-sm-7 control-label paddnone">Revenue per annum</label>
+                                    <div class="col-sm-5"> <span id="verify-rev-pa" class="form-control-static lblcln" ng-bind="model.revPerAnnum || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-permanent-emp" class="col-sm-7 control-label paddnone">Permanent employees</label>
+                                    <div class="col-sm-5"> <span id="verify-permanent-emp" class="form-control-static lblcln" ng-bind="model.permanentEmp || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-yr-founded" class="col-sm-7 control-label paddnone">Year in which company was founded</label>
+                                    <div class="col-sm-5"> <span id="verify-yr-founded" class="form-control-static lblcln" ng-bind="model.compFoundedYear || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-temp-emp" class="col-sm-7 control-label paddnone">Temporary employees</label>
+                                    <div class="col-sm-5"> <span id="verify-temp-emp" class="form-control-static lblcln" ng-bind="model.temporaryEmp || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-website" class="col-sm-7 control-label paddnone">Company website</label>
+                                    <div class="col-sm-5"> <span id="verify-website" class="form-control-static lblcln" ng-bind="model.companyWebsite || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Business Information</h3>
+                        <!--<em class="text-muted textmutepadd"> Tell us a little more about your business. This will help us to serve you better and customize special offers or packages exclusively for you.</em>-->
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-orders-pm" class="col-sm-7 control-label paddnone">Orders per month</label>
+                                    <div class="col-sm-5"> <span id="verify-orders-pm" class="form-control-static lblcln" ng-bind="model.ordersPerMonth || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-avg-units" class="col-sm-7 control-label paddnone">Average units per order</label>
+                                    <div class="col-sm-5"> <span id="verify-avg-units" class="form-control-static lblcln" ng-bind="model.avgUnitsPerOrder || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-percent-domestic" class="col-sm-7 control-label paddnone">Average Order value</label>
+                                    <div class="col-sm-5"> <span id="verify-percent-domestic" class="form-control-static lblcln" ng-bind="model.averageOrders || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-percent-domestic" class="col-sm-7 control-label paddnone">Percentage of Domestic
+                                        Orders </label>
+                                    <div class="col-sm-5"> <span id="verify-percent-domestic" class="form-control-static lblcln" ng-bind="model.domesticOrdersPercentage || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-skus" class="col-sm-7 control-label paddnone">Number of unique Products (SKUs) sold</label>
+                                    <div class="col-sm-5"> <span id="verify-skus" class="form-control-static lblcln" ng-bind="model.noOfUniqueSkus || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-online-channels" class="col-sm-7 control-label paddnone">Number of online channels currently selling in </label>
+                                    <div class="col-sm-5"> <span id="verify-online-channels" class="form-control-static lblcln" ng-bind="model.noOfOnlineChannels || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-sales-channel" class="col-sm-7 control-label paddnone">URL of Website where you are currently selling</label>
+                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static lblcln" ng-bind="model.salesChannelLink || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-oversees" class="col-sm-7 control-label paddnone">No. of overseas countries
+                                        currently selling </label>
+                                    <div class="col-sm-5"> <span id="verify-oversees" class="form-control-static lblcln" ng-bind="model.noOfOverseasSelling || constants.notAvailableText"></span> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="isVisible('subsidyGrant')">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-sales-channel" class="col-sm-7 control-label paddnone">ezyCommerce-SPRING SME subsidy grant</label>
+                                    <div class="col-sm-5"> <span id="verify-sales-channel" class="form-control-static lblcln" ng-bind="model.applySme ? 'Yes' : 'No'"></span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="marbtm15">
+                                    <label for="verify-prod-cat" class="col-sm-7 control-label paddnone">Product Category </label>
+                                    <div class="col-sm-5"> 
+
+                                        <span class="form-control-static lblcln" data-toggle="tooltip" data-placement="top" title="{{itemsToDispay}}" data-original-title="{{itemsToDispay}}" ng-bind="(model.merCategory)?getSignupCategory(model.merCategory):constants.notAvailableText">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>Referral</h3>
+                        <div class="row pad-top-15" >
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label for="verify-orders-pm" class="col-sm-4 control-label paddnone">Referral type</label>
+                                    <div class="col-sm-5"> 
+                                        <select id="account-setup-referral-type-select" name="account-setup-referral-type-select" class="form-control" ng-model="model.referralTypeData" ng-options="refType.name for refType in refTypes" validator="isReferralNameValid(model.referralTypeData.value, model.referralName)" invalid-message="validationMessages.required"   >
+                                           <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                              <div class="col-md-6 col-sm-6 ">
+                                <div class="form-group">
+                                    <label for="verify-orders-pm" class="col-sm-3 control-label paddnone">Referral Name</label>
+                                    <div class="col-md-6 col-sm-6" ng-class=""> 
+                                        <input id="account-setup-referral-name" name="account-setup-referral-name" ng-model="model.referralName" type="text" class="form-control" maxlength="60" validator="isReferralTypeValid(model.referralTypeData.value, model.referralName)" invalid-message="validationMessages.required"  />
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="form-group marbtm0" >
+                                    <label for="captcha-validation" class="control-label pad-left-none font-strong">CAPTCHA validation</label>
+                                </div>
+                            </div>
+                    </div>
+					 <div class="row paddtop20">
+                         <div class="col-md-6 col-sm-6">
+                            <!--<img src="../images/captcha.png" class="captchaimg">-->
+                             <!--<div class="g-recaptcha" data-sitekey="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></div>-->
+                             <no-captcha g-recaptcha-response="model.gRecaptchaResponse" site-key="6LfNxwETAAAAAJmSO-IELUVP0pV0qLfBa6SSb94t"></no-captcha>
+                             <p class="error-message" ng-show="!isCaptchaVerified" ng-bind="validationMessages.captchaError"></span></p>
+                        </div>
+						<div class="col-sm-6">
+                        <label for="verify-promo-code" class="col-md-3 col-sm-3 paddnone pull-left">Promo Code</label>
+                            <div class="col-md-6 col-sm-6">
+                                <input id="verify-promo-code" name="orders-create-addressLine1" ng-model="model.promoCode" type="text" class="form-control ng-binding" data-toggle="tooltip" data-placement="top" title="Redeem your promo code here" maxlength="60" />
+                                <em class="text-muted text-descrip-close text-grey">(if any)</em>
+                            </div>   
+                            <!--<div class="pad-left2">
+                                 <button id="prev-pg-3" type="button" class="btn btn-primary marrgt69 btn-back apply-custom-btn">Apply</button>
+                            </div>--> 
+                    </div>
+
+                    </div>
+                   
+
+
+                   
+
+
+                    <div class="row paddtop20">
+                        <div class="col-md-6 col-sm-5 paddnone">
+                            <label>
+                                <input type="checkbox" id="verify-agree" class="chkpadd agreeCheckBox colnRemove" name="verify-agree" ng-model="isAgreed">
+                               <span class="agreeCheckText">I have read &amp; agreed to the  <a href="{{termsAndConditionFile}}" class="blog-nav-item" target="_blank">Terms &amp; Conditions</a></span>
+                            </label>
+
+                        </div>
+                       
+                    </div>
+
+                    <div class="row btn-grp pull-left">
+                        <button id="prev-pg-3" type="button" class="btn btn-primary marrgt69 btn-back" ng-click="back()">Back</button>
+                        <button id="sign-up-btn" ng-disabled="!isAgreed" type="submit"  class="btn btn-primary">Sign Up Now</button>
+                    </div>
+<!-- ng-click="signup()" -->
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!--step 4-->
+    <div class="panel col-sm-10 col-lg-10 col-md-10 panel-padd" ng-show="currentStep == 4">
+        <div class="panel-heading step4">
+            <h4 class="panel-title">
+                <p> <span ng-bind="model.merLastName+' '+model.merFirstName" class="firstCaps"></span>, you're almost ready to get started!</p>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body body-bgColor">
+                <div class="col-sm-12 col-xs-12 paddnone">
+                    <div class="col-sm-12 paddnone">
+                        <div class="row">
+                            <p>Thank you for signing up for an ezyCommerce account. An activation email has been sent to <a href="#" class="linkColor" ng-bind="model.email"></a>. Please click on the activation link to verify your email. You can login to your account as soon as your account has been approved by the administrator.</p>
+                        </div>
+
+                         <div class="row">
+                            <div class="panel bg-color lineWidth">
+                            </div>
+                        </div>
+
+                        <div class="row font1">
+                            
+                            <p>Didn't receive an email?  Please check your junk folder and add ezyCommerce domain to your safe senders list. If you still didn't receive the email, you can submit a request to <a href="/#/verify">Resend </a>&nbsp;it.</p>
+                            
+                            <p>{{isVisible('signup')}}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<footer class="thFooter footerBottomFixed">
+    <div class="container-fluid thFooterBg">
+      <nav class="blog-nav">
+       
+        <a href="{{termsAndConditionFile}}" class="blog-nav-item" target="_blank">Terms & Conditions</a>
+      </nav>
+      <div class="clear"></div>
+      <p class="text-muted thFootCopy">@ 2014 SINGAPORE POST LIMITED. ALL RIGHTS RESERVED</p>
+      <p class="text-muted thFootPower hidden-xs">Powered by : </p>
+      
+    </div>
+</footer>
+
+</body>
+</html>

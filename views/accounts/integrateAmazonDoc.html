@@ -1,0 +1,83 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            
+            <!--<form role="form"  name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">-->
+              
+            <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="addEbayChannel(add_ebay)">
+              
+              <h2 class="amazon-thHead">Adding Amazon as a channel</h2>
+             
+              <div class="clear"></div>
+			  
+              <div class="panel-group">
+                <div class="panel panel-default">
+                 
+                    <div class="panel-body paddleft10">
+                      
+                      
+                      
+                        
+                      <div class="row">
+						  
+						  
+<ol class="cnct-ebay">In order to add Amazon as a channel, follow these steps:
+<li>Log in to your ezyCommerce account.</li>
+<li>Click on My Account > Connections.</li>
+		<li>Scroll to the bottom of the page where all market places are listed.</li>
+		<li>You will notice button to add Amazon channel.
+		<p><img src="images/amazon-channel.jpg" alt="Amazon" style="width:300px;"></p>
+		</li>
+		<li>Be sure to click on ‘connect’ under an icon applicable.</li>
+		<li>Once you click the button a form will load, which will look like this:
+		
+		<p><br><img src="images/adding-channel.png" alt="Amazon" style="width:450px;"></p>
+		</li>
+		<li>The information required in this form will be available on Amazon Marketplace Web Service or Amazon MWS site. Follow the below instructions to fill the form.</li>
+		<ol class="amazon-suborderlist">
+			<li>Visit the Amazon Marketplace Web Service (MWS). </li>
+			<li>Click on ‘Sign Up for MWS’ on the Amazon MWS page
+			<p><img src="images/mws.png" alt="Amazon" style="width:688px;"></p>
+			</li>
+			<li>Login with your Amazon seller account ID and password</li>
+			<li>Select 'I want to give a developer access to my Amazon seller account with MWS.' option</li>
+			<li>Mention ezycommerce as Developer’s Name and use our Developer Account Number : 4044-9725-0388 and then click ‘Next’
+			<p><br><img src="images/mws22.png" alt="Amazon" style="width:456px;"></p>
+			</li>
+			<li>On the next page tick all check boxes and click 'Next'
+			<p><br><img src="images/mws3.png" alt="Amazon" style="width:521px;"></p>
+			</li>
+			<li>The next page will display your generated ‘Seller ID’ , ‘Marketplace ID’ and 'Marketplace MWS Auth Token'
+			<p><br><img src="images/sellerid.png" alt="Amazon" style="width:464px;"></p>
+			</li>
+			
+		</ol>
+		<li>Copy this ‘Seller ID’ , ‘Marketplace ID’ and and 'Marketplace MWS Auth Token' paste it in the form you saw in step 6.
+		<p><br><img src="images/mws-auth-token.png" alt="Amazon" style="width:450px;"></p>
+		</li>
+		<li>Click ‘Add channel’ and your Amazon channel is ready to use.</li>
+
+</ol>
+
+                        </div>
+                      
+                        
+                      </div>
+					  
+                    </div>
+                  
+                </div>
+              </div>
+            </form>
+            
+            
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

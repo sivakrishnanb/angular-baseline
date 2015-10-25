@@ -1,0 +1,171 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            
+            
+            <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="getRakutenToken()">
+              
+              <h2 class="thHead">Connections</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                 <div class="col-sm-12 col-lg-9 paddnone" >
+                      <div class="thHeadIco glyphicon glyphicon-con col-lg-1 col-sm-1 hidden-xs"></div>
+                        <div class="thContent col-lg-11 col-sm-10">
+                          You can manage connections to external sales channels - marketplaces and shopping carts here.
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+        
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <h4 class="panelbrdr" id="con-saleschannels-header"><span class="txtBold">Connect to your rakuten Seller Account</span> <img src="images/rakuten.png" alt="rakuten"
+                                class="rakutenImg"></h4>
+                    <div class="panel-body paddleft10">
+                      
+                      
+                      
+                        
+                      <div class="row">
+              
+              <p>With ezyCommerce, you can sell on rakuten and use ezyCommerce as the fulfillment solution for your rakuten orders. In order to do this, you need to add 
+your rakuten seller account on the ezyCommerce platform. </p>
+
+<ul class="cnct-ebay paddbtm10">
+We can synchronize the following information with rakuten –
+<li class="paddtop10">-  <span class="txtBold">Fulfillment Orders</span> - Once you are connected, we will start polling rakuten servers periodically to check for new orders under your account. 
+        All new and modified orders will be downloaded into your ezyCommerce account.</li>
+<li>-  <span class="txtBold">Order Status</span> – When an order is shipped, status and tracking information is pushed to rakuten.</li>
+
+</ul>
+
+<div class="row shpRow">
+<div class="panel panel-default col-md-12 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad marbtm15">
+    <div class="col-sm-11 orderinfobg fnt12px wdth97">
+      <span class="txtBold">Product mapping</span> – You need to make sure that your rakuten listings have the same <span class="txtBold">Merchant SKU in the ‘SKU’ field</span> so that when we import an order from rakuten, we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item.
+    </div>
+  </div>
+</div>
+
+<ol class="cnct-ebay">
+<span class="whatAllYou">What all you need to add rakuten channel.</span>
+  <li class="paddtop10">
+    <span class="txtBold">ezyCommerce Channel Name</span> - a name that must be unique across all the channels you hold in ezycommerce.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Email</span> - an email id that you have used in rakuten seller account, and its a reference in our ezyCommerce.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Marketplace ID</span> - Marketplace Identifier must be selected as a specific country (eg for a Singapore, UK, Germany).
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Shop URL</span> - The Shop URL is the unique name of your Rakuten Store (you do not need to enter the whole URL here, just the part with your unique store name - e.g. MyAmazingStore from http://www.rakuten.co.uk/shop/MyAmazingStore). For more info contact your Rakuten Account Manager.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">API Key</span> - This is a code that is required to verify that communication between ezyCommerce and Rakuten are authentic. If you have not been provided with an API Key then contact your Rakuten Account Manager and they will be able to provide it.
+  </li>
+</ol>
+
+                        </div>
+                        
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-name" class=" control-label inline-required">ezyCommerce Channel Name<span class="reqStar">&nbsp*</span></label>
+                            <span class="glyphicon amazonIntegrate glyphicon-info" data-container="body" data-toggle="popover" data-placement="right" data-content="For your reference it should be unique across all the accounts you hold in ezyCommerce" data-original-title=""></span>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-channel-name" type="text" class="form-control" id="merchant-channel-name" placeholder="Max. 60 characters" ng-model="model.merchantChannelName" maxlength="60" required="" required-message="validationMessages.required">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-9 martop15 paddlft0" ng-if="0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-userid" class=" control-label inline-required">User ID</label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-channel-userid" type="text" class="form-control" id="merchant-channel-userid" placeholder="Max. 60 characters" ng-model="model.merchantChannelUserId" maxlength="60">
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-email" class=" control-label inline-required">Email<span class="reqStar">&nbsp*</span></label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-channel-email" type="email" class="form-control" id="merchant-channel-email" placeholder="Max. 60 characters" ng-model="model.merchantChannelEmail" maxlength="60" invalid-message="validationMessages.invalidemail" required required-message="validationMessages.required">
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-market-id" class=" control-label inline-required">Market Place ID<span class="reqStar">&nbsp*</span></label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <select name="merchant-market-id" type="text" class="form-control" id="merchant-market-id" ng-model="model.merchantMarketPlaceId" required required-message="validationMessages.required" ng-options="item as item.name for item in rakutenChannelCountries track by item.code">
+                                <option value="">select</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-shop-name" class=" control-label inline-required">Shop URL<span class="reqStar">&nbsp*</span></label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-channel-shop-name" type="text" class="form-control" id="merchant-channel-shop-name" placeholder="Max. 60 characters" ng-model="model.merchantChannelShopName" maxlength="60" required required-message="validationMessages.required">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-9 demoStore paddlft0">
+                          <div class="col-sm-12 text-left">
+                            <em class="text-muted">Note : if your store URL is http://www.rakuten.co.uk/shop/MyAmazingStore, enter only MyAmazingStore</em>
+                          </div>
+                        </div>
+  
+                        <div class="col-sm-9 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-auth-token" class=" control-label inline-required">API Key<span class="reqStar">&nbsp*</span></label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-auth-token" type="text" class="form-control" id="merchant-auth-token" placeholder="Max. 60 characters" ng-model="model.merchantChannelAuthToken" maxlength="60" required="" required-message="validationMessages.required">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-9 martopbtm20 paddlft10">
+                          <button class="btn btn-primary" type="submit">Connect to rakuten</button>
+                        </div>
+                        
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </form>
+            
+            
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

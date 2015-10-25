@@ -1,0 +1,252 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form" name="billing-summary-form" novalidate angular-validator
+              angular-validator-submit="">
+              <h2 class="thHead">Billing Summary</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                  <div class="col-sm-12 col-lg-9 paddnone">
+                    <div class="thHeadIco glyphicon glyphicon-icon-MyAccount-summary-big col-lg-1 col-sm-1 hidden-xs"></div>
+                    <div class="thContent col-lg-11 col-sm-10"> You can access current and past billing statements here. </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <div class="panel-group">
+                <div class="row clnpanel">
+                  
+                  <div class="panel panel-default col-md-6 col-sm-12 xstxt-marbtm smtxt-marbtm paddnone paddrgt20">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"> <a href="javascript:;" id="pref-order">Balance Summary</a></h4>
+                    </div>
+
+
+                    <div class="panel-body billsumbg">
+
+
+                      
+                      <div class="row">
+                        <div class="form-group ">
+                          <div class="col-md-12 col-sm-12">
+                              The charges shown here are updated as of {{billingGeneratedDate}}. Charges will be updated when the next statement is generated on {{billingYetToGenerateDate}}. Please view the Transaction Report under Reports section to view the latest charges.
+                          </div>
+                        </div>
+                      </div>
+
+                       <div class="row" ng-if="0">
+                        <div class="form-group">
+                          <div class="col-md-12 col-sm-12">
+                              Note: Payment made on or after {{lastPaymentDate}} will not be reflected in this summary. To view the latest payments please view the payments / adjustments table below
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group">
+                          <label class="col-md-6  col-sm-6 control-label paddrgt0">Previous Balance </label>
+                          <div class="col-md-5 col-sm-5">
+                            <label  id="acc-bill-sum-prevBalance"  name="acc-bill-sum-prevBalance"  class="control-label lblcln">{{balanceSummary.prevBalance || constants.notAvailableText}}</label>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <div class="row">
+                        <div class="form-group ">
+                          <label class="col-md-6  col-sm-6 control-label paddrgt0">Payment(s) received</label>
+                          <div class="col-md-5 col-sm-5 ">
+                            <label class="control-label lblcln">{{balanceSummary.payments || constants.notAvailableText}}</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group ">
+                          <label
+                                  class="col-md-6 col-sm-6 paddrgt0 control-label">Current charges</label>
+                          <div class="col-md-5 col-sm-5">
+                            <label class="control-label lblcln">{{balanceSummary.currentCharges || constants.notAvailableText}}</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group ">
+                          <label
+                                  class="col-md-6 col-sm-6 paddrgt0 control-label">Total charges due </label>
+                          <div class="col-md-5 col-sm-5">
+                            <label class="control-label lblcln">{{balanceSummary.totalDue || constants.notAvailableText}}</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group ">
+                          <label class="col-md-6 col-sm-6 paddrgt0 control-label">Payment due date </label>
+                          <div class="col-md-5 col-sm-5">
+                            <label class="control-label lblcln">{{balanceSummary.dueDate || constants.notAvailableText}}</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="form-group ">
+                          <label class="col-md-6 col-sm-6 paddrgt0 control-label">Payment mode </label>
+                          <div class="col-md-5 col-sm-5">
+                            <label class="control-label lblcln">Refer to invoice</label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                    
+                  
+                  <div class="panel panel-default col-md-6 col-sm-12 paddnone">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"> <a href="javascript:;" id="pref-order">Download Monthly Statement</a> </h4>
+                    </div>
+                    <div class="panel-body billsumbg">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <div class="form-group">
+                            <label class="col-md-5 col-sm-5 control-label">Statement Period</label>
+                            <div class="col-sm-6 txtcln">
+                              <select class="form-control trimWid" name="options-billing-period" ng-model="selectedInvoice" id="options-billing-period" ng-options="item as formatBillingDate(item.invStartDate, item.invEndDate) for item in merchantInvoices">
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <div class="form-group">
+                            <label class="col-md-5 col-sm-5 control-label">Download Method</label>
+                            <div class="col-sm-6 txtcln">
+                              <a ng-href="{{selectedInvoice.invFileName}}" target="_blank" download class="btn btn-primary thButton">Download PDF</a>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <div class="form-group">
+                            <label class="col-md-5 col-sm-5 control-label"></label>
+                            <div class="col-sm-3">
+                              <label class="paddlft50">(OR)</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!--<div class="row">
+                        <div class="col-xs-12">
+                          <div class="form-group">
+                            <label class="col-md-5 col-sm-5 control-label"></label>
+                            <div class="col-sm-6 txtcln">
+                              <input name="order-create-merchant-id" type="text"
+                                     class="form-control trimWid" id="orders-create-merchant-id"
+                                     placeholder="karthick@kstudios.com"
+                                     ng-model="model.merchantOrderId" required
+                                     required-message="validationMessages.required"
+                                     maxlength="30" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>-->
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <label class="col-md-5 col-sm-5 control-label"></label>
+                          <div class="col-sm-6">
+                            <button class="btn btn-primary thButton martop0 pull-left marrgt20 marbtm15" ng-disabled="true">&nbsp;Send to email&nbsp;</button>
+
+                          </div>
+                        </div>
+                      </div>
+
+                         <div class="row"  >
+                            <div class="col-sm-12">
+                              <em class="">Monthly Statement will be generated on the 28th of every month</em>
+                            </div>
+                        </div>
+
+                      <div class="row" >
+                            <div class="col-sm-12">
+                              <em class="">You can download monthly statements for the last 12 billing cycles here. If you want to see statement by transaction, download it from the Reports section under Transactions.</em>
+                            </div>
+                      </div>
+
+                          
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+
+            </form>
+
+            <div class="panel-group">
+              <div class="row paddbtm20 xstxt-padd0">
+                <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a href="javascript:;" id="acc-bill-delRates-header">Payments / Adjustments</a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body pnlbdy-pad5 billsumtbl" >
+                      
+                        <div class="row proHeader hidden-xs">
+                          <div class="accbillEntryDate col-md-2 col-sm-12">Entry Date</div>
+                          <div class="accbillPayment col-md-2 col-sm-12">Payment/Adj. Date</div>
+                          <div class="accbillReference col-md-2 col-sm-12">Reference Number</div>
+                          <div class="accbillInvoice col-md-2 col-sm-12">Invoice Number</div>
+                          <div class="accbillAmnt col-md-1 col-sm-12 ">Amount ({{constants.currentCurrency}})</div>
+                          <div class="accbilltype col-md-1 col-sm-12 ">Type</div>
+                          <div class="accbillRemarks  col-md-2 col-sm-12 ">Remarks</div>
+                        </div>
+
+                        <div class="clear"></div>
+
+                        <div class="row proRow paddbtm4" ng-repeat="payment in payments">
+                          <div class="accbillEntryDate col-md-2 col-sm-12 ">{{payment.entryDate || constants.notAvailableText}}</div>
+                          <div class="accbillPayment col-md-2 col-sm-12 ">{{payment.paymentDate || constants.notAvailableText}}</div>
+                          <div class="accbillReference col-md-2 col-sm-12 ">{{payment.paymentNo || constants.notAvailableText}}</div>
+                          <div class="accbillInvoice col-md-2 col-sm-12 ">{{(payment.type == 'payment') ? constants.notAvailableText : payment.invoiceNo}}</div>
+                          <div class="accbillAmnt col-md-1 col-sm-12 ">{{payment.amount|number:2}}</div>
+                          <div class="accbilltype col-md-1 col-sm-12 ">{{(payment.type && payment.type == 'payment') ? payment.type : ('Adjustment - '+payment.type)|| constants.notAvailableText}}</div>
+                          <div class="accbillRemarks  col-md-2 col-sm-12">{{payment.remarks || constants.notAvailableText}}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        
+                        <div class="row proRow  noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-if="!payments.length">
+                          <div ng-if="loading.load" class="loadingText"><span class="dataget glyphicon glyphicon-cog spin"></span> We are retrieving your data. Please wait</div>
+                          <div ng-if="loading.nodata" class="txtCenter">There are no payments or adjustments</div>
+                        </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

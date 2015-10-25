@@ -1,78 +1,399 @@
-
+<div ng-class="getProductScrollClassTop()">
+<div ng-class="getProductScrollClassBot()">
 <section class="container-fluid" ng-init="init()">
   <div class="row">
     <div class="col-xs-12">
       <ng-include src="'views/products/nav.html'"></ng-include>
       <section class="content full">
-        <h2>Product Catalog</h2>
-        <p>Create and manage your product catalog here. Add products one at a time by typing the product information or in bulk by uploading a file using our standard template. Once Products are created and activated, you can use them to create shipments, orders and do more.</p>
-        <h4 class="sub-head">Search Products</h4>
-        <form class="form-inline" role="form">
-          <div class="row padBtm15px">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <label class="sr-only" for="searchProducts">Search Products</label>
-                <div class="input-group selectboxhldr">
-                      <div multi-select input-model="productFilterOptions" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="" output-model="searchColumn" id="product-search-column"></div>
-                    <input type="text" class="form-control" id="product-search-text" placeholder="Search Products" ng-model="searchKey">
-                </div>
+        <h2 class="thHead">  <span ng-bind="getTitleText()"></span>  </h2>
+        
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12 col-lg-9 padd0">
+              <div class="thHeadIco glyphicon glyphicon-folder-close col-lg-1 col-sm-1 hidden-xs"></div>
+              <div class="thContent col-lg-11 col-sm-10">
+                <span ng-bind="getHeaderText()"></span>
               </div>
-              <div class="form-group">
-                <label class="sr-only" for="searchProducts">Created Date Range</label>
-                <div class="input-group product-date">
+              </div>
+          </div>
+        </div>
+        
+        <div class="clear"></div>
+        <h4 class="sub-head thSubHead">Search Products</h4>
+        <form class="form-inline container-fluid" role="form">
+          <div class="row padBtm15px">
+           
+              <div class="form-group" id="suggestion-holder">
+                <label class="sr-only" for="product-search-text">Search Products</label>
+                <div class="input-group selectboxhldr">
+                      <div class="thAll" multi-select input-model="productFilterOptions" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="" output-model="searchColumn" id="product-search-column" on-item-click="findSuggestion(searchKey, searchColumn)"></div>
+                    <input type="text" class="thSearch form-control searchFright" id="product-search-text" placeholder="Search" ng-model="searchKey" ng-focus="findSuggestion(searchKey, searchColumn)" ng-change="findSuggestion(searchKey, searchColumn)" />
+                </div>
+                <div class="list-group suggestion-box nano" id="product-search-suggestion" ng-if="suggestions.length">
+                  <div class="nano-content">
+                      <a ng-repeat="suggest in suggestions"  ng-click="editProduct()" ng-href="#/products/edit/{{suggest.fbspSkuId}}" class="list-group-item">
+                          <div class="prodSuggestion">
+                           <div class="prodIdContainer">
+                             <div class="prodIDs">
+                               <div class="txtBold prodId" ng-bind-html="'Merchant SKU : '+highlightSuggest(suggest.sku, searchKey)"></div>
+                             </div>
+                              <div class="prodIcons">
+                                <span ng-class="{'actCircle' : getSuggestionClass(suggest.isActive), 'actCircleInact' : !getSuggestionClass(suggest.isActive)}"></span>
+                                <span class="displayInline" ng-class="{'glyphicon glyphicon-flight-grid' : !getSuggestionClass(suggest.isExportable), 'glyphicon glyphicon-flight-ok-grid' : getSuggestionClass(suggest.isExportable)}"></span>
+                              </div>
+                              <div class="clear"></div>
+                           </div>
+                           
+                           
+                           <div class="suggprodProductContainer">
+                             <div class="suggprodPrdName" ng-bind-html="'Name: ' + highlightSuggest(suggest.productName, searchKey) | addEllipse:37"></div>
+                           </div>
+
+                            <div class="suggprodProductContainer">
+                              <div class="suggMerchantId" ng-bind-html="'Merchant Id: ' + highlightSuggest(suggest.merchantCode, searchKey) | addEllipse:37"></div>
+                            </div>
+                           
+                           <div class="suggestprodSKU">
+                             <div class="txtItalic fleft suggprodEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(suggest.fbspSkuId, searchKey)"></div>
+                             <div class="suggprodPrdCodes">
+                               <span ng-if="suggest.productType" ng-bind-html="highlightSuggest(suggest.productType, searchKey)"></span>
+                               <span ng-if="suggest.productId" ng-bind-html="': '+((suggest.productId) ? (highlightSuggest(suggest.productId, searchKey)):constants.notAvailableText)"></span>
+                             </div>
+                             <div class="clear"></div>
+                           </div>
+                           
+                         </div>
+                      </a>
+                      </div>
+                </div>
+                <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
+                  <a href="javascript:;" class="list-group-item">
+                      <span class="center fnt12px">No matching products found</span>
+                  </a>
+                </div>
+                
+                <div class="list-group suggestion-box" id="" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
+                  <a href="javascript:;" class="list-group-item">
+                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
+                  </a>
+                </div>
+
+
+              </div>
+              <!--<div class="form-group">
+                <label class="sr-only" for="product-date-range">Created Date Range</label>
+                <div class="input-group product-date thCreDate">
                   <div multi-select input-model="dateOptions" output-model="date" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Created Date Range" disable-property="label" id="product-date-range"></div>
                 </div>
+              </div>-->
+              <div class="form-group">
+                <div class="btn-group date-selector">
+                  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="product-date-selector">
+                    {{(date[0].name)? date[0].name : dateOptions[0].name}} <span class="caret"></span>
+                  </button>
+                  <span class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</span>
+
+                  <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="dateOption in dateOptions">
+                      <span ng-class="{'cal-active':dateOption.ticked}" ng-if="dateOption.value !='custom' && dateOption.value !='none'" ng-click="tickSelection(dateOptions, $index)">
+                        <a href="javascript:void(0)">{{dateOption.name}}</a>
+                        <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                      </span>
+
+                      <!--custom date starts-->
+                      <ul ng-if="dateOption.value =='custom'">
+                        <li class="dropdown-submenu">
+                          <span ng-click="tickSelection(dateOptions, $index)" ng-class="{'cal-active':dateOption.ticked}">
+                            <a href="javascript:;">{{dateOption.name}}</a>
+                            <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                          </span>
+
+                          <ul ng-class="{'dropdown-menu':true, 'cal-disblk':(dateOption.ticked)}">
+                            <li>
+                              <div class="input-daterange input-group date-rangepicker" id="datepicker">
+                                <div ng-model="fromdate" class="input pull-left daterangefrm" id="date-range-from"></div>
+                                <div ng-model="todate" class="input pull-left daterangeto" id="date-range-to"></div>
+                              </div>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                      <!--custom date - ends-->
+                    </li>
+                  </ul>
+                </div>
+
               </div>
+              
               <div class="form-group">
                 <label class="sr-only" for="searchProducts">Product Category</label>
-                <div class="input-group product-category">
+                <div class="input-group product-category thCat">
                   <div multi-select input-model="categoryOptions" output-model="category" button-label="name" item-label="name" tick-property="ticked" max-labels="1" default-label="Product Category" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category"></div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-show="isOptionVisible('inventory')">
                 <label class="sr-only" for="searchProducts">Inventory</label>
-                <div class="input-group product-inventory">
-                  <div multi-select input-model="inventoryOptions" output-model="inventory" button-label="name" item-label="name" tick-property="ticked" helper-elements="" default-label="Inventory" selection-mode="single" disable-property="label" id="product-search-inventory"></div>
+                <div class="input-group product-inventory thInve">
+                  <div multi-select input-model="inventoryOptions" output-model="inventory" button-label="name" item-label="name" tick-property="ticked" max-labels="1" helper-elements="all none" default-label="Inventory" disable-property="label" id="product-search-inventory"></div>
               </div>
             </div>
-          </div>
+            <div class="form-group displayInline-xs">
+                <div class="input-group thAppFil">
+                  <button class="btn btn-primary thButton" ng-click="applyFilter(1)" id="product-search-apply">Apply Filter</button>
+              </div>
+            </div>
+            <div class="form-group displayInline-xs">
+                <div class="input-group thAppFil">
+                  <button class="btn btn-default" ng-click="resetFilter()" id="product-action-reset">Reset</button>
+              </div>
+            </div>
+			 <p class="invntTxt" ng-show="routeParams.inv">Only Products that have inventory history are shown. Products that were never sent to the warehouse even once will not be shown.
+            </p>
+         
+
+         
         </div>
         <div class="row">
-          <div class="col-sm-12">
+
+          <div class="col-sm-2 col-lg-4 actions padd0">
             <div class="form-group">
+
               <label class="sr-only" for="searchProducts">Actions</label>
-              <label class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</label>
+              
                 <div class="input-group">
                   <!-- <input type="checkbox" name="action" /> -->
-                  <div class="btn-group">
+                  <div class="btn-group thAppAct">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="product-search-action">
                       Action <span class="caret"></span>
                     </button>
+                    <span class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</span>
                     <ul class="dropdown-menu" role="menu">
-                      <li ng-if="isOptionVisible('shipment')"><a href="javascript:;" id="product-action-create-shipment">Create Shipment</a></li>
-                      <li ng-if="isOptionVisible('fulfillment')"><a href="javascript:;" id="product-action-create-fulfillment">Create Fulfillment Order</a></li>
-                      <li ng-if="isOptionVisible('removal')"><a href="javascript:;" id="product-action-create-removal">Create Removal Order</a></li>
-                      <li ng-if="isOptionVisible('active')"><a href="javascript:;" id="product-action-make-active">Make Active</a></li>
-                      <li ng-if="isOptionVisible('inactive')"><a href="javascript:;" id="product-action-make-inactive">Make Inactive</a></li>
-                      <li ng-if="isOptionVisible('archived')"><a href="javascript:;" id="product-action-archive">Archive</a></li>
-                      <li ng-if="isOptionVisible('restore')"><a href="javascript:;" id="product-action-restore">Restore</a></li>
+                      
+                      <li ng-click="checkShipmntRowsCount()" check-acl="productAction" acl-disable="true" ng-if="isOptionVisible('shipment')"><a ng-class="disableActionLinks(myData)" href="javascript:void(0)"  id="product-action-create-shipment" >Create Shipment</a></li>
+                      
+                      <li ng-click="checkOrderRowsCount()"  check-acl="productAction" ng-if="isOptionVisible('fulfillment')" class="noBorder"><a ng-class="disableActionLinks(myData)" href="javascript:void(0)" id="product-action-create-fulfillment">Create Fulfillment Order</a></li>
+                      
+                      <li ng-click="checkRemovalRowsCount()" check-acl="productAction" acl-disable="true" ng-if="isOptionVisible('removal')"><a ng-class="disableActionLinks(myData)" href="javascript:void(0);" id="product-action-create-removal">Create Removal Order</a></li>
+                      
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('active')" data-toggle="modal" ng-click="changeProdStauts(true)"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-active">Make Active</a></li>
+                      
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('inactive')" data-toggle="modal" ng-click="changeProdStauts(false)" class="noBorder"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-inactive">Make Inactive</a></li>
+                      
+                      <li check-acl="productActionStatus" ng-if="isOptionVisible('archived')" data-toggle="modal" ng-click="changeProdStautsArchiveClick()" class="noBorder"><a ng-class="{'disableRemovalOrder':!showSelectedLength}" href="javascript:;" id="product-action-make-archive">Archive</a></li>
+                      
+                      <li check-acl="productActionStatus" acl-disable="true" ng-if="isOptionVisible('restore')"><a href="javascript:;" id="product-action-restore">Restore</a></li>
+                      
                     </ul>
                   </div>
                   
                 </div>
             </div>
-            <div class="form-group">
-                <div class="input-group">
-                  <button class="btn btn-primary" ng-click="applyFilter()" id="product-search-apply">Apply Filter</button>
+            <!-- Product Bulk Approve -->
+            <div class="modal fade" id="prod-bulk-approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div ng-if="!isBulkProductUpdating" class="modal-header">
+                    <p>Bulk action report - <span ng-bind="getCurrentStatus()"></span> <span class="model-close" data-dismiss="modal">X</span></p>
+                  </div>
+                  <div class="modal-body">
+                    <h5>{{isBulkProductUpdating ? 'Loading' : 'Completed'}} {{getBulkApprovePercentage('total')}}%</h5>
+                    <div class="progress">
+                      <div ng-if="bulkProdUpdate.prodsSuccess > 0" class="progress-bar progress-bar-success" role="progressbar" style="width:{{getBulkApprovePercentage('success')}}%">
+                      </div>
+                      <div ng-if="bulkProdUpdate.prodsFailed > 0" class="progress-bar progress-bar-danger" role="progressbar" style="width:{{getBulkApprovePercentage('failed')}}%">
+                      </div>
+                    </div>
+
+
+                    <!--<p>Success : {{$rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount}}</p>-->
+                    <p>Selected Products : {{bulkProdUpdate.totalProdsCount}}</p>
+                    <p class="succ-sku">Success : {{bulkProdUpdate.prodsSuccess}}</p>
+                    <p class="failed-sku">Failure : {{bulkProdUpdate.prodsFailed}}</p>
+                    
+                    <p ng-if="popUpCondition=='inactive'" class="fnt500 paddtop5">Make Inactive condition :</p>
+                    <p ng-if="popUpCondition=='inactive'" class="paddtop5">1. Product should not be present in any Pending Order</p>
+                    
+                    <div class="bulk-approve-sku">
+                      <h5>Details</h5>
+
+                      <h6 ng-if="bulkProdUpdate.successSKU.length > 0">Successful SKU's</h6>
+                      <div ng-if="bulkProdUpdate.successSKU.length > 0" class="success-cnt">
+                        <span ng-repeat="fbsku in bulkProdUpdate.successSKU">{{fbsku + ' '}}</span>
+                      </div>
+
+                      <h6 ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure">Failed SKU's</h6>
+                      <div ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure-cnt">
+                        <span  ng-repeat="fbsku in bulkProdUpdate.failedSKU">{{fbsku + ' '}}<br/></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="!isBulkProductUpdating" class="modal-footer">
+                    <button type="button" class="btn thButton modelButtonOk" id="update-prod-modal-ok" ng-click="closeUpdateModal()">OK</button>
+                  </div>
+
+                </div>
               </div>
             </div>
-            <div class="form-group">
-                <div class="input-group">
-                  <button class="btn btn-default" ng-click="resetFilter()" id="product-action-reset">Reset</button>
+
+            
+            <!-- archive confirmation model starts -->
+            <div class="modal fade" id="confirm-modal-archive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <p>Bulk action report - Archive <span class="model-close" data-dismiss="modal">X</span></p>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>Are you sure you want to archive selected product(s) ? </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancel-archive">Cancel</button>
+                            <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="modalOk-archive" ng-click="modalOkButton()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- model ends -->
+
+            <!-- Product Bulk Archive -->
+            <div class="modal fade" id="prod-bulk-archive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div ng-if="!isBulkProductUpdating" class="modal-header">
+                    <p>Bulk action report - Archive <span class="model-close" data-dismiss="modal" ng-click="closeArchiveModal()">X</span></p>
+                  </div>
+                  <div class="modal-body">
+                    <h5>{{isBulkProductUpdating ? 'Loading' : 'Completed'}} {{getBulkApprovePercentage('total')}}%</h5>
+                    <div class="progress">
+                      <div ng-if="bulkProdUpdate.prodsSuccess > 0" class="progress-bar progress-bar-success" role="progressbar" style="width:{{getBulkApprovePercentage('success')}}%">
+                      </div>
+                      <div ng-if="bulkProdUpdate.prodsFailed > 0" class="progress-bar progress-bar-danger" role="progressbar" style="width:{{getBulkApprovePercentage('failed')}}%">
+                      </div>
+                    </div>
+
+
+                    <!--<p>Success : {{$rootScope.bulkProdUpdate.prodsSuccess + $rootScope.bulkProdUpdate.prodsFailed) / ($rootScope.bulkProdUpdate.totalProdsCount}}</p>-->
+                    <p>Selected Products : {{bulkProdUpdate.totalProdsCount}}</p>
+                    <p class="succ-sku">Success : {{bulkProdUpdate.prodsSuccess}}</p>
+                    <p class="failed-sku">Failure : {{bulkProdUpdate.prodsFailed}}</p>
+                    
+                    <p class="fnt500 paddtop5">Archive condition :</p>
+                    <p class="paddtop5">1. Should not have inventory</p>
+                    <p class="paddtop5">2. Should not be present in Open Shipments</p>
+                    <p class="paddtop5">3. Should not be present in Open Orders</p>
+                    
+                    <div class="bulk-approve-sku">
+                      <h5>Details</h5>
+                      
+                      <h6 ng-if="bulkProdUpdate.successSKU.length > 0">Successful SKU's</h6>
+                      <div ng-if="bulkProdUpdate.successSKU.length > 0" class="success-cnt">
+                        <span ng-repeat="fbsku in bulkProdUpdate.successSKU">{{fbsku + ' '}}</span>
+                      </div>
+
+                      <h6 ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure">Failed SKU's</h6>
+                      <div ng-if="bulkProdUpdate.failedSKU.length > 0" class="failure-cnt">
+                        <span  ng-repeat="fbsku in bulkProdUpdate.failedSKU">{{fbsku + ' '}}<br/></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="!isBulkProductUpdating" class="modal-footer">
+                    <button type="button" class="btn thButton modelButtonOk" id="update-prod-modal-ok" ng-click="closeArchiveModal()">OK</button>
+                  </div>
+
+                </div>
               </div>
+            </div>
+
+
+              <!--<div class="form-group thDateFrom" ng-show="date[0].value=='custom'">
+                  <label class="sr-only" for="product-search-fromdate">From Date</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="product-search-fromdate" ng-model="fromdate" data-date-format="dd/mm/yyyy" readonly/>
+                      <label class="input-group-addon" for="product-search-fromdate"><i class="glyphicon glyphicon-calendar"></i></label>
+                  </div>
+              </div>
+              <div class="form-group thDateTo" ng-show="date[0].value=='custom'">
+                  <label class="sr-only" for="product-search-todate">To Date</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="product-search-todate" ng-model="todate" data-date-format="dd/mm/yyyy" readonly/>
+                      <label class="input-group-addon" for="product-search-todate"><i class="glyphicon glyphicon-calendar"></i></label>
+                  </div>
+              </div>-->
+              
+              <span class="rowSelectedTxt" ng-if="showSelected">
+                <span ng-bind="showSelectedLength"></span> row(s) selected
+              </span>
+              
+          </div>
+          <div class="col-sm-10 col-lg-8 padd0">
+            <div class="pull-right">
+          <div class="showingPage pull-left" ng-if="myData.length">
+            Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} products
+          </div>
+          
+          <div class="views pull-left" ng-if="myData.length">
+             view<select ng-model="pagingOptions.pageSize" class="showingView">
+                    <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+                  </select>per page
+          </div>
+          
+          <div class="pagingout pull-left">
+
+             <ul class="pagingContainer" ng-if="myData.length">
+              <li><a href="javascript:void(0)" class="pageFirst"><span ng-click="paging(1)">&lt;&lt;</span></a></li>
+              <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage-1)">&lt;</span></a></li>
+
+               <li ng-repeat="pageSizeClicks in pageSize.pageSizeClickLength" ng-class="{pageHighLight:pageSizeClicks == pagingOptions.currentPage}">
+                <a ng-class="{pageHighLightColor:pageSizeClicks == pagingOptions.currentPage}" href="javascript:void(0);" ng-click="paging(pageSizeClicks)"><span>{{pageSizeClicks}}</span></a>
+              </li>
+
+              <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage+1)">&gt;</span></a></li>
+              <li><a href="javascript:void(0)" class="pageLast"><span ng-click="paging(pagingOptions.currentPage+1, 'last')">&gt;&gt;</span></a></li>
+             </ul>
+             
+          </div>
+          
+          <div class="sort txtRight pull-left">
+            
+            <div class="">
+              <label class="sr-only" for="searchProducts">Sort By: Category</label>
+              
+                <div class="input-group">
+                  <!-- <input type="checkbox" name="action" /> -->
+                  <div class="btn-group thAppAct thAppSort">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="product-sort-category">
+                      Sort By : <span ng-bind="sortingOptions.name"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="product-sort-action" ng-click="sortDirection()">
+                      <span ng-class="{'glyphicon glyphicon-sort-cat':!sortLogo(),'glyphicon glyphicon-sort-cat-asc':sortLogo()}"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li ng-click="sort('fbspSkuId', 'EZY-Sku')"><a href="javascript:;" id="product-action-create-shipment">EZY-SKU</a></li>
+                      <li ng-click="sort('sku', 'Merchant Sku')"><a href="javascript:;" id="product-action-create-shipment">Merchant SKU</a></li>
+                      <li ng-click="sort('mainProductCategory','Category')"><a href="javascript:;" id="product-action-create-fulfillment">Product Category</a></li>
+                      <li ng-click="sort('createdDate','Date Created')"><a href="javascript:;" id="product-action-create-shipment">Created Date</a></li>
+                      <li ng-click="sort('modifiedDate','Modified Date')"><a href="javascript:;" id="product-action-modified-shipment">Modified Date</a></li>
+                      <li ng-if="sortOptionVisible('dateInActive')" ng-click="sort('dateInActive','Date Since Inactive')"><a href="javascript:;" id="product-action-create-shipment">Date Since Inactive</a></li>
+                      <li ng-click="sort('productName','Product Name')"><a href="javascript:;" id="product-action-create-fulfillment">Product Name</a></li>
+                      <li ng-if="sortOptionVisible('qtyFulfillable')" ng-click="sort('qtyFulfillable','Fulfillable')"><a href="javascript:;" id="product-action-create-fulfillment">Fulfillable</a></li>
+                      <li ng-if="sortOptionVisible('qtyDamaged')" ng-click="sort('qtyDamaged','Damaged')"><a href="javascript:;" id="product-action-create-fulfillment">Damaged</a></li>
+                      <li ng-if="sortOptionVisible('qtyInShipment')" ng-click="sort('qtyInShipment','Inbound')"><a href="javascript:;" id="product-action-create-fulfillment">Inbound</a></li>
+                      <li ng-if="sortOptionVisible('inventoryAlertLevel')" ng-click="sort('inventoryAlertLevel','Alert Level')"><a href="javascript:;" id="product-action-create-fulfillment">Alert Level</a></li>
+                    </ul>
+                  </div>
+                  
+                </div>
             </div>
           </div>
+          </div>
+            </div>
         </div>
+        
       </form>
       <div class="widget-table">
         <!-- <div class="action-palette">
@@ -97,9 +418,171 @@
                 </div>
               </div>
         </div> -->
-        <div class="gridStyle products-list" showEmptyMsg ng-grid="gridOptions" id="product-list-grid"></div>
+      <!-- <div class="gridStyle landing-page" show-empty-msg ng-grid="gridOptions" id="product-list-grid"></div> -->
+      
+      <div class="newGridContainer container-fluid">
+        
+        <div class="row proHeader hidden-xs">
+          <div class="proHeaEditH col-xs-12 col-sm-1 col-md-1">
+            <div class="checkboxFive">
+              <input type="checkbox" value="" name="" ng-click="toggleCheckBox()" ng-model="toggleCheckBoxVal"/>
+              <!--<label for="checkboxG4" class="css-label"></label>-->
+            </div>
+          </div>
+          <div class="proHeaMerH col-xs-12 col-sm-12 col-md-3">Product</div>
+          <div class="proHeaCatH col-xs-12 col-sm-12 col-md-1">Category</div>
+          <div class="proHeaDimH col-xs-12 col-sm-12 col-md-2">Size & Weight</div>
+          <div class="proHeaDateH col-xs-12 col-sm-12 col-md-3">Date</div>
+          <div class="proHeaInvH col-xs-12 col-sm-12 col-md-2">Inventory</div>
+          <div class="proHeaAleH col-xs-12 col-sm-12 col-md-1">Alert level</div>
+        </div>
+        <div class="clear"></div>
+        
+       
+        <div class="row proRow" ng-class="{rowSelected:product.Selected,highlightAddedRow:highlightAdded(product.sku)}" ng-repeat="product in myData track by product.fbspSkuId">
+            
+          <div class="proHeaEdit col-xs-12 col-sm-12 col-md-1">
+            <div class="checkboxFive">
+              <input type="checkbox" value="" id="" name="" ng-model="product.Selected" ng-click="appendProducts(product)"/>
+            </div>
+          </div>
+          
+          <div class="proHeaMer col-xs-12 col-sm-12 col-md-3">
+            
+            <div class="productInfoContainer">
+              
+              <div ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}" class="fleft martop5"></div>
+              
+              <div class="skU fleft">
+                <div class="productSKU">
+                  <span data-toggle="tooltip" data-placement="top" title="Merchant SKU" ng-bind="product.sku || constants.notAvailableText"></span>
+                </div>
+              </div>
+              
+              <div class="editFlight fleft">
+                  
+                  <a id="edit-{{product.fbspSkuId}}" ng-click="editProduct()" ng-href="#/products/edit/{{product.fbspSkuId}}" data-toggle="tooltip" data-placement="top" title="Edit"><span class="glyphicon glyphicon-edit-grid"></span></a>
+
+                  <a data-toggle="tooltip" data-placement="top"  class="productArchive" ng-click="archive(product.fbspSkuId)" title="Archive"><span class="glyphicon glyphicon-archive-grid"></span></a>
+                  
+
+                  <a ng-if="0" id="create-{{product.fbspSkuId}}" ng-href="#/products/create/{{product.fbspSkuId}}" data-toggle="tooltip" data-placement="top" title="Edit"><span class="glyphicon glyphicon-edit-grid"></span></a>
+
+                  <span  data-toggle="tooltip" data-placement="top" title="{{(product.isExportable) ? 'Exportable' : 'Non-Exportable'}}" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
+              </div>
+            </div>
+            
+            <div class="clear"></div>
+            <div class="proName">
+               <span data-toggle="tooltip" data-placement="top" title="Product Name"><span ng-bind="product.productName | addEllipse:23"></span></span>
+              
+            </div>
+			<div class="proName" check-acl="showMerchId" ng-if="product.merchantCode">
+				<span >Merchant Id: {{product.merchantCode}}</span>
+            </div>
+            
+            <div class="eSku fnt10px">
+                <span ng-if="product.fbspSkuId">EZY-SKU: <span ng-bind="product.fbspSkuId"></span></span>
+                <span class="eEan" ng-if="product.codeType">
+                  <span ng-bind="product.codeType"></span>: <span ng-bind="product.articleCode"></span>
+                </span>
+            </div>
+            
+          </div>
+          
+          <div class="proHeaCat col-xs-12 col-sm-12 col-md-1">
+            {{getCategory(product.mainProductCategory) | addEllipse:20 }}
+          </div>
+          
+          <div class="proHeaDim col-xs-12 col-sm-12 col-md-2">
+            <div>
+			 <span data-toggle="tooltip" data-placement="top" title="Length x Width x Height">
+              {{product.length || constants.notAvailableText}} x {{product.width || constants.notAvailableText}} x {{product.height || constants.notAvailableText}} {{product.dimensionUnit || constants.notAvailableText}}
+            </div>
+            <div>
+			<span data-toggle="tooltip" data-placement="top" title="Weight"> 	
+              <span class="txtItalic">{{product.weight}}</span>
+              <span class="kg txtItalic">{{product.weightUnit}}</span>
+			</span>
+            </div>
+          </div>
+          
+          <div class="proHeaDate col-xs-12 col-sm-12 col-md-3">
+            <div class="crDate">
+              
+              <!-- <span ng-if="product.createdDate && showCreated" data-toggle="tooltip" data-placement="top" title="{{product.createdDate}}">Created <span class="timeago" title="{{changeDateTimeAgo(
+              product.createdDate)}}"></span></span> -->
+              <span ng-if="product.createdDate && showCreated">Created : <span class="timeago" ng-bind="product.createdDate"></span></span>
+              <span ng-if="!product.createdDate && showCreated" ng-bind="'Created '+constants.notAvailable"></span>
+              
+              <!-- <span ng-if="product.dateInactive && showInactive" data-toggle="tooltip" data-placement="top" title="{{product.dateInactive}}">Inactive Since <span class="timeago" title="{{changeDateTimeAgo(product.dateInactive)}}"></span></span> -->
+              <span ng-if="product.dateInactive && showInactive">Inactive Since : <span ng-bind="product.dateInactive"></span></span>
+              <span ng-if="!product.dateInactive && showInactive" ng-bind="'Inactive Since '+constants.notAvailable"></span>
+              
+            </div>
+            <div class="lsDate">
+              <!-- <span ng-if="product.modifiedDate" data-toggle="tooltip" data-placement="top" title="{{product.modifiedDate}}">Modified <span class="timeago" title="{{changeDateTimeAgo(product.modifiedDate)}}"></span></span> -->
+              <span ng-if="product.modifiedDate">Modified : <span ng-bind="product.modifiedDate"></span></span>
+              <span ng-if="!product.modifiedDate" ng-bind="'Modified '+constants.notAvailable"></span>
+            </div>
+          </div>
+          
+          <div class="proHeaInv col-xs-12 col-sm-12 col-md-2">
+            <div class="fullFill fullColor txtBold">
+              Fullfillable : {{product.qtyFulfillable || '0' }}
+            </div>
+            <div class="damInbound">
+              <span class="dam txtItalic damColor">
+                Damaged : {{product.qtyDamaged || '0' }}
+              </span>
+              <span class="inb txtItalic">Inbound : {{product.qtyInShipment || '0'}}</span>
+            </div>
+          </div>
+          
+          <div class="proHeaAle col-xs-12 col-sm-1 col-md-1">
+            {{getInventoryAlertLevel(product.inventoryAlertLevel)}}
+          </div>
+          
+        </div>
+        
+        <div class="clearfix"></div>
+        
+        <div class="row proRow" ng-if="!myData.length">
+            
+          <div class="noRecordDisplayIcons col-sm-12 col-md-12 col-lg-12">
+
+                  <div ng-if="loading.nodata">
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Create Product" ng-show="getProductStatus()">
+                      <a href="#/products/create" data-toggle="tooltip" id=""><span class="glyphicon glyphicon-plus-nodata"></span><span class="full expOrCol ezyHide">Create product</span></a>
+                    </div>
+                    
+                    <div class="ezyCreateNodata" data-toggle="tooltip" data-placement="top" title="Upload Products" ng-show="getProductStatus()">
+                      <a href="#/products/upload" data-toggle="tooltip" id=""><span class="glyphicon glyphicon-upload-nodata"></span><span class="full expOrCol ezyHide">Upload product</span></a>
+                    </div>
+                    
+                    <div class="fleft noDataRightContent">
+                      <p class="noProd txtBold"><span ng-bind="getNoProductsHeader()"></span></p>
+                      <p class="noStart"><span ng-bind="getNoProductsSubMessage()"></span></p>
+                    </div>
+                    
+                    
+                    <div class="clear"></div>
+                    
+                  </div>
+
+                  <div ng-if="loading.load" class="loadingText"><span class="dataget glyphicon glyphicon-cog spin"></span> We are retrieving your data. Please wait</div>
+                </div>
+          
+        </div>
+        
+        
+        <div class="clearfix"></div>
+      </div>
+      
     </div>
   </section>
 </div>
 </div>
 </section>
+</div>
+</div>

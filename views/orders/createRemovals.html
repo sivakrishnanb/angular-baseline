@@ -1,0 +1,380 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/orders/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row createremovalContainer">
+                    <div class="col-sm-12">
+                        <form role="form" class="form-horizontal" name="create-removal-form" id="create-removal-form" novalidate angular-validator angular-validator-submit="openConfModal()">
+
+
+                            <h2 class="thHead">Create removal</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 paddnone">
+                                        <div class="thHeadIco glyphicon glyphicon-order col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10">
+                                            Enter the Removal Plan Name. Search and add products you wish to     remove from the warehouse. Click Create Removal to create an Inbound Shipment ID. Fields marked with asterisk (*) are mandatory
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="panel-group">
+                                <h4 class="sub-head thSubHead">Removal Details</h4>
+                                <div class="panel panel-default">
+
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body order-headid">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-8 col-xs-12 ">
+                                                    <div class="form-group required">
+                                                        <div class="col-md-5 col-sm-5 col-xs-12">
+                                                            <label for="removal-plan-name" class="control-label custmrid">Removal Plan Name</label>
+                                                            <div class="popoverHldr marg-left7">
+                                                            <span class="glyphicon glyphicon-info"
+                                                                  data-container="body"
+                                                                  data-toggle="popover"
+                                                                  data-placement="right"
+                                                                  data-content="This is only for your reference."
+                                                                  data-original-title="" title="">
+                                                            </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7 col-sm-6 col-xs-11 paddnone">
+                                                            <input name="removal-plan-name" type="text" class="form-control" id="removal-plan-name" placeholder="Max. 30 characters" ng-model="removalsModel.removal.merchantOrderId" required required-message="validationMessages.required" maxlength="30"/>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <!-- product details starts-->
+                                    <div class="panel panel-default paddnone">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><a href="javascript:;" id="order-create-product-details">Add Product</a></h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse in">
+                                            <div class="panel-body paddnone">
+                                                <div class="row srch-product">
+                                                    <div class="col-md-12 col-sm-11 col-xs-12">
+                                                        <div class="form-group">
+														<div class="col-md-2 col-sm-3 col-xs-12">
+                                                            <label for="order-create-search-product" class="control-label">Search and Add Products</label>
+															</div>
+                                                            <div class="col-md-3 col-sm-3 col-xs-10 shipEditSearchandAddBox">
+                                                                <input name="order-create-search-product" type="text" class="form-control shipment-search-box-products" id="order-create-search-product" placeholder="Search Product" ng-model="searchKey" ng-focus="findSuggestion(searchKey)" ng-change="findSuggestion(searchKey)" />
+                                                                <div class="list-group suggestion-box nano" id="order-create-product-search-suggestion" ng-if="suggestions.length">
+                                                                    <div class="nano-content">
+                                                                        <a ng-repeat="suggest in suggestions" href="javascript:;" class="list-group-item" ng-click="addProduct(suggest)" ng-class="{'disabled' : checkActive(suggest)}">
+                                                                            <div class="createOrderSuggestion">
+                                                                                <div class="prodIdContainer">
+                                                                                    <div class="prodIDs">
+                                                                                        <div class="txtBold prodId" ng-bind-html="'Merchant SKU : '+highlightSuggest(suggest.sku, searchKey)"></div>
+                                                                                    </div>
+                                                                                    <div class="prodIcons">
+                                                                                        <span ng-class="{'actCircle' : getSuggestionClass(suggest.isActive), 'actCircleInact' : !getSuggestionClass(suggest.isActive)}"></span>
+                                                                                        <span class="displayInline" ng-class="{'glyphicon glyphicon-flight-grid' : !getSuggestionClass(suggest.isExportable), 'glyphicon glyphicon-flight-ok-grid' : getSuggestionClass(suggest.isExportable)}"></span>
+                                                                                    </div>
+                                                                                    <div class="clear"></div>
+                                                                                </div>
+
+                                                                                <div class="suggprodProductContainer">
+                                                                                    <div class="suggprodPrdName" ng-bind-html="'Name: ' + highlightSuggest(suggest.productName, searchKey) | addEllipse:37"></div>
+                                                                                </div>
+
+                                                                                <div class="suggestprodSKU">
+                                                                                    <div class="txtItalic fleft suggprodEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(suggest.fbspSkuId, searchKey)"></div>
+                                                                                    <div class="suggprodPrdCodes">
+                                                                                        <span ng-if="suggest.productType" ng-bind-html="highlightSuggest(suggest.productType, searchKey)"></span>
+                                                                                        <span ng-if="suggest.productId" ng-bind-html="': '+((suggest.productId) ? (highlightSuggest(suggest.productId, searchKey)):constants.notAvailableText)"></span>
+                                                                                    </div>
+                                                                                    <div class="clear"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
+                                                                    <a href="javascript:" class="list-group-item">
+                                                                        <span class="center fnt12px">No matching products found</span>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
+                                                                    <a href="javascript:" class="list-group-item">
+                                                                        <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
+                                                                    </a>
+                                                                </div>
+
+                                                            </div>
+															<em class="text-danger paddtop3 dispInlineblk">Click on the suggested product to add them.</em>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- remove{{active}} -->
+                                                <em class="text-danger paddtop3 dispInlineblk" ng-show="active">Remove the products highlighted in red or resolve the issues in order to create order</em>
+
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 paddnone marbtm15">
+                                                        <div class="newGridContainer container-fluid  col-xs-12 paddnone">
+
+
+                                                            <div class="row proHeader hidden-xs">                                                          
+																
+																<div class="Hproduct col-xs-12 col-sm-12 col-md-2 col-lg-3 ">Product</div>
+                                                                <div class="Hcategory col-xs-12 col-sm-12 col-md-2 col-lg-2">Category </div>
+                                                                <div class="Hinventory col-xs-12 col-sm-12 col-md-2 col-lg-2">Inventory </div>
+                                                                <div class="Hweight col-xs-12 col-sm-12 col-md-1 col-lg-1">Weight </div>
+                                                                <div class="Hfullfill col-xs-12 col-sm-12 col-md-2 col-lg-2 inline-require">Fulfillable units</div>
+                                                                <div class="Hfullfill col-xs-12 col-sm-12 col-md-2 col-lg-2 inline-require">Damaged units</div>
+                                                                <div class="Hactions col-xs-12 col-sm-12 col-md-1 col-lg-1">Actions</div>
+
+                                                            </div>
+                                                            <div class="clear"></div>
+                                                            <div class="row proRow" ng-repeat="product in removalsModel.removal.lineItems" ng-class="getFullfillableRow([product.qtyFulfillable,product.qtyDamaged],$index)">
+
+                                                                <div class="product col-xs-12 col-sm-12 col-md-2 col-lg-3" id="order-create-product-sku-{{$index}}">
+                                                                    <div>
+                                                                        <div class="fleft martop5 " ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}"></div>
+                                                                        <div class="skU fleft">
+                                                                            <div class="createOrdSKU">
+                                                                                <span ng-bind="product.merchantSku || constants.notAvailable" id="order-edit-merchant-sku-{{$index}}"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="pull-right" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                    <div class="OrdName">
+                                                                        <span class="disblk" ng-bind="product.description || constants.notAvailable | addEllipse:23"></span>
+                                                                    </div>
+                                                                    <div class="eSku fnt10px">
+                                                                        <span class="">EZY-SKU : {{product.ezcSku || constants.notAvailable}}</span>
+                                                                        <span class="eEan" ng-if="product.productCodeType && product.productCode">{{product.productCodeType}} : {{product.productCode}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category col-xs-12 col-sm-12 col-md-2 col-lg-2" ng-bind="getCategory(product.productCategory) || constants.notAvailableText"></div>
+                                                                <div class="inventory col-xs-12 col-sm-12 col-md-2 col-lg-2" id="order-create-product-filfillable-{{$index}}">
+                                                                    <div class="fullFill fullColor txtBold">
+                                                                        Fullfillable : {{product.qtyFulfillable || '0' }}
+                                                                    </div>
+                                                                    <div class="damInbound">
+                                                                        <span class="inb txtItalic">Damaged : {{product.qtyDamaged || '0'}}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="weight col-xs-12 col-sm-12 col-md-1 col-lg-1" ng-bind="product.productWeight ? (product.productWeight + ' ' + product.weightUnit) : constants.notAvailableText">
+
+                                                                </div>
+
+                                                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
+                                                                    <div class="fullfill col-xs-12 col-sm-6 col-md-8 col-lg-8">
+                                                                        <div class="col-sm-6 paddnone">
+                                                                            <input name="order-create-product-quantity-{{$index}}" type="text" class="form-control col-sm-10"
+                                                                                   placeholder="Units"
+                                                                                   ng-model="product.quantityFulfillable"
+                                                                                   ng-change="getRemovalFee()"
+                                                                                   invalid-message="validationMessages.invalidRemovalFullfillableUnitShow"
+                                                                                   required-message="validationMessages.required"
+                                                                                   validator="validateFulfillableUnit(removalsModel.removal.lineItems[{{$index}}],{{$index}})"
+                                                                                   step="1" min="1" ng-pattern="/^[0-9]*$/"/>
+                                                                        </div>
+                                                                        <div class="col-sm-6 paddnone">
+                                                                            <input name="order-create-product-damaged-{{$index}}" type="text" class="form-control col-sm-10"
+                                                                                   placeholder="Units"
+                                                                                   ng-model="product.quantityDamaged"
+                                                                                   ng-change="getRemovalFee()"
+                                                                                   invalid-message="validationMessages.invalidRemovalDamagedUnitShow"
+                                                                                   required-message="validationMessages.required"
+                                                                                   validator="validateDamagedUnit(removalsModel.removal.lineItems[{{$index}}],{{$index}})"
+                                                                                   step="1" min="1" ng-pattern="/^[0-9]*$/"/>
+                                                                        </div>
+                                                                        <div class="col-sm-12 invalidUnits ezyHide" id="invalidUnits_{{$index}}"></div>
+                                                                        <div class="col-sm-12 insufficientInventory ezyHide" id="insufficientInventory_{{$index}}">Insufficient Inventory</div>
+                                                                    </div>
+
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 paddleft20 txtCenter orderRemove">
+                                                                        <button class="btnbgnone" id="order-create-product-remove-{{$index}}"type="button" ng-click="removeProduct(product); getRemovalFee()"><span class="glyphicon glyphicon-cross"></span></button>
+                                                                    </div>
+
+                                                                    <div class="clearfix"></div>
+
+                                                                    
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row proRow" ng-if="!removalsModel.removal.lineItems.length">
+
+                                                                <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                                                    No products added
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product details ends-->
+                                </div>
+                                <div class="row">
+                                    <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+                                        <div class="panel-heading estimatehead">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;"
+                                                   id="orders-edit2-fulfillment-summary"> Estimated Charges</a>
+                                            </h4>
+                                        </div>
+                                        <div id="orders-edit2-collapseThree" class="panel-collapse collapse in">
+                                            <div class="panel-body delwidget paddbtm0">
+                                                <div class="row">
+                                                    <!-- Left hand Panel -->
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group">This is only an estimate based on given input. Billing will be based on actuals and may vary.
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-12 col-xs-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label  class="col-md-3 col-sm-5 col-xs-6 control-label" id="total-weight">Total weight </label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{getTotalWeight()+' kg'}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-xs-12" >
+                                                                <div class="form-group">
+                                                                    <label  class="col-md-3 col-sm-5 col-xs-6 control-label">Number of units
+                                                                    </label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{getTotalUnits()}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-3 col-sm-5 col-xs-6 control-label">Removal fee</label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{(totalRemovalFee)?(totalRemovalFee +' '+ constants.currentCurrency):'0 '+constants.currentCurrency}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Right hand panel -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="btn-grp pull-right">
+                                <button class="btn btn-default removalbtnpad" id="orders-edit2-view-back-btm" ng-click="navigate('/orders/removals')" type="button">Cancel</button>
+                                <button type="submit" id="create-removal-button1"  class="btn btn-primary removalbtnpad">Create Removal</button>
+                                <button type="submit" id="create-removal-button2" class="btn btn-primary removalbtnpad approve">Create & Approve Removal</button>
+
+
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+            <!-- Create Removal Confirmation Moadal -->
+            <div class="modal fade" id="confirm-create-removal-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <p> Estimated Charges Summary <span class="confirm-create-removal-close" data-dismiss="modal">X</span></p>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row mrgnone">
+                                <!-- Left hand Panel -->
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">This is only an estimate based on given input. Billing will be based on actuals and may vary.
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label  class="col-md-3 col-sm-5 col-xs-6 control-label">Total weight </label>
+                                                <div class="col-sm-7 col-xs-6">
+                                                    <p  class="form-control-static padd0" ng-bind=""></p>
+                                                    <em>{{getTotalWeight()+' kg'}}</em>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-xs-12" >
+                                            <div class="form-group">
+                                                <label  class="col-md-3 col-sm-5 col-xs-6 control-label">Number of units
+                                                </label>
+                                                <div class="col-sm-7 col-xs-6">
+                                                    <p  class="form-control-static padd0" ng-bind=""></p>
+                                                    <em>{{getTotalUnits()}}</em>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="col-md-3 col-sm-5 col-xs-6 control-label">Removal fee</label>
+                                                <div class="col-sm-7 col-xs-6">
+                                                    <p  class="form-control-static padd0" ng-bind=""></p>
+                                                    <em>{{(totalRemovalFee)?(totalRemovalFee +' '+ constants.currentCurrency):'0 '+constants.currentCurrency}}</em>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="create-removal-modal-cancel">Cancel</button>
+                            <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="create-removal-modal-btn">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+

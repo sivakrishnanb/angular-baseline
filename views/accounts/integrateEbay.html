@@ -1,0 +1,105 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            
+            <!--<form role="form"  name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">-->
+              
+            <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="addEbayChannel(add_ebay)">
+              
+              <h2 class="thHead">Connections</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                 <div class="col-sm-12 col-lg-9 paddnone" >
+                      <div class="thHeadIco glyphicon glyphicon-con col-lg-1 col-sm-1 hidden-xs"></div>
+                        <div class="thContent col-lg-11 col-sm-10">
+                          You can manage connections to external sales channels - marketplaces and shopping carts here.
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+			  
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <h4 class="panelbrdr" id="con-saleschannels-header"><span class="txtBold">Connect to your eBay Seller Account</span> <img src="images/ebay.jpg" alt="Shopify"
+                                class="img-rounded ebayImg"></h4>
+                    <div class="panel-body paddleft10">
+                      
+                      
+                      
+                        
+                      <div class="row">
+						  
+						  <p>With ezyCommerce, you can sell on eBay and use ezyCommerce as the fulfillment solution for your eBay orders. In order to do this, you need to add 
+your eBay seller account on the ezyCommerce platform. </p>
+
+<ul class="cnct-ebay">
+We can synchronize the following information with eBay –
+<li class="paddtop10">-  <span class="txtBold">Fulfillment Orders</span> - Once you are connected, we will start polling eBay servers periodically to check for new orders under your account. 
+	      All new and modified orders will be downloaded into your ezyCommerce account.</li>
+<li>-  <span class="txtBold">Order Status</span> – When an order is shipped, status and tracking information is pushed to eBay.</li>
+
+</ul>
+<ol class="cnct-ebay">
+Follow the procedure below to add your eBay account to ezyCommerce.
+<li>Click <span class="txtBold">‘Connect to eBay’</span>, you’ll be directed to the eBay.com website. Simply enter your eBay credentials and it will link up. eBay has unified 
+		logins between all their individual websites for different countries.</li>
+<li>Enter the required account information – your username and password. EBay uses oAuth security authentication mechanism hence nobody 
+		including us will not have access to your account password.</li>
+		<li>After logging in, select <span class="txtBold">“I agree”</span> to grant access for ezyCommerce to access your eBay account and you’ll be redirected back to the 
+		ezyCommerce Connections page.</li>
+		<li>You need to make sure that your eBay listings have the same <span class="txtBold">Merchant SKU in the ‘SKU’ field</span> so that when we import an order from eBay, 
+		we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products 
+		with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item, click <a href="" class="ebayClick">here</a> to know the process to setup variant 
+		SKUs in your eBay listing.</li>
+		<li>If you would like to update shipment tracking information back to eBay, check <span class="txtBold">“Update Order Tracking Status”</span> in the Connections page. 
+		Once your orders have shipped, we will automatically push tracking information into Ebay and change the order status to “Shipped”.</li>		
+
+</ol>
+<span class="txtBold">Note:</span> At this time, we support only Direct eBay connection. We do not support eBay via Paypal IPN connection.
+
+                        </div>
+                        
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-2 text-left">
+                            <label for="merchant-channel-name" class=" control-label inline-required">Channel Name</label>
+                          </div>
+                          <div class="col-sm-3 paddnone">
+                            <div class="form-group required">
+                              <input name="merchant-channel-name" type="text" class="form-control" id="merchant-channel-name" placeholder="Max. 60 characters" ng-model="model.merchantChannelName" maxlength="60" required="" required-message="validationMessages.required">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-9 martopbtm20 paddlft0">
+                          <button class="btn btn-primary" type="submit">Connect to eBay</button>
+                        </div>
+                        
+                        
+                      </div>
+					  <!--<div class="col-sm-3">
+                          <select id="ebay-site-ids" name="ebay-site-ids" class="form-control" ng-model="ebaySiteCountry" required required-message="validationMessages.required" ng-options="item as item.name for item in ebaySiteIds">
+                           <option value="">Select</option>
+                          </select>-->
+                      <!--<div class="row">
+                        <div class="col-sm-1 pull-right">
+                          <button type="button" class="btn btn-default" ng-click="back()">Cancel</button>
+                        </div>
+                      </div>-->
+                    </div>
+                  
+                </div>
+              </div>
+            </form>
+            
+            
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

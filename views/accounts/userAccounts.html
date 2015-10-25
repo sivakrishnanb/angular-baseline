@@ -1,0 +1,93 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="acc-userAccounts" novalidate angular-validator angular-validator-submit="">
+              <h2 class="thHead">User Accounts</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                  <div class="col-sm-12 col-lg-9 paddnone" >
+                    <div class="thHeadIco glyphicon glyphicon-account-settings-user col-lg-1 col-sm-1 hidden-xs"></div>
+                    <div class="thContent col-lg-11 col-sm-10 paddtop34">
+                      You can add, edit and remove other users for your account here.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <div class="panel-group">
+
+                <div class="row paddbtm20">
+                  <div class="row">
+                    <div class="col-sm-12 paddnone">
+                      <h5 class="pull-left martop0">Account Owner : {{loggedInContent.email}}</h5>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 paddnone">
+                      <a href="#/accounts/newSubAccount">
+                        <button class="btn btn-primary">Add new sub-user</button>
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row paddbtm20 xstxt-padd0">
+                  <div class="panel panel-default col-xs-12 paddnone">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="acc-userAccounts-header">Sub Users</a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body pnlbdy-pad5" >
+                        <div class="">
+                          <div class="row proHeader txtLeft hidden-xs">
+                            <div class="userAccNameH col-xs-12 col-sm-2 col-md-2">Name</div>
+                            <div class="userAccEmailH col-xs-12 col-sm-3 col-md-3">Email / User ID</div>
+                            <div class="userAccLastLoginH col-xs-12 col-sm-2 col-md-2">Last Login</div>
+                            <div class="userAccUserRoleH col-xs-12 col-sm-3 col-md-3">User Permissions</div>
+                            <div class="userAccActionsH col-xs-12 col-sm-2 col-md-2">Actions</div>
+                          </div>
+
+                          <div class="row proRow  noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-if="!users.length">
+                              <div class="fleft noDataRightContent">
+                                <p class="noProd txtBold">You don't have any sub-user set up for this account.</p>
+                                <p class="noStart">Create a sub user account for your sub-ordinates to manage your business. You can control their permissions at all times.</p>
+                              </div>
+                          </div>
+
+                          <div class="clear"></div>
+
+                          <div ng-repeat="user in users" class="row proRow">
+                            <div class="userAccName col-xs-12 col-sm-2 col-md-2">{{(user.lastName+' '+user.firstName) || constants.notAvailableText}}</div>
+                            <div class="userAccEmail col-xs-12 col-sm-3 col-md-3">{{user.email || user.userId || constants.notAvailableText}}</div>
+                            <div class="userAccLastLogin col-xs-12 col-sm-2 col-md-2">{{user.lastLogin || constants.notAvailableText}}</div>
+                            <div class="userAccUserRole col-xs-12 col-sm-3 col-md-3">{{getUserRoles(user.roles)}}</div>
+                            <div class="userAccActions col-xs-12 col-sm-2 col-md-2">
+                              <a id="userAccounts-edit" ng-href="#/accounts/editUser/{{user.userId}}" title="Edit">
+                                <span class="glyphicon glyphicon-edit-circle-grid"></span>
+                              </a>
+                              <a id="userAccounts-delete" href="javascript:;" ng-click="deleteUser(user)" title="Delete">
+                                <span class="glyphicon glyphicon-cross-grid"></span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

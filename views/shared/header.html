@@ -1,13 +1,15 @@
-<header class="navbar navbar-default navbar-fixed-top" role="navigation">
+<header class="navbar navbar-default navbar-fixed-top" role="navigation" id="mainHeader">
   <div class="container-fluid">
-      <a class="navbar-brand hidden-xs" href="#/home">EzyCommerce</a>
-      <a class="navbar-brand visible-xs" href="#/home">Ezy</a>
+      <a class="navbar-brand hidden-xs siteLogo hvr-float-shadow" href="#/home"><span class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a>
+      <a class="navbar-brand visible-xs mobsitelogo" href="#/home"></a>
       <div class="pull-left">
-        <ul class="nav navbar-nav">
-          <li ng-class="isTabActive('home')"><a href="#/home"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs">Dashboard</span></a></li>
-          <li ng-class="isTabActive('products')"><a href="#/products"><span class="glyphicon glyphicon-folder-close"></span><span class="hidden-xs">Products</span></a></li>
-          <li ng-class="isTabActive('shipments')"><a href="#/shipments"><span class="glyphicon glyphicon-share-alt"></span><span class="hidden-xs">Shipments</span></a></li>
-          <li ng-class="isTabActive('orders')"><a href="#/orders"><span class="glyphicon glyphicon-stats"></span><span class="hidden-xs">Orders</span></a></li>
+        <ul class="nav navbar-nav navbar-left">
+          <li check-acl="headerDashBoard" ng-class="isTabActive('home')"><a href="#/home"><span class="glyphicon glyphicon-home"></span><span class="hidden-xs hidden-sm">Dashboard</span></a></li>
+          <li check-acl="headerProducts" ng-class="isTabActive('products')"><a href="#/products"><span class="glyphicon glyphicon-folder-close"></span><span class="hidden-xs hidden-sm">Products</span></a></li>
+          <li check-acl="headerShipments" ng-class="isTabActive('shipments')"><a href="#/shipments"><span class="glyphicon glyphicon-share-alt"></span><span class="hidden-xs hidden-sm">Shipments</span></a></li>
+          <li check-acl="headerOrders" ng-class="isTabActive('orders')"><a href="#/orders"><span class="glyphicon glyphicon-stats"></span><span class="hidden-xs hidden-sm">Orders</span></a></li>
+          <li check-acl="merchantTab" ng-class="isTabActive('merchant')"><a href="#/merchant" class="merchantHeader"><span class="glyphicon glyphicon-group_add"></span><span class="hidden-xs hidden-sm">Merchant</span></a></li>
+          <li check-acl="adminTab" ng-class="isTabActive('admin')"><a href="#/admin" class="merchantHeader adminNavPadtop"><span class="glyphicon glyphicon-admin-nav"></span><span class="hidden-xs hidden-sm adminNavText">Admin</span></a></li>
         </ul>
       </div>
       <div class="pull-right">
@@ -17,17 +19,66 @@
             </a>
       </div>
       <div class="pull-right">
-        <ul class="nav navbar-nav navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-collapse collapse rightheaderbar">
+            <!--Typeahead starts-->
+            <li check-acl="merchantTypeHead" class="custom-typeahead-header">
+                <label id="typeahead-label" class="custom-typeahead-search-label paddrgt7 midAlign">{{typeahead.selectedItem}}</label>
+			</li>
+			<li ng-show="typeahead.selectedItem" check-acl="merchantTypeHead" class="glyphicon glyphicon-nav-sep hidden-xs"></li>
+            <!-- Commented for future use
+            <li class="custom-typeahead-header">
+                <label id="typeahead-label" class="custom-typeahead-search-label" ng-show="!typeahead.beginSearch" ng-dblclick="beginSearch()">{{typeahead.selectedItem || "Search"}}</label>
+                &lt;!&ndash;<input id="typeahead-text"  class="custom-typeahead-search-text" ng-show="typeahead.beginSearch" type="text"
+                       class="form-control customtype-ahead-search-text"
+                       placeholder="Search" ng-model="search.searchKey"
+                       ng-focus="findSuggestion(search.searchKey, searchColumn); showResults = true"
+                       ng-change="findSuggestion(search.searchKey, searchColumn)"
+                        />&ndash;&gt;
+            </li>
+            <li>
+                <button id="typeahead-search-button" type="button" class="btn btn-default btn-sm custom-typeahead-search-button"  ng-click="beginSearch()">
+                    <i class="glyphiconsrch glyphicon-search"></i>
+                </button>
+            </li>
+            <li>
+                <ul>
+                    <li class="list-group suggestion-box custom-typeahead-results searchlist" id="typeahead-results" ng-show="(typeahead.beginSearch || typeahead.showResults) && suggestions.length">
+                        <a ng-repeat="suggest in suggestions" class="list-group-item">
+                            <span ng-bind-html="highlightSuggest(suggest.productName, searchKey)" ng-click="valueSelected(suggest.productName)"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>-->
+            <!--typeahead ends-->
           <li class="dropdown">
-            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm hidden-xs">Krishna </span><span class="caret"></span></a>
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-user"></span>
+              <span class="hidden-md hidden-sm hidden-xs headtop3"><span ng-bind="getContext(loggedInUser)|addEllipse:20"></span></span>
+              <span class="caret"></span>
+            </a>
+			
             <ul class="dropdown-menu" role="menu">
-              <li><a href="mail:krishna@gmail.com">krishna@gmail.com</a></li>
+              <li><a href="javascript:;" ng-bind="loggedInContent.email"></a></li>
               <li><a href="#/logout" title="Logout">Logout</a></li>
             </ul>
           </li>
-          <li><a href="#/account" title="My Account"><span class="glyphicon glyphicon-cog"></span><span class="hidden-sm hidden-xs">My Account</span></a></li>
-          <li><a href="#/help" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-sm hidden-xs">Help</span></a></li>
-          <li><a href="#/notifications" title="Notifications"><span class="glyphicon glyphicon-bullhorn"></span><span class="hidden-sm hidden-xs">Notifications</span></a></li>
+		  
+          <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
+          <li ng-class="isTabActiveRight('accounts')"><a href="#/accounts" title="My Account"><span class="glyphicon glyphicon-cog"></span><span class="hidden-md hidden-sm hidden-xs headtop2">My Account</span></a></li>
+          <!--<li class="glyphicon glyphicon-nav-sep hidden-xs"></li>-->
+          <!--<li><a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a></li>-->
+            <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
+            <!-- <li><a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a></li> -->
+            <li class="support"><a href="javascript:;"><span class="glyphicon glyphicon-book"></span><span class="hidden-md hidden-sm hidden-xs headtop2">Support</span></a></li>
+
+          <li class="glyphicon glyphicon-nav-sep hidden-xs"></li>
+          <li class="notifypopup">
+            <a href="javascript:;" ng-click="callHeaderNotifications()" id="noti-button" data-placement="bottom"  data-toggle="popover">
+              <span class="glyphicon glyphicon-bullhorn popover-markup"><span class="notificationCircle" ng-if="notificationCounts" ng-bind="notificationCounts"></span></span>
+              <span class="hidden-md hidden-sm hidden-xs trigger headtop2">Notifications</span>
+            </a>
+          </li>
         </ul>
       </div>
   </div>

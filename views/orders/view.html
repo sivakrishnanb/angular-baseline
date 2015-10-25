@@ -1,0 +1,839 @@
+<section class="ordersPrintContainer container-fluid" ng-init="init()">
+    <div class="row mrgn-top25">
+        <div class="col-xs-12">
+            <ng-include src="'views/orders/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form" class="form-horizontal" name="view_order">
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <div class="displaylbltxt-panel ord-head-print">
+                                        <h2 class="thHead thHead-view">Order #</h2>
+                                        <div class="viewlbltrack martop33" data-toggle="tooltip" data-placement="top" title="Merchant Order ID">
+                                            <span ng-bind="model.merchantOrderId || constants.notAvailable"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div class="row paddbtm30">
+                                            <div class="col-sm-12 col-lg-9 paddnone fldWidth">
+                                                <div class="thHeadIco glyphicon glyphicon-export_orders col-lg-1 col-sm-1 hidden-xs"></div>
+                                                <div class="thContent descDivPrint col-lg-11 col-sm-10">
+                                                    <span ng-bind="getDescText()"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="edit-paging txtRight" ng-show="orderHeaders.length"> -->
+                            <div class="edit-paging txtRight" ng-if="0">
+                                <span > Showing {{currentObjPos}} of {{orderHeaders ? orderHeaders.length: ''}} Orders</span>
+                                <button class="btn btn-default glyphicon glyphicon-icon-prevbtn" ng-disabled="{{currentObjPos - 2 < 0 }}" type="button" ng-click="getNextItem(currentObjPos - 2)"></button>
+                                <button class="btn btn-default glyphicon glyphicon-icon-nextbtn" ng-disabled="{{currentObjPos == orderHeaders.length}}"  type="button" ng-click="getNextItem(currentObjPos)"></button>
+                            </div>
+
+                            <div class="panel-group mrgn-top22">
+                                <div class="row spec-view">
+                                    <div class="panel panel-default col-md-4 col-sm-12 col-xs-12  smtxt-padd0 xstxt-marbtm col-md-height">
+
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title  panelTitle1 PanelHeading1-order">Order Specifications</h4>
+                                        </div>
+
+
+                                        <div id="orders-view-collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body viewbg panelBody1 Panel1-order">
+
+                                                <!-- Left hand Panel -->
+
+
+                                                <div class="col-sm-12 col-xs-12" >
+                                                    <div class="form-group">
+                                                        <label for="orders-view-merchant-order-id" class="col-sm-6 control-label leftHead-Order fllft">EZY Order ID<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p id="orders-view-merchant-order-id" class="form-control-static" ng-bind="model.ezcOrderNumber"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-xs-12" check-acl="showMerchId" ng-if="model.merchantCode">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-6 control-label leftHead-Order fllft">Merchant ID<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p class="form-control-static" ng-bind="model.merchantCode"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-xs-12" ng-if="showPoOrderNumber(model.orderStatus,model)">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-merchant-order-id" class="col-sm-6 control-label leftHead-Order fllft">PO Number<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p id="orders-view-po-number" class="form-control-static" ng-bind="(model.purchaseOrders && model.purchaseOrders[0].poNumber)? model.purchaseOrders[0].poNumber : constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="price" class="col-sm-6 control-label leftHead-Order fllft">Status
+                                                            <span class="pull-right">:</span>
+                                                        </label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 displaylbltxt marbtm7 fllft ">
+                                                            <span id="product-view-retail-price" class="form-control-static box-label-print" ng-bind="orderStatus || constants.notAvailable"></span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-displayable-order-id" class="col-sm-6 control-label leftHead-Order fllft">Displayable Order ID<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p id="orders-view-displayable-order-id" class="form-control-static" ng-bind="model.displayableOrderId || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-displayable-order-date" class="col-sm-6 control-label leftHead-Order fllft">Displayable Order Date<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p id="orders-view-displayable-order-date" class="form-control-static" ng-bind="model.displayableDate || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-process-order-date" class="col-sm-6 control-label leftHead-Order fllft">Process Order Date<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <p id="orders-view-process-order-date" class="form-control-static" ng-bind="model.processOrderDate || constants.notAvailable | addEllipse:10:true"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-tracking-order-number" class="col-sm-6 control-label leftHead-Order fllft">Tracking Number<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                                            <a ng-if="model.trackingNumber.length" href="javascript:;" ng-repeat="number in model.trackingNumber track by $index" class="form-control-static dispInlineblk" ng-bind="($index ? ', ' : '') + number" ng-click="$parent.trackByNumber($index)"></a>
+                                                            <p ng-if="!model.trackingNumber.length" id="orders-view-tracking-order-number" class="form-control-static">Not available</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-xs-12 ass" >
+
+                                                    <div class="col-sm-4 col-md-4 col-xs-12 paddnone crt-date-order">
+                                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Created Date">
+                                                            <label for="orders-view-created-order-date" class="col-sm-2 col-xs-2 control-label crt-date-order-icon">
+                                                                <span class="glyphicon glyphicon-icon-adddate"></span>
+                                                            </label>
+                                                            <div class="col-sm-8 col-md-9 wdth89 crt-date-order-val">
+                                                                <p id="orders-view-created-order-date" class="form-control-static" ng-bind="model.createdDate || constants.notAvailable | addEllipse:10:true"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4 col-md-4 col-xs-12 paddnone mod-date-order">
+                                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Modified Date">
+                                                            <label for="orders-view-modified-order-date" class="col-sm-2 col-xs-2 control-label mod-date-order-icon">
+                                                                <span class="glyphicon glyphicon-icon-edit1"></span>
+                                                            </label>
+                                                            <div class="col-sm-8 col-md-9 wdth89 mod-date-order-val">
+                                                                <p id="orders-view-modified-order-date" class="form-control-static" ng-bind="model.modifiedDate || constants.notAvailable | addEllipse:10:true"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4 col-md-4 col-xs-12 paddrgt0 aprv-date-order">
+                                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Approved Date">
+                                                            <label for="orders-view-approved-order-date" class="col-sm-2 col-xs-2 control-label aprv-date-order-icon">
+                                                                <span class="glyphicon icon-ic_thumb_up_48px"></span>
+                                                            </label>
+                                                            <div class="col-sm-8 col-md-10 wdth89 aprv-date-order-val">
+                                                                <p id="orders-view-approved-order-date" class="form-control-static" ng-bind="model.approvalDate || constants.notAvailableText | addEllipse:10:true"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <div class="col-sm-12 col-xs-12" ng-show="isInternationalOrder">
+                                                    <div class="form-group">
+                                                        <label for="order-view-orderShipCategory" class="col-lg-6 col-md-6 col-sm-4 control-label">Category of  shipment<span class="pull-right">:</span>
+                                                        </label>
+                                                        <div class="col-sm-6 xstxt-paddlft20">
+                                                            <p id="orders-view-total-estimated-deliverycharges" class="form-control-static" ng-bind="(model.shipping.categoryOfGoods=='O')?getDisplayName(model.shipping.categoryOfGoods, 'orderShipCategory')+' - '+model.shipping.categoryGoodsOther:getDisplayName(model.shipping.categoryOfGoods, 'orderShipCategory')"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-xs-12" ng-show="orderShipCategory.value=='O' && isInternationalOrder">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-ship-category-free-text" class="col-lg-6 col-md-6 col-sm-4 control-label">Other Category of shipment<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20">
+                                                            <p id="orders-view-total-estimated-deliverycharges" class="form-control-static" ng-bind="model.shipping.categoryGoodsOther || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-xs-12" ng-show="isInternationalOrder">
+                                                    <div class="form-group">
+                                                        <label for="order-view-nonDeliveryInstr" class="col-lg-6 col-md-6 col-sm-4 control-label">Non delivery instructions<span class="pull-right">:</span></label>
+                                                        <div class="col-sm-6 xstxt-paddlft20">
+                                                            <p id="order-view-nonDeliveryInstr" class="form-control-static" ng-bind="getDisplayName(model.shipping.nonDeliveryInstr, 'orderDeliveryInstruction')"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-default col-lg-4 col-md-4 col-sm-12 col-xs-12 smtxt-padd0 xstxt-marbtm col-md-heightone">
+
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title panelTitle1 PanelHeading2-order">Delivery Information</h4>
+                                        </div>
+
+                                        <div class="panel-body viewbg panelBody1 Panel2-order">
+                                            <div class="row">
+                                                <!-- Left hand Panel -->
+                                                <div class="col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label for="orders-view-shipping-method" class="control-label col-lg-5 col-sm-4 col-xs-5  leftHead-Order fllft">
+                                                            Delivery Option
+                                                        </label>
+                                                        <div class="col-sm-7 fllft">
+                                                            <p id="orders-view-shipping-method" class="form-control-static" ng-bind="model.shipping.methodName || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-5 col-md-6 col-sm-4 col-xs-12 ttl-weight-order-print">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="top" title="Total weight">
+                                                        <label for="orders-view-shipping-weight" class="col-sm-2 col-xs-1 control-label weight-icon" >
+                                                            <span class="glyphicon glyphicon-weight"></span>
+                                                        </label>
+                                                        <div class="col-sm-9 weight-value paddnone">
+                                                            <p id="orders-view-shipping-weight" name="orders-view-shipping-weight" class="form-control-static paddleft20" ng-bind="((model.shipping.estShippingWeight | number : 2) + ' ' + (model.shipping.weightUnits || 'kg')) || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-5 col-md-6 col-sm-4 col-xs-12 paddnone ttl-charge-order-print">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="top" title="Total Charges">
+                                                        <label for="orders-view-total-estimated-deliverycharges" class="col-sm-2 col-xs-1 amnt control-label charge-icon">
+                                                            <span class="glyphicon glyphicon-dollar2"></span>
+                                                        </label>
+                                                        <div class="col-sm-9 charge-value  paddlft10">
+                                                            <p id="orders-view-total-estimated-deliverycharges" class="form-control-static" ng-bind="((model.shipping.totalCharge | number:2) + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency)) || constants.notAvailable"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label for="orders-view-delivery-charge" class="col-lg-5 col-md-6 col-sm-4 control-label leftHead-Order fllft">Delivery Charges</span>
+                                                    </label>
+                                                    <div class="col-sm-6 fllft">
+                                                        <p id="orders-view-delivery-charge" class="form-control-static" ng-bind="((model.shipping.estDeliveryCharge)?(model.shipping.estDeliveryCharge|number:2):constants.notAvailable) + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency)"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="orders-view-calculated-retail-value" class="col-lg-5 col-md-6 col-sm-4 control-label leftHead-Order fllft">Handling Charges</span>
+                                                    </label>
+                                                    <div class="col-sm-6 fllft">
+                                                        <p id="orders-view-calculated-retail-value" class="form-control-static" ng-bind="(model.shipping.estFulfillmentCharge|| constants.notAvailable) + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency)"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-if="isCountriesOptionsVisible('ordersViewEnhancedLiability')">
+                                                    <label for="orders-view-calculated-retail-value" class="col-lg-5 col-md-6 col-sm-4 control-label leftHead-Order fllft">Enhanced Liability</span>
+                                                    </label>
+                                                    <div class="col-sm-6 fllft  wd100">
+                                                        <p id="orders-view-calculated-retail-value" class="form-control-static" ng-bind="model.shipping.liabilityTaken ? ('Yes' + ' - ' + (model.shipping.estEnhancedCost || constants.notAvailableText)  + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency) + ' (Coverage for ' + (model.shipping.liabilityValue || constants.notAvailableText) + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency) +')') : 'Not Taken'"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="orders-view-calculated-retail-value" class="col-lg-5 col-md-6 col-sm-4 control-label  leftHead-Order fllft">Total declared value</span>
+                                                    </label>
+                                                    <div class="col-sm-6 fllft">
+                                                        <p id="orders-view-calculated-retail-value" class="form-control-static" ng-bind="(model.shipping.orderDeclaredValue|| constants.notAvailable) + ' ' + (model.shipping.estDeliveryChargeCode || constants.currentCurrency)"></p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Right hand panel -->
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="panel panel-default col-md-4 col-sm-12 col-xs-12 paddnone col-md-heighttwo">
+
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title  PanelHeading3-order"> Destination Address</h4>
+                                        </div>
+                                        <div id="orders-view-collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body viewbg destadd panelBody1 Panel3-order">
+                                                <div class="row">
+                                                    <!-- Left hand Panel -->
+
+
+                                                    <div class="col-sm-12 col-xs-12 paddnone">
+                                                        <div class="form-group">
+                                                            <!--<label for="orders-view-shipping-method" class="col-sm-5 control-label">Shipped to
+                                                            </label>-->
+
+                                                                <span  ng-show="isInternationalOrder" class="viewOrderIsint">
+                                                                    <div class="glyphicon glyphicon-flight-ok-grid displayInline"></div>
+                                                                </span>
+
+                                                            <div class="col-md-12 col-sm-7">
+
+                                                                <span data-toggle="tooltip" data-placement="top" title="Customer Name" class="form-control-static nametxtbold" ng-bind="model.customer.shippingAddress.firstname + ' ' + model.customer.shippingAddress.lastname ||constants.notAvailableText"></span><br/>
+                                                                <span data-toggle="tooltip" data-placement="top" title="Address Line 1" class="form-control-static" ng-bind="model.customer.shippingAddress.address1 || constants.notAvailableText"></span><br/>
+                                                                <span ng-show="model.customer.shippingAddress.address2" data-toggle="tooltip" data-placement="top" title="Address Line 2" class="form-control-static" ng-bind="model.customer.shippingAddress.address2 || constants.notAvailableText"></span><br ng-show="model.customer.shippingAddress.address2"/>
+
+                                                                <span data-toggle="tooltip" data-placement="top" title="City" class="form-control-static" ng-bind="model.customer.shippingAddress.city || constants.notAvailableText"></span><span data-toggle="tooltip" data-placement="top" title="State" class="form-control-static" ng-bind="model.customer.shippingAddress.stateCode ? (' / ' + model.customer.shippingAddress.stateCode) : ''"></span><br/>
+                                                                <span class="form-control-static" ng-bind="displayCountryName" data-toggle="tooltip" data-placement="top" title="Country"></span><span class="form-control-static" ng-show="model.customer.shippingAddress.postalCode" ng-bind="model.customer.shippingAddress.postalCode  ? (' - ' + model.customer.shippingAddress.postalCode) : ''" data-toggle="tooltip" data-placement="top" title="ZIP"></span><br/>
+
+                                                                <span ng-show="model.customer.shippingAddress.phone[0].number" class="form-control-static dispInline viewOrders glyphicon glyphicon-ic_local_phone_48px"></span>
+
+                                                                <span data-toggle="tooltip" data-placement="top" title="Customer Phone Number" ng-show="model.customer.shippingAddress.phone[0].number" class="form-control-static paddlft0 phnpadtop" ng-bind="model.customer.shippingAddress.phone[0].number || constants.notAvailable"></span><br ng-show="model.customer.shippingAddress.phone[0].number">
+
+                                                                <span ng-show="model.customer.shippingAddress.email" class="form-control-static dispInline glyphicon viewOrders glyphicon-ic_mail_48px paddlft0"></span>
+                                                                <span data-toggle="tooltip" data-placement="top" title="Customer Email" ng-show="model.customer.shippingAddress.email" class="form-control-static paddlft10 phnpadtop" ng-bind="model.customer.shippingAddress.email ||constants.notAvailable"></span>
+                                                                <br ng-show="model.customer.shippingAddress.email">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group rmrklbl">
+                                                            <label for="orders-view-remarks" class="col-lg-6 col-md-6 col-sm-4 control-label leftHead-Order-remarks fllft">Remarks</label>
+                                                            <div class="col-sm-6 fllft">
+                                                                <p id="orders-view-remarks" class="form-control-static" ng-bind="model.remark || constants.notAvailableText"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- Right hand panel -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone mrgn-top35">
+
+                                        <div id="orders-view-collapseThree" class="panel-collapse collapse in panel-body-printSummary">
+                                            <div class="panel-body bg-white">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-xs-12 paddnone">
+
+                                                        <div class="newGridContainer container-fluid  col-xs-12 paddnone ">
+                                                            <div class="row proHeader panel-row-printSummary hidden-xs">
+
+
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-3 ordrviewprod order-table-header1">Product</div>
+
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 order-table-header2" ng-class="{'viewOrdUnitsHeader':model.customer.shippingAddress.countryCode!=constants.currentLocation}">No. of Units<span class="glyphicon glyphicon-question-sign"></span></div>
+
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 order-table-header3"> Weight(KG)</div>
+
+                                                                <div ng-if="!isInternationalOrder">
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 order-table-header4">Category</div>
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 order-table-header5">Retail Price ({{constants.currentCurrency}})</div>
+                                                                </div>
+
+                                                                <div ng-if="isInternationalOrder" class="protablepadd col-xs-12 col-sm-12 col-md-5 col-lg-5 txtCenter order-table-header5">Customs Info</div>
+
+                                                                <!--<div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2" ng-show="isInternationalOrder">Total Value({{customs.dvalueCurrencyCode || constants.currentCurrency}}) <span class="glyphicon glyphicon-question-sign"></span></div>-->
+                                                            </div>
+                                                            <div class="clear"></div>
+
+
+                                                            <div class="row proRow ord-row-print" ng-repeat="product in model.lineItems">
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-3 ordrviewprod order-table-rowVal1 ">
+
+
+                                                                    <div class="fleft martop5" ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}" data-toggle="tooltip" data-placement="top" title="{{(product.isActive) ? 'Active' : 'Inactive'}}">
+                                                                    </div>
+
+
+                                                                    <!--         -->
+                                                                    <div class="skU orderviewskU fleft">
+                                                                        <div class="createOrdSKU">
+                                                                            <span data-toggle="tooltip" data-placement="top" class="font-print-8px fnt-bld" title="Merchant SKU" ng-bind="product.merchantSku || constants.notAvailable" id="order-edit-merchant-sku-{{$index}}"></span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <span ng-if="product.selected && isInternationalOrder" data-toggle="tooltip" data-placement="top" title="Declared for Customs" class='glyphicon glyphicon-viewOrder-selected'></span>
+
+                                                                    <span class="pull-right paddrgt10" data-toggle="tooltip" data-placement="top" title="{{(product.isExportable) ? 'Exportable' : 'Non-Exportable'}}" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
+
+
+                                                                    <div class="clear"></div>
+                                                                    <span data-toggle="tooltip" data-placement="top" title="Product Name" ng-bind="product.description || constants.notAvailable | addEllipse:23" class="prdctname disblk paddlft10 fnt-nrml" id="order-view-product-desc-{{$index}}"></span>
+                                                                    <div class="eSku">
+                                                                        <span class="font-print-8px">EZY-SKU : {{product.ezcSku || constants.notAvailable}}</span>
+                                                                        <span class="eEan font-print-8px" ng-if="product.productCodeType && product.productCode">{{product.productCodeType}} : {{product.productCode}}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div ng-if="model.orderStatus != 'SHIPPED' && model.orderStatus != 'DELIVERED'" class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 order-table-rowVal2" ng-class="{'viewOrdUnits':model.customer.shippingAddress.countryCode!=constants.currentLocation}"ng-bind="product.quantity || constants.notAvailableText"></div>
+
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 order-table-rowVal2" ng-class="{'viewOrdUnits':model.customer.shippingAddress.countryCode!=constants.currentLocation}" ng-if="model.orderStatus == 'SHIPPED' || model.orderStatus == 'DELIVERED'">
+                                                                    <div ng-bind="(product.quantity)?'Original : '+product.quantity:constants.notAvailableText"></div>
+                                                                    <div ng-bind="(product.shippedQuantity)?'Shipped : '+product.shippedQuantity:constants.notAvailableText"></div>
+                                                                </div>
+
+                                                                <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 order-table-rowVal3" ng-bind="product.productWeight|number:2 + ' ' + product.weightUnit"></div>
+
+                                                                <div ng-if="!isInternationalOrder">
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 order-table-rowVal4" ng-bind="getCategory(product.productCategory) || constants.notAvailableText"></div>
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 order-table-rowVal5" id="order-view-product-filfillable-{{$index}}" ng-bind="product.retailPrice || constants.notAvailableText"></div>
+                                                                </div>
+
+                                                                <div ng-if="isInternationalOrder">
+
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-3 col-lg-3 pull-left customsInfoContainer order-table-rowVal5">
+
+                                                                        <div class="customsInfoDes">
+                                                                            Customs Item Description :
+                                                                        </div>
+                                                                        <div class="customsInfoDesData">
+                                                                            <span ng-bind="product.customsDescription || constants.notAvailableText | addEllipse:27"></span>
+                                                                        </div>
+                                                                        <div class="clear"></div>
+
+                                                                        <div class="customsInfoHscode">
+                                                                            HS Code :
+                                                                        </div>
+                                                                        <div class="customsInfoHsData">
+                                                                            <span ng-bind="product.hsCode || constants.notAvailableText | addEllipse:30"></span>
+                                                                        </div>
+                                                                        <div class="clear"></div>
+
+                                                                    </div>
+
+                                                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-3 col-lg-3pull-left customsCountContainer">
+                                                                        <div class="customsInfoTotalDes">
+                                                                            Total Declared Value :
+                                                                        </div>
+                                                                        <div class="customsInfoTotalValue">
+                                                                            <span ng-bind="product.itemDeclaredValue || constants.notAvailableText"></span>
+                                                                            <span ng-bind="product.dvalueCurrencyCode || constants.notAvailableText"></span>
+                                                                        </div>
+                                                                        <div class="clear"></div>
+
+                                                                        <div class="customsInfoOrgDes">
+                                                                            Origin Country :
+                                                                        </div>
+                                                                        <div class="customsInfoOrgValue">
+                                                                            <span ng-bind="product.countryByName || constants.notAvailableText"></span>
+                                                                        </div>
+                                                                        <div class="clear"></div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="clear"></div>
+                                                            </div>
+                                                            <div class="row proRow" ng-if="!model.lineItems.length">
+                                                                <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                                                    No data to display
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product details ends-->
+                                    
+                                    <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 xstxt-padd0 paddnone mrgn-top17">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title panelTitle1 panelHeading4-order">Additional Information</h4>
+                                        </div>
+                                        <div id="collapseFour" class="panel-collapse collapse in panel4-order">
+                                            <div class="panel-body delwidget bg-white">
+                                                <div class="row" ng-if="!(model.additionalInfo.additionalInfo1 || model.additionalInfo.additionalInfo2 || model.additionalInfo.additionalInfo3 || model.additionalInfo.additionalInfo4 || model.additionalInfo.additionalInfo5 || model.additionalInfo.additionalInfo6 || model.additionalInfo.additionalInfo7 || model.additionalInfo.additionalInfo8 || model.additionalInfo.additionalInfo9 || model.additionalInfo.additionalInfo10|| model.additionalInfo.additionalInfo11 || model.additionalInfo.additionalInfo12)">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group mar-btm10">
+                                                            <div class="col-sm-12">
+                                                                <p id="order-view-add-info-none" class="form-control-static">No additional information available</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo1 || model.additionalInfo.additionalInfo2 || model.additionalInfo.additionalInfo3">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo1" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel1">Additional Information 1</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo1" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo1 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo2">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo2" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel2">Additional Information 2</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo2" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo2 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo3">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo3" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel3">Additional Information 3</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo3" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo3 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" ng-if="model.additionalInfo.additionalInfo4 || model.additionalInfo.additionalInfo5 || model.additionalInfo.additionalInfo6">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo4" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel4">Additional Information 4</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo4" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo4 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo5">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo5" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel5">Additional Information 5</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo5" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo5 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo6">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo6" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel6">Additional Information 6</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo6" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo6 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" ng-if="model.additionalInfo.additionalInfo7 || model.additionalInfo.additionalInfo8 || model.additionalInfo.additionalInfo9">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo6" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel7">Additional Information 7</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo7" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo7 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo8">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo8" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel8">Additional Information 8</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo8" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo8 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo9">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo9" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel9">Additional Information 9</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo9" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo9 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" ng-if="model.additionalInfo.additionalInfo10 || model.additionalInfo.additionalInfo11 || model.additionalInfo.additionalInfo12">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo10" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel10">Additional Information 10</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo10" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo10 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo11">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo11" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel11">Additional Information 11</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo11" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo11 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" ng-if="model.additionalInfo.additionalInfo12">
+                                                        <div class="form-group">
+                                                            <label for="order-view-addInfo12" class="col-sm-5 control-label" ng-bind="model.additionalInfo.additionalInfoLabel12">Additional Information 12</label>
+                                                            <div class="col-sm-7">
+                                                                <p id="order-view-addInfo12" class="form-control-static" ng-bind="model.additionalInfo.additionalInfo12 || constants.notAvailable"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title panelHeading4-order">Order History</h4>
+                                        </div>
+                                        <div id="orders-view-collapseFive" class="panel-collapse collapse in panel4-order">
+                                            <div class="panel-body delwidget bg-white">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>Track your order activity from here. Click on the tracking number to view the detailed status of your shipment</p>
+                                                    </div>
+                                                </div>
+                                                <div class="newGridContainer container-fluid uploadHis">
+                                                    <!--Table Header-->
+                                                    <div class="row proHeader pad55 ordHeadPrint hidden-xs">
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-header1">Status</div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-header2">Date & Time</div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-header3">User</div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-header4">Description</div>
+                                                    </div>
+                                                    <div class="clear"></div>
+
+                                                    <div class="row proRow pad510 radiusnone" ng-if="!model.history.length">
+                                                        <div class="col-sm-12">No data to display</div>
+                                                    </div>
+
+                                                    <div class="row proRow pad510 radiusnone" ng-repeat="data in model.history">
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value1" ng-bind="data.historyTag || constants.notAvailable"></div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value2" ng-bind="data.historyDate || constants.notAvailable"></div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value3" ng-bind="data.historyUsername || constants.notAvailable"></div>
+                                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 order-tableOrdHis-value4" ng-bind="data.historyText || constants.notAvailable"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-grp pull-left" >
+                                  <button id="view-order-duplicate-btm" type="button" class="btn btn-primary" ng-click="duplicate(model.orderHeaderId)">Duplicate</button>
+
+                                  <button ng-if="showViewCancelOrder(model.orderStatus)" id="edit-order-cancelOrder-btm" type="button" class="btn btn-default" ng-click="cancelOrder()">Cancel Order</button>
+                            </div>
+                            <div class="btn-grp pull-right">
+                                <button id="view-order-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Back</button>
+                              
+                                <button onclick="window.print();" class="btn btn-primary" id="order-view-print-btm">Print</button>
+                                <button check-acl="managerApproveOrder" class="btn btn-primary" id="order-view-approve-btm" ng-if="model.orderStatus == 'PROCESS_MGR'" ng-click="approve()">Approve</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+<!-- model ends -->
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-order-tracking-details">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p> Tracking History - # {{trackingNumber || constants.notAvailableText}} <span class="model-close" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body">
+                <div class="newGridContainer container-fluid">
+                    <!--Table Header-->
+                    <div class="row proHeader pad55">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">Date &amp; Time</div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12">Event Code</div>
+                        <div class="col-sm-7 col-md-7 col-lg-7 col-xs-12">Event Description</div>
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="row proRow pad510 radiusnone" ng-if="!trackingHistory.length">
+                        <div class="col-sm-12">No data to display</div>
+                    </div>
+
+                    <div class="row proRow pad510 radiusnone" ng-repeat="data in trackingHistory">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 " ng-bind="data.historyDate || constants.notAvailable"></div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12" ng-bind="data.historyTag || constants.notAvailable"></div>
+                        <div class="col-sm-7 col-md-7 col-lg-7 col-xs-12" ng-bind="data.historyText || constants.notAvailable"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="order-view-shipment-weight" class="col-sm-7 modal-label control-label wdth47 padd0">Shipment Weight (kg) :</label>
+                            <div class="col-sm-3 padd0">
+                                <p id="order-view-shipment-weight" class="form-control-static modal-labelTxt" ng-bind="shipmentWeight || constants.notAvailableText | number:2"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="padd0 pull-right">
+                                <p id="order-view-shipment-weight" class="form-control-static modal-labelTxt" ng-bind="shipmentDeliveryCharge || constants.notAvailableText"></p>
+                            </div>
+                            <label for="order-view-shipment-weight" class="col-sm-7 modal-label control-label wdth35 padd0 pull-right">Delivery Charge :</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="footer-text">Note: You might be able to get more detailed tracking milestones for your orders.
+                    <ul>
+                        <li>Domestic Standard, International Standard and International Expedited - Track the shipments through <a target="_blank" href="http://www.speedpost.com.sg" title="Singpost">www.speedpost.com.sg</a>.</li>
+                        <li>Domestic Economy - Track the shipments through <a target="_blank" href="http://www.singpost.com" title="Singpost">www.singpost.com</a>.</li>
+                        <li>International Economy - Track shipments through <a href="http://www.singpost.com" title="Singpost">www.singpost.com</a>. If there are no events in <a target="_blank" target="_blank" href="http://www.singpost.com" title="Singpost">www.singpost.com</a>, track the shipment directly through the websites of the postal administration of the destination country. For countries with no online tracking updates, SingPost will check with the overseas postal administrations on the status if the addressee did not receive the item after a stipulated time.</li>
+                    </ul></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-order-cancel">
+    <div class="modal-dialog">
+        <form role="form"  name="modal-cancel-order" novalidate angular-validator angular-validator-submit="isTotalQtyValid()">
+            <div class="modal-content fnt12px"> 
+                <div class="modal-header">
+                    <p> Cancel Order <span id="cancel-order-modalClose" class="cancel-order-modalClose" data-dismiss="modal">X</span></p>
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="orders-view-ezy-order-id" class="col-sm-3 control-label leftHead-Order fllft padtop7">EZY Order ID<span class="pull-right">:</span></label>
+                            <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                <p class="form-control-static" ng-bind="model.ezcOrderNumber || constants.notAvailable"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="orders-view-merchant-order-id" class="col-sm-3 control-label leftHead-Order fllft padtop7">Merchant order ID<span class="pull-right">:</span></label>
+                            <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                <p class="form-control-static" ng-bind="model.merchantOrderId || constants.notAvailable"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="orders-view-merchant-po-number" class="col-sm-3 control-label leftHead-Order fllft padtop7">PO Number<span class="pull-right">:</span></label>
+                            <div class="col-sm-6 xstxt-paddlft20 fllft">
+                                <p  class="form-control-static" ng-bind="model.purchaseOrders[0].poNumber || constants.notAvailableText"></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-md-12 paddnone marbtm15">
+
+                            <div class="container-fluid  col-md-12 paddnone">
+
+                                <div class="row proHeader">
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordcnclprod">Product</div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclcat">Category </div>
+                                    <!-- <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent">Inventory </div> -->
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclweight">Weight </div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclunits">No.of Units</div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclfull">Fulfillable</div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcncldmg">Damaged</div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclmiss">Missing</div>
+
+                                </div>
+                                <div class="clear"></div>
+
+                                <div class="row proRow" ng-repeat="product in model.lineItems">
+
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-4 ordcnclprod">
+                                        <div class="fleft martop5" ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}"></div>
+
+                                        <div class="skU fleft">
+                                            <div class="createOrdSKU">
+                                                <span ng-bind="product.merchantSku || constants.notAvailable | addEllipse:20" id="order-edit-merchant-sku-{{$index}}"></span>
+                                            </div>
+                                        </div>
+                                        <span class="pull-right rgt30" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
+                                        <div class="clear"></div>
+
+                                        <span class="disblk paddlft10" ng-bind="product.description || constants.notAvailable | addEllipse:23" class="prdctname" id="order-edit-product-desc-{{$index}}"></span>
+                                        <div class="eSku fnt10px">
+                                            <span class="">EZY-SKU : {{product.ezcSku || constants.notAvailable}}</span>
+                                            <span class="eEan" ng-if="product.productCodeType && product.productCode">{{product.productCodeType}} : {{product.productCode}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordcnclcat" ng-bind="getCategory(product.productCategory) || constants.notAvailableText">
+                                    </div>
+                                    <!-- <div class="protablepadd col-xs-12 col-sm-12 col-md-2 col-lg-2 ordrcreateInvent" id="order-edit-product-filfillable-{{$index}}">
+                                        <div class="fullFill fullColor txtBold">
+                                            Fullfillable : {{product.qtyFulfillable || '0' }}
+                                        </div>
+                                        <div class="damInbound">
+                                            <span class="inb txtItalic">Inbound : {{product.qtyInShipment || '0'}}</span>
+                                        </div>
+                                        </div> -->
+                                        <div class="protablepadd col-xs-12 col-sm-12 col-md-1 col-lg-1 ordcnclweight text-center" ng-bind="product.productWeight ? (product.productWeight | number:2 + ' ' + product.weightUnit) : constants.notAvailableText">
+                                        </div>
+                                        
+                                        <div class="orderCancelQuantities">
+
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcnclunits text-center" ng-bind="product.quantity"></div>
+
+                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcnclfull error_{{$index}}">
+                                                <input name="order-edit-cancelQtyFulfillable-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyFulfillable" ng-blur="isTotalQtyValid($index)" />
+                                            </div>
+
+                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 ordcncldmg error_{{$index}}">
+                                                <input name="order-edit-cancelQtyDamaged-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyDamaged" ng-blur="isTotalQtyValid($index)" />
+                                            </div>
+
+                                            <div class="protablepadd col-xs-12 col-sm-6 col-md-6 col-lg-6 paddleft20 ordcnclmiss error_{{$index}}">
+                                                <input name="order-edit-cancelQtyMissing-{{$index}}" type="text" class="form-control" id="order-edit-product-quantity-{{$index}}" placeholder="" ng-model="product.cancelQtyMissing" ng-blur="isTotalQtyValid($index)" />
+                                            </div>
+
+                                            <div class="clearfix"></div>
+
+                                            <div class="col-sm-12 cancelOrderText ezyHide text-danger" id="cancelOrder_{{$index}}"></div>
+
+                                        </div>
+                                       
+                                    </div>
+
+                                    <div class="row proRow" ng-if="!model.lineItems.length">
+                                        <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                            No products added
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="order-cancel-remarks" class="control-label">Reason <span class="reqStar">*</span></label>
+                            <textarea ng-blur="isTotalQtyValid($index)" class="form-control" row="4" name="order-cancel-remarks" id="order-cancel-remarks" placeholder="Remarks" maxlength="255" ng-model="remarks"></textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="order-cancel-modalCancel" ng-click="resetCancelOrder()">Cancel</button>
+                        <button type="submit" class="btn btn-primary thButton modelButtonOk" id="order-cancel-modalOk">Cancel Order</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </form>
+        </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

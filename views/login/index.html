@@ -1,11 +1,48 @@
 <section class="container-fluid" ng-init="init()">
   <form class="form-signin" role="form" name="form" novalidate>
-        <h2 class="form-signin-heading">EzyCommerce</h2>
-        <input type="email" class="form-control" placeholder="Email address" required autofocus ng-model="email"/>
-        <input type="password" class="form-control" placeholder="Password" required ng-model="password"/ >
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
+	<div class="form-signin-title">
+	<span class="triangle-lft"></span>
+        <h2 class="form-signin-heading"><span class="ezyHide">ezyCommerce</span>&nbsp;</h2>
+	<span class="triangle-rgt"></span>
+	</div>
+<div class="bdycnt">	
+		<div class="row">
+		<h1>Welcome</h1>
+		<em class="text-danger fnt12px" ng-if="routeParams && routeParams=='timeout'">As a security precaution, your session has expired due to inactivity for more than two hours. Please login again</em>
+		</div>
+        <div class="row">
+          <p class="errorMsg txtRed" ng-bind="loginMsgs"></p>
+		  <p class="loginButton2" ng-if="resetChangePWSuccess">{{resetChangePWSuccess}}</p>
+		</div>
+		<div class="row input-group">
+		<span class="input-group-addon">
+                <span class="glyphicon glyphicon-loginuser"></span>
+        </span>
+        <input type="text" class="form-control marbtm" placeholder="Username" required autofocus ng-model="email"/>
+		</div>
+		<div class="row input-group">
+		<span class="input-group-addon">
+                <span class="glyphicon glyphicon-pwd"></span>
+        </span>
+        <input type="password" class="form-control loginpwd" placeholder="Password" required ng-model="password">
+		</div>
+		<div class="row">
+        <label class="checkbox pull-left">
+          <input type="checkbox" value="remember-me" ng-model="loginRemember"> Remember Me
         </label>
-        <button type="submit" ng-disabled="form.$invalid" class="btn btn-lg btn-primary btn-block" ng-click="submit()">Sign in</button>
-      </form>
+		<label class="pull-right"><a href="#/forgotpassword"> Forgot Password</a></label>
+        <p class="resendEmail pull-right"><a href="#/verify">Resend verification email</a></p>
+        <button type="submit" ng-disabled="form.$invalid" class="btn btn-lg btn-primary btn-block loginButton" ng-click="submit()">Login</button>
+        </div>
+
+	  <div class="row">
+        <label class="pull-left">New to ezyCommerce? </label>
+		<label class="pull-right"><a href="/signup/">SignUp</a></label>        
+      </div>
+	  
+	  
+	  
+	  
+	</div>
+	  </form>
 </section>

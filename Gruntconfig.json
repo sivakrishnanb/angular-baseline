@@ -1,0 +1,13 @@
+{
+
+  "configVars": {
+  	"productionDir": "build",
+    "appjs": "build/scripts",
+    "appcss": "build/styles",
+    "appimages": "build/images",
+    "appview": "build/views",
+    "appsignup": "build/signup",
+    "build": "build/build"
+  }
+
+}

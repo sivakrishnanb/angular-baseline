@@ -1,0 +1,302 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/merchant/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <h2 class="thHead">Merchant List</h2>
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="mer-btndwnload">
+                            <label class="exportMerchantLabel">Export Merchants List</label>
+                            <button class="btn btn-primary" ng-click="downloadMerchantList()">Download</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+                <h4 ng-if="0" class="sub-head thSubHead">Search Merchants</h4>
+                <form class="form-inline container-fluid" role="form">
+                    <div class="row padBtm15px">
+                        <div class="merchantfilter-panel">
+                            <div class="form-group">
+                                <label class="sr-only" for="merchant-search-text">Search Merchants</label>
+                                <div class="input-group selectboxhldr">
+                                    <div class="thAll" multi-select
+                                        input-model="merchantSearchOptions" button-label="name"
+                                        item-label="name" tick-property="ticked"
+                                        selection-mode="single" helper-elements=""
+                                        output-model="searchColumn" id="merchant-search-column"></div>
+                                    <input type="text" class="thSearch form-control searchFright"
+                                        id="merchant-search-text" placeholder="Search merchant"
+                                        ng-model="searchKey"
+                                        ng-focus="findSuggestion(searchKey, searchColumn)"
+                                        ng-change="findSuggestion(searchKey, searchColumn)">
+                                </div>
+
+                                <div class="list-group suggestion-box nano" id="merchant-search-suggestion" ng-if="suggestions.length">
+                                    <div class="nano-content">
+                                        <a ng-repeat="suggest in suggestions" href="javascript:;" ng-click="suggestNavigation(suggest)" class="list-group-item">
+                                            <div class="MerchantSuggestion">
+                                                <div class="MerchantIdContainer">
+                                                    <div class="MerchantIDs">
+                                                        <div class="txtBold MerchantId" ng-bind-html="highlightSuggest(suggest.merchantCode, searchKey)"></div>
+                                                        <div class="txtBold MerchantPlanName" ng-bind-html="'Merchant Name: ' + highlightSuggest(suggest.merchantName, searchKey)"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="suggMerchantSKU">
+                                                    <div class="txtItalic fleft suggMerchantMerSKU" ng-bind-html="'Company Name: ' + highlightSuggest(suggest.companyName, searchKey)"></div>
+                                                    <div class="txtItalic fleft suggMerchantEZYSKU" ng-bind-html="'UEN/GSTN: ' +  highlightSuggest(suggest.companyRegNumber, searchKey)"></div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="suggMerchantProductContainer">
+                                                    <div class="suggMerchantPrdName" ng-bind-html="'Email: ' + highlightSuggest(suggest.email, searchKey)"></div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="list-group suggestion-box"
+                                     id="merchant-search-suggestion" ng-if="emptySuggestions">
+                                    <a href="javascript:;" class="list-group-item">
+                                        <span class="center fnt12px">No matching merchant found</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-group merchantFilterStatus">
+                                <label class="sr-only">Status</label>
+                                <div class="input-group product-inventory thInve">
+                                    <div multi-select input-model="constants.merchantFilterStatus" output-model="statusFilter" button-label="name" item-label="name" tick-property="ticked" max-labels="1" helper-elements="all none" default-label="Status" disable-property="label" id="product-search-inventory"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group thAppFil">
+                                    <button class="btn btn-primary thButton"
+                                            ng-click="applyFilter(1)" id="merchant-search-apply">Apply
+                                        Filter</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group thAppFil">
+                                    <button class="btn btn-default" ng-click="resetFilter()" id="merchant-filter-reset">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table Sorting Properties -->
+
+                    <div class="row pull-right">
+                    <div class="showingPage pull-left" ng-if="myData.length">
+                        Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} merchants
+                    </div>
+
+                    <div class="views pull-left" ng-if="myData.length">
+                        view<select ng-model="pagingOptions.pageSize" class="showingView">
+                        <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+                    </select>per page
+                    </div>
+
+                    <div class="pagingout pull-left">
+                        <ul class="pagingContainer" ng-if="myData.length">
+                            <li><a href="javascript:void(0)" class="pageFirst"><span ng-click="paging(1)">&lt;&lt;</span></a></li>
+                            <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage-1)">&lt;</span></a></li>
+
+                            <li ng-repeat="pageSizeClicks in pageSize.pageSizeClickLength" ng-class="{pageHighLight:pageSizeClicks == pagingOptions.currentPage}">
+                                <a ng-class="{pageHighLightColor:pageSizeClicks == pagingOptions.currentPage}" href="javascript:void(0);" ng-click="paging(pageSizeClicks)"><span>{{pageSizeClicks}}</span></a>
+                            </li>
+
+                            <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage+1)">&gt;</span></a></li>
+                            <li><a href="javascript:void(0)" class="pageLast"><span ng-click="paging(pagingOptions.currentPage+1, 'last')">&gt;&gt;</span></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sort txtRight pull-left">
+
+                        <div class="form-group">
+                            <label class="sr-only" for="merchant-sort-category">Sort By: Category</label>
+                            <div class="input-group">
+                                <!-- <input type="checkbox" name="action" /> -->
+                                <div class="btn-group thAppAct thAppSort">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="merchant-sort-category">
+                                        Sort By : <span ng-bind="sortingOptions.name"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="merchant-sort-action" ng-click="sortDirection()">
+                                        <span ng-class="{'glyphicon glyphicon-sort-cat':!sortLogo(),'glyphicon glyphicon-sort-cat-asc':sortLogo()}"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-click="sort('createdDate', 'Created Date')"><a href="javascript:;" id="merchant-created-date">Created Date</a></li>
+                                        <li ng-click="sort('modifiedDate', 'Modified Date')"><a href="javascript:;" id="merchant-modified-date">Modified Date</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+
+               
+                <!-- Table Starts -->
+
+                <div class="newGridContainer container-fluid merchanttblall">
+
+                    <div class="row merchant-landing-Header hidden-xs">
+                        <div class="merHeaMerIdH col-sm-12 col-md-2">Merchant ID</div>
+                        <div class="merHeaStatusH col-sm-12 col-md-1">Status</div>
+                        <div class="merHeaEmailH col-sm-12 col-md-2">Contact Details</div>
+                        <div class="merHeaCompNameH col-sm-12 col-md-2">Company Info</div>
+                        <div class="merHeaMerNameH col-sm-12 col-md-2">Merchant Name</div>
+                        <div class="merHeaDateH col-sm-12 col-md-1" >Date</div>
+                        <div class="merHeaUenH col-sm-12 col-md-1">Pending Approval</div>
+                        <div class="merHeaActionH col-sm-12 col-md-1">Actions</div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row proRow" ng-show="myData" ng-repeat="merchant in myData track by merchant.merchantId">
+                        <!-- Merchant ID -->
+                        <!-- <div class="merHeaMerId col-sm-12 col-md-1"  ng-bind="merchant.merchantCode || constants.notAvailableText"></div> -->
+
+                        <div class="merHeaMerId col-sm-12 col-md-2">
+                            <a href="#/merchant/showProfile/{{merchant.merchantCode}}" ng-bind="merchant.merchantCode || constants.notAvailableText"></a> 
+                        </div>
+                        <!-- Registered Email -->
+                        
+
+                        <div class="merHeaStatus col-sm-12 col-md-1">
+                        	<span  ng-bind="getStatus(merchant)"></span>
+                        </div>
+                        <div class="merHeaEmail col-sm-12 col-md-2">
+                            <p ng-show="merchant.email"><span data-toggle="tooltip" data-placement="top" title="Email" ng-bind="merchant.email"></span></p>
+                            <p ng-show="merchant.contactPhone"><span data-toggle="tooltip" data-placement="top" title="Contact Number" ng-bind="merchant.contactNoCountryCode + ' ' + merchant.contactPhone"></span></p>
+                        </div>
+                        <!-- Company Name -->
+                            <div class="merHeaCompName col-sm-12 col-md-2">
+                                <p ng-bind="merchant.companyName || constants.notAvailableText"></p>
+                                <p ng-bind="(merchant.companyRegType || constants.notAvailableText) + ' : ' + (merchant.companyRegNumber || constants.notAvailableText)"></p>
+                            </div>  
+                            <!-- Merchant Name -->
+                            <div class="merHeaMerName col-sm-12 col-md-2">
+                                 <p ng-bind="(merchant.merLastName+' '+merchant.merFirstName) || constants.notAvailableText"></p>
+                                 <p ng-bind="(merchant.accountLastLogin)?'Last Login : '+merchant.accountLastLogin:'Last Login : '+constants.notAvailableText"></p>  
+                            </div>
+                            
+                           <!--  Date -->
+                            <div class="merHeaDate col-sm-12 col-md-1">
+                                <p ng-show="merchant.createdDate"><span data-toggle="tooltip" data-placement="top" title="Created Date" ng-bind="merchant.createdDate"></span></p>
+                                <p ng-show="merchant.activeDate"><span data-toggle="tooltip" data-placement="top" title="Active Date" ng-bind="merchant.activeDate"></span></p>
+                            </div>
+
+                            <div class="merHeaUen col-sm-12 col-md-1 txtCentersm martop15 paddnone heauenpad-xs" ng-bind="displayCount(merchant.merchantId)" data-toggle="tooltip" data-placement="top" data-title="Pending Manager Order Approval"></div>
+
+                            <!-- Action -->
+                            <div class="merHeaAction col-sm-12 col-md-2">
+                                <button class="btn btn-primary btn-sm thButton setcntmarbtm" ng-click="changeLogginContent(merchant)">Set Context</button>
+                                <button check-acl="merchantActionsCol" class="btn btn-primary thButton btn-sm " ng-show="merchant.isEmailVerified && !merchant.isActive" ng-click="doActivate(merchant)">Activate</button>
+                                <button check-acl="merchantActionsCol" class="btn btn-primary btn-sm thButton" ng-show="merchant.isEmailVerified && merchant.isActive && !merchant.isBlocked" ng-click="doBlock(merchant)">Block</button>
+                                <button check-acl="merchantActionsCol" class="btn btn-primary btn-sm thButton" ng-show="merchant.isEmailVerified && merchant.isActive && merchant.isBlocked" ng-click="doUnblock(merchant)">Unblock</button>
+
+                                <div class="popoverHldr marlft5" ng-mouseover="initPopOver()" ng-if="showBlockInfo(merchant)">
+                                  <span class="glyphicon glyphicon-info" 
+                                        data-container="body" 
+                                        data-toggle="popover" 
+                                        data-placement="left" 
+                                        data-html="true"
+                                        data-content="{{getBlockInfoNote(merchant)}}" 
+                                        data-original-title="<span class='glyphicon glyphicon-cross'></span>" title="">
+                                  </span>
+                                </div>
+
+                                <div class="popoverHldr" ng-mouseover="initPopOver()" ng-if="merchant.remarks">
+                                    <span class="glyphicon glyphicon-remarks" 
+                                        data-container="body" 
+                                        data-toggle="popover" 
+                                        data-placement="left" 
+                                        data-html="true"
+                                        data-content="{{merchant.remarks}}" 
+                                        data-original-title="<span class='glyphicon glyphicon-cross'></span>" title="">
+                                    </span>
+                                </div>
+
+                                <br>
+                                <div class="col-sm-12 paddnone martop5" ng-if="merchant.isEmailVerified && merchant.isActive && !merchant.isBlocked">
+                                    <label class="merchantOrdApproval paddnone control-label col-md-8 col-sm-5 col-xs-12 label-align-text martop5" data-toggle="tooltip" date-placement="top" data-title="Automatic Manager Order Approval">Automatic Approval</label>
+                                    <div class="col-md-3 col-sm-5 col-xs-12">
+                                        <div class="onoffswitch pref">
+                                          <span ng-init="(merchant.autoManagerOrderApprove)?model.merchantAutoOrdApprove[$index]=true:model.merchantAutoOrdApprove[$index]=false"></span>
+                                          <input type="checkbox" name="onoffswitch_{{$index}}" class="onoffswitch-checkbox" id="myonoffswitch_{{$index}}" ng-model="model.merchantAutoOrdApprove[$index]" ng-click="merchantAutoApprovalOrder(model.merchantAutoOrdApprove[$index],merchant.merchantCode)">
+                                          <label class="onoffswitch-label" for="myonoffswitch_{{$index}}">
+                                              <span class="onoffswitch-inner"></span>
+                                              <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.merchantAutoOrdApprove[$index]}"></span>
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span check-acl="merchantActionsCol" class="martop10 dispInlineblk" ng-show="!merchant.isEmailVerified">Verification pending</span>
+                            </div>   
+                  </div>
+                    
+                  <div class="row proRow"  ng-if="!myData.length">
+				  <div class="noRecordDisplay col-xs-12 col-sm-12 col-md-12">
+                    <div ng-if="loading.load" class="loadingText"><span class="dataget glyphicon glyphicon-cog spin"></span> We are retrieving your data. Please wait</div>
+                    <div ng-if="loading.nodata" class="txtCenter">No data to display</div>
+                  </div>
+				  </div>
+                  <div class="clearfix"></div>
+                    
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-block-confirm">
+    <div class="modal-dialog">
+        <form role="form"  name="modal-block-confirm" novalidate angular-validator>
+            <div class="modal-content"> 
+                <div class="modal-header">
+                    <p> {{selectedMerchantID}} - {{selectedCompanyName}}  <span id="blockConfirm-modalClose" class="blockConfirm-modalClose" data-dismiss="modal">X</span></p>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="merchant-block-remarks" class="control-label">Remarks</label>
+                      <textarea class="form-control" row="4" name="merchant-block-remarks" id="merchant-block-remarks" placeholder="Remarks" maxlength="255" ng-model="blockedRemarks" required required-message="constants.validationMessages.required"></textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="blockConfirm-modalCancel">Cancel</button>
+                <button type="submit" class="btn btn-primary thButton modelButtonOk" id="blockConfirm-modalOk" ng-click="modalOkButton()">Block</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </form>
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Unblock Modal -->
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-unblock-confirm">
+    <div class="modal-dialog">
+        <form role="form"  name="modal-unblock-confirm" novalidate angular-validator>
+            <div class="modal-content"> 
+                <div class="modal-header">
+                    <p> {{selectedMerchantID}} - {{selectedCompanyName}}  <span id="unblockConfirm-modalClose" class="unblockConfirm-modalClose" data-dismiss="modal">X</span></p>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="merchant-unblock-remarks" class="control-label">Remarks</label>
+                      <textarea class="form-control" row="4" name="merchant-unblock-remarks" id="merchant-unblock-remarks" placeholder="Remarks" maxlength="255" ng-model="unblockedRemarks" required required-message="constants.validationMessages.required"></textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="unblockConfirm-modalCancel">Cancel</button>
+                <button type="submit" class="btn btn-primary thButton modelButtonOk" id="unblockConfirm-modalOk" ng-click="modalOkButton()">Unblock</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </form>
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

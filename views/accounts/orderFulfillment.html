@@ -1,0 +1,252 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="order-fulfillment" novalidate angular-validator angular-validator-submit="saveFulfillment()">
+              <h2 class="thHead">Order Preferences</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                  <div class="col-sm-12 col-lg-9 paddnone">
+                    <div class="thHeadIco glyphicon glyphicon-icon-MyAccount-fulfillment-big col-lg-1 col-sm-1 hidden-xs"></div>
+                      <div class="thContent col-lg-11 col-sm-10">
+                       You can configure your default shipping preferences here. You can turn on automatic order fulfillment to automatically approve external orders upon receipt.
+                      </div>
+                    </div>
+                </div>
+              </div>
+
+              <div class="panel-group">
+                <div class="row paddbtm20 xstxt-padd0">
+                <!-- 2nd Panel Starts -->
+                    <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a href="javascript:;" id="pref-ordsful-automatic-fulfillment">Automatic Fulfillment</a>
+                        </h4>
+                      </div>
+                      <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body padall2">
+
+                          <div class="row inset-row" >
+                              <label class="control-label col-md-4 col-sm-3 col-xs-12 label-align-text">Automatic Order Approval</label>
+                               <div class="col-md-2 col-sm-2 col-xs-6">
+                                
+                                    <div class="onoffswitch pref">
+                                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="model.isFulfillOrdApprove" ng-click="autoOrderProcess(model.isFulfillOrdApprove)">
+                                      <label class="onoffswitch-label" for="myonoffswitch">
+                                          <span class="onoffswitch-inner"></span>
+                                          <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.isFulfillOrdApprove}"></span>
+                                      </label>
+                                    </div>
+                                
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-6 martop8" ng-if="0">
+                                  <em class="text-grey">Coming Soon !</em>
+                                </div>
+                          </div>
+
+                          <div class="row padall2" >
+                            <div class="col-sm-12">
+                              <em class="text-grey">When activated, Orders will be automatically approved on your behalf by applying the preferences in Order defaults. Orders will be put on hold if it matches the below criteria.</em>
+                            </div>
+                          </div>
+
+                          <div class="row padall2">
+                            <div class="col-md-1 col-sm-1 col-xs-1">
+                              <input ng-disabled="true||disableElement(model.isFulfillOrdApprove)" type="checkbox" id="pref-ordsful-autoFul-domOrder" class="chkpadd" name="pref-ordsful-autoFul-domOrder" ng-model="model.isautoFuldomOrder">
+                            </div>
+                            <div class="col-md-11 col-sm-11 col-xs-10 domOrderCurr">
+                              <div class="form-group">
+                                  <label class="control-label">Domestic Orders : Hold orders above retail value greater than {{constants.currentCurrency}}</label>
+                                
+                                <input ng-disabled="disableElement(model.isFulfillOrdApprove)||disableElement(model.isautoFuldomOrder)" name="pref-ordsful-autoFul-domOrder-maxLimit" type="text" class="form-control inline-control" id="pref-ordsful-autoFul-domOrder-maxLimit" placeholder="" ng-model="model.fulfillOrdAppDomHoldOrdVal" validator="currencyVal(model.fulfillOrdAppDomHoldOrdVal,model.isautoFuldomOrder)" maxlength="30" invalid-message="validationMessages.curencyValError">
+                                  
+                                 <label class="control-label">and notify via <span ng-bind="domOrderNotification.name"></span></label>
+                                 <!--<select ng-disabled="disableElement(model.isFulfillOrdApprove)||disableElement(model.isautoFuldomOrder)" id="pref-ordsful-autoFul-domOrder-notification" class="form-control inline-control" name="" ng-model="domOrderNotification" ng-options="item as item.name for item in constants.autoNotify track by item.name">
+                                 </select>-->
+                              </div>    
+                            </div>
+                          </div>
+                          
+
+                          <div class="row padall2">
+                            <div class="col-md-1 col-sm-1 col-xs-1">
+                              <input ng-disabled="true||disableElement(model.isFulfillOrdApprove)" type="checkbox" id="pref-ordsful-autoFul-intOrder" class="chkpadd" name="pref-ordsful-autoFul-intOrder" ng-model="model.isautoFulintOrder">
+                            </div>
+                            <div class="col-md-11 col-sm-11 col-xs-10 intOrderCurr">
+                              <div class="form-group">
+                                  <label class="control-label">International Orders : Hold orders above retail value greater than {{constants.currentCurrency}} </label>
+                                
+                                <input ng-disabled="disableElement(model.isFulfillOrdApprove)||disableElement(model.isautoFulintOrder)" name="pref-ordsful-autoFul-intOrder-maxLimit" type="text" class="form-control inline-control" id="pref-ordsful-autoFul-intOrder-maxLimit" placeholder="" ng-model="model.fulfillOrdAppIntOrdHoldVal"  maxlength="30" validator="currencyVal(model.fulfillOrdAppIntOrdHoldVal,model.isautoFulintOrder)" invalid-message="validationMessages.curencyValError">
+                                
+                                 <label class="control-label">and notify via <span ng-bind="intOrderNotification.name"></span></label>
+                                 <!--<select ng-disabled="disableElement(model.isFulfillOrdApprove)||disableElement(model.isautoFulintOrder)" id="pref-ordsful-autoFul-intOrder-notification" class="form-control inline-control" name="" ng-model="intOrderNotification" ng-options="item as item.name for item in constants.autoNotify track by item.name">-->
+                                  
+                                 </select>
+                              </div>     
+                            </div>
+                          </div>
+
+                           <!--<div class="row padall2">
+                            <div class="col-md-1 col-sm-1 col-xs-1">
+                              <input ng-disabled="disableElement(model.isFulfillOrdApprove)" type="checkbox" id="pref-ordsful-autoFul-intOrder" class="chkpadd" name="pref-ordsful-autoFul-intOrder" ng-model="model.isHoldOrder">
+                            </div>
+                            <div class="col-md-11 col-sm-11 col-xs-10">
+                              <div class="form-group">
+                                  <label class="control-label">Hold all orders for </label>
+                                  
+                                <input ng-disabled="disableElement(model.isFulfillOrdApprove)||disableElement(model.isHoldOrder)" name="pref-ordsful-holdOrder-days" type="text" class="form-control inline-control" id="pref-ordsful-holdOrder-days" placeholder="" ng-model="model.fulfillOrdappHoldAllOrdDays"  maxlength="5">
+                                    
+                                 <label class="control-label">days</label>
+                              </div>     
+                            </div>
+                          </div>
+-->
+
+                          <div class="row">
+                            <!--<div class="col-sm-12 paddbtm20">
+                              <em class="txtItalic text-grey">Imported date is considered as the first day</em>
+                            </div>-->
+                            <div class="col-sm-12">
+                              <em class="text-danger">Note : Existing order defaults will be applied to the orders</em>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 <!-- 1st Panel Starts -->
+                  <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="pref-ordsful-order-defaults">Order Defaults</a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body padall2">
+                        <div class="row">
+                          
+                          <p class="txtItalic text-grey defText">Defaults will be applied to new order. You can still edit the order before approval</p>
+                          
+                          <div class="col-md-7 col-sm-6 col-xs-12">
+                            <div class="form-group required">
+                                  <input type="checkbox" id="pref-ordsful-isinternationalOrders" class="chkpadd visHidden" name="pref-ordsful-isinternationalOrders" ng-model="model.isinternationalOrders" ng-disabled="autoOrderDisable">Customs Declaration for International Orders             
+                            </div>    
+                          </div>
+                        </div>
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                              <div class="form-group">
+                                <label for="pref-ordsful-category-shipment" class="col-md-5 col-sm-3 col-xs-12 control-label label-leftIndent">Category of Shipment</label>
+                                <div class="col-md-5 col-sm-6 col-xs-12 control-next-align">
+                                  <select ng-disabled="isCountriesOptionsVisible('preferencesCustomsDecl')" id="pref-ordsful-category-shipment" class="form-control" name="pref-ordsful-category-shipment" ng-model="shipmentCategory" validator="checkContextValidation(shipmentCategory,model.isinternationalOrders)" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.orderShipCategory track by item.value" ng-change="showShipmentOthers()">
+                                </select>
+                                </div>
+                              </div>    
+                            </div>                             
+                          </div>
+                          
+                          <div class="row" ng-if="showShipmentCategoryOthers">
+                            <div class="col-md-12 paddnone">
+                              <div class="form-group">
+                                <label for="pref-ordsful-category-shipment-others" class="col-md-5 col-sm-3 col-xs-12 control-label label-leftIndent">Description <span class="reqStar">&nbsp;*</span></label>
+                                <div class="col-md-5 col-sm-6 col-xs-12 control-next-align">
+                                  <input name="pref-ordsful-category-shipment-others" type="text" class="form-control" id="pref-ordsful-category-shipment-others" placeholder="Category of Shipment-Others" ng-model="model.shipmentCategoryOptionsOthers" required required-message="validationMessages.required" maxlength="30" />
+                                </div>
+                              </div>    
+                            </div>                             
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                                <div class="form-group">
+                                  <label for="pref-ordsful-non-delInstructions " class="col-md-5 col-sm-3 col-xs-12 control-label label-leftIndent">Non Delivery Instructions</label>
+                                  <div class="col-md-5 col-sm-6 col-xs-12 control-next-align">
+                                    <select ng-disabled="isCountriesOptionsVisible('preferencesCustomsDecl')" id="pref-ordsful-non-delInstructions" class="form-control" name="pref-ordsful-non-delInstructions" ng-model="nonDelInstruction" validator="checkContextValidation(nonDelInstruction,model.isinternationalOrders)" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.orderDeliveryInstruction track by item.value">
+                                    </select>  
+                                  </div>
+                                </div>    
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <div class="form-group required">
+                                    <input type="checkbox" id="pref-ordsful-isShippingDefaults" class="chkpadd visHidden" name="pref-ordsful-isShippingDefaults" ng-model="model.isShippingDefaults" ng-disabled="autoOrderDisable"> Default Delivery Options      
+                              </div>    
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                              <div class="form-group">
+                                <label for="pref-ordsful-domesticOrder" class="col-md-5 col-sm-3 col-xs-12 control-label label-leftIndent">Domestic Orders</label>
+                                <div class="col-md-5 col-sm-6 col-xs-12 control-next-align ">
+                                  <select ng-change="deliveryOptionsElCarrier(domesticOrder,'domesticOrder')" id="pref-ordsful-domesticOrder" class="form-control" name="pref-ordsful-domesticOrder" ng-model="domesticOrder" validator="checkContextValidation(domesticOrder,model.isShippingDefaults)" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.domesticShippingOptions track by item.name">
+                                </select>  
+                                </div>
+                              </div>    
+                            </div>                             
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                                <div class="form-group">
+                                  <label for="pref-ordsful-internationalOrder" class="col-md-5 col-sm-3 col-xs-12 control-label label-leftIndent">International Orders</label>
+                                  <div class="col-md-5 col-sm-6 col-xs-12 control-next-align">
+                                    <select ng-disabled="isCountriesOptionsVisible('preferencesInternationalOrders')" ng-change="deliveryOptionsElCarrier(internationalOrder,'internationalOrder')" id="pref-ordsful-internationalOrder" class="form-control" name="pref-ordsful-internationalOrder" ng-model="internationalOrder"  validator="checkContextValidation(internationalOrder,model.isShippingDefaults,'auReturnValidate')" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.internationalShippingOptions track by item.name">
+                                </select>  
+                                  </div>
+                                </div>    
+                            </div>
+                          </div>
+                          <div class="row" ng-if="isCountriesOptionsVisible('preferencesEnhancedLiability')">
+                            <div class="col-md-12 col-sm-12 col-xs-12 enhancedLiability">
+                              <div class="form-group required">
+                                <input type="checkbox" ng-disabled="deliveryOptionsAddEl" id="pref-ordsful-addEL" class="chkpadd" name="pref-ordsful-addEL" ng-model="model.isEL" validator="enhancedLiability(model.isEL,model.isELInternational,model.isELDomestic)" invalid-message="validationMessages.enhancedLiabilityError" ng-click="checkEL()"> Add Enhanced Liability (EL) coverage on the total Declared Value for <br>
+                              </div>    
+                            </div>
+                          </div>
+                           <div class="row" ng-if="isCountriesOptionsVisible('preferencesEnhancedLiability')">
+                            <div class="col-sm-4">
+                                <input ng-disabled="deliveryOptionsIntOrder" type="checkbox" id="pref-ordsful-isEL-international" class="chkpadd" name="pref-ordsful-isEL-international" ng-model="model.isELInternational"> International Order    
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-disabled="deliveryOptionsDomOrder" type="checkbox" id="pref-ordsful-isEL-domestic" class="chkpadd" name="pref-ordsful-isEL-domestic" ng-model="model.isELDomestic"> Domestic Order    
+                            </div>
+
+                            <!-- <div class="col-sm-4">
+                                <input ng-disabled="disableElement(model.isEL)" type="checkbox" id="pref-ordsful-isEL-international" class="chkpadd" name="pref-ordsful-isEL-international" ng-model="model.isELInternational"> International Order    
+                            </div>
+                            <div class="col-sm-4">
+                                <input ng-disabled="disableElement(model.isEL)" type="checkbox" id="pref-ordsful-isEL-domestic" class="chkpadd" name="pref-ordsful-isEL-domestic" ng-model="model.isELDomestic"> Domestic Order    
+                            </div> -->
+
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-sm-12 paddtop5" ng-if="showElDisabledText">
+                                <em class="text-danger">Note : Existing order defaults will be applied to the orders</em>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                     
+                </div>
+            </div>
+            <div class="btn-grp pull-right formbtn">
+              <div class="form-xsbtnbtm pull-right">
+                <button id="pref-ordsful-save-btm" class="btn btn-primary" type="submit" check-acl="prefOrderSave">Save</a></button>
+                <button id="pref-ordsful-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>              
+              </div>
+            </div>
+            <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="prefOrderSave" showmessage="hide"></div>
+        </form>
+       </div>
+      </div>
+    </section>
+  </div>
+</div>
+</section>

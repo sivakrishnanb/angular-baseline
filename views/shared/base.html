@@ -1,1 +1,589 @@
-<toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
+<div class="slide-out-div print-hide" ng-controller="Base" ng-if="isLoggedIn" data-html2canvas-ignore="true">
+    <!--<div class="nano">
+      <div class="nano-content">-->
+    <!--<a class="handle" href="javascript:;">Support</a>-->
+	<a class="hidesupport handle" href="javascript:;"><span class="glyphicon glyphicon-hidesupport"></span>Hide Support</a>
+    <div class="feedback-cnt">
+    <div class="nano">
+    <div class="nano-content">
+        <h5>Questions? Feedback? Concerns?</h5>
+
+        <p class="linehgt20">Please explain your query by choosing the right category and we will get back within 1 working day
+        </p>
+        <form name="supportForm" id="supportForm" enctype="multipart/form-data" novalidate angular-validator angular-validator-submit="supportFormSubmit()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group merid">
+                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Merchant ID</label>
+                        <label class="col-md-5 col-sm-5 control-label lblcln"> {{loggedInContent.merchantCode  || constantsBase.notAvailableText}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group merid">
+                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Email</label>
+                        <label class="col-md-8 col-sm-8 control-label lblcln"> {{loggedInContent.email || constantsBase.notAvailableText}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 paddtop10">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Subject</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <input name="sidebar-info" type="text" ng-model="supportSubject" class="form-control" id="sidebar-info-sub" required required-message="popUpValidationMessages.required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Category</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <!--<select class="form-control" ng-model="category" ng-options="key as value for (key , value) in constantsBase.supportTypes"> -->
+                            <select class="form-control" name="support-category" ng-model="category" ng-change="supportSubTypes2 = '';supportSubType1=''" required required-message="popUpValidationMessages.required">
+                                <option value="">Select</option>
+                                <option ng-repeat="(key, value) in caseList" value="{{key}}">{{key | camelCase}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Sub-Type 1</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <select class="form-control" ng-model="supportSubType1" name="supportSubType1" ng-change="supportSubTypes2 = ''; setSubType2(category, supportSubType1)" required required-message="popUpValidationMessages.required">
+                                <option value="">Select</option>
+                                <option ng-repeat="subType in getSubType1(category) track by $index" value="{{subType}}">{{subType | camelCase}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-hide="!supportSubTypes2">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label inline-required">Sub-Type 2</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <select class="form-control" ng-model="supportSubType2" name="supportSubType2" validator="subType2Val(supportSubTypes2)" invalid-message="popUpValidationMessages.required">
+                                <option value="">Select</option>
+                                <option ng-repeat="subType in supportSubTypes2 track by $index" value="{{subType}}">{{subType | camelCase}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Message</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <textarea name="message" type="text" ng-model="supportMsg" class="form-control" row="4" id="message"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Attachment</label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <input class="attachments" type="file" file-model="attachment1" id="attachment1" name="attachment1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-md-4 col-sm-4 col-xs-12 control-label">Screenshot</label>
+                        <div></div>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <button type="button" class="btn btn-primary col-sm-9" ng-click="takescrnshot()">Capture Screen</button>
+                            <button ng-if="isScreenCaptured" type="button" class="btn btn-danger col-sm-3" ng-click="deleteScrnshot()"><i class="glyphicon glyphicon-connection-deleted"></i></button>
+                            <div class="screenshot-loader ezyHide"><span class="dataget glyphicon glyphicon-cog spin"></span></div>
+                            <div id="canvasImg" ng-click="openImageModel()"></div>
+                            <!--<input name="screenshot" type="text" class="form-control" id="screenshot">-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group merid">
+                        <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label"></label>
+                        <div class="col-md-7 col-sm-6 col-xs-11">
+                            <button type="submit" class="btn btn-primary" id="supportform-submit-button">Submit</button><em class="submitMessage"></em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <h5>Contact Us</h5>
+
+        <p ng-if="isCountriesOptionsVisible('supportCallUs')">Call us @ <span class="highlgt">+65 62295979</span></p>
+        <p>Chat with us @ <a href="http://www.ezycommerce.com" class="highlgt" target="_blank">www.ezycommerce.com</a></p>
+        <p><em ng-bind="isCountriesOptionsVisible('supportCallTimings')"></em></p>
+        <h5>Help</h5>
+
+        <div class="form-group">
+            <label for="sidebar-info" class="col-md-4 col-sm-4 col-xs-12 control-label">Search</label>
+            <div class="col-md-7 col-sm-6 col-xs-11">
+                <div class="right-inner-addon">
+                    <i class="icon-search"></i>
+                    <input name="sidebar-info" id ="support-search" placeholder="Ask a question" ng-model="supportSearchText" type="search" class="form-control" id="sidebar-info">
+					<span ng-click="(supportSearchText)?openTab(supportSearchText):''" class="glyphicon glyphicon-slideout-search form-control-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <p>Browse our Help Section</p>
+        <!--<a href="http://www.ezycommerce.com/sg/help" target="_blank" title="Help"><span class="hidden-md hidden-sm hidden-xs headtop2">Help</span></a>-->
+        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides" target="_blank" title="Quick start guide">Quick start guide</a></p>
+        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/product-management/" target="_blank" title="Quick start guide">Product Management</a></p>
+        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides/#create-shipment" target="_blank" title="Quick start guide">Sending products to warehouse</a></p>
+        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/getting-started/quick-start-guides/#order" target="_blank" title="Quick start guide">Order Fulfillment</a></p>
+        <p><a href="javascript:;" target="_blank" title="Quick start guide" ng-click="openTab('integrations')">Integrations</a></p>
+        <p><a href="http://www.ezycommerce.com/{{isCountriesOptionsVisible('supportHelpLinks')}}/billing-invoicing" target="_blank" title="Quick start guide">Billing & Invoicing</a></p>
+
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-overlay" class="overlay" ng-show="activateOverlay"><i class="glyphicon glyphicon-cog spin"></i></div>
+
+
+<!-- Image Popover starts -->
+<div class="modal fade" id="img-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="img-modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header canvas-img-mdl">
+                <p><span class="model-close" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body" id="canvas-img-modal">
+            </div>
+        </div>
+    </div>
+</div>
+<!--Image Popover ends-->
+
+<!-- model starts -->
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p>You have unsaved changes <span class="model-close" data-dismiss="modal">X</span></p>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to leave this page? </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancel">Cancel</button>
+                <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="modalOk" ng-click="modalOkButton()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- model ends -->
+
+<!-- no permission model starts -->
+<div class="modal fade" id="no-permission-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p>No Permission <span class="model-close" data-dismiss="modal">X</span></p>
+            </div>
+
+            <div class="modal-body">
+                <p>You don't have access to perform this operation.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger danger thButton modelButtonOk"  data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- no permission model ends -->
+
+
+
+<div  class="notificationContainer" ng-class="[getOneMsgClass(),getLoginClass()]"><div class="innerContainer" notification-messages></div></div>
+<!-- model starts for archive-->
+<div class="modal fade" id="confirm-archive-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Archive Product <span class="archive-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to Archive this Product? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="archivemodalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="archive-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for inactive-->
+<div class="modal fade" id="confirm-inactive-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Create Product <span class="inactive-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to create Inactive Product? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="inactivemodalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="inactive-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+
+<!-- model starts for inactive edit-->
+<div class="modal fade" id="confirm-inactive-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Edit Product <span class="inactive-edit-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to make product as Inactive ? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="inactiveEditmodalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="inactive-edit-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for shipmntcancel-->
+<div class="modal fade" id="confirm-shipcancel-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Cancel Shipment <span class="shipcancel-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this shipment? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="shipcancel-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="shipcancel-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for shipmntrestore-->
+<div class="modal fade" id="confirm-shiprestore-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Restore Shipment <span class="shiprestore-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to restore this shipment? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="shiprestore-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="shiprestore-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for orderCancel-->
+<div class="modal fade" id="confirm-orderCancel-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Cancel Order <span class="orderCancel-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this order? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="orderCancel-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="orderCancel-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for orderRestore-->
+<div class="modal fade" id="confirm-orderRestore-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Restore Order <span class="orderRestore-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to restore this order? </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="orderRestore-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="orderRestore-modalOk" ng-click="modalOkButton()">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->
+
+<!-- model starts for Close Account-->
+<div class="modal fade" id="close-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p> Submit request to close account
+                    <span class="close-account-modal-close" data-dismiss="modal">X</span>
+                </p>
+            </div>
+
+            <div class="modal-body">
+                <p>Our client service team will review your account closure request and will contact you if there are outstanding issues regarding your account. All outstanding balances must be paid in full before account can be fully closed. A new account cannot be created with the same details as the closed account. Your data and reports may not be saved once your account has been closed. Please contact Client Service if you are unsure before proceeding to close your account.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="close-account-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-danger danger" id="close-account-modalOk" ng-click="modalOkButton()">Confirm request</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- model ends -->
+
+
+<!-- connection update tracking status model -->
+<div class="modal fade" id="connection-update-tracking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Update Tracking Status - eBay <span class="updateTracking-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you don't want to update tracking status back to your sales channel? Your customer will not be aware of the order status & tracking number.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="updateTracking-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="updateTracking-modalOk" ng-click="" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- connection update tracking status model ends-->
+
+<!-- delete channel -->
+<div class="modal fade" id="remove-sales-channel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Delete Sales Channel <span class="removeChannel-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to remove this sales channel? You can no longer receive orders from this channel. If there are outstanding Orders in ezyCommerce from this channel, their status will not be updated.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="removeChannel-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="removeChannel-modalOk" ng-click="" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- delete channel ends-->
+
+<!-- model starts for Remove User-->
+<div class="modal fade" id="delete-user-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p> Delete User<span class="delete-user-modal-close" data-dismiss="modal">X</span></p>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete the user?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="delete-user-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-danger danger" id="delete-user-modalOk" ng-click="modalOkButton()">Delete User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Notifications-->
+<div class="ezyHide">
+    <div id="notification-popover-content-loading">
+        <p class="loadingContent">
+            <span class="dataget notifyLoading glyphicon glyphicon-cog spin"></span><span> We are retrieving your data. Please wait </span>
+        </p>
+    </div>
+</div>
+
+<div class="ezyHide">
+    <div id="notification-popover-content">
+        <div class="nano">
+            <div class="nano-content">
+                <div ng-repeat="myData in myNotifications track by $index">
+                    <header-notifications data="{{myData}}"></header-notifications>
+                </div>
+                <div ng-if="!myNotifications.length||internalNotificationsCount">
+                    <p>
+                        Currently you don't have any notifications <br> to display..
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="no-productsSelected-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p>Cannot perform product action <span class="model-close" data-dismiss="modal">X</span></p>
+            </div>
+
+            <div class="modal-body">
+                <p>Please check at least one product to perform any product action </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="no-productsSelected-modal-ok" ng-click="" data-dismiss="modal">OK</button>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--model ends -->
+
+<!--Dashboard modal starts-->
+<div class="modal fade" id="dashboard-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <p> Welcome to ezyCommerce
+                    <span class="model-close" data-dismiss="modal">X</span>
+                </p>
+            </div>
+
+            <div class="modal-body">
+                <p class="txtBold">Hello, <span ng-bind="loggedInContent.lastName+' '+loggedInContent.firstName"></span></p><div class="martop5"></div>
+                <div style="clear"></div>
+
+                <ng-include src="'views/dashboard/welcome-pop-'+isCountriesOptionsVisible('welcomePopUpFile')+'.html'"></ng-include>
+
+           </div>
+
+            <div class="modal-footer">
+
+                <p class="do-not-show-text">
+                    <input type="checkbox" id="do-not-show" class="chkpadd xstxt-padd0 ng-pristine ng-untouched ng-valid" name="do-not-show" ng-model="doNotShow" ng-click="changeShowPriority(doNotShow)"> Do not show again
+                </p>
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="dashboard-modalClose">Close</button>               
+            </div>
+        </div>
+    </div>
+</div>
+<!-- model ends -->
+
+
+<!-- <div class="footerPopUpContainer footerPopSlide-down" ng-controller="Base" ng-if="showFooterPopUp()"> -->
+<div class="footerPopUpContainer footerPopSlide-down" ng-controller="Base" ng-if="0">
+    <div class="col-sm-12 padd0 widget-form">
+        <div class="header">Contact us<span class="glyphicon glyphicon-chevron-down"></span></div>
+        <div class="content">
+            
+            <p>Leave us your details and we will get in touch with you as soon as possible.</p>
+
+            <form name="contactForm" id="contactForm" enctype="multipart/form-data" novalidate angular-validator angular-validator-submit="popUpSubmit()">
+
+                <p>
+                    <input name="popUpSubject" ng-model="popUpSubject" type="text" class="form-control" placeholder="Subject" maxlength="100" required required-message="popUpValidationMessages.required">
+                </p>
+                
+                <p>
+                    <textarea name="popUpMessage" ng-model="popUpMessage" type="text" class="form-control" placeholder="Message" maxlength="300" required required-message="popUpValidationMessages.required"></textarea>
+                </p>
+
+                <!--<p><input class="attachments" type="file" file-model="attachment1" id="attachment1" name="attachment1" validator="popUpFileCheck()"></p>-->
+
+                <!--<p><input class="attachments" type="file" file-model="attachment2" id="attachment2" name="attachment2" validator="popUpFileCheck()"></p>-->
+
+                <p><input class="attachments" type="file" file-model="attachment3" id="attachment3" name="attachment3" validator="popUpFileCheck()"></p> 
+
+                <p><button type="submit" class="btn btn-primary">Submit</button><em class="submitMessage"></em></p>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- channel preference popup -->
+
+<!-- channel preference popup -->

@@ -1,0 +1,301 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/accounts/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form"  name="order-fulfillment" novalidate angular-validator angular-validator-submit='(!isAddSubUser)? updateSubUser() : createNewSubUser()'>
+                            <h2 ng-show="isAddSubUser" class="thHead">Create sub-user</h2>
+                            <h2 ng-show="!isAddSubUser" class="thHead">Edit sub-user</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 paddnone">
+                                        <div class="thHeadIco glyphicon glyphicon-account-settings-user col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10">
+                                            Assign your subuser from a set of pre-defined roles to manage your business. You can change the previleges of the sub-users after creation
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="panel-group">
+                                <div class="row xstxt-padd0">
+                                    <!-- 1st Panel Starts -->
+                                    <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;" id="con-subUser-header-information">Account Information</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne-details" class="panel-collapse collapse in">
+                                            <!--Add new user-->
+                                            <div class="panel-body padall2 sub-user-pnl-bdy createUser" ng-if="isAddSubUser">
+                                                <div class="form-group required">
+                                                    <label for="acc-createSubUser-email" class="col-md-4 col-sm-4 col-xs-12 control-label">Email</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <input name="acc-createSubUser-email"
+                                                             type="email"
+                                                             class="form-control"
+                                                             id="acc-createSubUser-email"
+                                                             placeholder="Email"
+                                                             ng-model="newSubUser.email"
+                                                             required invalid-message="validationMessages.invalidemail"
+                                                             maxlength="60" required-message="validationMessages.required">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group required">
+                                                    <label for="acc-createSubUser-firstName" class=" col-md-4 col-sm-4 col-xs-12  control-label">First Name</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <input name="acc-createSubUser-firstName" type="text" class="form-control" id="acc-createSubUser-firstName" placeholder="First Name"
+                                                               ng-model="newSubUser.merFirstName" required="" required-message="validationMessages.required">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group required">
+                                                    <label for="acc-createSubUser-LastName" class="col-md-4 col-sm-4 col-xs-12 control-label">Last Name</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <input name="acc-createSubUser-LastName" type="text" class="form-control" id="acc-createSubUser-LastName" placeholder="Last Name"
+                                                               ng-model="newSubUser.merLastName" required="" required-message="validationMessages.required">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group required">
+                                                    <label for="acc-createSubUser-Password" class="col-md-4 col-sm-4 col-xs-12 control-label">Password</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-11 pad-none">
+                                                        <input name="acc-createSubUser-Password" 
+                                                                type="password" 
+                                                                class="form-control" 
+                                                                id="acc-createSubUser-Password"
+                                                                ng-model="newSubUser.password" 
+                                                                placeholder="Password"
+                                                                required required-message="validationMessages.required"
+                                                                maxlength="20"
+                                                                validator="isPasswordFormat(newSubUser.password)"
+                                                                ng-class="{'has-success':isPasswordFormat(newSubUser.password)}" 
+                                                                invalid-message="pwErrorMessage1"/>
+                                                        </div>
+                                                         <div class="col-md-1 col-sm-1 pull-left paddnone">
+                                                            <span ng-show="isPasswordFormat(newSubUser.password)" class="glyphicon glyphicon-ok-tick-subUser"></span>
+                                                            <span ng-hide="isPasswordFormat(newSubUser.password)" ng-if="newSubUser.password.length" class="glyphicon glyphicon-remove-cross-subUser"></span>
+                                                        </div>
+                                                </div>
+
+                                                <div class="form-group required">
+                                                    <label for="acc-createSubUser-ConfirmPassword" class="col-md-4 col-sm-4 col-xs-12  control-label">Confirm Password</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-11 pad-none ">
+                                                        <input name="acc-createSubUser-ConfirmPassword"
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="acc-createSubUser-ConfirmPassword"
+                                                            placeholder="Confirm Password" 
+                                                            ng-model="newSubUser.retypePwd"
+                                                            required required-message="validationMessages.required"
+                                                            validator="isPasswordMatch(newSubUser.password, newSubUser.retypePwd)"
+                                                            invalid-message="pwErrorMessage" 
+                                                            ng-class="{'has-success':isPasswordMatch(newSubUser.password, newSubUser.retypePwd)}" 
+                                                            maxlength="20"/>
+                                                    </div>
+
+                                                   <div class="col-md-1 col-sm-1 pull-left paddnone">
+                                                        <span ng-show="isPasswordMatch(newSubUser.password, newSubUser.retypePwd)" class="glyphicon glyphicon-ok-tick-subUser"></span>
+                                                        <span ng-hide="isPasswordMatch(newSubUser.password, newSubUser.retypePwd)" ng-if="newSubUser.retypePwd.length && newSubUser.password.length" class="glyphicon glyphicon-remove-cross-subUser"></span>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                    <label class="col-md-4 col-sm-4 col-xs-12  control-label"></label>
+                                                    <div class="chkinput">
+                                                        <input type="checkbox" id="acc-createSubUser-isEmailInstruc" class="" name="" ng-model="model.isEmailInstruc">
+                                                    </div>
+                                                    <div class="col-md-7 col-sm-6 col-xs-9 emailtxt">Email user with account access instructions</div>
+                                                </div> -->
+                                            </div>
+                                            <!--Edit user-->
+                                            <div class="panel-body padall2 sub-user-pnl-bdy" ng-if="!isAddSubUser">
+
+                                                <div class="form-group">
+                                                    <label name="lbl-acc-update-email-email" class="col-md-4 col-sm-4 col-xs-12 control-label">Email</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <label class="form-control-static" name="field-acc-update-email-email" ng-bind="user.email || constants.notAvailableText"/>
+                                                        <!--<input type="text" name="acc-useredit-email" id="acc-useredit-email" class="form-control" ng-model="user.email"/>-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class=" col-md-4 col-sm-4 col-xs-12  control-label" name="lbl-acc-update-email-">First Name</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <label class="form-control-static" name="lbl-acc-update-email-firstname" ng-bind="user.firstName || constants.notAvailableText"/>
+                                                        <!--<input type="text" name="acc-useredit-firstName" id="acc-useredit-firstName" class="form-control" ng-model="user.firstName"/>-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-sm-4 col-xs-12 control-label">Last Name</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <label class="form-control-static" ng-bind="user.lastName || constants.notAvailableText"/>
+                                                        <!--<input type="text" name="acc-useredit-LastName" id="acc-useredit-LastName" class="form-control" ng-model="user.lastName"/>-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-sm-4 col-xs-12 control-label">Date Created</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <label class="form-control-static" ng-bind="user.createdDate || constants.notAvailableText"/>
+                                                        <!--<input type="text" name="acc-useredit-LastName" id="acc-useredit-LastName" class="form-control" ng-model="user.lastName"/>-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-sm-4 col-xs-12 control-label">Date Modified</label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 pad-none">
+                                                        <label class="form-control-static" ng-bind="user.modifiedDate || constants.notAvailableText"/>
+                                                        <!--<input type="text" name="acc-useredit-LastName" id="acc-useredit-LastName" class="form-control" ng-model="user.lastName"/>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2nd Panel Starts -->
+                                    <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;" id="con-subUser-header-permission">Permissions</a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne-roles" class="panel-collapse collapse in">
+                                            <div class="panel-body sub-user-pnl-bdy" ng-if="isAddSubUser">
+                                                <div class="row padall1 temp" >
+                                                    <div class="col-sm-12 font-bold">
+                                                        Choose one or more user permissions for your sub-user
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <em class="text-mute">Allows the user to edit the respective module</em>
+                                                    </div>
+                                                </div>
+                                                <div class="row padall1 temp lblpermsn">
+                                                    <div>
+                                                        <input type="checkbox" id="acc-createSubUser-isCatalogManager" class="chkpadd" name="acc-createSubUser-isCatalogManager" ng-model="isCatalogManager"
+                                                               validator="isPermissionAssigned()" invalid-message="validationMessages.noRoleSelected" ng-click="addNewUserRole('MERC_CATALOG_MGR')">
+
+
+                                                        <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0 paddlft12">Product Management</div>
+                                                        <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0">
+                                                            <em class="text-mute paymarlft10">Allows the user to create / edit and perform product related actions on products</em>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-createSubUser-isFulManager" class="chkpadd paymarlft" name="acc-createSubUser-isFulManager"
+                                                               ng-model="isFulManager" ng-click="addNewUserRole('MERC_ORDER_MGR')">
+                                                    </div>
+                                                    <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0">Fulfillment Management</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0">
+                                                        <em class="text-mute">Allows the user to create / edit Shipment and Orders. The user can perform fulfillment related actions on products.</em>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-createSubUser-isConManager" class="chkpadd" name="acc-createSubUser-isConManager"
+                                                               ng-model="isConManager" ng-click="addNewUserRole('MERC_CONFIG_MGR')">
+                                                    </div>
+                                                    <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0">Configuration Management</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0 ">
+                                                        <em class="text-mute">Allows the user to add / modify sales channels, preferences and download reports. Allows the user to add / edit all sections under My Account except User Accounts.</em>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+
+                                                    <!--<div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-createSubUser-isAdmin" class="chkpadd" name="acc-createSubUser-isAdmin"
+                                                               ng-model="model.isAdmin" ng-click="addNewUserRole('MERC_ADMIN')">
+                                                    </div>-->
+                                                    <div class="col-xs-11 col-md-11 col-sm-11 pull-right pad0 error-message">Note: Selecting all the above permissions gives complete access to your account except User Accounts</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body sub-user-pnl-bdy" ng-if="!isAddSubUser">
+                                                <div class="row padall1 temp" >
+                                                    <div class="col-sm-12 font-bold">
+                                                        Choose one or more user permissions for your sub-user
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <em class="text-mute">Allows the user to edit the respective module</em>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-editUser-isCatalogManager" class="chkpadd" name="acc-editUser-isCatalogManager"
+                                                               validator="isPermissionAssigned()" invalid-message="validationMessages.noRoleSelected"
+                                                               ng-click="editUserRole('MERC_CATALOG_MGR')" ng-model="rolesSeelcted" ng-checked="hasPermission('MERC_CATALOG_MGR')">
+                                                    </div>
+                                                    <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0">Product Management</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0">
+                                                        <em class="text-mute">Allows the user to create / edit and perform product related actions on products</em>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-editUser-isFulManager" class="chkpadd" name="acc-editUser-isFulManager"
+                                                               ng-click="editUserRole('MERC_ORDER_MGR')" ng-checked="hasPermission('MERC_ORDER_MGR')">
+                                                    </div>
+
+                                                    <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0">Fulfillment Management</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0">
+                                                        <em class="text-mute">Allows the user to create / edit Shipment and Orders. The user can perform fulfillment related actions on products.</em>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-editUser-isConManager" class="chkpadd" name="acc-editUser-isConManager"
+                                                               ng-click="editUserRole('MERC_CONFIG_MGR')" ng-checked="hasPermission('MERC_CONFIG_MGR')">
+                                                    </div>
+                                                    <div class="col-md-11 col-sm-11 col-xs-9 font-bold pad0">Configuration Management</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0 ">
+                                                        <em class="text-mute">Allows the user to add / modify sales channels, preferences and download reports. Allows the user to add / edit all sections under My Account except User Accounts.</em>
+                                                    </div>
+                                                </div>
+
+                                                <!--<div class="row padall1 temp">
+                                                    <div class="col-md-1 col-sm-1 col-xs-1">
+                                                        <input type="checkbox" id="acc-editUser-isAdmin" class="chkpadd" name="acc-editUser-isAdmin"
+                                                               ng-click="editUserRole('MERC_ADMIN')" ng-checked="hasPermission('MERC_ADMIN')">
+                                                    </div>
+                                                    <div class="col-xs-9 col-md-11 col-sm-11 font-bold pad0">Administration</div>
+                                                    <div class="col-sm-11 col-md-11 col-xs-11 pull-right pad0">
+                                                        <em class="text-mute">Allows the user complete access to the platform. User Accounts will be hidden.</em>
+                                                    </div>
+                                                </div>-->
+                                                <div class="row padall1 temp">
+                                                    <div class="col-xs-11 col-md-11 col-sm-11 pull-right pad0 error-message">Note: Selecting all the above permissions gives complete access to your account except User Accounts</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="formbtn btn-grp pull-right">
+                                        <button ng-show="isAddSubUser" id="acc-createSubUser-create-btn" class="btn btn-primary" type="submit">Create</button>
+                                        <button ng-show="!isAddSubUser" id="editUser-update-btn" name="editUser-update-btn" class="btn btn-primary" type="submit">Save</button>
+                                        <button id="acc-createSubUser-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

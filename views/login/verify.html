@@ -1,0 +1,29 @@
+<section class="container-fluid" ng-init="init()">
+  <form class="form-signin" role="form" name="resend_verification" novalidate angular-validator angular-validator-submit="resendVerification(resend_verification)">
+	<div class="form-signin-title">
+	<span class="triangle-lft"></span>
+        <h2 class="form-signin-heading"><span class="ezyHide">ezyCommerce</span>&nbsp;</h2>
+	<span class="triangle-rgt"></span>
+	</div>
+<div class="bdycnt">	
+		<div class="row">
+		<h2>Resend Email Verification</h2>
+		</div>
+		<div class="row input">
+		<label class="">Email</label>
+        <input type="email" class="form-control marbtm" required autofocus ng-model="resendVerificationEmail"/>        
+		</div>	
+        <div class="row martop10" ng-if="resendVerificationSuccessResponse || resendVerificationErrorResponse">
+          <label ng-if="resendVerificationSuccessResponse" class="txtGreen" ng-bind="resendVerificationSuccessResponse"></label>
+          <label ng-if="resendVerificationErrorResponse" class="txtRed" ng-bind="resendVerificationErrorResponse"></label>
+		</div>
+		<div class="row martop10">
+        <button type="submit" ng-disabled="resend_verification.$invalid" class="btn btn-lg btn-primary btn-block loginButtonVerify">Send verification email</button>
+      </div>
+	  <div class="row">
+        <label class="pull-left"><a href="/signup">SignUp</a></label>
+		<label class="pull-right"><a href="#/login">Log in</a></label>        
+      </div>	  
+	</div>
+	  </form>
+</section>

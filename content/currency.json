@@ -1,0 +1,394 @@
+{
+"1": {
+"currencyId": 1,
+"currencyCode": "USD",
+"currencyName": "US Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"2": {
+"currencyId": 2,
+"currencyCode": "EUR",
+"currencyName": "Euro",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"3": {
+"currencyId": 3,
+"currencyCode": "CAD",
+"currencyName": "Canadian Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"4": {
+"currencyId": 4,
+"currencyCode": "GBP",
+"currencyName": "Pound Sterling",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"5": {
+"currencyId": 5,
+"currencyCode": "AED",
+"currencyName": "UAE Dirham",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"6": {
+"currencyId": 6,
+"currencyCode": "AUD",
+"currencyName": "Australian Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"7": {
+"currencyId": 7,
+"currencyCode": "BDT",
+"currencyName": "Taka",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"8": {
+"currencyId": 8,
+"currencyCode": "BHD",
+"currencyName": "Bahraini Dinar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"9": {
+"currencyId": 9,
+"currencyCode": "BRL",
+"currencyName": "Brazilian Real",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"10": {
+"currencyId": 10,
+"currencyCode": "CHF",
+"currencyName": "Swiss Franc",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"11": {
+"currencyId": 11,
+"currencyCode": "CNY",
+"currencyName": "Yuan Renminbi",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"12": {
+"currencyId": 12,
+"currencyCode": "COP",
+"currencyName": "Colombian Peso",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"13": {
+"currencyId": 13,
+"currencyCode": "CZK",
+"currencyName": "Czech Koruna",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"14": {
+"currencyId": 14,
+"currencyCode": "DKK",
+"currencyName": "Danish Krone",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"15": {
+"currencyId": 15,
+"currencyCode": "EGP",
+"currencyName": "Egyptian Pound",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"16": {
+"currencyId": 16,
+"currencyCode": "HKD",
+"currencyName": "Hong Kong Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"17": {
+"currencyId": 17,
+"currencyCode": "HRK",
+"currencyName": "Croatian Kuna",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"18": {
+"currencyId": 18,
+"currencyCode": "HUF",
+"currencyName": "Forint",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"19": {
+"currencyId": 19,
+"currencyCode": "IDR",
+"currencyName": "Rupiah",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"20": {
+"currencyId": 20,
+"currencyCode": "ILS",
+"currencyName": "New Israeli Sheqel",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"21": {
+"currencyId": 21,
+"currencyCode": "INR",
+"currencyName": "Indian Rupee",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"22": {
+"currencyId": 22,
+"currencyCode": "IQD",
+"currencyName": "Iraqi Dinar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"23": {
+"currencyId": 23,
+"currencyCode": "IRR",
+"currencyName": "Iranian Rial",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"24": {
+"currencyId": 24,
+"currencyCode": "JOD",
+"currencyName": "Jordanian Dinar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"25": {
+"currencyId": 25,
+"currencyCode": "JPY",
+"currencyName": "Yen",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"26": {
+"currencyId": 26,
+"currencyCode": "KES",
+"currencyName": "Kenyan Shilling",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"27": {
+"currencyId": 27,
+"currencyCode": "KRW",
+"currencyName": "Won",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"28": {
+"currencyId": 28,
+"currencyCode": "KWD",
+"currencyName": "Kuwaiti Dinar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"29": {
+"currencyId": 29,
+"currencyCode": "LBP",
+"currencyName": "Lebanese Pound",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"30": {
+"currencyId": 30,
+"currencyCode": "LKR",
+"currencyName": "Sri Lanka Rupee",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"31": {
+"currencyId": 31,
+"currencyCode": "MAD",
+"currencyName": "Moroccan Dirham",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"32": {
+"currencyId": 32,
+"currencyCode": "MKD",
+"currencyName": "Denar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"33": {
+"currencyId": 33,
+"currencyCode": "MYR",
+"currencyName": "Malaysian Ringgit",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"34": {
+"currencyId": 34,
+"currencyCode": "NGN",
+"currencyName": "Naira",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"35": {
+"currencyId": 35,
+"currencyCode": "NOK",
+"currencyName": "Norwegian Krone",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"36": {
+"currencyId": 36,
+"currencyCode": "NZD",
+"currencyName": "New Zealand Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"37": {
+"currencyId": 37,
+"currencyCode": "PHP",
+"currencyName": "Philippine Peso",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"38": {
+"currencyId": 38,
+"currencyCode": "PLN",
+"currencyName": "Zloty",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"39": {
+"currencyId": 39,
+"currencyCode": "QAR",
+"currencyName": "Qatari Rial",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"40": {
+"currencyId": 40,
+"currencyCode": "RON",
+"currencyName": "New Leu",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"41": {
+"currencyId": 41,
+"currencyCode": "RUB",
+"currencyName": "Russian Ruble",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"42": {
+"currencyId": 42,
+"currencyCode": "SAR",
+"currencyName": "Saudi Riyal",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"43": {
+"currencyId": 43,
+"currencyCode": "SEK",
+"currencyName": "Swedish Krona",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"44": {
+"currencyId": 44,
+"currencyCode": "SGD",
+"currencyName": "Singapore Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"45": {
+"currencyId": 45,
+"currencyCode": "THB",
+"currencyName": "Baht",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"46": {
+"currencyId": 46,
+"currencyCode": "TND",
+"currencyName": "Tunisian Dinar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"47": {
+"currencyId": 47,
+"currencyCode": "TRY",
+"currencyName": "Turkish Lira",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"48": {
+"currencyId": 48,
+"currencyCode": "TWD",
+"currencyName": "New Taiwan Dollar",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"49": {
+"currencyId": 49,
+"currencyCode": "TZS",
+"currencyName": "Tanzanian Shilling",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"50": {
+"currencyId": 50,
+"currencyCode": "UAH",
+"currencyName": "Hryvnia",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"51": {
+"currencyId": 51,
+"currencyCode": "UGX",
+"currencyName": "Uganda Shilling",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"52": {
+"currencyId": 52,
+"currencyCode": "VND",
+"currencyName": "Dong",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"53": {
+"currencyId": 53,
+"currencyCode": "XAF",
+"currencyName": null,
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"54": {
+"currencyId": 54,
+"currencyCode": "XOF",
+"currencyName": null,
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"55": {
+"currencyId": 55,
+"currencyCode": "XPF",
+"currencyName": "CFP Franc",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+},
+"56": {
+"currencyId": 56,
+"currencyCode": "ZAR",
+"currencyName": "Rand",
+"modifiedDate": "0000-00-00 00:00:00",
+"createdDate": "2014-10-14 16:43:02"
+}
+}

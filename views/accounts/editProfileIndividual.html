@@ -1,0 +1,645 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/accounts/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <h2 class="thHead">Edit Profile</h2>
+                        <div class="container-fluid">
+                            <div class="row paddbtm30">
+                                <div class="col-sm-12 col-lg-9 paddnone">
+                                    <div class="thHeadIco glyphicon glyphicon-icon-MyAccount-profile col-lg-1 col-sm-1 hidden-xs"></div>
+                                    <div class="thContent col-lg-11 col-sm-10 paddtop36">
+                                        You can change account password, modify contacts details and manage your account status here.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="EditPro-lftcol col-sm-4 paddlft0">
+
+                            <div class="col-sm-offset-1">
+
+                                <div class="propic center">
+                                    <label class="glyphicon glyphicon-icon-MyAccount-editprofile-big img-circle "></label>
+                                </div>
+                                
+                                    <div class="control-label mercName paddall5 center" ng-bind="getMerchantName()"></div>
+                                
+                                <div class="center paddall5">
+                                    <span class="pen badge" ng-bind="getUserRoleName(loggedInContent.userRole)"></span>
+                                </div>
+                                <div class="panel marginbtm4">
+                                    <span class="glyphicon glyphicon-icon-MyAccount-email email-color"></span>
+                                    <label class="full expOrCol proDetail" ng-bind="getMerchEmail()"></label>
+                                </div>
+                                <div class="panel">
+                                    <span class="glyphicon glyphicon-icon-MyAccount-company email-color"></span>
+                                    <label class="full expOrCol proDetail" ng-bind="getMerchCompany()"></label><br>
+                                    <label class="full expOrCol uen">{{getMerchCompanyReg()}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="EditPro-rgtcol col-sm-7 clnpanel">
+                            <div class="row paddtop26">
+                                <div class="panel panel-default col-md-6 col-sm-12 paddnone paddrgt20">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Account Information</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Merchant ID</label>
+                                                    <label class="col-md-5 col-sm-5 control-label lblcln"> {{merchant.merchantCode || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Date Joined</label>
+                                                    <label class="col-md-5 col-sm-5 control-label lblcln" >{{merchant.createdDate || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Date Approved</label>
+                                                    <label class="col-md-5 col-sm-5 control-label lblcln" >{{merchant.activeDate || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+
+                                <!-- right panel -->
+
+                                <div class="panel panel-default col-md-6 col-sm-12  paddnone" check-acl="changePassword">
+
+
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Change Password</h4>
+                                    </div>
+
+                                    <form class="change-password" id="form-change-password" name="form-change-password" novalidate angular-validator angular-validator-submit="changePassword()">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group required ">
+                                                        <label for="changepw-current-pw" class=" control-label">Current Password</label>
+                                                        <input name="changepw-current-pw"
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="changepw-current-pw"
+                                                            placeholder="Current Password"
+                                                            ng-model="password.currentPw"
+                                                            required required-message="validationMessages.required"
+                                                            maxlength="20"
+                                                           />
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group required ">
+                                                        <label for="changepw-newpw" class=" control-label">New Password</label>
+                                                        <input name="changepw-newpw"
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="changepw-newpw" 
+                                                            placeholder="New Password"
+                                                            ng-model="password.newPw"
+                                                            required required-message="validationMessages.required"
+                                                            maxlength="20" 
+                                                            validator="isPasswordFormat(password.newPw)"
+                                                            invalid-message="pwErrorMessage1"
+                                                            />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group required ">
+                                                        <label for="changepw-retypepw" class=" control-label">Retype Password</label>
+                                                        <input name="changepw-retypepw"
+                                                            type="password"
+                                                            class="form-control"
+                                                            id="changepw-retypepw"
+                                                            placeholder="Retype Password"
+                                                            ng-model="password.retypePw"
+                                                            required required-message="validationMessages.required" 
+                                                            validator="isPasswordMatch(password.newPw, password.retypePw)" 
+                                                            invalid-message="pwErrorMessage"
+                                                            maxlength="20" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group martop15">
+                                                <div class="input-group thAppFil">
+                                                    <button type="submit" class="btn btn-primary thButton changeBtn1">Change Password</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <!-- contact details starts-->
+                            <div class="row">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Contact Details <span check-acl="editContact" ng-show="!isEditing" class="edit-color">(</span><a class="edit-color editLink" ng-show="!isEditing" ng-click="editContact()" check-acl="editContact">Edit</a><span check-acl="editContact" ng-show="!isEditing" class="edit-color">)</span></h4>
+                                </div>
+
+
+                                <div class="panel panel-default">
+                                    <div class="panel-body" ng-show="!isEditing">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">ContactNumber</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln"><span ng-bind="(merchant.contactNoCountryCode && merchant.contactPhone)?merchant.contactNoCountryCode+' '+merchant.contactPhone:constants.notAvailableText"></span></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">Country</label>
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label lblcln"> {{parseCountryName(merchant.countryCode) || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">Address Line1</label>
+                                                    <label class="col-md-7 col-sm-6 col-xs-6 control-label lblcln">{{merchant.addressLine1 || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">Address Line2</label>
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label lblcln">{{merchant.addressLine2 || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">City</label>
+                                                    <label class="col-md-7 col-sm-6 col-xs-6 control-label lblcln">{{merchant.city || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label">State/Region</label>
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label lblcln">{{merchant.state || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">ZIP / Postal Code</label>
+                                                    <label class="col-md-7 col-sm-6 col-xs-6 control-label lblcln">{{merchant.zipCode || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label">Alternate Contact Number</label>
+                                                    <label class="col-md-6 col-sm-6 col-xs-6 control-label lblcln">{{merchant.landline || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form class="contact-info" id="form-contact-info" name="form-contact-info" novalidate angular-validator angular-validator-submit="updateContact(form-contact-info)">
+                                        <div class="panel-body editing-mode" ng-show="isEditing">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group required">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">ContactNumber</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <div class="col-md-4 col-sm-6 padd0">
+                                                                <!--<select id="account-eidt-dialCode" name="account-setup-dialCode" class="form-control padd0" ng-model="tempMerchant.contactNoCountryCode"
+                                                                        required-message="validationMessages.required" required ng-options="item.dialCode as item.dialCode for item in countryList">
+                                                                </select>-->
+                                                                <select id="account-eidt-dialCode" name="account-setup-dialCode" class="form-control padd0" ng-model="tempMerchant.contactNoCountryCode" required-message="validationMessages.required" required>
+                                                                    <option ng-repeat="item in countryList" value="{{item.dialCode}}">{{' ( '+item.dialCode+' ) '+item.countryName}}</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-8 col-sm-6 padd0">
+                                                                <!-- <input name="accounts-eidt-contact-number" type="text" id="accounts-eidt-contact-number" class="form-control" ng-model="tempMerchant.contactPhone" required required-message="validationMessages.required" validator="validatePhone(tempMerchant.contactPhone)" invalid-message="validationMessages.invalidphone" maxlength="30"> -->
+
+                                                                <input name="accounts-eidt-contact-number" type="text" id="accounts-eidt-contact-number" class="form-control" ng-model="tempMerchant.contactPhone" required required-message="validationMessages.required" maxlength="60">
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group required">
+                                                        <label for="accounts-eidt-country" class="col-md-5 col-sm-6 col-xs-6 control-label">Country</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <!--<input name="accounts-eidt-country" type="text" id="accounts-eidt-country" class="form-control" ng-model="tempMerchant.countryCode"
+                                                                   required required-message="validationMessages.required"/>-->
+                                                            <select class="form-control" name="accounts-eidt-country" id="accounts-eidt-country" ng-model="tempMerchant.countryCode" ng-options="item.countryCode as item.countryName for item in countryList"
+                                                                    required required-message="validationMessages.required">
+                                                                <!--<option value="">Select</option>-->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group required">
+                                                        <label for="accounts-eidt-address-l1" class="col-md-5 col-sm-6 col-xs-6 control-label">Address Line1</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input name="accounts-eidt-address-l1" id="accounts-eidt-address-l1" class="form-control" ng-model="tempMerchant.addressLine1"
+                                                                   required required-message="validationMessages.required" maxlength="60"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group ">
+                                                        <label for="accounts-eidt-address-2" class="col-md-5 col-sm-6 col-xs-6 control-label">Address Line2</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input name="accounts-eidt-address-2" id="accounts-eidt-address-2" class="form-control" ng-model="tempMerchant.addressLine2"
+                                                                   maxlength="60"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group required">
+                                                        <label for="accounts-eidt-city" class="col-md-5 col-sm-6 col-xs-6 control-label">City</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input name="accounts-eidt-city" id="accounts-eidt-city"  class="form-control" ng-model="tempMerchant.city"
+                                                                   required required-message="validationMessages.required" maxlength="30"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group ">
+                                                        <label for="accounts-eidt-state" class="col-md-5 col-sm-6 col-xs-6 control-label">State/Region</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input name="accounts-eidt-state" id="accounts-eidt-state"  class="form-control" ng-model="tempMerchant.state" maxlength="30"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group required">
+                                                        <label for="accounts-eidt-zip" class="col-md-5 col-sm-6 col-xs-6 control-label">ZIP / Postal Code</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input id="accounts-eidt-zip"  class="form-control" ng-model="tempMerchant.zipCode"
+                                                                   name="accounts-eidt-zip" required required-message="validationMessages.required"
+                                                                   invalid-message="validationMessages.invalidnumber" maxlength="20"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group ">
+                                                        <label for="accounts-eidt-landline" class="col-md-5 col-sm-6 col-xs-6 control-label">Alternate Contact Number</label>
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <input name="accounts-eidt-landline" id="accounts-eidt-landline"  class="form-control" ng-model="tempMerchant.landline"
+                                                                   invalid-message="validationMessages.invalidphone" maxlength="30"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group btn-grp">
+                                                <div class="input-group thAppFil pull-right" ng-show="isEditing">
+                                                    <button type="button" class="btn btn-default" ng-click="cancelEditContact()">Cancel</button>
+                                                    <button type="submit" id="btn-update-contact-details" class="btn btn-primary thButton marlft10">Update Profile</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- contact details ends-->
+
+                            <!-- Company Information starts here-->
+                            <div class="row">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Company Information</h4>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 control-label">Revenue per annum</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.revPerAnnum || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h5 class="col-md-6 col-sm-12 paddlft0 martop0 control-label">Company Size</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 control-label">Year in which company was founded</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.compFoundedYear || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-6 col-sm-6 control-label">Permanent employees</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.permanentEmp || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-5 col-sm-6 control-label">Company website</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.companyWebsite || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group ">
+                                                    <label class="col-md-6 col-sm-6 control-label">Temporary employees</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.temporaryEmp || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Company Information ends here-->
+                            <!-- Business Information starts here-->
+                            <div class="row">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Business Information</h4>
+                                </div>
+                                <div class="panel panel-default">
+
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Orders per month</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.ordersPerMonth || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">Average units per order</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.avgUnitsPerOrder || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Percentage of domestic orders</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.domesticOrdersPercentage || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">Product Category
+                                                    </label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">
+<!-- <span ng-bind="(merchant.merCategory)?getSignupCategory(merchant.merCategory):constants.notAvailableText"  id="popoverData" href="#" title={{itemsToDispay}} data-toggle="tooltip" data-placement="top"> -->
+<span data-toggle="tooltip" data-placement="top" title="{{itemsToDispay}}"><span ng-bind="(merchant.merCategory)?getSignupCategory(merchant.merCategory):constants.notAvailableText"></span></span>
+
+                                                        
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                                
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Number of unique SKUs handled</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.noOfUniqueSkus || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">Number of online channels currently selling</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.noOfOnlineChannels || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Sales channel link</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln breakWord">{{merchant.salesChannelLink || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">No.of oversees countries currently selling</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.noOfOverseasSelling || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="isCountriesOptionsVisible('corpAccNo')">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">Corporate Account Number</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.corpAccountNumber || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                             <div class="col-md-5 col-sm-12 col-xs-12" ng-show="merchant.subsidyGranted" ng-if="isCountriesOptionsVisible('springGrant')">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">Spring Grant</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.subsidyGranted ? 'Yes' : constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-6 col-sm-6 control-label">Average Order value</label>
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln">{{merchant.averageOrders || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Business Information ends here-->
+
+
+
+                            <!-- Business Information starts here-->
+                            <div class="row">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">API Information</h4>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 control-label">API Key</label>
+                                                    <label class="col-md-7 col-sm-6 control-label lblcln">{{merchant.apiKey || constants.notAvailableText}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Close Account starts here-->
+                            <div class="row">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Close Account</h4>
+                                </div>
+                                <div class="panel panel-default">
+
+                                    <div class="panel-body posrelative">
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-12">This action will close/delete your account permanently</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-lg-12 col-md-8 col-sm-12">1. All inventory must be removed from the warehouse</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="col-lg-12 col-md-8 col-sm-12">2. All Orders must be closed</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-12 col-xs-12">
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-12 col-md-8 col-sm-12">3. An email will be sent regarding pending payments</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group btndangerposadmin" ng-if="!getCloseAccount(loggedInUser.userRole)">
+                                            <label>Contact Client Service</label>
+                                        </div>
+                                        <div class="input-group btndangerpos" ng-if="getCloseAccount(loggedInUser.userRole)">
+                                            <button class="btn btn-danger closeAcc" ng-click="closeAccount()">Send request to Close Account</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- Close Account ends here-->
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+         id="modal-shipment-create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Create Shipment</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please add atleast one product to create shipment</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Close Account Confirmation modal dialog-->
+    <div class="modal fade" id="modal-add-new-adjustment">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header merchant-modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Adjustment</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 center"><h5> Merchant ID : {{loggedInContent.merchantCode}} </h5></label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 left" for="adj-ref-no">Adjustment Ref No. (SalesForce Ticket No)</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="adj-ref-no" ng-model="adjustmentModel.adjustmentRefNo" placeholder="Payment Ref No.">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 left" for="adj-inv-ref-no">Invoice Ref. No</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="adj-inv-ref-no" ng-model="adjustmentModel.invoiceRefNo" placeholder="Payment Amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 left">Adjustment Amount</label>
+
+                            <div class="col-md-3">
+                                <select class="form-control" id="adj-type" ng-model="adjustmentModel.adjustmentType" ng-options="type for type in adjustmentType">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="ajd-amt" ng-model="adjustmentModel.adjustmentAmt" placeholder="Adjustment Amount">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 left" for="adj-date">Adjustment Date</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="adj-date" ng-model="adjustmentModel.adjustmentDate" data-date-format="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 left" for="adj-remarks">Remarks</label>
+                            <div class="col-sm-6">
+                                <textarea id="adj-remarks" name="adj-remarks" maxlength="100" class="form-control" rows="4" cols="7" ng-model="adjustmentModel.remarks"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="addNewAdjustment()">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAdjustmentModel">Cancel</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+</section>

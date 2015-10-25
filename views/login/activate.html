@@ -1,0 +1,84 @@
+<div ng-init="init()">
+  <header class="navbar navbar-default navbar-fixed-top"
+          role="navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand siteLogo" href="#/home"><span
+              class="ezyHide">ezy<strong>Commerce</strong></span>&nbsp;</a> <a
+            class="navbar-brand visible-xs" href="#/home">ezy</a>
+    </div>
+  </header>
+  <section class="container-fixed" >
+    <div class="panel col-sm-10 col-lg-10 col-md-10 panel-padd">
+      <div class="panel-heading step4">
+        <h4 class="panel-title">
+          <p ng-show="activateMechSuccess"> Welcome {{merchantDetails.merLastName + ' ' + merchantDetails.merFirstName}}!</p>
+          <p ng-show="activateMechError">{{verificationFailedHdr}}</p>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body activecnt-bg">
+          <div class="col-sm-12 col-xs-12 padd0">
+            <div class="col-sm-12">
+              <div ng-show="activateMechSuccess">
+                <div class="row">
+                  <p>{{merchantDetails.companyName}} is successfully registered for an ezyCommerce account. <br> Your Merchant ID is <b>{{merchantDetails.merchantCode}}</b></p>
+                </div>
+
+                <div class="row">
+                  <p>Your account is now awaiting approval. This shouldn't take long so we will send you an email as soon as your approval is done. We might contact you if we have further questions relating to your interest.</p>
+                </div>
+
+                <div class="row">
+                  <p>Once your account is approved, you can now sign into your ezyCommerce account with the user name and password you chose during signup.</p>
+                </div>
+              </div>
+
+              <div ng-show="activateMechError">
+                <div class="row">
+                  <p>Oops! The verification link has expired. Please initiate the <a href='#/verify'>resend verification email</a> from the login page if you have not verified</a></p>
+                </div>
+              </div>
+              <div class="panel hz-linebg">
+              </div>
+              <div class="row activefooter">
+                <p>Account approved? Click <a href="#" class="linkColor">here </a> to go directly to the login page <br>
+                  <span ng-bind-html="isCountriesOptionsVisible('activate')"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="closeModal()"
+                  data-dismiss="modal">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Success</h4>
+        </div>
+        <div class="modal-body">Merchant Created Successfully...!!!</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"
+                  ng-click="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<footer class="thFooter">
+    <div class="container-fluid thFooterBg">
+      <nav class="blog-nav"> <a href="#/help" class="blog-nav-item">HELP AND SUPPORT <span class="glyphicon glyphicon-fot-sep">|</span></a> <a href="#/terms" class="blog-nav-item">TERMS OF USE <span class="glyphicon glyphicon-fot-sep">|</span></a> <a href="#/policy" class="blog-nav-item">PRIVACY POLICY</a> </nav>
+      <div class="clear"></div>
+      <p class="text-muted thFootCopy">@ 2014 SINGAPORE POST LIMITED. ALL RIGHTS RESERVED</p>
+      <p class="text-muted thFootPower hidden-xs">Powered by : </p>
+    </div>
+  </footer>-->
+  </body>
+</div>
+

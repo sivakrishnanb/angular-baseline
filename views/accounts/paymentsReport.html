@@ -1,0 +1,184 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/accounts/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row transReportsContainer">
+                    <div class="col-sm-12">
+                        <form role="form">
+                            <h2 class="thHead">Transactions Report</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 padd0">
+                                        <div class="thHeadIco glyphicon glyphicon-ban-circle-big col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10 txtJustify">Here you can download all transactions by specifying a custom date range. Maximum date range allowed is 12 months from the current date. Please call client service and raise a request if you need older records.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-heading">
+                                <h4 class="panel-title" id="acc-reports-payments-header">Download Transaction report</h4>
+                            </div>
+                            <div>
+                                <h4>Filter transactions</h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 col-md-11">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 col-md-2 col-lg-2 control-label">Transaction Type</label>
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group product-date thCreDate">
+                                                                <span ng-init="getBillingDates()"></span>
+                                                                <div class="form-group">
+                                                                    <div id="acc-reports-transaction-type" multi-select input-model="transactionType" output-model="selectedTransType" button-label="name" item-label="name" tick-property="ticked" max-labels="1" default-label="Transaction Type" min-width="300px" max-height="220px" helper-elements="all none filter" id="product-search-category">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 col-md-11">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 col-md-2 col-lg-2 control-label">Transaction Range</label>
+                                                        <div class="col-sm-4">
+                                                            <div class="input-group product-date thCreDate">
+                                                                <!--<div id="reports-payments-satement-period" multi-select
+                                                                input-model="transReportRange" output-model="repPayDate" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Date Range" disable-property="label" id="product-date-range"></div>-->
+
+                                                                <div class="form-group">
+                                                                    <div class="btn-group date-selector">
+                                                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="product-date-selector">
+                                                                            {{(repPayDate[0].name)? repPayDate[0].name : transReportRange[0].name}} <span class="caret"></span>
+                                                                        </button>
+                                                                        <span class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</span>
+
+                                                                        <ul class="dropdown-menu" role="menu">
+                                                                            <li ng-repeat="dateOption in transReportRange">
+                                                                                <span ng-class="{'cal-active':dateOption.ticked}" ng-if="dateOption.value !='custom' && dateOption.value !='none'" ng-click="transTickSelection(transReportRange, $index)">
+                                                                                    <a href="javascript:void(0)">{{dateOption.name}}</a>
+                                                                                    <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                                                                                </span>
+
+                                                                                <!--custom date starts-->
+                                                                                <ul ng-if="dateOption.value =='custom'">
+                                                                                    <li class="dropdown-submenu">
+                                                                                        <span ng-click="transTickSelection(transReportRange, $index)" ng-class="{'cal-active':dateOption.ticked}">
+                                                                                            <a href="javascript:;">{{dateOption.name}}</a>
+                                                                                            <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                                                                                        </span>
+
+                                                                                        <ul ng-class="{'dropdown-menu':true, 'cal-disblk':(dateOption.ticked)}">
+                                                                                            <li>
+                                                                                                <div class="input-daterange input-group date-rangepicker" id="datepicker">
+                                                                                                    <div ng-model="fromdate" class="input pull-left daterangefrm" id="pay-reports-fromdate"></div>
+                                                                                                    <div ng-model="todate" class="input pull-left daterangeto" id="pay-reports-todate"></div>
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </li>
+                                                                                </ul>
+                                                                                <!--custom date - ends-->
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <!--<div class="row">
+                                                    <label class="col-sm-3 col-md-2 col-lg-2"></label>
+                                                    <div class="col-sm-4 ">
+                                                        <div class="col-md-2 col-sm-3 col-lg-5 col-xs-3 paddnone width37 marrgt20" ng-show="repPayDate[0].value=='custom'">
+                                                            <div class="form-group thDateFrom" >
+                                                                <label class="sr-only" for="pay-reports-fromdate">From Date</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" id="pay-reports-fromdate" ng-model="transRepFromDateCustom" data-date-format="dd/mm/yyyy" readonly/>
+                                                                    <label class="input-group-addon" for="pay-reports-fromdate"><i class="glyphicon glyphicon-calendar"></i></label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-2 col-sm-3 col-lg-5 col-xs-3 paddnone width37" ng-show="repPayDate[0].value=='custom'">
+                                                            <div class="form-group thDateTo">
+                                                                <label class="sr-only" for="pay-reports-todate">To Date</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" id="pay-reports-todate" ng-model="transRepToDateCustom" data-date-format="dd/mm/yyyy" readonly/>
+                                                                    <label class="input-group-addon" for="pay-reports-todate"><i class="glyphicon glyphicon-calendar"></i></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+
+                                                <div class="row paddtop10">
+                                                    <div class="col-sm-8 col-md-8 col-lg-9 ">
+                                                        <em class="text-muted col-md-marlft23">Adjustments and payments, if any are not shown in the transactions report.</em>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-8 col-md-8 col-lg-9">
+                                            <button class="btn btn-primary headrTopPad col-md-marlft21 col-sm-offset-5 pull-left marrgt20" ng-click="downloadTransRep()"
+                                                    ng-disabled="(repPayDate[0].value=='custom' && (!transRepFromDateCustom||!transRepToDateCustom) )">Download</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-heading" ng-if="0">
+                                <h4 class="panel-title"><a href="javascript:;" id="acc-payments-sum">Payments file download summary</a></h4>
+                            </div>
+
+                            <div class="newGridContainer container-fluid" ng-if="0">
+                                <div class="row">
+                                    <div class="dataTog col-xs-12 col-sm-12 col-md-12">You can download up to 10 previously generated files.</div>
+                                </div>
+                            </div>
+
+                            <div class="newGridContainer container-fluid" ng-if="0">
+                                <div class="row proHeader headerTwo">
+                                    <div class="proHeaMerH col-xs-12 col-sm-3 col-md-3 headerTwo">Date& Time</div>
+                                    <div class="proHeaCatH col-xs-12 col-sm-5 col-md-5 headerTwo">Filters Used</div>
+                                    <div class="proHeaDimH col-xs-12 col-sm-3 col-md-3 headerTwo">Actions</div>
+                                </div>
+
+                                <div class="clear"></div>
+
+                                <div class="row proRow" ng-class="{rowSelected:product.Selected}" ng-repeat="product in myData">
+                                    <div class="proHeaCat col-xs-12 col-sm-2 col-md-1">{{getCategory(product.mainProductCategory) | addEllipse:20 }}</div>
+                                    <div class="proHeaAle col-xs-12 col-sm-1 col-md-1">{{getInventoryAlertLevel(product.inventoryAlertLevel)}}</div>
+                                    <div class="proHeaAle col-xs-12 col-sm-1 col-md-1">{{getInventoryAlertLevel(product.inventoryAlertLevel)}}</div>
+                                </div>
+
+                                <div class="row proRow" ng-if="!myData.length">
+                                    <div class="noRecordDisplay col-xs-12 col-sm-12 col-md-12"> <p class="noProd txtBold">You don't have any download history.</p></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

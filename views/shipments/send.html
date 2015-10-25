@@ -1,0 +1,421 @@
+
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/shipments/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form" name="send_shipment" novalidate
+                            angular-validator
+                            angular-validator-submit="sendShipment(send_shipment)">
+                            <h2 class="thHead">Send Inbound Shipment</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 paddnone">
+                                        <div
+                                            class="thHeadIco glyphicon glyphicon-share-car col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10">You can update the Inbound shipment details and print labels here. We advise you to update the Carrier name and Carrier Tracking Number if you have this information. We will start receiving the shipment only after the complete shipment has arrived. The total number of cartons we receive should match what you enter here. Please provide the carton number visible from the outside.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--pagination-->
+                            <!-- <div class="edit-paging txtRight" ng-show="shipInbounds.length"> -->
+                            <div class="edit-paging txtRight" ng-if="0">
+                                <span > Showing {{currentObjPos}} of {{shipInbounds ? shipInbounds.length: ''}} Shipments</span>
+                                <button class="btn btn-default glyphicon glyphicon-icon-prevbtn" ng-disabled="{{currentObjPos - 2 < 0 }}" type="button" ng-click="getNextItem(currentObjPos - 2)"></button>
+                                <button class="btn btn-default glyphicon glyphicon-icon-nextbtn" ng-disabled="{{currentObjPos == shipInbounds.length}}"  type="button" ng-click="getNextItem(currentObjPos)"></button>
+                            </div>
+                            <div class="panel-group">         
+                                <div class="row">
+                                    <div class="step-flow">
+										<div class="addprobg">
+										<span>Add Products</span>
+										</div>
+										<div class="probg select"><span>Send Shipment</span></div>									
+									</div>
+                                </div>
+                                 <div class="panel panel-default">
+                                    
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body order-headid">
+                                            <div class="row">
+                                               <div class="col-sm-6 paddrgt0">
+                                                    <div class="form-group">
+                                                        <label for="shipment-send-shipment-id" class="col-lg-2 col-md-3 col-sm-4 col-xs-12 paddrgt0 control-label">Shipment
+                                                            ID :</label>
+                                                        <div class="col-sm-6 paddnone">
+                                                            <span id="shipment-send-shipment-id"
+                                                                class="form-control-static"
+                                                                ng-bind="model.header.inboundCode || constants.notAvailable"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 paddrgt0">
+                                                    <div class="form-group">
+                                                        <label for="shipment-send-shipment-plan" class="col-lg-3 col-md-4 col-sm-5 col-xs-12 paddrgt0 control-label">Shipment
+                                                            Plan Name :</label>
+                                                        <div class="col-sm-6 paddnone">
+                                                            <span id="shipment-send-shipment-plan"
+                                                                class="form-control-static"
+                                                                ng-bind="model.header.planName || constants.notAvailable"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row shpRow">
+                                    <div
+                                        class="panel panel-default col-md-6 col-sm-12 col-xs-12  xstxt-padd0 smtxt-padd0 paddrgt20">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;"
+                                                    id="product-create-custom-declaration"> Update Shipment
+                                                    Details </a>
+
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group required">
+                                                            <label for="shipment-send-carrier-name"
+                                                                class=" control-label">Carrier Name</label> <input
+                                                                name="shipment-send-carrier-name" type="text"
+                                                                class="form-control" id="shipment-send-carrier-name"
+                                                                placeholder="Carrier Name" ng-model="model.header.carrierName"
+                                                                required required-message="validationMessages.required" maxlength="30" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="shipment-send-carrier-number"
+                                                                class="control-label">Carrier Tracking Number</label> <input
+                                                                name="shipment-send-carrier-number" type="text"
+                                                                class="form-control" id="shipment-send-carrier-number"
+                                                                placeholder="1234567891" ng-model="model.header.trackingNumber"
+																maxlength="30" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group required">
+                                                            <label for="shipment-send-estimated-arrival"
+                                                                class="control-label">Estimated Ship Date</label>
+                                                            <div class="col-sm-12 shpCal">
+                                                                <div class="input-group datelbl">
+                                                                    <input name="shipment-send-estimated-date"
+                                                                        type="text"
+                                                                        class="form-control shipment-search-box-products"
+                                                                        id="shipment-send-estimated-date"
+                                                                        placeholder="Estimated Ship Date"
+                                                                        ng-model="model.header.estShipDate" required
+                                                                        required-message="validationMessages.required"
+                                                                        data-date-format="dd/mm/yyyy"
+                                                                        ng-blur="validateShipDate(model.header.estShipDate)"
+                                                                        validator='!validateShipDate(model.header.estShipDate)'
+                                                                        invalid-message='shipDt_errorMessage'
+                                                                            />
+                                                                    <label
+                                                                        class="input-group-addon"
+                                                                        for="shipment-send-estimated-date">
+                                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                                    </label>
+                                                                </div>
+                                                                <!--<span class="error-message" ng-show="shipDt_isInvalid" ng-bind="shipDt_errorMessage"></span>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div class="form-group required">
+                                                            <label for="shipment-send-estimated-arrival"
+                                                                class="control-label">Estimated Arrival Date</label>
+                                                            <div class="col-sm-12 shpCal">
+                                                                <div class="input-group datelbl">
+                                                                    <input name="shipment-send-estimated-arrival"
+                                                                        type="text"
+                                                                        class="form-control shipment-search-box-products"
+                                                                        id="shipment-send-estimated-arrival"
+                                                                        placeholder="Estimated Arrival Date"
+                                                                        ng-model="model.header.estArrivalDate"
+                                                                        data-date-format="dd/mm/yyyy"
+                                                                        ng-blur="validateArrivalDate(model.header.estArrivalDate)"
+                                                                        required required-message="validationMessages.required"
+                                                                        validator='!validateArrivalDate(model.header.estArrivalDate)' invalid-message='arrivalDt_errorMessage' ng-change='getWareHouseLeadTime()'
+                                                                    />
+                                                                    <label
+                                                                        class="input-group-addon"
+                                                                        for="shipment-send-estimated-arrival">
+                                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                                    </label>
+                                                                </div>
+                                                                <!--<span class="error-message" ng-show="arrivalDt_isInvalid" ng-bind="arrivalDt_errorMessage"></span>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="form-group required">
+                                                                  <label for="shipment-send-cartons" class="control-label">Total
+                                                                Number of Cartons</label> 
+                                                                   <div class="popoverHldr marg-left7">
+                                                                   <span class="glyphicon glyphicon-info" 
+                                                                        data-container="body" 
+                                                                        data-toggle="popover" 
+                                                                        data-placement="right" 
+                                                                        data-content="The total number of cartons we receive should match what you enter here. Please provide only the master cartons that are visible from the outside. Warehouse will hold this Shipment if there is a mismatch." 
+                                                                        data-original-title="" title="" id="reference">
+                                                                  </span>
+                                                                </div>
+                                                            <input name="shipment-send-cartons"
+                                                                type="text" class="form-control"
+                                                                id="shipment-send-cartons" placeholder="Cartons"
+                                                                ng-model="model.header.cartonsCount" required
+                                                                required-message="validationMessages.required" />
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row shpRow">
+
+                                            <div class="panel panel-default col-md-12 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad marbtm15" ng-if="warehouseleadtimeSuccessResponse">
+                                                <div class="col-sm-11 orderinfobg fnt12px wdth97">
+                                                    Products will be ready for order fulfillment by {{responseLeadTime.calculatedLeadDate}} if you send the Shipment before {{responseLeadTime.arrivalDate}}, {{responseLeadTime.cutOffTime}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="panel panel-default col-md-6 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad" ng-show="!model.header.cancelledDate">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;"
+                                                    for="product-create-additional-information">Print
+                                                    Product &amp; Box Labels</a>
+                                            </h4>
+
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 paddnone">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="paddlft0">Template</th>
+                                                                    <th></th>
+                                                                </tr>
+
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-show="model.header.labelBy=='M'">
+                                                                     <!--<td>
+                                                                        <input name="shipment-create-product-labelquantity-{{$index}}" type="text" class="form-control shipment-qty" id="shipment-create-product-labelquantity-{{$index}}" placeholder="Quantity" step="1"/>
+                                                                     </td>-->
+
+                                                                    <td class="paddlft0">                            
+                                                                        <select id="shipment-send-product-labels"
+                                                                        class="form-control shpCal1" name="shipment-send-product-labels"
+                                                                        ng-model="productLabelList"
+                                                                        ng-options="item as item.name for item in constants.productLabelList track by item.value">
+                                                                        </select>
+                                                                    </td>
+
+                                                                    <td class="paddlft0">
+                                                                        <button id="shipment-send-product-label-btn"
+                                                                            type="button" class="btn btn-primary"
+                                                                            ng-click="getFileUrl(productLabelList, 'productlabelshipment')"
+                                                                            title="Product Label">Product Label</button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr ng-show="model.header.labelBy=='M'">
+                                                                    <td class="paddlft0 paddtop0">
+                                                                        <input type="checkbox" name="newSheetRequired" id="newSheetRequired" ng-model="newSheetRequired">
+                                                                        <span class="new-sheet">Start every SKU in a new sheet</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <!--<td>
+                                                                        <input name="shipment-create-product-labelquantity-{{$index}}" type="text" class="form-control shipment-qty" id="shipment-create-product-labelquantity-{{$index}}" placeholder="Quantity" step="1"/>
+                                                                     </td>-->
+
+                                                                    <td class="paddlft0"><select id="shipment-send-box-labels"
+                                                                        class="form-control" name="shipment-send-box-labels"
+                                                                        ng-model="boxLabelList"
+                                                                        ng-options="item as item.name for item in constants.boxLabelList track by item.value">
+                                                                    </select></td>
+                                                                    <td class="paddlft0">
+                                                                        <button id="shipment-send-box-label-btn" type="button"
+                                                                            class="btn btn-primary"
+                                                                            ng-click="getFileUrl(boxLabelList, 'boxlabelshipment')"
+                                                                            title="Box Label">Box Label</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="panel panel-default col-md-12 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a href="javascript:;"
+                                                       for="product-create-additional-information">Supplier Info</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFour" class="panel-collapse collapse in">
+
+                                                <div class="panel-body">
+
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 paddnone">
+                                                            <div class="form-group">
+                                                                <label for="onoffswitch_shipment" class="col-sm-9 col-xs-9 control-label paddrgt0">Who will be sending the Shipment? (Merchant/Supplier)</label>
+
+                                                                <!-- On/Off switch-->
+                                                                <div class="onoffswitch pref supplier-info-onoff shipment-merchant">
+                                                                    <input type="checkbox" name="onoffswitch_shipment" class="onoffswitch-checkbox" id="onoffswitch_shipment" ng-model="tempModel.whoSendShipment">
+                                                                    <label class="onoffswitch-label" for="onoffswitch_shipment">
+                                                                        <span class="onoffswitch-inner"></span>
+                                                                        <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!tempModel.whoSendShipment}"></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 paddnone">
+                                                            <div class="form-group" ng-if="tempModel.whoSendShipment">
+                                                                <label class="col-sm-10 col-xs-10 control-label paddrgt0">Please print and paste the Shipment label on your Shipment</label>
+                                                            </div>
+
+                                                            <div class="form-group" ng-if="!tempModel.whoSendShipment">
+                                                                <label for="onoffswitch_2" class="col-sm-9 col-xs-9 control-label paddrgt0">Will the Supplier paste EZC Shipment label?</label>
+
+                                                                <!-- On/Off switch -->
+                                                                <div class="onoffswitch pref supplier-info-onoff">
+                                                                    <input type="checkbox" name="onoffswitch_supplier" class="onoffswitch-checkbox" id="onoffswitch_2" ng-model="model.header.supplierEzcShipmentLabel">
+                                                                    <label class="onoffswitch-label" for="onoffswitch_2">
+                                                                        <span class="onoffswitch-inner"></span>
+                                                                        <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.header.supplierEzcShipmentLabel}"></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 paddnone">
+                                                            <div class="form-group" ng-if="!tempModel.whoSendShipment && model.header.supplierEzcShipmentLabel">
+                                                                <label  class="col-sm-10 col-xs-10 control-label paddrgt0">Please download and email the Shipment label to your supplier from above</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group" ng-if="!tempModel.whoSendShipment && !model.header.supplierEzcShipmentLabel">
+                                                                <div class="col-sm-12 marbtm15 paddlft30">
+                                                                    <em class="text-muted">Please provide us a form of Barcode Identification</em>
+                                                                </div>
+                                                                <div class="col-sm-12">
+                                                                    <label for="po-number" class="col-sm-2 col-xs-2 control-label paddrgt0">PO number</label>
+                                                                    <div class="col-sm-6 col-xs-6">
+                                                                        <input class="form-control col-sm-6 col-xs-12 supplier-info-txt" type="text" id="po-number" ng-model="model.header.supplierPoNumber" placeholder="Barcode Id" maxlength="30">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- remove{{active}} -->
+                                                <em class="text-danger paddtop3 dispInlineblk" ng-show="active">Remove the products highlighted in red or resolve the issues in order to create shipment</em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>  
+
+                            <div class="btn-grp pull-right">                                
+                                <button id="shipment-send-cancel-top" type="button"
+                                    class="btn btn-default" ng-click="navigate('shipments/edit/' + model.header.inboundCode)">Back</button>
+                                <button id="shipment-send-cancel-btm" type="button"
+                                    class="btn btn-danger" ng-click="cancel()"
+                                    ng-show="!model.header.cancelledDate">Cancel Shipment</button>
+                                <button id="shipment-send-restore-btm" type="button"
+                                    class="btn btn-danger" ng-click="restore()"
+                                    ng-show="model.header.cancelledDate">Restore Shipment</button>
+                                <button check-acl="sendShipment" ng-show="!model.header.cancelledDate"
+                                    id="shipment-send-change-intransit-btm" type="submit"
+                                    class="btn btn-primary">
+                                    <span ng-if="!fullEditShipment || (fullEditShipment && model.header.status!=2)">Change Status to In Transit</span>
+
+                                    <span ng-if="fullEditShipment&&model.header.status==2">Save</span>
+                                </button>
+                            </div>
+                            <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="sendShipment" showmessage="hide"></div>
+                        </form>
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-shipment-confirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p> Shipment Preparation Checklist <span id="shipmentConfirm-modalClose" class="shipmentConfirm-modalClose" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body">
+                <p>Please make sure that the following tasks have been completed before you send the Shipment. This will allow us to receive and process your Shipment without any delays.</p>
+                <ol class="marg-top-15">
+                    <li>You are shipping the right products (SKUs) as given in the Shipment.</li>
+                    <li>Number of units shipped for each product matches with the Shipment quantity for each product.</li>
+                    <li>Product Labels have been printed and pasted on every unit (if you chose 'Merchant' under Who labels?).</li>
+                    <li>Shipment Box labels have been printed and pasted on every external carton in the shipment.</li>
+                    <li>All items are securely packed with suitable packaging/filler materials - without any open/damaged cartons.</li>
+                    <li>All cartons are fully sealed with brown tape or transparent tape.</li>
+                    <li>Total number of cartons you enter in this page matches with the total number of cartons you ship to us.</li>
+                </ol>
+             </div> 
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="shipmentConfirm-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary thButton modelButtonOk" id="shipmentConfirm-modalOk" ng-click="temp()">Change Status to In Transit</button>
+                <div class="footer-text-10px paddtop10"><span ng-bind="inTransitFooterText"></span></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-shipment-receipt">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p> Shipment Delivery Receipt <span id="shipmentConfirm-modalClose" class="shipmentConfirm-modalClose" data-dismiss="modal" ng-click="goBackTransitLandPage()">X</span></p>
+            </div>
+            <div class="modal-body">
+                  <p class="margin-ship-del">Please print and produce this delivery receipt to the warehouse In-charge when you send your products to the warehouse. Producing the receipt is your responsibility. Warehouse will not print the receipt			  
+				  </p>
+                  <br>
+                  <p class="margin-ship-note ">
+                    <em class="footer-text-12px footer-col-dark">Note: This receipt does not account for the products and number of units inside the Shipment. That will be updated in the platform once warehouse finishes the receiving process </p>
+                    <p class="margin-ship-click footer-text-12px em footer-col-dark">Your download should automatically begin in a few seconds, if not please click <a href="" ng-click="downloadShipDeliveryreceipt()">here</a></p>
+                    </em>
+                </p>
+             </div> 
+            <div class="modal-footer">
+                
+               
+                <button type="button" class="btn btn-primary thButton modelButtonOk" id="shipmentConfirm-modalOkRec" ng-click="goBackTransitLandPage()">OK</button>
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

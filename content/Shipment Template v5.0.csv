@@ -1,0 +1,48 @@
+//EzyFulfillment Shipment template v5.0,,
+//Do NOT remove or edit any values or modify the order of rows 32 to 44 for columns A and B,,
+//Do NOT remove or edit any values or modify the order of rows 45 and 46,,
+//Asterisk (*) in the beginning indicates required field,,
+//Double slash in the beginning indicates they are instructions/guide,,
+//*Shipment Plan Name - A plan name for your reference. Free text with maximum 30 characters,,
+//*Contact Name - Ship from Name. Free text with maximum 30 characters,,
+//*From Address 1 - Ship from address line 1. Free text with maximum 50 characters,,
+//From Address 2 - Ship from address line 2. Free text with maximum 50 characters,,
+//*From Address city - Ship from address city. Free text with maximum 30 characters,,
+//From Address state/region - Ship from address state/region. Free text with maximum 30 characters,,
+//*From Address Postal code - Ship from address Postal code. Free text with maximum 20 characters,,
+"//Contact Phone - Numeric, '+' and spaces allowed. Maximum 20 characters",,
+//*Who labels - Choose who to label your products. 'M' for Merchant and 'W' for warehouse. You will be able to download labels by logging in to the platform if you wish to label. Only 'W' & 'M' are accepted values.,,
+//Plan remarks. For your reference. Free text with maximum 100 characters,,
+//*FBSP SKU/Merchant SKU - only one sku should be provided which is existing in the product catalog. Shipment will not be created if there are inactive products,,
+//*Units - Number of units of the product you are planning to send. Positive integers with maximum of 10000 units,,
+"//Number of labels to print - If you have given 'M' in who labels, provide the label quantity to print. If left empty, will be defaulted to number of units",,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+Field Name,Description,Value
+shipment_plan_name,*Shipment Plan Name,EXAMPLE 123
+name,*Contact Name,James
+address_1,*From Address 1,#05-199
+address_2,*From Address 2,"45, EXAMPLE ROAD"
+address_city,*From Address City,SINGAPORE
+address_state,From Address State Or Region,SINGAPORE
+address_country,*From Address Country,SINGAPORE
+address_postal_code,*From Address Postal Code,199 084
+contact_number,Contact Number,+65 9877 2383
+who_labels,*Who Labels,W
+remarks,Plan Remarks,EXAMPLE REMARKS
+,,
+sku,units,labels_to_print
+*FBSP SKU or Merchant SKU,*Units,Number of labels to print
+EXAMPLE-11234,40,45
+ZC0078JN98,23,23

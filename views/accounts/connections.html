@@ -1,0 +1,387 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="acc-connections" novalidate angular-validator angular-validator-submit="">
+              <h2 class="thHead">Connections</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                 <div class="col-sm-12 col-lg-9 paddnone" >
+                      <div class="thHeadIco glyphicon glyphicon-con col-lg-1 col-sm-1 hidden-xs"></div>
+                        <div class="thContent col-lg-11 col-sm-10 paddtop34">
+                          You can manage connections to external sales channels - marketplaces and shopping carts here.
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <div class="panel-group">
+
+                <div class="row paddbtm20 xstxt-padd0 salesChan">
+                  <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                    
+                    
+                    <div class="panel-heading marbtm5">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="acc-bill-fulCost-header">Sales Channels</a>
+                      </h4>
+                    </div>  
+                    
+                          <div class="row">
+
+                            <!-- left panel starts -->
+                            <div class="channel-pref-container panel panel-default col-md-4 col-sm-12 paddnone paddrgt20" ng-repeat="channelList in getChannelList">
+                              <div class="form-group brdrbtmconnect col-md-5 connection-header">
+                               <img src="images/ebay.jpg" alt="eBay" class="img-rounded" ng-if="channelList.channelCode=='ebay'">
+                               <img src="images/shopify-logo.jpg" alt="eBay" class="img-rounded" ng-if="channelList.channelCode=='shopify'">
+                               <img src="images/amazon.jpg" alt="eBay" class="img-rounded" ng-if="channelList.channelCode=='amazon'">
+                               <img src="images/rakuten.png" alt="eBay" class="img-rounded rakutenListing" ng-if="channelList.channelCode=='rakuten'">
+                               <span ng-bind="channelList.merchantChannelName||constants.notAvailableText|addEllipse:12" class="paddlft10 fnt-14" >
+                                 
+
+                               </span>
+                               <span class="glyphicon glyphicon-connec-store pull-right" ng-if="channelList.ezycStatus==1" ></span>
+                               <span class="glyphicon glyphicon-connec-alert pull-right" ng-if="channelList.ezycStatus!=1"></span>
+                               <a check-acl="connnectionsLandingPage" openpopup="open" href="javascript:;" ng-click="channelPreferencePopup($index)"  class="pref-popup-{{$index}} channel-popup" data-placement="left"  data-toggle="popover"><span class="glyphicon glyphicon-connection-cog pull-right" ></span></a>
+                               
+                               <!-- channel preference popup -->
+                               <div class="settings-container ezyHide" id="channel-preference-popover-content-{{$index}}">
+                                <div class="arrow"></div>
+                                <h3 class="popover-title">Channel - Preferences</h3>
+                                  <div class="content">Store Name : <span class="fnt12pxImp">{{channelList.storeName||constants.notAvailableText|addEllipse:19}}</span></div>
+                                  <div class="content"> Update Order status back to sales channel : 
+                                      <div class="onoffswitch pref">
+                                        <span ng-init="(channelList.updateOrderStatusToChannel)?model.updateOrderStatusToChannel[$index]=true:model.updateOrderStatusToChannel[$index]=false"></span>
+                                        <input type="checkbox" name="onoffswitch_store_{{$index}}" class="onoffswitch-checkbox" id="myonoffswitch_store_{{$index}}" ng-model="model.updateOrderStatusToChannel[$index]" ng-click="updateOrderStatus(model.updateOrderStatusToChannel[$index],channelList.merchantChannelId)">
+                                        <label class="onoffswitch-label" for="myonoffswitch_store_{{$index}}">
+                                          <span class="onoffswitch-inner"></span>
+                                          <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.updateOrderStatusToChannel[$index]}" id="switch_order_status-{{$index}}"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="content">Update tracking number to sales channel once shipped : 
+                                    <div class="onoffswitch pref">
+                                        <span ng-init="(channelList.updateTracknoToChannel)?model.updateTracknoToChannel[$index]=true:model.updateTracknoToChannel[$index]=false"></span>
+                                        <input type="checkbox" name="onoffswitch_track_{{$index}}" class="onoffswitch-checkbox" id="myonoffswitch_track_{{$index}}" ng-click="updateTrackNumber(model.updateTracknoToChannel[$index],channelList.merchantChannelId)" ng-model="model.updateTracknoToChannel[$index]">
+                                        <label class="onoffswitch-label" for="myonoffswitch_track_{{$index}}">
+                                          <span class="onoffswitch-inner"></span>
+                                          <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.updateTracknoToChannel[$index]}" id="switch_track_status-{{$index}}"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- channel preference popup -->
+
+                             </div>
+                             <div class="panel-body">
+                              <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <div class="form-group marbtm7 marlft15">
+                                    <label class="col-md-3 col-sm-6 control-label connect-userbg">Username</label>
+                                    <label class="col-md-8 col-sm-5 control-label paddrgt0">
+                                     <span ng-if="channelList.channelCode!='amazon'"><span class="breakWork" ng-bind="channelList.channelUserId||constants.notAvailableText"></span><br/></span>
+                                     <span class="breakWork" ng-bind="channelList.email||constants.notAvailableText"></span>
+                                     <br/>
+                                     <span>
+                                        <em>Created on <span ng-bind="(channelList.createdDate)?(getChannelDate(channelList.createdDate)|date:longDate):constants.notAvailableText"></span>
+                                        </em>
+                                      </span>
+                                   </label>
+                                 </div>
+                               </div>
+                             </div>
+
+                             <div class="row">
+                              <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                <div class="form-group marlft15 marbtm0">
+
+                                  <label class="col-md-3 col-sm-6 control-label" ng-class="{'connect-activebg':channelList.channelStatus=='ACTIVE','connect-inactivebg':channelList.channelStatus=='INACTIVE'}"><span ng-bind="channelList.channelStatus||constants.notAvailableText"></span></label>
+
+                                  <label class="col-md-8 col-sm-8 control-label deactivatelbl deleteiconadd">
+                                   
+                                     <a check-acl="connnectionsLandingPage" openpopup="open" href="javascript:;" ng-click="activateDeactivateChannel(channelList)"><span class="glyphicon glyphicon-pause" ng-if="channelList.ezycStatus==1"></span><span class="glyphicon glyphicon-play" ng-if="channelList.ezycStatus!=1"></span></a>
+
+                                     <span ng-if="0" class="glyphicon glyphicon-connection-deleted"></span><a ng-if="0" href="javascript:;" ng-click="deleteSalesChannel(channelList)">Delete</a>
+                                     
+                                     <a ng-if="channelList.ezycStatus==1 && !channelList.statusReasonCode && channelList.channelCode=='shopify'" check-acl="connnectionsLandingPage" class="" openpopup="open" href="javascript:;" ng-click="forcePullOrders(channelList)">Pull Orders</a>
+                                      
+                                    <span ng-if="channelList.ezycStatus==1 && !channelList.statusReasonCode && channelList.channelCode=='shopify'" ng-mouseover="initPopOver()" class="glyphicon glyphicon-remarks" 
+                                        data-container="body" 
+                                        data-toggle="popover" 
+                                        data-placement="left" 
+                                        data-html="true"
+                                        data-content="Order created / modified on or after the above date will be pulled. If left empty Orders created / modified after adding the channel in ezyCommerce will be pulled" 
+                                        data-original-title="<span class='glyphicon glyphicon-cross'></span>" title="">
+                                    </span>
+
+                                    <span>
+                                      <em>Modified on <span ng-bind="(channelList.modifiedDate)?(getChannelDate(channelList.modifiedDate)|date:longDate):constants.notAvailableText"></span>
+                                      </em>
+                                    </span>
+                                  
+                               </div>
+
+                               <div class="form-group marlft15 martop5" ng-if="channelList.statusReasonCode">
+
+                                  <label class="col-md-3 col-sm-6 control-label connect-errorbg">ERROR</label>
+
+                                  <label class="col-md-9 col-sm-5 control-label deactivatelbl deleteiconadd">
+                                   <a href="javascript:;" class="accSuspended">Account Suspended</a>
+                                   <span class="glyphicon glyphicon-connection-suspended"></span><a check-acl="connnectionsLandingPage" openpopup="open" href="javascript:;" ng-click="reAuthenticateChannel(channelList)">Authenticate</a>
+                                  </label>
+            
+                               </div>
+
+
+                               <div class="form-group marlft15" ng-if="!channelList.statusReasonCode">                                
+                                 <div class="loginSalesChannel pull-right"><span class="glyphicon glyphicon-loginuser"></span>
+                                    <a ng-if="channelList.channelCode=='ebay'" href="http://www.ebay.com" target="_blank">Login to sales channel</a>
+                                    <a ng-if="channelList.channelCode=='shopify'" href="http://www.shopify.com/" target="_blank">Login to sales channel</a>
+                                    <a ng-if="channelList.channelCode=='amazon'" href="http://www.amazon.com/" target="_blank">Login to sales channel</a>
+                                    <a ng-if="channelList.channelCode=='rakuten'" href="http://www.rakuten.com/" target="_blank">Login to sales channel</a>
+                                 </div>
+                                 <div class="clearfix"></div>
+                               </div>
+
+
+                             </div>
+                           </div>
+
+                         </div>
+                       </div>
+                        <!-- left panel ends -->
+
+
+                       <!-- right panel -->
+
+                      <!-- right panel ends -->
+             </div>
+             <div class="row userAccRow noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-if="getChannelList.length==0">
+
+               <div class="fleft noDataRightContent">
+                <p class="noProd txtBold">You don't have any sales channel connected.</p>
+                <p class="noStart">Start by adding sales channels by clicking on your desired marketplace. Once authorized we will automatically pull orders from all your stores and ship it to your customers based on your preferences</p>
+              </div>
+            </div>
+
+					       <!-- old connections landing page -->
+                    <div id="collapseOne" class="panel-collapse collapse in" ng-if="0">
+                      <div class="panel-body pnlbdy-pad5" >
+                        
+                          <div class="row proHeader txtLeft">
+                            <div class="con-storeH  col-xs-12 col-sm-3 col-md-3" >Sales Channel</div>
+                            <div class="con-storeNameH  col-xs-12 col-sm-3 col-md-3" >Channel Name</div>
+                            <div class="con-createDateH  col-xs-12 col-sm-2 col-md-2">Created Date</div>
+                            <div class="con-actionH  col-xs-12 col-sm-3 col-md-4">Actions</div>
+                          </div>
+                          <div class="clear"></div>
+
+                          <div class="row proRow " ng-class="" ng-repeat="channelList in getChannelList">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3"><span ng-bind="channelList.channelCode"></span></div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3"><span ng-bind="channelList.merchantChannelName"></span></div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2"><span ng-bind="channelList.createdDate"></span></div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">
+                                Update Tracking Status
+                                <div class="onoffswitch">
+                                  <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked ng-model="model.updateTrackingStatus" ng-click="trackingWarning(model.updateTrackingStatus)">
+                                  <label class="onoffswitch-label" for="myonoffswitch">
+                                      <span class="onoffswitch-inner"></span>
+                                      <span class="onoffswitch-switch" ng-class="{'onoffswitch-innerInverted':!model.updateTrackingStatus}"></span>
+                                  </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 col-md-1 connDel">
+                              <span class="connDelBorder"></span>
+                              <span class="glyphicon glyphicon-cross pointerCursor" ng-click="removeSalesChannel()"></span>
+                            </div>
+                          </div>
+
+                          <div class="row userAccRow noRecordDisplay col-xs-12 col-sm-12 col-md-12" ng-if="getChannelList.length==0">
+
+                           <div class="fleft noDataRightContent">
+                            <p class="noProd txtBold">You don't have any sales channel connected.</p>
+                            <p class="noStart">Start by adding sales channels by clicking on your desired marketplace. Once authorized we will automatically pull orders from all your stores and ship it to your customers based on your preferences</p>
+                          </div>
+                         </div>
+                          
+                           <div class="clearfix"></div>
+                        
+                      </div>
+                    </div>  <!-- old connections landing ends -->
+
+                  </div>
+                </div>
+				
+				<div class="row">
+				
+				<div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="acc-bill-fulCost-header">Add new Channels</a>
+                      </h4>
+                </div>
+                <div class="col-sm-1 paddnone wdth98 martop15">
+                 <div class="form-group pull-right ebayButton">
+                  <!-- <a href="#/accounts/connections/integrateEbay"><img src="images/ebay.jpg" alt="eBay" class="img-rounded"></a> -->
+                  <img src="images/ebay.jpg" alt="eBay" class="img-rounded">
+                </div>
+                <div class="col-sm-12 pad0">
+                  <a href="#/accounts/connections/integrateEbay">
+                    <button class="btn btn-primary integratebtn" ng-disabled="hideEbay&&!constants.developerMode" ng-class="{'bg-grey':hideEbay&&!constants.developerMode}">Connect&nbsp;</button>
+                    <!-- <button class="btn btn-primary integratebtn" ng-disabled="hideEbay" ng-class="{'bg-grey':hideEbay}">Connect&nbsp;</button> -->
+                    <!-- <button class="btn btn-primary integratebtn" ng-disabled="true" ng-class="{'bg-grey':true}">Connect&nbsp;</button> -->
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-1 paddnone wdth98 martop15 marlft10">
+                <div class="form-group pull-right ebayButton">
+                  <img src="images/shopify-logo.jpg" alt="eBay">
+                </div>
+                <div class="col-sm-12 pad0">
+                  <a href="#/accounts/connections/integrateShopify">
+                    <button class="btn btn-primary integratebtn">Connect&nbsp;</button>
+                  </a>
+                </div>
+              </div>
+            
+              <!-- amazon channel -->
+              <div class="col-sm-1 paddnone wdth98 martop15 marlft10">
+                <div class="form-group pull-right ebayButton">
+                  <img src="images/amazon-connect.jpg" alt="eBay">
+                </div>
+                <div class="col-sm-12 pad0">
+                  <a href="#/accounts/connections/integrateAmazon">
+                    <button class="btn btn-primary integratebtn">Connect&nbsp;</button>
+                  </a>
+                </div>
+              </div>
+              <!-- amazon channel -->
+
+
+
+              <!-- rakuten channel -->
+              <div class="col-sm-1 paddnone wdth98 martop15 marlft10">
+                <div class="form-group pull-right ebayButton">
+                  <img src="images/rakuten-connect.png" alt="eBay">
+                </div>
+                <div class="col-sm-12 pad0">
+                  <a href="#/accounts/connections/integrateRakuten">
+                    <button class="btn btn-primary integratebtn">Connect&nbsp;</button>
+                  </a>
+                </div>
+              </div>
+              <!-- rakuten channel -->
+
+
+				</div>
+				
+              </div>
+              <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic txtLeft padd0" check-acl="ebayConnectButton" showmessage="hide"></div>
+            </form>
+          </div>
+         </div>
+       </section>
+    </div>
+  </div>
+</section>
+
+<!-- activate / deactivate sales channel -->
+<div class="modal fade" id="activate-deactivate-sales-channel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> <span class="current-channel-status"></span> Channel <span class="activate-deactivate-model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to <span class="current-channel-status"></span> this sales channel ? </p>
+                </div>
+
+                <div class="modal-body" ng-if="showPollDate">
+                    <div class="row">
+                        <div class="col-sm-12 paddlft0">
+                          <div class="col-sm-3 text-left paddtop5">
+                            <label for="merchant-order-pulling-date" class="control-label inline-required fnt12pxImp">Order Pulling Date</label>
+                        </div>
+                        <div class="col-sm-6 paddnone dateTimePickerContainer">
+                               <div class="form-group required">
+                                  <div class="input-group datelbl">
+                                    <input name="merchant-order-pulling-date" type="text" class="form-control marbtm0" id="merchant-order-pulling-date" ng-model="model.orderPullingDate" maxlength="60">
+                                    <label class="input-group-addon" for="merchant-order-pulling-date"><i class="glyphicon glyphicon-calendar"></i></label>
+                                  </div>
+                                  <span class="shopifyTimezone fntNormal fnt12pxImp" ng-bind="'Time Zone : '+getShopifyTimeZone()"></span>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 paddlft0">
+                            <div class="col-sm-12 text-left paddtop5 fnt12pxImp">
+                              <em class="text-muted">Note : Order created / modified on or after the above date will be pulled. If left empty Orders created / modified after adding the channel in ezyCommerce will be pulled.</em>
+                            </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="activate-deactivate-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="activate-deactivate-modalOk" ng-click="" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- activate / deactivate sales ends-->
+
+
+<!-- reauth sales channel -->
+<div class="modal fade" id="reauth-sales-channel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Authenticate Channel <span class="model-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Are you sure you want to authenticate this sales channel ? </p>
+                </div>
+
+                <div class="modal-body" ng-if="showPollDate">
+                    <div class="row">
+                        <div class="col-sm-12 paddlft0">
+                          <div class="col-sm-3 text-left paddtop5">
+                            <label for="merchant-order-pulling-date" class="control-label inline-required fnt12pxImp">Order Pulling Date</label>
+                        </div>
+                        <div class="col-sm-6 paddnone dateTimePickerContainer">
+                               <div class="form-group required">
+                                  <div class="input-group datelbl">
+                                    <input name="merchant-order-pulling-date-reauth" type="text" class="form-control marbtm0" id="merchant-order-pulling-date-reauth" ng-model="model.orderPullingDate" maxlength="60">
+                                    <label class="input-group-addon" for="merchant-order-pulling-date-reauth"><i class="glyphicon glyphicon-calendar"></i></label>
+                                  </div>
+                                  <span class="shopifyTimezone fntNormal fnt12pxImp" ng-bind="'Time Zone : '+getShopifyTimeZone()"></span> 
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 paddlft0">
+                            <div class="col-sm-12 text-left paddtop5 fnt12pxImp">
+                              <em class="text-muted">Note : Order created / modified on or after the above date will be pulled. If left empty Orders created / modified after adding the channel in ezyCommerce will be pulled.</em>
+                            </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="reauth-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="reauth-modalOk" ng-click="" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- reauth sales ends-->

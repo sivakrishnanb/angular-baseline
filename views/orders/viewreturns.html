@@ -1,0 +1,383 @@
+<section class="container-fluid" ng-init="init()">
+<div class="row order-return-view">
+  <div class="col-xs-12">
+    <ng-include src="'views/orders/nav.html'"></ng-include>
+    <section class="content full widget-form">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2 class="thHead">View Return</h2>
+        <div class="container-fluid">
+          <div class="row paddbtm30">
+            <div class="col-sm-12 col-lg-9 paddnone">
+              <div class="thHeadIco glyphicon glyphicon-order col-lg-1 col-sm-1 hidden-xs"></div>
+              <div class="thContent col-lg-11 col-sm-10"> You can create returns on behalf of your customer. Please fill the 	returns form and we will mail you or your customer the returns
+                label. This label can be pasted on the return shipment and dropped off in any Post Office or POP station. Tracking for the return to be done in delivery courier website. </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-heading marbtm15">
+          <h4 class="panel-title"><a href="javascript:;" id="orders-create-ship-address"> Return Details</a></h4>
+        </div>
+
+        <div class="panel-group">
+         
+		    <div class="row fnt12px">
+			
+			
+					
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Order ID</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.ezcReturnId || constants.notAvailableText"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12" ng-if="model.returns.merchantId" check-acl="showReturnsMerchantCode">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Merchant ID</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.merchantId"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Date Created</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="getStatusDates(model,'CREATED')"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Date Cancelled</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="getStatusDates(model,'CANCELLED')"></label>
+                    </div>
+                  </div>
+            
+			
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Date Closed</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="getStatusDates(model,'CLOSED')"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Status</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="formatOrderStatus(model.returns.status) || constants.notAvailableText"></label>
+                    </div>
+                  </div>
+            </div>	  
+		      
+      <form role="form" class="form-horizontal" name="draft_order" novalidate angular-validator angular-validator-submit="updateTrackingNumber(model.returns.trackingNo)">
+          <div class="row">
+            <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+              <div class="panel-heading">
+                <h4 class="panel-title"> <a href="javascript:;" id="returns-view-tracking-info"> Tracking Information</a> </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" check-acl="updateReturnsTrackNumber">
+                <div class="panel-body">
+                  <div class="row tracknopanel">
+                    <div class="col-md-2 col-sm-2 col-xs-12 trackingNumberCont">
+                      <div class="form-group">
+                        <label class="col-md-12 control-label">Tracking Number</label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6">
+                      <div class="form-group">
+                        <input name="returns-view-track-number" type="text" class="form-control" id="returns-view-track-number" placeholder="Tracking Number" ng-model="model.returns.trackingNo" required required-message="validationMessages.required" maxlength="100" />
+                      </div>
+                    </div>
+                    <div class="form-group col-md-2 trackNumberSubmit">
+                        <button  type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                    <div class="form-group col-md-2 trackNumberShow" ng-if="0">
+                        <label class="col-md-2 col-sm-6 control-label lblcln" ng-bind="model.returns.trackingNo || constants.notAvailableText"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="collapseOne" class="panel-collapse collapse in" check-acl="showReturnsTrackNumber">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-6 paddnone trackingNumberContView">
+                      <div class="form-group">
+                        <label class="control-label martop5 paddlft12">Tracking Number</label>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6 trackNumberShow">
+                        <label class="col-md-6 col-sm-6 control-label lblcln" ng-bind="model.returns.trackingNo || constants.notAvailableText"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+      </form>
+
+          <div class="row">
+            <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+              <div class="panel-heading">
+                <h4 class="panel-title"> <a href="javascript:;" id="orders-create-ship-address"> Return Information</a> </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="row">
+				  
+				  				  
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label class="col-md-5 col-sm-5 col-xs-6 control-label">Reason</label>
+						<label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.reason || constants.notAvailableText"></label>
+                      </div>
+                    </div>
+                 
+                     <div class="col-md-4 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label class="col-md-5 col-sm-5 col-xs-6 control-label">Return label sent to</label>
+						<label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln breakWork" ng-bind="(model.returns.labelRecipient)?(model.returns.labelRecipient | camelCase): constants.notAvailableText"></label>
+                      </div>
+                    </div>
+                 
+                     <div class="col-md-4 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label class="col-md-5 col-sm-5 col-xs-6 control-label">Email address</label>
+						 <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln breakWork" ng-bind="model.returns.labelRecipientEmail || constants.notAvailableText"></label>
+                      </div>
+                    </div>
+					
+					<div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Item returned to</label>
+					 <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="'Merchant'"></label>
+                  </div>
+					</div>                   
+                 
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+            <div class="panel-heading">
+              <h4 class="panel-title"> <a href="javascript:;" id="orders-create-ship-address"> Ship From Address</a> </h4>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Name</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromName || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Email</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln breakWork" ng-bind="model.returns.fromEmail || constants.notAvailableText"></label>
+                  </div>
+                </div>
+              
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Address Line&nbsp;1</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromAddressLine1 || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Address Line&nbsp;2</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromAddressLine2 || constants.notAvailableText"></label>
+                  </div>
+                </div>
+             
+             
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">City / Town</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromCity || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">State/Region</label>
+                    <label class="col-md-6 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromState || constants.notAvailableText"></label>
+                  </div>
+                </div>
+             
+              
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">ZIP / Postal Code</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromZipCode || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Phone</label>
+                    <label class="col-md-6 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.fromPhone || constants.notAvailableText"></label>
+                  </div>
+                </div>
+             </div>
+            </div>
+          </div>
+          <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+            <div class="panel-heading">
+              <h4 class="panel-title"> <a href="javascript:;" id="orders-create-ship-address"> Ship To Address</a> </h4>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Name</label>
+                    <label class="col-md-7 col-sm-7 control-label lblcln" ng-bind="model.returns.toName || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Email</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln breakWork" ng-bind="model.returns.toEmail || constants.notAvailableText"></label>
+                  </div>
+                </div>
+             
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Address Line&nbsp;1</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toAddressLine1 || constants.notAvailableText"></label>
+                  </div>
+                </div>
+               <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Address Line&nbsp;2</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toAddressLine2 || constants.notAvailableText"></label>
+                  </div>
+                </div>
+              
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">City / Town</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toCity || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">State/Region</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toState || constants.notAvailableText"></label>
+                  </div>
+                </div>
+              
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">ZIP / Postal Code</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toZipCode || constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Phone</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="model.returns.toPhone || constants.notAvailableText"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+            <div class="panel-heading">
+              <h4 class="panel-title"> <a href="javascript:;" for="product-create-additional-information"> Item Information </a></h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse in" ng-init="addInfo=3">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group ">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label">Number of packages</label>
+                      <label class="col-md-7 col-sm-7 control-label lblcln" ng-bind="model.returns.noOfBoxes || constants.notAvailableText"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6 col-xs-12" ng-repeat="packageWeight in model.lineItems">
+                    <div class="form-group">
+                      <label class="col-md-5 col-sm-5 col-xs-6 control-label paddrgt0">Weight of package {{$index+1}}</label>
+                      <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="(packageWeight.weight)?(packageWeight.weight) + ' Kg':constants.notAvailableText"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+            <div class="panel-heading">
+              <h4 class="panel-title"> <a href="javascript:;" for="product-create-additional-information"> Estimated charges </a></h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse in">
+              <div class="panel-body">
+			  
+			  				
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-5 col-sm-5 col-xs-6 control-label">Total Weight</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="(model.returns.totalWeight)?(model.returns.totalWeight+' Kg'):constants.notAvailableText"></label>
+                  </div>
+                </div>
+                <div class="col-md-5 col-sm-6 col-xs-12">
+                  <div class="form-group ">
+                    <label class="col-md-4 col-sm-5 col-xs-6 control-label">Delivery fee</label>
+                    <label class="col-md-7 col-sm-7 col-xs-6 control-label lblcln" ng-bind="getTotalReturnCharges(model)"></label>
+                  </div>
+                </div>
+				
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-grp pull-right">
+          <button type="button" class="btn btn-default" ng-click="back()">Back</button>
+          <button  class="btn btn-primary" ng-if="model.returns.status!='CLOSED'" ng-click="returnsPerformAction('CLOSED', model.returns.ezcReturnId)">Close Return</button>
+          <button  class="btn btn-primary" ng-if="model.returns.status=='CREATED'&&model.returns.status!='CLOSED'" ng-click="returnsPerformAction('CANCELLED', model.returns.ezcReturnId)">Cancel Return</button>
+        </div>
+        </div>
+    </div>
+  </div>
+  </section>
+</div>
+</div>
+</section>
+
+<!-- cancel model --> 
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-cancel-return-confirm">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header">
+                <p> Cancel Return <span id="modal-cancel-return-modalClose" class="modal-cancel-return-modalClose" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body">
+               Are you sure you want to cancel return ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modal-cancel-return-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary thButton modelButtonOk" id="modal-cancel-return-modalOk">Cancel Return</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cancel model --> 
+
+<!-- cancel model --> 
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-close-return-confirm">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header">
+                <p> Close Return <span id="modal-close-return-modalClose" class="modal-close-return-modalClose" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body">
+               Are you sure you want to close return ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modal-close-return-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary thButton modelButtonOk" id="modal-close-return-modalOk">Close Return</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cancel model --> 

@@ -1,54 +1,143 @@
-<aside class="full">
-  <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="javascript:;" title="Expand/Collapse" class="glyphicon glyphicon-resize-horizontal"></a><span class="hidden-xs">Quick Links</span>
-        </li>
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="#/orders/create" title="Create Order"><span class="glyphicon glyphicon-plus-sign"></span><span class="hidden-xs">Create Order</span></a>
-        </li>
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="#/orders/upload" title="Upload File"><span class="glyphicon glyphicon-upload"></span><span class="hidden-xs">Upload File</span></a>
-        </li>
-      </ul>
-  </article>
-  <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <span class="glyphicon glyphicon-hdd"></span><span class="hidden-xs">Order Status</span>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/pending" title="Pending"><span class="glyphicon glyphicon-retweet"></span><span class="hidden-xs">Pending</span></a>
+<aside class="full ordNavContainer">
+    <article class="widget-nav">
+        <ul class="list-group leftNavOne">
+            <li class="list-group-item ezyHide">
+                <!-- <span class="badge">14</span> -->
+                <a href="javascript:;" ng-click="toggleLeftNav()" title="Expand/Collapse"  class="glyphicon glyphicon-resize-horizontal" id="orders-nav"></a><span class="full expOrCol">Quick Links</span>
+            </li>
+            <li ng-class="isNavActive('orders','create')" class="list-group-item ezyCreate" data-toggle="tooltip" data-placement="top" title="Create Order">
+                <a href="#/orders/create" data-toggle="tooltip" id="orders-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol ezyHide">Create Order</span></a>
+            </li>
 
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/inprogress" title="In Progress"><span class="glyphicon glyphicon-plane"></span><span class="hidden-xs">In Progress</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/fulfillment" title="fulfillment"><span class="glyphicon glyphicon-star"></span><span class="hidden-xs">Fulfillment</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/shipped" title="Shipped"><span class="glyphicon glyphicon-share-alt"></span><span class="hidden-xs">Shipped</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/delivered" title="Delivered"><span class="glyphicon glyphicon-ok-sign"></span><span class="hidden-xs">Delivered</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/drafts" title="Drafts"><span class="glyphicon glyphicon-file"></span><span class="hidden-xs">Drafts</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/orders/cancelled" title="Cancelled"><span class="glyphicon glyphicon-ban-circle"></span><span class="hidden-xs">Cancelled</span></a>
-        </li>
-      </ul>
-  </article>
+            <li ng-class="isNavActive('orders','upload')" class="list-group-item ezyUpload" data-toggle="tooltip" data-placement="top" title="Upload Order">
+                <a href="#/orders/upload" data-toggle="tooltip" id="orders-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol ezyHide">Upload Orders</span></a>
+            </li>
+            <li class="zeroDim"></li>
+        </ul>
+    </article>
+    <article class="widget-nav">
+        <ul class="list-group leftNavTwo OrdersNav">
+            <li class="list-group-item navStatus"><span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Order Status</span></li>
+
+            
+            
+            <li ng-class="isNavActive('orders','all', 'default')" class="list-group-item">
+                <span class="pen badge" ng-bind="ordersCount['SALES'] || 0"></span>
+                <a class="ordersAll" href="#/orders/all" title="All" id="orders-nav-has-issues">
+                    <span class="glyphicon glyphicon-exclamation-sign padd0"></span>
+                    <span class="full expOrCol allTxt">All</span>
+                </a>
+            </li>
+        
+        
+            <div id="pendingIndentContAcc">
+                <div class="panel">
+                <li class="list-group-item ordPending" ng-class="{'collapsed':!isOptionVisible('ordPendingCollapse')}" data-toggle="collapse" data-target=".pendingIndentCont" data-parent="#othersIndentContAcc,#approvedIndentContAcc,#pendingIndentContAcc">
+                    <span class="glyphicon glyphicon-retweet"></span>
+                    <span class="full expOrCol">Pending</span>
+                    <span class="glyphicon glyphicon-down-arrow-pending hidden-xs"></span>
+                </li>
+                
+                <div class="pendingIndentCont collapse" ng-class="{'in':isOptionVisible('ordPendingCollapse')}">
+                    <li ng-class="isNavActive('orders','hasissues')" class="list-group-item">
+                        <span class="pen badge" ng-bind="ordersCount['HAS_ISSUES'] || 0"></span>
+                        <a href="#/orders/hasissues" title="Has issues" id="orders-nav-has-issues" class="pendingIndent">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <span class="full expOrCol">Has Issues</span>
+                        </a>
+                    </li>
+                    
+                    <li ng-class="isNavActive('orders','unapproved')" class="list-group-item">
+                        <span class="pen badge" ng-bind="ordersCount['UNAPPROVED'] || 0"></span>
+                        <a href="#/orders/unapproved" title="Unapproved" id="orders-nav-unapproved" class="pendingIndent">
+                        <span class="glyphicon glyphicon-road"></span>
+                        <span class="full expOrCol">Unapproved</span></a>
+                    </li>
+                </div>
+                </div>
+            </div>
+            
+            <div id="approvedIndentContAcc">
+                <div class="panel">
+                    <li class="list-group-item ordApproved" ng-class="{'collapsed':!isOptionVisible('ordApprovedCollapse')}" data-toggle="collapse" data-target=".approvedIndentCont" data-parent="#othersIndentContAcc,#approvedIndentContAcc,#pendingIndentContAcc">
+                        <span class="glyphicon glyphicon-ord-approved"></span>
+                        <span class="full expOrCol">Approved</span>
+                        <span class="glyphicon glyphicon-down-arrow-approved hidden-xs"></span>
+                    </li>
+                    
+                    <div class="approvedIndentCont collapse" ng-class="{'in':isOptionVisible('ordApprovedCollapse')}">
+                        <li ng-class="isNavActive('orders','inprocess')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['IN_PROCESS'] || 0"></span>  
+                            <a href="#/orders/inprocess" title="In Process" class="approvedIndent">
+                            <span class="glyphicon glyphicon-tags"></span>
+                            <span class="full expOrCol">In Process</span></a>
+                        </li>
+            
+                        <li ng-class="isNavActive('orders','fulfillment')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['FULFILLMENT'] || 0"></span>  
+                            <a href="#/orders/fulfillment" title="Fulfillment" class="approvedIndent">
+                            <span class="glyphicon glyphicon-star-order"></span>
+                            <span class="full expOrCol">Fulfillment</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','shipped')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['SHIPPED'] || 0"></span>  
+                            <a href="#/orders/shipped" title="Shipped" class="approvedIndent">
+                            <span class="glyphicon glyphicon-share-alt"></span>
+                            <span class="full expOrCol">Shipped</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','delivered')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['DELIVERED'] || 0"></span>  
+                            <a href="#/orders/delivered" title="Delivered" class="approvedIndent">
+                            <span class="glyphicon glyphicon-ok-sign"></span>
+                            <span class="full expOrCol">Delivered</span></a>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="othersIndentContAcc">
+                <div class="panel">
+                    <li class="list-group-item ordOthers" ng-class="{'collapsed':!isOptionVisible('ordOthersCollapse')}" data-toggle="collapse" data-target=".othersIndentCont" data-parent="#othersIndentContAcc,#approvedIndentContAcc,#pendingIndentContAcc">
+                        <span class="glyphicon glyphicon-ord-others"></span>
+                        <span class="full expOrCol">Others</span>
+                        <span class="glyphicon glyphicon-down-arrow-others hidden-xs"></span>
+                    </li>
+                    
+                    <div class="othersIndentCont collapse" ng-class="{'in':isOptionVisible('ordOthersCollapse')}">
+                        <li ng-class="isNavActive('orders','returns')" class="list-group-item" ng-if="isCountriesOptionsVisible('showReturns')">
+                            <span class="badge" ng-bind="ordersCount['RETURN'] || 0"></span>
+                            <a href="#/orders/returns" title="Returns" class="othersIndent">
+                            <span class="glyphicon glyphicon-orders-return-order"></span>
+                            <span class="full expOrCol">Returns</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','removals')" class="list-group-item" ng-if="isCountriesOptionsVisible('showRemovals')">
+                            <span class="badge" ng-bind="ordersCount['REMOVAL'] || 0"></span>
+                            <a href="#/orders/removals" title="Removals" class="othersIndent">
+                            <span class="glyphicon glyphicon-orders-removals"></span>
+                            <span class="full expOrCol">Removals</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','undeliverable')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['UNDELIVERABLE'] || 0"></span>
+                            <a href="#/orders/undeliverable" title="Undeliverable" class="othersIndent">
+                            <span class="glyphicon glyphicon-orders-return"></span>
+                            <span class="full expOrCol">RTS</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','drafts')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['DRAFT'] || 0"></span>  
+                            <a href="#/orders/drafts" title="Drafts" class="othersIndent">
+                            <span class="glyphicon glyphicon-file"></span>
+                            <span class="full expOrCol">Drafts</span></a>
+                        </li>
+                        <li ng-class="isNavActive('orders','cancelled')" class="list-group-item">
+                            <span class="badge" ng-bind="ordersCount['CANCELLED'] || 0"></span>
+                            <a href="#/orders/cancelled" title="Cancelled" class="othersIndent">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                            <span class="full expOrCol">Cancelled</span></a>
+                        </li>
+                        
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </article>
 </aside>

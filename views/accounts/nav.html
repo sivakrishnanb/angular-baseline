@@ -1,0 +1,123 @@
+<aside class="full myNavContainer">
+    <article class="widget-nav">
+        <ul class="list-group leftNavOne">
+            <li class="list-group-item ezyHide">
+                <!-- <span class="badge">14</span> -->
+                <a href="javascript:;" ng-click="toggleLeftNav()" title="Expand/Collapse"  class="glyphicon glyphicon-resize-horizontal" id="orders-nav"></a><span class="full expOrCol">Quick Links</span>
+            </li>            
+            <li class="zeroDim"></li>
+        </ul>
+    </article>
+    <article class="widget-nav">
+        <ul class="list-group leftNavTwo OrdersNav">
+            <li class="list-group-item navStatus"><span class="glyphicon glyphicon-hdd-acc"></span><span class="full expOrCol navStatusTxt">My Accounts</span></li>                                
+          
+          <div id="myAccSettingContAcc">
+              <div class="panel">
+                
+                <li check-acl="accountSettingsText" class="list-group-item ordPending" ng-class="{'collapsed':!isOptionVisible('myAccAccSettingsCollapse')}" data-toggle="collapse" data-target=".pendingIndentCont" data-parent="#myAccPrefIndentContAcc,#myAccReportsIndentContAcc,#myAccBillingIndentContAcc,#myAccSettingContAcc">
+                    <span class="glyphicon glyphicon-reports-myaccount-accountsettings"></span>
+                    <span class="full expOrCol">Account Settings</span>
+                     <span class="glyphicon glyphicon-down-acc-settings hidden-xs"></span>
+                </li>
+               
+               <div class="pendingIndentCont collapse" ng-class="{'in':isOptionVisible('myAccAccSettingsCollapse')}"> 
+                  <li check-acl="editProfile" ng-class="isNavActive('accounts','profile', 'default')" class="list-group-item">
+                      <a href="#/accounts/profile" title="Edit Profile" id="myaccounts-nav-edit-profile" class="pendingIndent"><span class="glyphicon glyphicon-icon-MyAccount-editprofile"></span><span class="full expOrCol editProfileText">Edit Profile</span>
+                      </a>
+                  </li>                                
+                  
+                  <li check-acl="connections" ng-class="[isNavActive('accounts','connections'),isNavActive('accounts','connections','integrateEbay')]" class="list-group-item">
+                      <a href="#/accounts/connections" title="Connections" id="orders-nav-unapproved" class="pendingIndent" id="myaccounts-nav-connections"><span class="glyphicon glyphicon-icon-MyAccount-connections"></span><span class="full expOrCol">Connections</span></a>
+                  </li>
+                  
+      
+                  <li check-acl="userAccounts" ng-class="[isNavActive('accounts','users'),isNavActive('accounts','newSubAccount')]" class="list-group-item">
+                      <a href="#/accounts/users" title="User Accounts" id="orders-nav-userAccounts" class="pendingIndent"><span class="glyphicon glyphicon-icon-MyAccount-useraccounts"></span><span class="full expOrCol">User Accounts</span></a>
+                  </li>
+                  
+                 </div>
+              </div>
+          </div>
+            
+            
+            <div id="myAccBillingIndentContAcc">
+                <div class="panel">
+                    <li check-acl="billingText" class="list-group-item ordApproved myAccBilling" ng-class="{'collapsed':!isOptionVisible('myAccAccBillingCollapse')}" data-toggle="collapse" data-target=".approvedIndentCont" data-parent="#myAccPrefIndentContAcc,#myAccReportsIndentContAcc,#myAccBillingIndentContAcc,#myAccSettingContAcc">
+                        <span class="glyphicon glyphicon-icon-MyAccount_Billing"></span>
+                        <span class="full expOrCol">Billing</span>
+                        <span class="glyphicon glyphicon-down-billing hidden-xs"></span>
+                    </li>
+                    
+                    <div class="approvedIndentCont collapse" ng-class="{'in':isOptionVisible('myAccAccBillingCollapse')}">
+                        <li check-acl="summary" ng-class="isNavActive('accounts','billingSummary')" class="list-group-item">
+                            <a href="#/accounts/billingSummary" title="Summary" class="approvedIndent" id="myaccount-nav-summary"><span class="glyphicon glyphicon-icon-MyAccount-summary"></span><span class="full expOrCol">Summary</span></a>
+                        </li>
+                        
+                        <li ng-if="0" check-acl="fulfillmentCost" ng-class="isNavActive('accounts','fulfillmentCost')" class="list-group-item">
+                            <a href="#/accounts/fulfillmentCost" title="Fulfillment Cost" class="approvedIndent" id="myaccount-nav-funfillmntCost"><span class="glyphicon glyphicon-star"></span><span class="full expOrCol">Calculator</span></a>
+                        </li>                        
+                                                
+                    </div>
+                </div>
+            </div>
+            
+            <div id="myAccPrefIndentContAcc">
+                <div class="panel">
+                    <li check-acl="preferencesText" class="list-group-item ordOthers" ng-class="{'collapsed':!isOptionVisible('myAccAccPrefCollapse')}" data-toggle="collapse" data-target=".othersIndentCont" data-parent="#myAccPrefIndentContAcc,#myAccReportsIndentContAcc,#myAccBillingIndentContAcc,#myAccSettingContAcc">
+                        <span class="glyphicon glyphicon-icon-MyAccount-preferences"></span>
+                        <span class="full expOrCol">Preferences</span>
+                        <span class="glyphicon glyphicon-down-preferences hidden-xs"></span>
+                    </li>
+                    
+                    <div class="othersIndentCont collapse" ng-class="{'in':isOptionVisible('myAccAccPrefCollapse')}">
+                        <li check-acl="order" ng-class="isNavActive('accounts','preferences','fulfillment')" class="list-group-item">
+                            <a href="#/accounts/preferences/fulfillment" title="Order" class="othersIndent" id="myaccount-nav-fulfillment"><span class="glyphicon glyphicon-icon-MyAccount-fulfillment"></span><span class="full expOrCol">Order</span></a>
+                        </li>
+                        
+                        <li check-acl="email" ng-class="isNavActive('accounts','preferences','email')" class="list-group-item">
+                            <a href="#/accounts/preferences/email" title="Email" class="othersIndent" id="myaccount-nav-email"><span class="glyphicon glyphicon-icon-MyAccount-email"></span><span class="full expOrCol">Email</span></a>
+                        </li>
+                               
+                        <li check-acl="other" ng-class="isNavActive('accounts','preferences','others')" class="list-group-item">
+                            <a href="#/accounts/preferences/others" title="Other" class="othersIndent" id="myaccount-nav-others"><span class="glyphicon glyphicon-ord-others"></span><span class="full expOrCol">Other</span></a>
+                        </li>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="myAccReportsIndentContAcc">
+                <!-- hidden temporary -->
+                <div class="panel">
+                    <li check-acl="reportsText" class="list-group-item ordOthers" ng-class="{'collapsed':!isOptionVisible('myAccAccRepCollapse')}" data-toggle="collapse" data-target=".xxx" data-parent="#myAccPrefIndentContAcc,#myAccReportsIndentContAcc,#myAccBillingIndentContAcc,#myAccSettingContAcc">
+                        <span class="glyphicon glyphicon-report-expo"></span>
+                        <span class="full expOrCol">Reports</span>
+                        <span class="glyphicon glyphicon-down-reports hidden-xs"></span>
+                    </li>
+                    
+                    <div class="xxx collapse" ng-class="{'in':isOptionVisible('myAccAccRepCollapse')}">
+                        <li check-acl="productsReports" ng-class="isNavActive('accounts','reports','products')" class="list-group-item">
+                            <a href="#/accounts/reports/products" title="Products" class="othersIndent" id="myaccounts-nav-products"><span class="glyphicon glyphicon-reports-products"></span><span class="full expOrCol">Products</span></a>
+                        </li>
+                        
+                        <li check-acl="shipmentReports" ng-class="isNavActive('accounts','reports','shipments')" class="list-group-item">
+                            <a href="#/accounts/reports/shipments" title="Shipments" class="othersIndent" id="myaccounts-nav-shipmnts"><span class="glyphicon glyphicon-reports-shipments"></span><span class="full expOrCol">Shipments</span></a>
+                        </li>                        
+
+                        <li check-acl="ordersReports" ng-class="isNavActive('accounts','reports','orders')" class="list-group-item">
+                            <a href="#/accounts/reports/orders" title="Orders" class="othersIndent" id="myaccounts-nav-orders"><span class="glyphicon glyphicon-reports-orders"></span><span class="full expOrCol">Orders</span></a>
+                        </li>
+                        
+                        <li check-acl="transReports" ng-class="isNavActive('accounts','reports','payments')" class="list-group-item">
+                            <a href="#/accounts/reports/payments" title="Transactions" class="othersIndent" id="myaccounts-nav-paymnt"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Transactions</span></a>
+                        </li>
+                        
+                    </div>
+                </div>
+            </div>
+      
+        </ul>
+    </article>
+</aside>

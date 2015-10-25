@@ -1,5 +1,5 @@
 define(['angularAMD', 'utility/restapi'], function (angularAMD, restapi) {
-		angularAMD.factory('$bus', function($http, $dal, $templateCache, $constants, $exceptionsqds) {
+		angularAMD.factory('$bus', ['$http', '$dal', '$templateCache', '$constants', '$exceptionManager', function($http, $dal, $templateCache, $constants, $exceptionManager) {
 			var _bus = {};
 		    var base = $constants.baseUrl;
 		    _bus.args = function(args, name) {
@@ -16,23 +16,36 @@ define(['angularAMD', 'utility/restapi'], function (angularAMD, restapi) {
 				}
 		    }
 		    _bus.refresh = function(name, args, deferred) {
-				$http({method: restapi[args.api].method, url: base + restapi[args.api].url, params : args.params, data: args.data,  cache: $templateCache}).
-			      success(function(data, status) {
-			      	args.response = data;
-				    args.status = status;
-			      	/*$exceptionsqds.init(args.status)
-			      	.done(function(){*/
-				      	$dal.collection[name] = args;
-				       	deferred.resolve($dal.collection[name]);
-				    /*}).fail(function(){
-				       	deferred.reject(args);
-				    });*/
-			      }).
-			      error(function(data, status) {
-			      	args.response = data;
-			      	args.status = status;
-			        deferred.reject(args);
-			      });
+                if(args.resturl) {
+                    var url = base + restapi[args.api].url + '/' + _.values(args.params).join('/');
+                    var params = null;
+                } else {
+                    var url = base + restapi[args.api].url;
+                    var params = args.params;
+                }
+                $http({method: restapi[args.api].method, url: url, params : params, data: args.data, cache: args.cache || false, headers: args.headers || {'Content-Type': 'application/json'}}).
+                  success(function(data, status) {
+                    args.response = data;
+                    args.status = status;
+                    $exceptionManager.init(args.status)
+                    .done(function(){
+                        $dal.collection[name] = args;
+                        deferred.resolve($dal.collection[name]);
+                    }).fail(function(){
+                        deferred.reject(args);
+                    });
+                  }).
+                  error(function(data, status) {
+                    args.response = data;
+                    args.status = status;
+                    $exceptionManager.init(args.status)
+                    .done(function(){
+                        deferred.reject(args);
+                    }).fail(function(){
+                        deferred.reject(args);
+                    });
+
+                  });
 		    }
 		    _bus.delete = function(name, args, deferred) {
 				if($dal.collection[name] && ($dal.collection[name].api == args.api) && ($dal.collection[name].params == args.params) && ($dal.collection[name].data == args.data)) {
@@ -69,5 +82,5 @@ define(['angularAMD', 'utility/restapi'], function (angularAMD, restapi) {
 			    	$dal.collection = {};
 			    }
 		    };
-		});
+		}]);
 });

@@ -1,0 +1,317 @@
+<section class="container-fluid" ng-init="init()"  ng-show="!isReviewOrder">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/orders/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row viewremovalContainer">
+                    <div class="col-sm-12">
+                        <form role="form" class="form-horizontal" name="draft_order" novalidate angular-validator angular-validator-submit="draftOrder(draft_order)">
+
+
+                            <h2 class="thHead">View Removal</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 paddnone">
+                                        <div class="thHeadIco glyphicon glyphicon-order col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10">
+                                            Enter the Removal Plan Name. Search and add products you wish to     remove from the warehouse. Click Create Removal to create an Inbound Shipment ID. Fields marked with asterisk (*) are mandatory
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="panel-group">
+
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a href="javascript:;" id="orders-edit2-fulfillment-summary">Removal Details</a>
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 paddnone">
+                                            <div class="col-md-4 col-sm-12 col-xs-12 bgviewcolor brdrrghtcolor">
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Removal Plan Name</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.merchantOrderId || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12" ng-if="showRemovalPoOrderNumber(removal.orderStatus,removal)">
+                                                    <div class="form-group">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">PO Number</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln" ng-bind="(removal.purchaseOrders && removal.purchaseOrders[0].poNumber)? removal.purchaseOrders[0].poNumber : constants.notAvailable"></label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group ">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">EZY Removal ID</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.ezcOrderNumber || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12" ng-if="removal.merchantCode" check-acl="showMerchId">
+                                                    <div class="form-group " >
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Merchant ID</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.merchantCode}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group ">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Status</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{formatOrderStatus(removal.orderStatus) || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            
+                                            <div class="col-md-4 col-sm-12 col-xs-12 bgviewcolor brdrrghtcolor">
+                                             <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-5 col-sm-6 col-xs-6 control-label">Manager Remarks</label>
+
+                                                    <label class="col-md-6 col-sm-6 control-label lblcln displayFlex" id="edit-remarks">
+                                                        <span class="managerremarkslbl ng-binding" ng-bind="removal.remark || constants.notAvailableText"> </span>
+                                                            <a ng-click="editRemarks()" href="javascript:void(0)" check-acl="removalsRemarkEdit" ng-show="editRemarkShow">
+                                                                <span class="glyphicon glyphicon-edit-grid marg-left-10"></span>
+                                                            </a>
+                                                        </label>
+                                                        <!-- ngIf: isRemarksEditable -->
+                                                        <div  class="col-md-7 col-sm-7 ng-scope padd0" id="edit-container" check-acl="removalsRemarkEdit">
+                                                            <textarea id="manager-remarks" name="manager-remarks" ng-model="updateRemovals" class="form-control ng-pristine ng-valid ng-valid-maxlength ng-valid-parse ng-touched" maxlength="100" required required-message="validationMessages.required"></textarea>
+                                                            <button class="btn btn-primary martop15" type="submit" ng-click="updateRemarks()">Update</button>
+                                                            <button class="btn btn-default martop15 marlft5" type="button" ng-click="cancelRemarks()">Cancel</button>
+                                                        </div>
+                                                        <!-- end ngIf: isRemarksEditable -->														
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-4 col-sm-12 col-xs-12 bgviewcolor">
+											
+											<div class="col-sm-12">
+                                                    <div class="form-group " ng-if="removal.createdDate">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date Created</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.createdDate || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group " ng-if="removal.modifiedDate">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date modifed</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.modifiedDate || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group " ng-if="removal.approvalDate">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date Approved</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{removal.approvalDate || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group " ng-if="getProcessedDate(removal)">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date Processed</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{getProcessedDate(removal) || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group " ng-if="getClosedDate(removal)">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date Closed</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{getClosedDate(removal) || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" >
+                                                    <div class="form-group " ng-if="getCancelledDate(removal)">
+                                                        <label class="col-md-5 col-sm-6 col-xs-6 control-label">Date Cancelled</label>
+                                                        <label class="col-md-7 col-sm-6 control-label lblcln">{{getCancelledDate(removal) || constants.notAvailable}}</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <!-- product details starts-->
+                                    <div class="panel panel-default paddnone">
+
+                                        <div id="collapseThree" class="panel-collapse collapse in">
+                                            <div class="panel-body paddnone">
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 paddnone marbtm15">
+                                                        <div class="newGridContainer container-fluid  col-xs-12 paddnone">
+
+                                                            <div class="row proHeader hidden-xs">
+															
+																<div class="Hproduct col-xs-12 col-sm-12 col-md-4 col-lg-4 ">Product</div>
+                                                                <div class="Hcategory col-xs-12 col-sm-12 col-md-2 col-lg-2">Category </div>
+                                                                <div class="Hinventory col-xs-12 col-sm-12 col-md-2 col-lg-2">Inventory </div>
+                                                                <div class="Hweight col-xs-12 col-sm-12 col-md-1 col-lg-1">Weight </div>
+                                                                <div class="Hfullfill col-xs-12 col-sm-12 col-md-2 col-lg-2">Fulfillable units</div>
+                                                                <div class="Hdamaged col-xs-12 col-sm-12 col-md-2 col-lg-2">Damaged units</div>
+															
+															
+                                                                
+                                                            </div>
+                                                            <div class="clear"></div>
+                                                            <div class="row proRow" ng-repeat="product in removal.lineItems" ng-class="getFullfillableRow([product.qtyFulfillable,product.quantity,product.isActive,product.isExportable],$index)">
+
+                                                                <div class="product col-xs-12 col-sm-12 col-md-4 col-lg-4" id="order-create-product-sku-{{$index}}">
+                                                                    <div>
+                                                                        <div class="fleft martop5 " ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}"></div>
+                                                                        <div class="skU fleft">
+                                                                            <div class="createOrdSKU">
+                                                                                <span ng-bind="product.merchantSku || constants.notAvailable" id="order-edit-merchant-sku-{{$index}}"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="pull-right" ng-class="{'glyphicon glyphicon-flight-grid' : !product.isExportable, 'glyphicon glyphicon-flight-ok-grid' : product.isExportable}"></span>
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                    <div class="OrdName">
+                                                                        <span class="disblk" ng-bind="product.description || constants.notAvailable | addEllipse:23"></span>
+                                                                    </div>
+                                                                    <div class="eSku fnt10px">
+                                                                        <span class="">EZY-SKU : {{product.ezcSku || constants.notAvailable}}</span>
+                                                                        <span class="eEan" ng-if="product.productCodeType && product.productCode">{{product.productCodeType}} : {{product.productCode}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category col-xs-12 col-sm-12 col-md-2 col-lg-2" ng-bind="getCategory(product.productCategory) || constants.notAvailableText"></div>
+                                                                <div class="inventory col-xs-12 col-sm-12 col-md-2 col-lg-2" id="order-create-product-filfillable-{{$index}}">
+                                                                    <div class="fullFill fullColor txtBold">
+                                                                        Fullfillable : {{product.qtyFulfillable || '0' }}
+                                                                    </div>
+                                                                    <div class="damInbound">
+                                                                        <span class="inb txtItalic">Damaged : {{product.qtyDamaged || '0'}}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="weight col-xs-12 col-sm-12 col-md-1 col-lg-1" ng-bind="product.productWeight ? (product.productWeight + ' ' + product.weightUnit) : constants.notAvailableText">
+
+                                                                </div>
+
+                                                                <div class="fullfill col-xs-12 col-sm-12 col-md-1 col-lg-2 text-center">                                                                   
+                                                                        <label>{{product.quantityFulfillable}}</label>
+                                                                       
+                                                                </div>
+																<div class="damaged col-xs-12 col-sm-12 col-md-1 col-lg-1 text-center">
+                                                                       
+                                                                        <label>{{product.quantityDamaged}}</label>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row proRow" ng-if="!removal.lineItems.length">
+
+                                                                <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                                                    No products added
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product details ends-->
+                                </div>
+                                <div class="row">
+                                    <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 paddnone">
+                                        <div class="panel-heading estimatehead">
+                                            <h4 class="panel-title">
+                                                <a href="javascript:;"
+                                                   id="orders-edit2-fulfillment-summary"> Estimated Charges</a>
+                                            </h4>
+                                        </div>
+                                        <div id="orders-edit2-collapseThree" class="panel-collapse collapse in">
+                                            <div class="panel-body delwidget paddbtm0">
+                                                <div class="row">
+                                                    <!-- Left hand Panel -->
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group">This is only an estimate based on given input. Billing will be based on actuals and may vary.
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-12 col-xs-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label  class="col-md-3 col-sm-5 col-xs-6 control-label">Total weight </label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{getTotalWeight()+' kg'}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-xs-12" >
+                                                                <div class="form-group">
+                                                                    <label  class="col-md-3 col-sm-5 col-xs-6 control-label">Number of units
+                                                                    </label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{getTotalUnits()}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-3 col-sm-5 col-xs-6 control-label">Removal fee</label>
+                                                                    <div class="col-sm-7 col-xs-6">
+                                                                        <p  class="form-control-static padd0" ng-bind=""></p>
+                                                                        <em>{{(totalRemovalFee)?(totalRemovalFee +' '+ constants.currentCurrency):'0 '+constants.currentCurrency}}</em>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Right hand panel -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="btn-grp pull-right" >
+                                <button ng-if="(removal.orderStatus == 'PENDING' || removal.orderStatus == 'HAS_ISSUES' || removal.orderStatus == 'UNAPPROVED')" id="edit-order-cancelOrder-btm" type="button" class="btn btn-danger" ng-click="cancelOrder()">Cancel Order</button>
+                                <button id="edit-order-back-btm" type="button" class="btn btn-default" ng-click="navigate('/orders/removals')">Back</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+        </div>
+    </div>
+
+</section>
+

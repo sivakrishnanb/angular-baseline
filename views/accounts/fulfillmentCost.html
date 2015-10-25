@@ -1,0 +1,438 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form" id="fulcost">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="pref-email" novalidate angular-validator angular-validator-submit="">
+              <h2 class="thHead">Calculator</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                  <div class="col-sm-12 col-lg-9 paddnone" >
+                    <div class="thHeadIco glyphicon glyphicon-star-big col-lg-1 col-sm-1 hidden-xs"></div>
+                    <div class="thContent col-lg-11 col-sm-10">
+                      Use the interactive pricing calculator to get an estimate of Handling and Storage rates based on your volumes. These rates are only for your reference and does not reflect actual usage for your account.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <!--<div class="panel-group">
+                <div class="row paddbtm20 xstxt-padd0">
+                  <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="acc-bill-fulCost-header">Warehouse Rates</a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body pnlbdy-pad5" >
+                        <div class="">
+                          <div class="row proHeader">
+                            <div class="con-storeH  col-xs-12 col-sm-4 col-md-3" >Transaction Category</div>
+                            <div class="con-storeNameH  col-xs-12 col-sm-3 col-md-3">Transaction Name</div>
+                            <div class="con-createDateH  col-xs-12 col-sm-2 col-md-3">UOM</div>
+                            <div class="con-actionH  col-xs-12 col-sm-3 col-md-3">Rate</div>
+                          </div>
+
+                          <div class="row userAccRow noRecordDisplay col-xs-12 col-sm-12 col-md-12">
+                            No data to display
+                          </div>
+
+                          <div class="clear"></div>
+
+                          <div class="row userAccRow " ng-class="" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-4 col-md-3">Storage</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">Storage</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-3">Per cbcm per week</div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">$0.108</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-4 col-md-3">Inbound</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">Recieving</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-3">Per unit</div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">$0.020</div>
+                          </div>
+
+                          <div class="row userAccRow " ng-class="" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-4 col-md-3">Outbound</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">Order Processing</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-3">Per order</div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">$2.000</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-4 col-md-3">Outbound</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">Pick and Pack</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-3">Per unit</div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">$0.40</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-4 col-md-3">Value Added Service</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">Product Labelling</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-3">Per unit</div>
+                            <div class="con-action col-xs-12 col-sm-3 col-md-3">$0.015</div>
+                          </div>
+
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-group">
+                <div class="row paddbtm20 xstxt-padd0">
+                  <div class="panel panel-default col-md-12 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="acc-bill-delRates-header">Delivery Rates</a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                      <div class="panel-body pnlbdy-pad5" >
+                        <div class="">
+                          <div class="row proHeader">
+                            <div class="con-storeH  col-xs-12 col-sm-3 col-md-3">Delivery</div>
+                            <div class="con-storeNameH  col-xs-12 col-sm-3 col-md-3">Volume Tier (Monthly Volume)</div>
+                            <div class="con-createDateH  col-xs-12 col-sm-2 col-md-2">Upto 3 kg</div>
+                            <div class="con-actionH  col-xs-12 col-sm-2 col-md-2">3 kg to 10 kg</div>
+                            <div class="con-actionH  col-xs-12 col-sm-2 col-md-2">10 kg to 20 kg</div>
+                          </div>
+
+                          <div class="row userAccRow noRecordDisplay col-xs-12 col-sm-12 col-md-12">
+                            No data to display
+                          </div>
+
+                          <div class="clear"></div>
+
+                          <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Standard</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">1st - 100th Order</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$5.50</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$5.50+$3.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$5.50+$6.00</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Standard</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">101th - 250th Order</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$5.00</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$5.00+$3.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$5.00+$6.00</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Standard</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">251st order onwards</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$4.70</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$4.70+$3.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$4.70+$6.00</div>
+                          </div>
+
+                              <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Economy</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">1st - 100th Order</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$3.50</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$3.50+$2.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$3.50+$2.00</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Economy</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">101th - 250th Order</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$3.00</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$3.00+$2.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$3.00+$2.00</div>
+                          </div>
+
+
+                          <div class="row userAccRow " ng-class="{rowSelected:product.Selected}" ng-repeat="channelList in allChannels.data">
+                            <div class="con-store col-xs-12 col-sm-3 col-md-3">Domestic Economy</div>
+                            <div class="con-storeName col-xs-12 col-sm-3 col-md-3">251st order onwards</div>
+                            <div class="con-createDate col-xs-12 col-sm-2 col-md-2">$2.70</div>
+                            <div class="con-action col-xs-12 col-sm-2 col-md-2">$2.70+$2.00</div>
+                            <div class="con-actionH col-xs-12 col-sm-2 col-md-2">$2.70+$2.00</div>
+                          </div>
+
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>-->
+            </form>
+          </div>
+        </div>
+
+<div class="calculator-container col-sm-12 col-md-12 col-lg-12 padd0">
+    <form id="calculator_data" method="post">
+        <div class="row-fluid" id="demo-1">
+
+                <div class="tabbable custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll" ng-init="tabSelected='tab1'">
+                    <ul class="nav nav-tabs nav-justified">
+
+                    <li class="{{(tabSelected=='tab1')?'active':''}}"><a href="javascript:;" ng-click="tabSelected='tab1'"><h4>Handling</h4></a></li>
+                    <li class="{{(tabSelected=='tab2')?'active':''}}"><a href="javascript:;" ng-click="tabSelected='tab2'"><h4>Storage</h4></a></li>
+                    <li class="{{(tabSelected=='tab3')?'active':''}}" ><a href="javascript:;" ng-click="tabSelected='tab3'"><h4>Delivery</h4></a></li>
+
+
+                        <li class="total_result_tabs" style="background:#2b9db6;padding:2px 2px;float: right; color:#fff;margin-right:10px;width:40%;">
+                            <div>
+                                <span style="float:left;" >
+                                    <h4>Total Cost per month </h4> (Handling + Storage) 
+                                </span>
+                                <span style="float:right;width:40%">
+                                    <h4><strong id="total_price" style="font-size: 25px;font-weight: lighter;"></strong></h4>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="border: 4px solid #2B9DB6;">
+
+                    <div class="tab-pane {{(tabSelected=='tab1')?'active':''}}" id="panel1">
+                            <div class="row-fluid">
+                                <div class="span4" style="padding-right:20px;margin-top:30px;background-image: url('images/calculator-storage-divider.png');
+                                background-position: right;
+                                background-repeat: repeat-y;
+                                display: block;">
+
+                                <div class="alert alert-success" role="alert">Average number of outbound orders per month</div>
+
+                                <div id="my-slider" class="slider"></div>
+                                <p><span id="my-1">1</span> <span id="my-2">3000</span>
+                                </p>
+
+                                <span id="ex6SliderVal" class="label label-default">1</span>
+                                <input type="text" name="max_orders_per_month" id="max_orders_per_month" value="1" data-slider-min="1" data-slider-max="3000" data-slider-value="1" style="display:none;width:100%">
+
+
+                            </div>
+                            <div class="span4" style="margin-top:30px;">
+                                <div class="alert alert-success" role="alert">Average number of units in each Order</div>
+
+                                <input type="text" name="items_per_order" id="items_per_order" value="1" data-slider-min="1" data-slider-max="10" data-slider-value="1"  style="display:none;width:100%">
+
+                                        <div id="my-slider1" class="slider"></div>
+                                        <p><span id="my-1">1</span> <span id="my-2">10+</span>
+                                        </p>
+                                        <span id="amount" class="label label-default">1</span>
+                                    </div>
+                                    <div class="span4">
+                                        <h4>Handling</h4> (Inbound, Picking, Packing and Shipping)
+                                        <div style="margin-bottom:10px;border-bottom:1px solid #dcdcdc;"></div>
+                                        <div class="box">
+                                            <p>
+                                                Average Cost per Order: <span id="cost_order"></span>
+                                            </p>
+                                            <p>
+                                                Average Cost per Unit : <span id="cost_unit"></span>
+                                            </p>
+                                            <p>
+                                              Cost per month : <span id="handling_cost_month"></span>
+                                            </p>
+                                        </div>
+                                        <h4>Storage</h4> (Storage, Cycle count and Inv. Mgt.)
+                                        <div style="margin-bottom:10px;border-bottom:1px solid #dcdcdc;"></div>
+                                        <div class="box">
+                                            <p>
+                                                Cost per month : <span id="cost_month"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                    <div class="tab-pane {{(tabSelected=='tab2')?'active':''}}" id="panel2">
+                      <div class="row-fluid ">
+                                    <div class="span4" style="padding-right:12px;margin-top:30px;background-image: url('images/calculator-storage-divider.png');
+									 background-position: right;
+									 background-repeat: repeat-y;
+									 display: block;">
+                                     <div class="alert alert-success" role="alert">Storage capacity required in cubic metre (cbm) <a href="" data-toggle="modal" data-target="#myModal" >Help</a></div>
+
+                        <input type="text" name="max_storage_ft3" id="max_storage_ft3" value="1" style="display:none;width:100%" />
+
+                        <div id="ft3-slider" class="slider"></div>
+                        <p><span id="my-1">1</span> <span id="my-2">100</span>
+                        </p>
+                        <span class="label label-default" id="cbm_Val">1</span>
+                      </div>
+                      <div class="span4" style="margin-top:30px;">
+                        <div class="alert alert-success" role="alert">Number of unique Products (SKUs)</div>
+
+                        <input type="text" name="max_skus" id="max_skus" class="span2" value="1" data-slider-min="1" data-slider-max="600" data-slider-value="1" data-slider-tooltip="hide" style="display:none;width:100%;">
+                        <div>
+                          <div id="skus-slider" class="slider"></div>
+                          <p><span id="my-1">1</span> <span id="my-2">600+</span>
+                          </p>
+
+                        </div>
+                        <span class="label label-default" id="sku_Val">1</span>
+
+
+                                    </div>
+                                    <div class="span4">
+                                        <h4>Handling</h4> (Inbound, Picking, Packing and Shipping)
+                                        <div style="margin-bottom:10px;border-bottom:1px solid #dcdcdc;"></div>
+                                        <div class="box">
+                                            <p>
+                                                Average Cost per Order: <span id="cost_order1"></span>
+                                            </p>
+                                            <p>
+                                                Average Cost per Unit : <span id="cost_unit1"></span>
+                                            </p>
+                                            <p>
+                                              Cost per month : <span id="handling_cost_month1"></span>
+                                            </p>
+                                        </div>
+                                        <h4>Storage</h4> (Storage, Cycle count and Inv. Mgt.)
+                                        <div style="margin-bottom:10px;border-bottom:1px solid #dcdcdc;"></div>
+                                        <div class="box">
+                                            <p>
+                                                Cost per month : <span id="cost_month1"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                </div>
+
+                <div class="tab-pane {{(tabSelected=='tab3')?'active':''}}" id="panel3">
+                    <div class="row-fluid">
+
+
+                        <div class="span8 col-sm-7 p0">
+						
+						 <div class="col-sm-12 p0">
+						 <div class="col-sm-6 p0 m30" >
+                         <div class="alert alert-success" role="alert">Delivery Destination</div>
+						  <select name="country_type_delivery" id="country_type_delivery" style="float:left;" class=" col-sm-12" required="required">
+                            <option value="2">Domestic</option>
+                            <option value="1">International</option>
+                          </select>
+                        </div>
+						<div class="col-sm-6 p0 m30" id="country_list_delivery_container" style="float:left;display:none;">
+                         <div class="alert alert-success" role="alert">Country list</div>						 
+                           <select name="country_list_delivery" id="country_list_delivery" class=" col-sm-12"  >
+                                 <option data-id="CN" value="D">China </option>
+                                <option  data-id="HK" value="C" >Hong Kong</option>
+                                <option data-id="ID" value="B" >Indonesia</option>
+                                <option  data-id="JP" value="E" >Japan</option>
+                                <option  data-id="MY" value="A" >Malaysia</option>
+                                <option  data-id="PH" value="B" >Philippines</option>
+                                <option  data-id="KR" value="E" >South Korea</option>
+                                <option  data-id="TW" value="C" >Taiwan</option>
+                                <option  data-id="TH" value="B" >Thailand</option>
+                                <option  data-id="VN" value="B" >Vietnam</option>
+                                <option data-id="FR" value="I" >France</option>
+                                <option  data-id="DE" value="I" >Germany</option>
+                                <option  data-id="SE" value="I" >Sweden</option>
+                                <option  data-id="GB" value="H" >United Kingdom </option>
+                                <option  data-id="AU" value="G" >Australia</option>
+                                <option  data-id="NZ" value="G" >New Zealand  </option>               
+                                <option  data-id="US" value="J" >USA</option>
+                          </select>
+						  <input type="hidden" name="country_code_for_delivery" id="country_code_for_delivery" value="CN">
+                        </div>
+						 
+
+						 <div class="col-sm-12 slider-delivery p0" style="padding:0px;margin:0px">
+                        <div class="col-sm-6 p0 m30">
+						 <div class="alert alert-success" role="alert">Shipment weight (Kg)</div>
+                             <input type="hidden" max="10.0" name="items_per_order_delivery_new" id="items_per_order_delivery_new" value="0.1" data-slider-min="0.1" data-slider-max="10.0" data-slider-value="0.1" style="display:block;width:50px" /> <div id="my-delivery-slider" class="slider" ></div>
+                           <p><span id="my-1">0.1</span> <span id="my-2">10</span><p>
+                            <span id="amount1" class="label label-default">0.1</span>
+                           
+                        </div>
+                        <div class="col-sm-6 contact_message_per p0 m30" style="display:none;">
+                       <i> Charges are shown only for selected countries. Please <a target="blank" href="http://www.ezycommerce.com/sg/contact-us/">contact us</a> if you have specific interest</i>
+  </div> </div>
+                         </div>
+
+
+                        <div class="span4 col-sm-4 p0">
+						   <h4>Delivery charge per order</h4>
+                          <div style="margin-bottom:10px;border-bottom:1px solid #dcdcdc;"></div>
+                          <div class="box">
+						  <div class="domestic_container"  style="">
+                            <p>
+                              Domestic Standard : <span id="Domestic_Standard"></span>
+                            </p>
+							 <p>
+                             Domestic Economy : <span id="Domestic_Economy"></span>
+                            </p>
+							</div>
+						   <div class="international_container" style="display:none">
+							 <p>
+                              International Priority &nbsp;&nbsp;: <span id="International_Priority"></span>
+                            </p>
+							 <p>
+                              International Standard : <span id="International_Standard"></span>
+                            </p>
+							 <p>
+                              International Economy : <span id="International_Economy"></span>
+                            </p>
+							 </div>
+                          </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+</form>
+
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <table cellpadding="5" cellspacing="5">
+                    <tr>
+                        <td><h5>1. Average Product Size (cm)</h5>
+                            <small>(Including external packaging, if any)</small></td><td>
+                            L = <input type="text" class="numbers_only" name="l_value" id="l_value" style="width:30px;"/> &nbsp; W = <input type="text" class="numbers_only" name="w_value" id="w_value" style="width:30px;"  /> &nbsp; H = <input type="text" class="numbers_only" name="h_value" id="h_value" style="width:30px;"/></td>
+                        </tr>
+                        <tr>
+                            <td><h5>2. Average units / Product on Storage</h5></td><td><input type="text" class="numbers_only" name="avg_units" id="avg_units" style="width:30px;"/> <small>Units</small></td>
+                        </tr>
+                        <tr>
+                            <td><h5>3. Total number of unique Products</h5></td><td><input  type="text" class="numbers_only" name="tot_product" id="tot_product" style="width:30px;"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><center><button type="button" id="calculate" class="btn btn-primary">Calculate</button></center></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><h4>Estimated Storage capacity required : <span id="storage_capacity">0</span> cbm</h4></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+      </section>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,229 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            
+            
+            <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="getAmazonToken()">
+              
+              <h2 class="thHead">Connections</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                 <div class="col-sm-12 col-lg-9 paddnone" >
+                      <div class="thHeadIco glyphicon glyphicon-con col-lg-1 col-sm-1 hidden-xs"></div>
+                        <div class="thContent col-lg-11 col-sm-10">
+                          You can manage connections to external sales channels - marketplaces and shopping carts here.
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+        
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <h4 class="panelbrdr" id="con-saleschannels-header"><span class="txtBold">Connect to your amazon Seller Account</span> <img src="images/amazon.jpg" alt="amazon"
+                                class="ebayImg"></h4>
+                    <div class="panel-body paddleft10">
+                      
+                      
+                      
+                        
+                      <div class="row">
+              
+              <p>With ezyCommerce, you can sell on amazon and use ezyCommerce as the fulfillment solution for your amazon orders. In order to do this, you need to add 
+your amazon seller account on the ezyCommerce platform. </p>
+
+<ul class="cnct-ebay paddbtm10">
+We can synchronize the following information with amazon –
+<li class="paddtop10">-  <span class="txtBold">Fulfillment Orders</span> - Once you are connected, we will start polling amazon servers periodically to check for new orders under your account. 
+        All new and modified orders will be downloaded into your ezyCommerce account.</li>
+<li>-  <span class="txtBold">Order Status</span> – When an order is shipped, status and tracking information is pushed to amazon.</li>
+<li>-  <span class="txtBold">Product mapping</span> – You need to make sure that your amazon listings have the same <span class="txtBold">Merchant SKU in the ‘SKU’ field</span> so that when we import an order from amazon, we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item.</li>
+
+</ul>
+
+<div class="row shpRow">
+  <div class="panel panel-default col-md-12 col-sm-12 col-xs-12  xstxt-padd0 smtxt-nopad marbtm15">
+    <div class="col-sm-11 orderinfobg fnt12px wdth97">
+      <span class="txtBold">Product mapping</span> – You need to make sure that your amazon listings have the same <span class="txtBold">Merchant SKU in the ‘SKU’ field</span> so that when we import an order from amazon, we can identify the relevant products to ship. Other forms of product identification such as Product ID, ezy-SKU will not work. Only products with matching ‘Merchant SKU’ will be identified. If you are selling multiple variants of an item.
+    </div>
+  </div>
+</div>
+
+
+<ol class="cnct-ebay">
+  <span class="whatAllYou">What all you need to add amazon channel.</span>
+  <li class="paddtop10">
+    <span class="txtBold">Channel Name</span> - a name that must be unique across all the channels you hold in ezycommerce.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Channel Country</span> - The country that you hold amazon channel account, if you want to add different countries, different channel name with the specific country name has to be added.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Store Email</span> - an email id that you have used to login amazon seller account, and its a reference in our ezyCommerce.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Seller ID</span> - a unique identifier which was generated during amazon account creation and this will help to access your amazon seller account.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Marketplace ID</span> - a unique identifier which was generated during amazon account creation and this will help to access your amazon seller account.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Marketplace Auth Token</span> - a token which was generated during amazon account creation and it helps to give access to your amazon account credentials.
+  </li>
+  <li class="paddtop10">
+    <span class="txtBold">Merchant Token</span> - a token or identifier which must be unique across all your amazon channel accounts.
+  </li>
+</ol>
+
+
+<ol class="cnct-ebay">In order to add Amazon as a channel, follow these steps:
+<li>Log in to your ezyCommerce account.</li>
+<li>Click on My Account > Connections.</li>
+    <li>Scroll to the bottom of the page where all market places are listed.</li>
+    <li>You will notice button to add Amazon channel.
+    <p><img src="images/amazon-channel.jpg" alt="Amazon" style="width:300px;"></p>
+    </li>
+    <li>Be sure to click on <span class="txtBold">connect</span> under an icon applicable.</li>
+    <li>Once you click the button, you will be redirected to a page where you need to give the channel name and the country that you hold amazon account:
+    <p class="marbtm0"><br><img src="images/amazon-country.png" alt="Amazon" style="width:450px;"></p>
+    <li>Once you click <span class="txtBold">Connect to amazon</span> a form will load, which will look like this, click the navigation link in the form:
+    <p><br><img src="images/adding-channel.png" alt="Amazon" style="width:400px;"></p>
+    </li>
+    <li>The information required in this form will be available on Amazon Marketplace Web Service or Amazon MWS site. Follow the below instructions to fill the form.</li>
+    <ol class="amazon-suborderlist" style="list-style-type: lower-alpha;">
+      <li>Visit the Amazon Marketplace Web Service (MWS). </li>
+      <li>Click on ‘Sign Up for MWS’ on the Amazon MWS page
+      <p><img src="images/mws.png" alt="Amazon" style="width:688px;"></p>
+      </li>
+      <li>Login with your Amazon seller account ID and password</li>
+      <li>Select 'I want to give a developer access to my Amazon seller account with MWS.' option</li>
+      <li>Mention our credentials
+        <ol>
+          <li><span class="txtBold">Developer Name</span> : ezycommerce</li>
+          <li><span class="txtBold">Developer Account Number</span> : 4044-9725-0388</li>
+        </ol>
+      <p><br><img src="images/mws22.png" alt="Amazon" style="width:456px;"></p>
+      </li>
+      <li>On the next page tick all check boxes and click 'Next'
+      <p><br><img src="images/mws3.png" alt="Amazon" style="width:521px;"></p>
+      </li>
+      <li>The next page will display your generated ‘Seller ID’ , ‘Marketplace ID’ and 'MWS Authorisation Token'
+      <p><br><img src="images/sellerid.png" alt="Amazon" style="width:464px;"></p>
+      </li>
+      
+    </ol>
+    <li>Copy this ‘Seller ID’ , ‘Marketplace ID’ and and 'MWS Authorisation Token' paste it in the form.
+    <p><br><img src="images/mws-auth-token.png" alt="Amazon" style="width:450px;"></p>
+    </li>
+    
+    <li>To get Merchant Token, navigate to the marked url as you saw in step 8.e.
+      <br><span class="txtBold">https://sellercentral.amazon.in/</span>
+      <br>click Settings > Account info , at the top right corner.
+    </li>
+    
+    <li class="martop15"><img src="images/amazon-merchant-token.png" alt="Amazon" style="width:450px;"></p></li>
+
+    <li class="martop15"><img src="images/amazon-account-info.png" alt="Amazon" style="width:450px;"></p></li>
+
+    <li class="martop20"><img src="images/amazon-merchant-token-get.png" alt="Amazon" style="width:450px;"></p></li>
+
+    <li class="martop15"><img src="images/mws-auth-token-put.png" alt="Amazon" style="width:450px;"></p></li>
+
+    <li>Click <span class="txtBold">Submit</span> and your Amazon channel is ready to use.</li>
+
+</ol>
+
+                        </div>
+                        
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-name" class=" control-label inline-required">ezyCommerce Channel Name <span class="reqStar">&nbsp;*</span></label><span class="paddleft10 glyphicon amazonIntegrate glyphicon-info" data-container="body" data-toggle="popover" data-placement="right" data-content="For your reference it should be unique across all the accounts you hold in ezyCommerce" data-original-title=""></span>
+                          </div>
+                          <div class="col-sm-4 paddnone">
+                            <div class="form-group required marbtm0">
+                              <input name="merchant-channel-name" type="text" class="form-control" id="merchant-channel-name" placeholder="Max. 60 characters" ng-model="model.merchantChannelName" maxlength="60" required="" required-message="validationMessages.required">
+                            </div>
+                          </div>
+                          
+                        </div>
+
+
+                        <div class="col-sm-9 martop15 paddlft0">
+                          <div class="col-sm-4 text-left">
+                            <label for="merchant-channel-name" class=" control-label inline-required">Channel Country<span class="reqStar">&nbsp;*</span></label>
+                          </div>
+                          <div class="col-sm-4 paddnone">
+                            <div class="form-group required">
+                              <select name="seller-country-name" type="text" class="form-control" id="seller-country-name" ng-model="model.channelCountry" required required-message="validationMessages.required" ng-options="item as item.name for item in amazonChannelCountries track by item.code">
+                                <option value="">select</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-9 martopbtm20 paddlft5">
+                          <button class="btn btn-primary" type="submit">Connect to amazon</button>
+                        </div>
+                        
+                        
+                      </div>
+                    </div>
+                  
+                </div>
+              </div>
+            </form>
+            
+            
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="amazon-channel-confirm">
+    <div class="modal-dialog">
+        <form role="form"  name="modal-block-confirm" novalidate angular-validator angular-validator-submit="addAmazonChannel()">
+            <div class="modal-content"> 
+                <div class="modal-header">
+                    <p> Channel Details  <span id="amazon-channel-modalClose" class="amazon-channel-modalClose" data-dismiss="modal">X</span></p>
+                </div>
+                <div class="modal-body">
+                    <em class="text-muted amazonRedirectNote">The below details will be available from your market place profile. <a target="_blank" href="{{amazonRedirectUrl}}">click here</a>&nbsp;to navigate</em>
+                    <div class="form-group" ng-if="0">
+                      <label for="seller-user-name" class="control-label">Store  User Name</label>
+                      <input name="seller-user-name" type="text" class="form-control" id="seller-user-name" placeholder="Max. 60 characters" ng-model="model.channelUserId" maxlength="60" required required-message="validationMessages.required">
+                  </div>
+                  <div class="form-group">
+                      <label for="seller-email-id" class="control-label">Store Email <span class="reqStar">&nbsp*</span></label>
+                      <input name="seller-email-id" type="text" class="form-control" id="seller-email-id" placeholder="Max. 60 characters" ng-model="model.email" maxlength="60" required required-message="validationMessages.required" validator="checkEmail(model.email)" invalid-message="validationMessages.invalidemail">
+                  </div>
+                    <div class="form-group">
+                      <label for="seller-id" class="control-label">Seller ID <span class="reqStar">&nbsp*</span></label>
+                      <input name="seller-id" type="text" class="form-control" id="seller-id" placeholder="Max. 60 characters" ng-model="model.sellerId" maxlength="60" required required-message="validationMessages.required">
+                  </div>
+                  <div class="form-group">
+                      <label for="market-place-id" class="control-label">Marketplace ID <span class="reqStar">&nbsp*</span></label>
+                      <input name="market-place-id" type="text" class="form-control" id="market-place-id" placeholder="Max. 60 characters" ng-model="model.marketPlaceId" maxlength="60" required required-message="validationMessages.required">
+                  </div>
+                  <div class="form-group">
+                      <label for="market-place-auth-token" class="control-label">MWS Authorisation Token <span class="reqStar">&nbsp*</span></label>
+                      <input name="market-place-auth-token" type="text" class="form-control" id="market-place-auth-token" placeholder="Max. 300 characters" ng-model="model.marketPlaceAuthToken" maxlength="300" required required-message="validationMessages.required">
+                  </div>
+                  <div class="form-group">
+                      <label for="market-merchant-token" class="control-label">Merchant Token <span class="reqStar">&nbsp*</span></label>
+                      <input name="market-merchant-token" type="text" class="form-control" id="market-merchant-token" placeholder="Max. 300 characters" ng-model="model.merchantToken" maxlength="300" required required-message="validationMessages.required">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="amazon-channel-modalCancel">Cancel</button>
+                <button type="submit" class="btn btn-primary thButton modelButtonOk" id="amazon-channel-modalOk">Submit</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </form>
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -2,318 +2,515 @@
   <div class="row">
     <div class="col-xs-12">
       <ng-include src="'views/products/nav.html'"></ng-include>
-      <section class="content full">
-          <div class="row">
-            <div class="col-sm-12">
-              <form role="form" class="form-horizontal" name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h2 class="pull-left">Create Product</h2>
-                    <!-- <div class="btn-grp pull-right">
-                      <a href="#/products" class="btn btn-default">Cancel</a>
-                      <button class="btn btn-primary" type="submit">Create Product</button>
-                    </div> -->
+      <section class="content full widget-form createpanel">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="create_product" novalidate angular-validator angular-validator-submit="createProduct(create_product)">
 
+              <h2 class="thHead">Create Product</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                  <div class="col-sm-12 col-lg-9 paddnone">
+                    <div class="thHeadIco glyphicon glyphicon-folder-close col-lg-1 col-sm-1 hidden-xs" id="product-create-glypcon"></div>
+                    <div class="thContent col-lg-11 col-sm-10">
+                      Manually fill up the fields to create a product. No two products must have the same Merchant SKU. Apply Customs declaration information to be used in future orders. Fields marked with asterisk ( * ) are mandatory
+                    </div>
                   </div>
                 </div>
-                <p>Manually fill up the fields to create a product. No two products must have the same Merchant SKU. Apply Customs declaration information to be used in future orders. <br/>Fields marked with asterisk ( * ) are mandatory</p>
-                <div class="panel-group">
-                  <div class="panel panel-default">
-                    <div data-toggle="collapse" data-target="#collapseOne" class="panel-heading">
+              </div>
+
+              <notification-messages></notification-messages>
+
+              <div class="panel-group">
+                <div class="row paddbtm20 xstxt-padd0">
+                  <div class="panel panel-default col-md-7 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                    <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a href="javascript:;">
-                        Basic Information
-                       </a>
-                       
+                        <a href="javascript:;" id="product-create-basic-information">
+                          Basic Information
+                        </a>
+
                       </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                       <div class="panel-body">
                         <div class="row">
-                          <div class="col-sm-4">
+<div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group required">
-                              <label for="merchantSku" class="col-sm-5 control-label">Merchant SKU</label>
-                              <div class="col-sm-7">
-                                <input name="merchantSku" type="text" class="form-control" id="merchantSku" placeholder="Merchant SKU" ng-model="model.sku" required required-message="validationMessages.required"/>
-                              </div>
-                            </div>    
+                              <label for="product-create-productCategory" class="control-label">Product Category</label>
+                              <select ng-init="mainProductCategoryCtrl=categoryOptions[0] "id="product-create-productCategory" class="form-control" name="product-create-productCategory" ng-model="mainProductCategoryCtrl"  required required-message="validationMessages.required" ng-options="item as item.name for item in categoryOptions track by item.value">
+                                <option value="">Select</option>
+                              </select>
+                            </div>
                           </div>
-                          <div class="col-sm-4">
+
+                          <div class="col-md-6 col-sm-6 col-xs-12 paddnone">
                             <div class="form-group required">
-                              <label for="skuDesc" class="col-sm-5 control-label">SKU Name</label>
-                              <div class="col-sm-7">
-                                <input name="skuName" type="text" class="form-control" id="skuDesc" placeholder="SKU Description" ng-model="model.skuDescription"  required required-message="validationMessages.required" />
+                              <label for="product-create-productName" class=" control-label">Product Name</label>
+                              <input name="product-create-productName" type="text" class="form-control" id="product-create-productName" placeholder="Max. 60 characters" ng-model="model.productName" maxlength="60" required required-message="validationMessages.required" ng-change="updateCustomItemDesc()"/>
+                            </div>
+                          </div>
+						</div>
+<div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group required">
+                              <label for="product-create-merchantSku" class=" control-label">Merchant SKU</label>
+
+                                   <div class="popoverHldr marg-left7">
+                                      <span class="glyphicon glyphicon-info" id="product-create-merchanticon"
+                                            data-container="body" 
+                                            data-toggle="popover" 
+                                            data-placement="right" 
+                                            data-content="An identifier for the product, assigned by you.  The SKU must be unique across all your Products." 
+                                            data-original-title="" title="">
+                                      </span>
+                                  </div>
+                             
+                              <input name="product-create-merchantSku" type="text" class="form-control" id="product-create-merchantSku" placeholder="Max. 30 characters" ng-pattern="/^[a-zA-Z0-9\\-]{0,30}$/" ng-model="model.sku" maxlength="30" required required-message="validationMessages.required"/>
+                            </div>
+                          </div>
+
+
+                          <div class="col-md-6 col-sm-6 col-xs-12 paddnone">
+                            <div class="form-group required">
+                              <label for="product-create-retailPrice" class="control-label iconPad">Retail Price</label>
+                              <div class="one-input-select">
+                                <div class="col-md-5 col-sm-5 col-xs-12 xstxt-marbtm">
+                                  <select ng-disabled="disableCurrency" id="product-create-retailPriceCurrency" name="product-create-retailPriceCurrency" class="form-control" ng-model="retailPriceCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                    <option value="">Select</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-12 paddrgt0">
+
+                                  <input type="number" name="product-create-retailPrice"
+                                         min="0.01"
+                                         step="10" class="form-control" id="product-create-retailPrice"
+                                         placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"
+                                         ng-model="model.retailPrice"
+                                         validator="{{(model.retailPrice <= isCountriesOptionsVisible('createProductMaxLimit').max) && isPatternMatched('^[0-9]+[\\.]?[0-9]{0,2}$', model.retailPrice)}}"
+                                         invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"  required-message="validationMessages.invalidnumber" required ng-change="model.declaredValue=model.retailPrice"/>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>   
+                   </div>
+				   
+				   <div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                              <div class="form-group required">
+                                <label for="product-create-weight" class="control-label iconPad">Weight (kg)</label>
+                                <div class="small-input">
+                                  <input string-to-number id="product-create-weight" name="product-create-weight" type="number" min="0.01" step="1" max="{{isCountriesOptionsVisible('createProductWeight').max}}" class="form-control" ng-model="model.weight" placeholder="{{isCountriesOptionsVisible('createProductWeight').placeholder}}" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="isCountriesOptionsVisible('createProductWeight').invalid_message" required-message="validationMessages.invalidnumber" required />
+
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-7 col-sm-7 col-xs-12 paddnone">
+                              <div class="form-group required">
+                                <label for="product-create-declaredValue" class="control-label iconPad">Declared value</label>
+                                <div class=" one-input-select">
+                                  <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
+                                    <select ng-disabled="disableCurrency" name="product-create-declaredValueCurrency" id="product-create-declaredValueCurrency" class="form-control" ng-model="declaredValueCurrencyCtrl" required-message="validationMessages.required" required ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode">
+                                      <option value="">Select</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
+
+                                    <input type="number" id="product-create-declaredValue" name="product-create-declaredValue" ng-model="model.declaredValue"
+                                           min="0.00"
+                                           max="{{isCountriesOptionsVisible('createProductMaxLimit').max}}" class="form-control" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                           placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"
+                                           invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"
+                                           required-message="validationMessages.invalidnumber"
+                                           step="10" required/>
+                                  </div>
+
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-4">
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
                             <div class="form-group required">
-                              <label for="productCat" class="col-sm-5 control-label">Product Category</label>
-                              <div class="col-sm-7">
-                                <select id="productCat" class="form-control" name="productCategoryList" ng-model="model.mainProductCategory"  required required-message="validationMessages.required">
-                                  <option>Electronics</option>
-                                  <option>Apparel</option>
-                                  <option>Baby</option>
-                                  <option>Toys</option>
-                                  <option>Home and Life Style</option>
-                                  <option>Kitchen</option>
-                                  <option>Sports</option>
-                                  <option>Fashion</option>
-                                  <option>Shoes</option>
-                                  <option>Footwear</option>
-                                  <option>Beauty and health</option>
-                                  <option>Travel</option>
-                                  <option>Accessories</option>
-                                  <option>Other</option>
-                                </select>
-                              </div>
-                            </div>    
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-4">
-                            <div class="form-group required">
-                              <label for="dimension" class="col-sm-5 control-label">Dimensions L * B * H (cm)</label>
-                              <div class="col-sm-7 three-input">
-                                <input name="productLength" type="text" class="form-control" placeholder="L" ng-model="model.length" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required/>
-                                <input name="productBreadth" type="text" class="form-control" placeholder="B" ng-model="model.width" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
-                                <input name="productHeight" type="text" class="form-control" placeholder="H" ng-model="model.height" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
-                              </div>
-                            </div>    
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group required">
-                              <label for="weight" class="col-sm-5 control-label">Weight (kg)</label>
-                              <div class="col-sm-7 small-input">
-                                <input name="weight" type="text" class="form-control" id="weight" ng-model="model.weight" placeholder="Weight" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group required">
-                              <label for="price" class="col-sm-5 control-label">Retail Price</label>
-                              <div class="col-sm-7 one-input-select">
-                                <input type="text" name="retailPrice" class="form-control" id="price" placeholder="Price" ng-model="model.retailPrice" ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/" invalid-message="validationMessages.invalidnumber" required-message="validationMessages.required" required/>
-                                <select name="currency" class="form-control" ng-model="model.retailPriceCurrency" required-message="validationMessages.required" required>
-                                  <option>$</option>
-                                </select>
-                              </div>
-                            </div>    
-                          </div>
-                        </div>
+                              <label for="product-create-length" class="control-label">Dimensions L X W X H (cm)</label>
+                                <div class="popoverHldr marg-left7">
+                                      <span class="glyphicon glyphicon-info" id="product-create-dimensionsicon"
+                                            data-container="body" 
+                                            data-toggle="popover" 
+                                            data-placement="right" 
+                                            data-content="Longest side of the product should be given as length. Max. Length 105cm and L+2W+2H should not exceed 200cm" 
+                                            data-original-title="" title="">
+                                      </span>
+                                  </div>
+
+                          
                         
+
+                              <div class="three-input">
+                                <div class="col-md-4 col-sm-4 col-xs-12 xstxt-marbtm">
+                                  <input id="product-create-length" string-to-number
+                                        name="product-create-length" 
+                                        min="0.01" 
+                                        step="1" 
+                                        max="105.00"
+                                        placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
+                                        invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidLength"
+                                        type="number"
+                                        class="form-control" ng-class="{'has-error':isDimensionValid}"
+                                        ng-model="model.length"
+                                        ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                        validator="isDimensionValidFunction(model.length,model.width,model.height)"
+                                        required/>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12 xstxt-marbtm">
+                                  <input id="product-create-width" string-to-number
+                                         name="product-create-width" 
+                                         min="0.01" step="1"
+                                         max="105.00" type="number"
+                                         placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
+                                         invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidWidth"
+                                         class="form-control" ng-class="{'has-error':isDimensionValid}"
+                                         ng-model="model.width"
+                                         ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                         validator="isDimensionValidFunction(model.length,model.width,model.height)"
+                                         required />
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <input id="product-create-height" string-to-number
+                                        name="product-create-height" 
+                                        min="0.01" step="1"   
+                                        max="105.00" type="number"
+                                        placeholder="{{isCountriesOptionsVisible('productDimensionLmt').placeholder}}"
+                                        invalid-message="(isCountriesOptionsVisible('productDimensions'))? validationMessages.invalidFieldValue : validationMessages.invalidHeight"
+                                        class="form-control last" ng-class="{'has-error':isDimensionValid}"
+                                        ng-model="model.height"
+                                        ng-pattern="/^[0-9]+[\\.]?[0-9]{0,2}$/"
+                                        validator="isDimensionValidFunction(model.length,model.width,model.height)"
+                                        required />
+                                </div>
+                              </div>
+                              <div class="error-message-prodDim" ng-if="isDimensionValid" ng-bind="validationMessages.invalidDimensiontotal"></div>
+                            </div>
+                          </div>
+</div>
+
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
+
+                  <div class="panel panel-default col-md-5 col-sm-12 col-xs-12 paddnone">
+                    <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a href="javascript:;">
-                        Advanced Information
-                       </a>
+                        <a href="javascript:;" id="product-create-advanced-information">
+                          Advanced Information
+                        </a>
                       </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse in">
                       <div class="panel-body">
                         <div class="row">
-                          <div class="col-sm-4">
+						 <div class="row">
+						
+                          <div class="col-md-7 col-sm-7 col-xs-12">
                             <div class="form-group">
-                              <label for="ebayItemNo" class="col-sm-5 control-label">eBay Item number</label>
-                              <div class="col-sm-7">
-                                <input type="text" name="ebayitemno" ng-model="model.ebayItemNumber" class="form-control" id="ebayItemNo" placeholder="eBay Item number" />
-                              </div>
-                            </div>    
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="ean" class="col-sm-5 control-label">EAN/JAN/UPC/ISBN</label>
-                              <div class="col-sm-7">
-                                <input type="text" name="ean" class="form-control" ng-model="model.hsCode" id="ean" placeholder="EAN/JAN/UPC/ISBN" />
+                              <label for="product-create-product-id" class="control-label">Product ID (EAN/JAN/UPC/ISBN)</label>
+                              <div class="one-input-select">
+                                <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
+                                  <select id="product-create-product-id-type" class="form-control" name="product-create-product-id-type" ng-model="codeTypeCtrl" ng-options="item as item.name for item in codeType track by item.value" validator="isCodeValid(codeTypeCtrl.value, model.articleCode)" invalid-message="validationMessages.required">
+                                    <option value="">Select</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
+                                  <input type="text" name="product-create-product-id" class="form-control" ng-model="model.articleCode" ng-pattern="/^[0-9]+$/" id="product-create-product-id" placeholder="ID" invalid-message="productIdInvalidMessages" validator="isCodeValidPid(codeTypeCtrl.value, model.articleCode)" maxlength="13"/>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-4">
+
+                          <div class="col-md-5 col-sm-5 col-xs-12 paddnone">
                             <div class="form-group">
-                              <label for="eanType" class="col-sm-5 control-label">Type of EAN/JAN/UPC/ISBN</label>
-                              <div class="col-sm-7">
-                                <select id="eanType" class="form-control" name="eanType" ng-model="model.codeType">
-                                  <option>Select</option>
-                                </select>
+                              <label for="product-create-costprice" class="control-label">Cost Price</label>
+                              <div class="one-input-select">
+                                <div class="col-md-6 col-sm-6 col-xs-12 xstxt-marbtm">
+                                  <select ng-disabled="disableCurrency" class="form-control" id="product-create-costPriceCurrency" name="product-create-costPriceCurrency" ng-model="costPriceCurrencyCtrl" ng-options="item as item.currencyCode for item in currencyList track by item.currencyCode" validator="isCodeValid(costPriceCurrencyCtrl.currencyCode, model.costPrice)" invalid-message="validationMessages.required">
+                                    <option value="">Select</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 paddrgt0">
+                                  <input type="number" name="product-create-costprice" class="form-control" id="product-create-costprice"
+                                         placeholder="{{isCountriesOptionsVisible('createProductMaxLimit').placeholder}}"  min="0.01"
+                                         max="{{isCountriesOptionsVisible('createProductMaxLimit').max}}" ng-model="model.costPrice"
+                                         invalid-message="isCountriesOptionsVisible('createProductMaxLimit').invalid_message"
+                                         step="10" validator="isCodeValidPrice(costPriceCurrencyCtrl.currencyCode, model.costPrice)"/>
+                                </div>
                               </div>
-                            </div>    
+                            </div>
+                          </div>
+</div>
+ <div class="row">
+                          <div class="col-md-7 col-sm-7 col-xs-12">
+                            <div class="form-group">
+                              <label for="product-create-manufacturer" class="control-label iconPad">Manufacturer</label>
+                              <input type="text" name="product-create-manufacturer" class="form-control" id="product-create-manufacturer" placeholder="Manufacturer" maxlength="60" ng-model="model.manufacturer" />
+                            </div>
+                          </div>
+                          <div class="col-md-5 col-sm-5 col-xs-12 paddnone">
+                            <div class="form-group">
+                              <label for="product-create-inventoryLevel" class="control-label">Inventory Alert Level</label>
+                                  <div class="popoverHldr">
+                                      <span class="glyphicon glyphicon-info" id="product-create-inventoryicon"
+                                            data-container="body" 
+                                            data-toggle="popover" 
+                                            data-placement="top" 
+                                            data-content="We will notify you once the fulfillable quantity hits the alert quantity. Giving 0 will alert you once it is out of stock" 
+                                            data-original-title="" title="">
+                                      </span>
+                                  </div> 
+                              </label>
+                              <input type="number" name="product-create-inventoryLevel" class="form-control" id="product-create-inventoryLevel" ng-pattern="/^([0-9\\]{0,3}|1000)$/" placeholder="Inventory Alert Level" ng-model="model.inventoryAlertLevel" invalid-message="validationMessages.invalidnumber" min="0" step="1" />
+                            </div>
+                          </div>
+</div>
+                          <div class="col-md-7 col-sm-7 col-xs-12">
+                            <div class="form-group">
+                              <label for="remarks" class="control-label">Remarks</label>
+                              <textarea class="form-control" row="4" name="product-create-remarks" id="product-create-remarks"  placeholder="Remarks"  maxlength="100" ng-model="model.remarks"></textarea>
+
+                            </div>
+                          </div>
+                          <div class="col-xs-3 paddtop26 xstxt-padd0">
+                            <div class="form-group">
+                              <!-- <label>
+                                <input type="checkbox" id="product-create-dangerous" name="product-create-dangerous" ng-model="isDangerous"> Dangerous
+                              </label>
+                              <label>
+                                <input type="checkbox" id="product-create-perishable" name="product-create-perishable" ng-model="isPerishable"> Perishable
+                              </label> -->
+                              <label class="pull-left control-label">
+                                <input type="checkbox" id="product-create-fragile" class="chkpadd xstxt-padd0" name="product-create-fragile" ng-model="model.isFragile"> Fragile
+                              </label>
+                            </div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="manufacturer" class="col-sm-5 control-label">Manufacturer</label>
-                              <div class="col-sm-7">
-                                <input type="text" name="manufacturer" class="form-control" id="manufacturer" placeholder="Manufacturer" ng-model="model.manufacturer" />
-                              </div>
-                            </div>    
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="costprice" class="col-sm-5 control-label">Cost Price</label>
-                              <div class="col-sm-7 one-input-select">
-                                <input type="text" name="costprice" class="form-control" id="costprice" placeholder="Price" ng-model="model.costPrice"/>
-                                <select class="form-control" id="costpriceunit" name="costpriceunit" ng-model="model.costPriceCurrency">
-                                  <option>$</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="inventoryLevel" class="col-sm-5 control-label">Inventory Alert Level</label>
-                              <div class="col-sm-7">
-                                <input type="text" name="inventoryLevel" class="form-control" id="inventoryLevel" placeholder="Inventory Alert Level" ng-model="model.inventoryAlertLevel" />
-                              </div>
-                            </div>    
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label for="remarks" class="col-sm-5 control-label">Remarks</label>
-                              <div class="col-sm-7">
-                                <textarea class="form-control" name="remarks" id="remarks" placeholder="Remarks" row="4" ng-model="model.remarks"></textarea>
-                              </div>
-                            </div>    
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group col-sm-5">
-                                <!-- <label>
-                                  <input type="checkbox" name="productNature" ng-model="isDangerous"> Dangerous
-                                </label>
-                                <label>
-                                  <input type="checkbox" name="productNature" ng-model="isPerishable"> Perishable
-                                </label> -->
-                                <label class="pull-right control-label">
-                                  <input type="checkbox" name="productNature" ng-model="isFragile"> Fragile
-                                </label>
-                            </div>
+                        <div class="row" ng-if="model.isFragile">
+                          <div class="col-sm-12">
+                            <em class="text-danger pull-right">Note : All fragile products must be packed in such a way that they pass the standard 4-foot drop test.</em>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
+                </div>
+
+                <div class="row">
+                  <div class="panel panel-default col-md-7 col-sm-12 col-xs-12  xstxt-padd0 smtxt-padd0 paddrgt20">
+                    <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a href="javascript:;">
-                        Customs Declaration
-                       </a>
-                       <label class="pull-right">
-                        <input type="checkbox" name="isExportable" ng-model="model.isExportable"> Is Exportable
-                      </label>
+                        <a href="javascript:;" id="product-create-custom-declaration">
+                          Customs Declaration
+                        </a>
+                        <label class="pull-right">
+                          <input type="checkbox" id="product-create-isExportable" class="chkpadd martop0Imp" name="product-create-isExportable" ng-model="model.isExportable"> Is Exportable
+                        </label>
                       </h4>
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse in">
                       <div class="panel-body">
                         <div class="row">
-                          <div class="col-sm-4">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
                             <div class="form-group" ng-class="{required : model.isExportable}">
-                              <label for="customDesc" class="col-sm-5 control-label">Customs description</label>
-                              <div class="col-sm-7">
-                                <!-- <input type="text" ng-show="isExport" name="customDesc1" disabled ng-model="model.customdesc" class="form-control" id="customDesc" placeholder="Customs description" /> -->
-                                <input type="text" ng-disabled="!model.isExportable" name="customDesc" ng-model="model.customdesc" class="form-control" id="customDesc" placeholder="Customs description" invalid-message="validationMessages.required" validator= "isExportSelected()" />
-                              </div>
-                            </div>    
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group" ng-class="{required : model.isExportable}">
-                              <label for="htsCode" class="col-sm-5 control-label">HTS Code</label>
-                              <div class="col-sm-7">
-                                <input type="text" ng-disabled="!model.isExportable" name="htsCode" ng-model="model.hsCode" class="form-control" id="htsCode" placeholder="HTS Code" invalid-message="validationMessages.required" validator= "isExportSelected()" />
-                              </div>
+                              <label for="product-create-customs-desc" class="control-label">Customs Item Description</label>
+                              <input type="text" ng-disabled="!model.isExportable" name="product-create-customs-desc" ng-model="model.customsDescription" class="form-control" id="product-create-customs-desc" placeholder="Max. 60 characters"  invalid-message="validationMessages.required" validator= "isExportSelected(model.customsDescription)" maxlength="60"/>
                             </div>
                           </div>
-                          <div class="col-sm-4">
-                            <div class="form-group" ng-class="{required : model.isExportable}">
-                              <label for="declaredValue" class="col-sm-5 control-label">Declared value</label>
-                              <div class="col-sm-7">
-                                <input type="text" ng-disabled="!model.isExportable" name="declaredValue" ng-model="model.declaredValue" class="form-control" id="declaredValue" placeholder="Declared value" invalid-message="validationMessages.required"  validator= "isExportSelected()" />
-                              </div>
-                            </div>    
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                              <label for="product-create-hsCode" class="control-label">HS Code</label>
+                              <input type="text" ng-disabled="!model.isExportable" name="product-create-hsCode" ng-model="model.hsCode" class="form-control" id="product-create-hsCode" placeholder="6 - 30 characters" invalid-message="validationMessages.invalidhscode" maxlength="30" validator= "isHsCodeValid(model.hsCode)" />
+                            </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-4">
+                          <div class="col-md-4 col-sm-4 col-xs-12 paddnone">
                             <div class="form-group" ng-class="{required : model.isExportable}">
-                              <label for="originCountry" class="col-sm-5 control-label">Country of Origin</label>
-                              <div class="col-sm-7">
-                                <select class="form-control" ng-disabled="!model.isExportable" name="originCountry" ng-model="model.countryOfOrigin" id="originCountry" invalid-message="validationMessages.required" validator= "isExportSelected()">
-                                  <option>Select</option>
-                                </select>
-                              </div>
-                            </div>    
+                              <label for="product-create-originCountry" class="control-label">Country of Origin</label>
+                              <select class="form-control" ng-disabled="!model.isExportable" name="product-create-originCountry" ng-model="countryOfOriginCtrl" id="product-create-originCountry" invalid-message="validationMessages.required" validator= "isExportSelected(countryOfOriginCtrl.countryCode)" ng-options="item as item.countryName for item in countryList track by item.countryCode">
+                                <option value="">Select</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                  <div class="panel panel-default col-md-5 col-sm-12 col-xs-12 paddnone">
+                    <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a href="javascript:;">
-                        Additional Information 
-                       </a>
+                        <a href="javascript:;" for="product-create-additional-information">
+                          Additional Information
+                        </a>
+                        <button ng-hide="addInfo>11" type="button" ng-click="incrementAddInfo()" class="plus-btn btn btn-primary pull-right">+</button>
                       </h4>
+
                     </div>
-                    <div id="collapseFour" class="panel-collapse collapse in">
+                    <div id="collapseFour" class="panel-collapse collapse in" ng-init="addInfo=3">
                       <div class="panel-body">
                         <div class="row">
-                          <div class="col-sm-4">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
                             <div class="form-group">
-                              <label for="addInfo1" class="col-sm-5 control-label">Additional Information 1</label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ng-model="model.additionalInfo1" id="addInfo1" placeholder="Additional Information 1" />
-                              </div>
-                            </div>    
+                              <label for="addInfo1" class="control-label">Additional Info 1</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo1" name="product-create-addInfo1" id="product-create-addInfo1" maxlength="100" placeholder="Additional Info 1" />
+
+                            </div>
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-md-4 col-sm-4 col-xs-12" ng-if="addInfo>1">
                             <div class="form-group">
-                              <label for="addInfo2" class="col-sm-5 control-label">Additional Information 2</label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ng-model="model.additionalInfo2" id="addInfo2" placeholder="Additional Information 2" />
-                              </div>
-                            </div>    
+                              <label for="addInfo2" class="control-label">Additional Info 2</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo2" name="product-create-addInfo2" id="product-create-addInfo2" maxlength="100" placeholder="Additional Info 2" />
+
+                            </div>
                           </div>
-                          <div class="col-sm-4">
+                          <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="addInfo>2">
                             <div class="form-group">
-                              <label for="addInfo3" class="col-sm-5 control-label">Additional Information 3</label>
-                              <div class="col-sm-7">
-                                <input type="text" class="form-control" ng-model="model.additionalInfo3" id="addInfo3" placeholder="Additional Information 3" />
-                              </div>
-                            </div>    
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-4 pull-right">
-                            <div class="pull-right">
-                              <label for="originCountry">Add a new line</label><button type="button" class="plus-btn btn btn-primary">+</button>
+                              <label for="addInfo3" class="control-label">Additional Info 3</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo3" name="product-create-addInfo3" id="product-create-addInfo3" maxlength="100" placeholder="Additional Info 3" />
+
                             </div>
                           </div>
                         </div>
+                        <div class="row" ng-if="addInfo>3">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                              <label for="addInfo1" class="control-label">Additional Info 4</label>
+                              <input type="text" class="form-control" ng-model="model.additionalInfo4" name="product-create-addInfo4" id="product-create-addInfo4" maxlength="100" placeholder="Additional Info 4" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12" ng-if="addInfo>4">
+                            <div class="form-group">
+                              <label for="addInfo2" class="control-label">Additional Info 5</label>
+                              <input type="text" class="form-control" ng-model="model.additionalInfo5" name="product-create-addInfo5" id="product-create-addInfo5" maxlength="100" placeholder="Additional Info 5" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="addInfo>5">
+                            <div class="form-group">
+                              <label for="addInfo3" class="control-label">Additional Info 6</label>
+                              <input type="text" class="form-control" ng-model="model.additionalInfo6" name="product-create-addInfo6" id="product-create-addInfo6" maxlength="100" placeholder="Additional Info 6" />
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" ng-if="addInfo>6">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                              <label for="addInfo1" class="control-label">Additional Info 7</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo7" id="product-create-addInfo7" id="product-create-addInfo7" maxlength="100" placeholder="Additional Info 7" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12" ng-if="addInfo>7">
+                            <div class="form-group">
+                              <label for="addInfo2" class="control-label">Additional Info 8</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo8" name="product-create-addInfo8" id="product-create-addInfo8" maxlength="100" placeholder="Additional Info 8" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="addInfo>8">
+                            <div class="form-group">
+                              <label for="addInfo3" class="control-label">Additional Info 9</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo9" name="product-create-addInfo9" id="product-create-addInfo9" maxlength="100" placeholder="Additional Info 9" />
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" ng-if="addInfo>9">
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                              <label for="addInfo1" class="control-label">Additional Info 10</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo10" id="product-create-addInfo10" id="product-create-addInfo10" maxlength="100" placeholder="Additional Info 10" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12" ng-if="addInfo>10">
+                            <div class="form-group">
+                              <label for="addInfo2" class="control-label">Additional Info 11</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo11" name="product-create-addInfo11" id="product-create-addInfo11" maxlength="100" placeholder="Additional Info 11" />
+
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-12 paddnone" ng-if="addInfo>11">
+                            <div class="form-group">
+                              <label for="addInfo3" class="control-label">Additional Info 12</label>
+
+                              <input type="text" class="form-control" ng-model="model.additionalInfo12" name="product-create-addInfo12" id="product-create-addInfo12" maxlength="100" placeholder="Additional Info 12" />
+
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                   </div>
-            </div>
-            <div class="col-sm-12">
-              <label class="pull-right">
-                        <input type="checkbox" name="isActive" ng-model="model.isActive"> Is Active
-                      </label>
-            </div>
-            <div class="btn-grp pull-right">
-              <button type="button" class="btn btn-default">Cancel</button>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-sm-12">
+                  <label class="pull-right">
+                    <input type="checkbox" id="product-create-isactive" name="isActive" ng-model="model.isActive"> Is Active
+                  </label>
+                </div>
+              </div> -->
+              <div class="btn-grp pull-right formbtn">
+                <label>
+                  <input type="checkbox" id="product-create-isactive" class="chkpadd martop5Imp" name="isActive" ng-model="model.isActive"> Is Active
+                </label>
+                <div class="form-xsbtnbtm pull-right">
+                  <button id="create-product-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>
+                  <button ng-if="!prodFullEdit" id="create-product-create-btm" class="btn btn-primary" type="submit" check-acl="createProduct">Create Product</a>
+                  <button ng-if="prodFullEdit" id="create-product-create-btm" class="btn btn-primary" type="submit" check-acl="createProduct">Save</a>
+                </div>
+
+
+              </div>
+
+              <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="createProduct" showmessage="hide"></div>
               
-              <button class="btn btn-primary" type="submit">Create Product</a>
-            </div>
-        </form>
-       </div>
-      </div>
-    </section>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
 </section>
+
+
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-product-confirm">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header">
+                <p> Product Create Confirmation <span id="productConfirm-modalClose" class="productConfirm-modalClose" data-dismiss="modal">X</span></p>
+            </div>
+            <div class="modal-body">
+               Are you sure you want to create the Product without a Product ID (EAN/UPC/JAN/ISBN)?
+                Please make sure that the Merchant SKU physical barcode is available on the product.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="productConfirm-modalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary thButton modelButtonOk" id="productConfirm-modalOk" ng-click="modalOkButton()">Create Product</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

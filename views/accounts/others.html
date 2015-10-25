@@ -1,0 +1,181 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/accounts/nav.html'"></ng-include>
+      <section class="content full widget-form">
+        <div class="row">
+          <div class="col-sm-12">
+            <form role="form"  name="pref-others" novalidate angular-validator angular-validator-submit="saveOthers(pref-others)">
+              <h2 class="thHead">Other Preferences</h2>
+              <div class="container-fluid">
+                <div class="row paddbtm30">
+                 <div class="col-sm-12 col-lg-9 paddnone" >
+                      <div class="thHeadIco glyphicon glyphicon-ord-others-big col-lg-1 col-sm-1 hidden-xs"></div>
+                        <div class="thContent col-lg-11 col-sm-10">
+                         You can set other preferences such as customizing packing list message and setting default label sizes for Shipments.
+                      </div>
+                    </div>
+                </div>
+              </div>
+                <div class="clear"></div>
+
+              <div class="panel-group">
+                <div class="row paddbtm20 xstxt-padd0">
+                        <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a href="javascript:;" id="pref-others-panel">Customize Packing List Message</a>
+                            </h4>
+                          </div>
+                          <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body padall2">
+                             
+                              <div class="row">
+                                <div>
+                                  <input type="checkbox" id="pref-others-name-packingList" class="chkpadd" name="pref-others-name-packingList"
+                                         ng-model="model.isNameOnPackingList">
+                                </div>
+                                <div class="col-md-11 col-sm-11">
+                                   <div class="form-group">
+                                      <label class="control-label">Enter the name to be printed on the packing List at the header level </label>    
+                                      <div class="col-sm-12 col-md-12 col-xs-12">
+                                        <em class="text-muted">This is typically your brand name and how the cutsomers identify you in the market</em>
+                                      </div>
+
+                                      <div class="col-sm-12 col-md-12 col-xs-12">
+                                        <textarea ng-disabled="disableElement(model.isNameOnPackingList)" maxlength="150" id="pref-others-brandName" name="pref-others-brandName" class="form-control" rows="4" cols="7"
+                                                  ng-model="model.brandName"  validator="checkContextValidation(model.brandName,model.isNameOnPackingList)" invalid-message="validationMessages.required"></textarea>
+                                      </div>
+                                  </div> 
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div>
+                                  <input type="checkbox" id="pref-others-footer-packingList" class="chkpadd" name="pref-others-footer-packingList" ng-model="model.isFooterInfoOnPackingList">
+                                </div>
+                                <div class="col-md-11 col-sm-11">
+                                   <div class="form-group">
+                                      <label class="control-label">Enter the footer information to be printed on the packing list (if any)</label>    
+                                      <div class="col-md-12 col-sm-12 col-xs-12">
+                                          <em class="text-muted">It can be any message that you want to convey to your customers</em>
+                                      </div>
+                                      <div class="col-sm-12 col-md-12 col-xs-12">
+                                         <textarea ng-disabled="disableElement(model.isFooterInfoOnPackingList)" maxlength="150" id="pref-others-footerInfo" name="pref-others-footerInfo" class="form-control" rows="4" cols="7"
+                                                   ng-model="model.footerInfo" validator="checkContextValidation(model.footerInfo,model.isFooterInfoOnPackingList)" invalid-message="validationMessages.required" ></textarea>
+                                      </div>
+                                </div> 
+
+
+                                </div>                                
+                              </div>
+
+                              <div class="row">                             
+                                <div class="col-md-11 col-sm-11">
+                                  <div class="form-group downldPad">
+                                    <label class="control-label">Packing slip sample: <a href="/content/PackingSlip.pdf" target="_blank" download> Download</a>
+                                    </label>                                      
+                                  </div>                                 
+                                </div>                                
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panel panel-default col-md-6 col-sm-12 col-xs-12  xstxt-padd0 smtxt-padd0 paddrgt20">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="javascript:;" id="pref-ordsful-printing-defaults">Shipment Label Defaults</a>
+                      </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse in">
+                      <div class="panel-body padall2">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20 pad-bot-xs">
+
+                          <div class="row">
+                            <div class="col-md-12 col-sm-6 col-xs-12">
+                              
+                              <div class="col-sm-12 col-md-12 col-xs-12 paddbtm10">
+                                <em class="text-muted">This will be the default label size that will be pre-selected when you create a Shipment. Contact Client Service if you want to order label supplies.</em>
+                              </div>
+                              
+                              <div class="form-group required">
+                                    <input type="checkbox" id="pref-ordsful-isProductLabel" class="chkpadd" name="pref-ordsful-isProductLabel" ng-model="model.isProductLabel"> Product Label            
+                              </div>    
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                                <div class="form-group">
+                                  <label for="pref-ordsful-productLabel-template" class="col-md-2 col-sm-3 col-xs-12 control-label txtRight">Template</label>
+                                  <div class="col-md-10 col-sm-6 col-xs-12 control-next-align">
+                                    <select ng-disabled="disableElement(model.isProductLabel)" id="pref-ordsful-productLabel-template" class="form-control" name="pref-ordsful-productLabel-template" ng-model="productLabelTemplate" validator="checkContextValidation(productLabelTemplate,model.isProductLabel)" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.productLabelList track by item.value">
+                                      <option value="">Select</option>
+                                    </select>  
+                                  </div>
+                                </div>    
+                            </div>
+                          </div>
+
+                        </div>
+
+                         <div class="col-md-12 col-sm-12 col-xs-12 xstxt-padd0 smtxt-padd0 paddrgt20 pad-bot-xs">
+
+                          <div class="row">
+                            <div class="col-md-12 col-sm-6 col-xs-12">
+                              <div class="form-group required">
+                                    <input type="checkbox" id="pref-ordsful-isProductLabel" class="chkpadd" name="pref-ordsful-isProductLabel" ng-model="model.isProductBoxLabel"> Box Label            
+                              </div>    
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 paddnone">
+                                <div class="form-group">
+                                  <label for="pref-ordsful-productLabel-template" class="col-md-2 col-sm-3 col-xs-12 control-label txtRight">Template</label>
+                                  <div class="col-md-10 col-sm-6 col-xs-12 control-next-align">
+                                    <select ng-disabled="disableElement(model.isProductBoxLabel)" id="pref-ordsful-productLabel-template" class="form-control" name="pref-ordsful-productLabel-template" ng-model="boxLabelTemplate" validator="checkContextValidation(boxLabelTemplate,model.isProductBoxLabel)" invalid-message="validationMessages.required" ng-options="item as item.name for item in constants.boxLabelList track by item.value">
+                                      <option value="">Select</option>
+                                    </select>  
+                                  </div>
+                                </div>    
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                        
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+              </div>
+              <div class="btn-grp pull-right formbtn">
+                <div class="form-xsbtnbtm pull-right">
+                  <button id="pref-email-save-btm" class="btn btn-primary" type="submit" check-acl="prefOthersSave">Save</button>
+                  <button id="pref-email-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>              
+                </div>
+              </div>
+              <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="prefOthersSave" showmessage="hide"></div>
+            </form>
+          </div>
+         </div>
+       </section>
+    </div>
+  </div>
+</section>

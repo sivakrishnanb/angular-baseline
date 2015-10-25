@@ -1,47 +1,43 @@
-<aside class="full">
-  <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="javascript:;" title="Expand/Collapse" class="glyphicon glyphicon-resize-horizontal"></a><span class="hidden-xs">Quick Links</span>
-        </li>
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="#/shipments/create" title="Create a shipment"><span class="glyphicon glyphicon-plus-sign"></span><span class="hidden-xs">Create a product</span></a>
-        </li>
-        <li class="list-group-item">
-          <!-- <span class="badge">14</span> -->
-          <a href="#/shipments/upload" title="Upload a file"><span class="glyphicon glyphicon-upload"></span><span class="hidden-xs">Upload a file</span></a>
-        </li>
-      </ul>
-  </article>
-  <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <span class="glyphicon glyphicon-hdd"></span><span class="hidden-xs">Order Status</span>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">28</span>
-          <a href="#/shipments" title="All"><span class="glyphicon glyphicon-certificate"></span><span class="hidden-xs">All</span></a>
+<aside class="full shipmentNavContainer">
+    <article class="widget-nav">
+        <ul class="list-group leftNavOne">
+            <li class="list-group-item ezyHide">
+                <a href="javascript:;" ng-click="toggleLeftNav()" title="Expand/Collapse" class="glyphicon glyphicon-resize-horizontal" id="shipment-nav"></a><span class="full expOrCol">Quick Links</span>
+            </li>
 
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/shipments/pending" title="Pending"><span class="glyphicon glyphicon-retweet"></span><span class="hidden-xs">Pending</span></a>
+            <li ng-class="isNavActive('shipments','create')" class="list-group-item ezyCreate" data-toggle="tooltip" data-placement="top" title="Create Shipment">
+                <a href="#/shipments/create" data-toggle="tooltip" id="shipment-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol ezyHide">Create Shipment</span></a>
+            </li>
 
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/shipments/intransit" title="In Transit"><span class="glyphicon glyphicon-plane"></span><span class="hidden-xs">In Transit</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/shipments/received" title="Received"><span class="glyphicon glyphicon-certificate"></span><span class="hidden-xs">Received</span></a>
-        </li>
-        <li class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/shipments/cancelled" title="Cancelled"><span class="glyphicon glyphicon-bullhorn"></span><span class="hidden-xs">Cancelled</span></a>
-        </li>
-      </ul>
-  </article>
+            <li ng-class="isNavActive('shipments','upload')" class="list-group-item ezyUpload" data-toggle="tooltip" data-placement="top" title="Upload Shipment">
+                <a href="#/shipments/upload" data-toggle="tooltip" id="shipment-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol ezyHide">Upload Shipment</span></a>
+            </li>
+            <li class="zeroDim"></li>
+        </ul>
+    </article>
+    <article class="widget-nav">
+        <ul class="list-group leftNavTwo shipmentsNav">
+            <li class="list-group-item navStatus">
+                <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Shipment Status</span>
+            </li>
+            <li ng-class="isNavActive('shipments','pending', 'default')" class="list-group-item">
+                <span class="badge" ng-bind="shipmentCount['1'] || 0"></span>
+                <a href="#/shipments/pending" title="Pending" id="shipment-nav-pending"><span class="glyphicon glyphicon-certificate"></span><span class="full expOrCol">Pending</span></a>
+
+            </li>
+            <li ng-class="isNavActive('shipments','intransit')" class="list-group-item">
+                <span class="badge" ng-bind="shipmentCount['2'] || 0"></span>
+                <a href="#/shipments/intransit" title="In Transit" id="shipment-nav-inTransit"><span class="glyphicon glyphicon-ok-circle"></span><span class="full expOrCol">In Transit</span></a>
+
+            </li>
+            <li ng-class="isNavActive('shipments','received')" class="list-group-item">
+                <span class="badge" ng-bind="shipmentCount['3'] || 0"></span>
+                <a href="#/shipments/received" title="Received" id="shipment-nav-received"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Received</span></a>
+            </li>
+            <li ng-class="isNavActive('shipments','cancelled')" class="list-group-item">
+                <span class="badge" ng-bind="shipmentCount['5'] || 0"></span>
+                <a href="#/shipments/cancelled" title="Cancelled" id="shipment-nav-cancelled"><span class="glyphicon glyphicon-trash"></span><span class="full expOrCol">Cancelled</span></a>
+            </li>
+        </ul>
+    </article>
 </aside>

@@ -1,0 +1,419 @@
+<section class="container-fluid" ng-init="init()">
+  <div class="row">
+    <div class="col-xs-12">
+      <ng-include src="'views/shipments/nav.html'"></ng-include>
+      <section class="content full widget-form">
+          <div class="row">
+            <div class="col-sm-12">
+              <form role="form" class="form-horizontal" name="edit_shipment" novalidate angular-validator angular-validator-submit="editShipment(edit_shipment)">
+
+                  <div class="row">
+                      <div class="col-sm-12">
+                        <div class="displaylbltxt-panel">
+                            <h2 class="thHead">Edit Inbound Shipment</h2>
+                            <div class="displaylbltxt">
+                                <span ng-bind="model.header.inboundCode"></span>
+                            </div>
+                        </div>
+
+                        <div class="container-fluid">
+                            <div class="row paddbtm30">
+                              <div class="col-sm-12 col-lg-9 padd0">
+                                <div class="thHeadIco glyphicon glyphicon-share-car col-lg-1 col-sm-1 hidden-xs"></div>
+                                <div class="thContent col-lg-11 col-sm-10">
+                                    You can edit all information other than Inbound Shipment Plan Name. Add or remove products and choose who will label the units in the shipment. Click Next to proceed to the next step and update Inbound Shipment details.
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <!--pagination-->
+                  <!-- <div class="edit-paging txtRight" ng-show="shipInbounds.length"> -->
+                  <div class="edit-paging txtRight" ng-if="0">
+                      <span > Showing {{currentObjPos}} of {{shipInbounds ? shipInbounds.length: ''}} Shipments</span>
+                      <button class="btn btn-default glyphicon glyphicon-icon-prevbtn" ng-disabled="{{currentObjPos - 2 < 0 }}" type="button" ng-click="getNextItem(currentObjPos - 2)"></button>
+                      <button class="btn btn-default glyphicon glyphicon-icon-nextbtn" ng-disabled="{{currentObjPos == shipInbounds.length}}"  type="button" ng-click="getNextItem(currentObjPos)"></button>
+                  </div>
+
+                <div class="panel-group">
+                    <div class="row">
+                        
+						<div class="step-flow">
+							<div class="addprobg">
+							<span>Add Products</span>
+							</div>
+							<div class="probg select"><span>Send Shipment</span></div>									
+						</div>
+                    </div>
+
+                    <div class="panel panel-default">
+
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body order-headid">
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <div class="form-group" ng-class="{'required':fullEditShipment}">
+
+                                            <label for="shipment-edit-plan-name" class="col-lg-4 col-md-5 col-sm-5 col-xs-12 control-label">Shipment Plan Name : </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-11 paddnone">
+                                                
+                                                <p ng-if="!fullEditShipment" id="shipment-edit-plan-name" class="form-control-static" ng-bind="model.header.planName || constants.notAvailable"></p>
+
+                                                <input ng-if="fullEditShipment" name="shipment-edit-plan-name" type="text" class="form-control" id="shipment-create-plan-name" placeholder="Max. 30 characters" ng-model="model.header.planName" required required-message="validationMessages.required" maxlength="30" />
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group" check-acl="showMerchId" ng-if="model.header.merchantCode">
+
+                                            <label for="shipment-edit-plan-name" class="col-lg-4 col-md-5 col-sm-5 col-xs-12 control-label">Merchant Id : </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-11 paddnone">
+
+                                                {{model.header.merchantCode || constants.notAvailable}}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="javascript:;" id="shipment-edit-ship-address"> Ship From Address</a></h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="col-sm-12 col-xs-12 paddnone">
+                                    <div class="col-sm-9 paddnone">
+
+                                        <div class="row">
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group required">
+                                                    <label for="shipment-edit-firstName" class=" control-label">Name / Company Name</label>
+                                                    <input name="shipment-edit-firstName" type="text" class="form-control" id="shipment-edit-firstName" placeholder="First Name" ng-model="model.header.fromName" maxlength="30" required required-message="validationMessages.required"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                                <div class="form-group required">
+                                                    <label for="shipment-edit-addressLine1" class=" control-label">Address Line 1</label>
+                                                    <input name="shipment-edit-addressLine1" type="text" class="form-control" id="shipment-edit-addressLine1" placeholder="Address Line 1" maxlength="200" ng-model="model.header.address1" required required-message="validationMessages.required" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group">
+                                                    <label for="shipment-edit-addressLine2" class=" control-label">Address Line 2</label>
+                                                    <input name="shipment-edit-addressLine2" type="text" class="form-control" id="shipment-edit-addressLine2" placeholder="Address Line 2" maxlength="60" ng-model="model.header.address2" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group required">
+                                                    <label for="shipment-edit-city" class=" control-label">City / Town</label>
+                                                    <input name="shipment-edit-city" type="text" class="form-control" id="shipment-edit-city" placeholder="City" ng-model="model.header.addressCity" required required-message="validationMessages.required" maxlength="30" />
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group">
+                                                    <label for="shipment-edit-state" class=" control-label">State / Province</label>
+                                                    <input name="shipment-edit-state" type="text" class="form-control" id="shipment-edit-state" placeholder="State/Region" ng-model="model.header.addressState" maxlength="30" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group required">
+                                                    <label for="shipment-edit-originCountry" class="control-label">Country</label>
+                                                    <select class="form-control" name="shipment-edit-originCountry" ng-model="countryOfOriginCtrl" id="shipment-edit-originCountry" required-message="validationMessages.required" ng-options="item as item.countryName for item in countryList track by item.countryCode" required>
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group required">
+                                                    <label for="shipment-edit-zipCode" class=" control-label">ZIP/Postal Code</label>
+                                                    <input name="shipment-edit-zipCode" type="text" class="form-control" id="shipment-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.header.addressPostalCode" invalid-message="invalidPostalShipment" maxlength="12" validator="postalCodeVaidate()"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="form-group">
+                                                    <label for="shipment-edit-phone" class=" control-label">Phone</label>
+                                                    <input name="shipment-edit-phone" type="tel" class="form-control" id="shipment-edit-phone" placeholder="Phone" ng-model="model.header.phone" invalid-message="validationMessages.invalidphone" maxlength="20"/>
+                                                </div>
+                                            </div>
+											
+											<div class="col-md-4 col-sm-6 col-xs-12" >
+												<div class="form-group">
+                                            <label for="shipment-edit-email" class=" control-label">Email</label>
+                                            <input name="shipment-edit-email" type="text" class="form-control" id="shipment-edit-email" placeholder="Email" maxlength="50" ng-model="model.email" />
+                                        </div>
+											
+											</div>
+											
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3 paddnone">
+
+                                        <div class="form-group">
+                                            <label for="shipment-edit-remarks" class=" control-label">Remarks</label>
+<!--
+                                            <input  type="text" class="form-control" id="shipment-edit-remarks" rows="4" cols="7" placeholder="Remarks" ng-model="model.header.remarks" maxlength="30"/>
+-->
+                                            <textarea name="shipment-edit-remarks" id="shipment-edit-remarks" class="form-control" rows="4" cols="7" placeholder="Remarks" ng-model="model.header.remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a href="javascript:;" id="shipment-edit-product-details"> Product Details</a></h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="row srch-product-details">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="shipment-edit-search-product" class="col-sm-3 col-xs-12 control-label paddrgt0 shipEditSearchandAdd">Search and Add Products</label>
+                                            <div class="col-sm-5 col-xs-12 shipEditSearchandAddBox">
+                                                <input name="shipment-edit-search-product" type="text" class="form-control shipment-search-box-products" id="shipment-edit-search-product" placeholder="EZY-SKU / Merchant SKU / Name / Product ID" ng-model="searchKey" ng-focus="findSuggestion(searchKey)" ng-change="findSuggestion(searchKey)" />
+                                            <div class="list-group suggestion-box nano" id="shipment-edit-product-search-suggestion" ng-if="suggestions.length">
+                                              <div class="nano-content">
+                                                <a ng-repeat="suggest in suggestions" href="javascript:;" class="list-group-item" ng-click="addProduct(suggest)" ng-class="{'disabled' : checkActive(suggest)}">
+                                                    <div class="editShipmentSuggestion">
+                                                       <div class="prodIdContainer">
+                                                         <div class="prodIDs">
+                                                           <div class="txtBold prodId" ng-bind-html="'Merchant SKU : '+highlightSuggest(suggest.sku, searchKey)"></div>
+                                                         </div>
+                                                          <div class="prodIcons">
+                                                            <span ng-class="{'actCircle' : getSuggestionClass(suggest.isActive), 'actCircleInact' : !getSuggestionClass(suggest.isActive)}"></span>
+                                                            <span class="displayInline" ng-class="{'glyphicon glyphicon-flight-grid' : !getSuggestionClass(suggest.isExportable), 'glyphicon glyphicon-flight-ok-grid' : getSuggestionClass(suggest.isExportable)}"></span>
+                                                          </div>
+                                                          <div class="clear"></div>
+                                                       </div>
+                                                       
+                                                       <div class="suggprodProductContainer">
+                                                         <div class="suggprodPrdName" ng-bind-html="'Name: ' + highlightSuggest(suggest.productName, searchKey) | addEllipse:37"></div>
+                                                       </div>
+                                                       
+                                                       <div class="suggestprodSKU">
+                                                         <div class="txtItalic fleft suggprodEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(suggest.fbspSkuId, searchKey)"></div>
+                                                         <div class="suggprodPrdCodes">
+                                                           <span ng-if="suggest.productType" ng-bind-html="highlightSuggest(suggest.productType, searchKey)"></span>
+                                                           <span ng-if="suggest.productId" ng-bind-html="': '+((suggest.productId) ? (highlightSuggest(suggest.productId, searchKey)):constants.notAvailableText)"></span>
+                                                         </div>
+                                                         <div class="clear"></div>
+                                                       </div>
+                                                    </div>
+                                                </a>
+                                              </div>
+                                            </div>
+                                            <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
+                                              <a href="javascript:;" class="list-group-item">
+                                                  <span class="center fnt12px">No matching products found</span>
+                                              </a>
+                                            </div>
+
+                                            <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
+                                              <a href="javascript:;" class="list-group-item">
+                                                <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
+                                              </a>
+                                            </div>
+                                                
+                                            </div>
+                                            
+                                            
+
+                                            <em class="text-danger paddtop3 dispInlineblk">Click on the suggested product to add them.</em>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 paddnone">
+                                        <div class="form-group">
+                                            <label for="shipment-edit-who-labels" class="col-sm-5 control-label editShipWhoLbl paddlft0">Who Labels?</label>
+                                            <div class="col-sm-7 paddnone">
+                                                <select class="form-control" name="shipment-edit-who-labels" ng-model="whoLabelsCtrl" id="shipment-edit-who-labels" required-message="validationMessages.required" ng-options="item as item.name for item in labelList track by item.value" required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <em class="text-danger paddtop3 dispInlineblk" ng-show="active">Remove the products highlighted in red or resolve the issues in order to create shipment</em>
+                                </div>
+                                
+                              <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-sm-12  col-xs-12 paddnone">
+                                        <div class="newGridContainer container-fluid  col-xs-12 paddnone">
+                                          <div class="row proHeader hidden-xs">
+                                              <div class="proHeaMerH col-sm-3 col-md-3 col-lg-3">Product</div>
+                                              <div class="proHeaCatH col-sm-2 col-md-2 col-lg-2">Category</div>
+                                              <div class="proHeaDimH col-sm-2 col-md-2 col-lg-2">Inventory</div>
+                                              <div class="proHeaMerH col-sm-4 col-md-4 col-lg-4">
+                                                  <div class="col-sm-6 xs-paddlft0">Number of Units</div>
+                                                  <div class="col-sm-6 xs-paddlft0" ng-show="whoLabelsCtrl.value == 'M'">Label Quantity
+                                                      <div class="popoverHldr">
+                                                        <span class="glyphicon glyphicon-info-white" 
+                                                              data-container="body" 
+                                                              data-toggle="popover" 
+                                                              data-placement="top" 
+                                                              data-content="This quantity will only be used for printing labels. You can print your labels in the next step after you create the Shipment." 
+                                                              data-original-title="" title="">
+                                                        </span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="proHeaAleH col-sm-1 col-md-1 col-lg-1">Remove</div>
+                                          </div>
+                                          <div class="clear"></div>
+
+
+                                          <div class="row proRow" ng-class="{'rowArchivedInactive':((product.showHighlight == 1)&&(product.isActive==0 || product.isActive==2)) }" ng-repeat="product in model.products">
+
+                                            <div class="proHeaMerH col-sm-3 col-md-3 col-lg-3">
+                                                <div class="editShipContainer">
+                                                    <div ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}" class="fleft martop5"></div>
+                                                    <div class="editShipskU fleft">
+                                                        <span data-toggle="tooltip" data-placement="top" title="Merchant SKU" ng-bind="product.merchantSku || constants.notAvailableText"></span>
+                                                    </div>
+                                                    <div class="editFlight fleft">
+                                                        <span ng-if="!product.isExportable" class="glyphicon glyphicon-flight-grid"></span>
+                                                        <span ng-if="product.isExportable" class="glyphicon glyphicon-flight-ok-grid"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="clear"></div>
+                                                <div class="editShip proName">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Product Name"><span ng-bind="product.productDesc || constants.notAvailable | addEllipse:23"></span></span>
+                                                </div>
+                                                <div class="editShip eSku">
+                                                    <span class="">EZY-SKU : </span><span ng-bind="product.sku || constants.notAvailable"></span>
+                                                    <span class="eEan" ng-if="product.codeType">
+                                                        <span ng-bind="product.codeType"></span> : <span ng-bind="product.articleCode"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Category -->
+                                            <div class="proHeaCatH col-sm-2 col-md-2 col-lg-2">
+                                              {{product.mainProductCategory || constants.notAvailableText | addEllipse:20 }}
+                                            </div>
+
+                                            <!-- Inventory -->
+                                            <div class="proHeaDimH col-sm-2 col-md-2 col-lg-2">
+                                              <!--<div>
+                                                {{product.width || constants.notAvailableText}} x {{product.length || constants.notAvailableText}} x {{product.height || constants.notAvailableText}} {{product.dimensionUnit || constants.notAvailableText}}
+                                              </div>
+                                              <div>
+                                                <span class="txtItalic">{{product.weight}}</span>
+                                                <span class="kg txtItalic">{{product.weightUnit}}</span>
+                                              </div>-->
+                                                <div class="fullFill fullColor txtBold">
+                                                    Fullfillable : {{product.fulFilQty || '0'}}
+                                                </div>
+                                                <div class="damInbound">
+                                                    <span class="dam txtItalic damColor">
+                                                        Damaged : {{product.damagedQty || '0'}}
+                                                    </span>
+                                                    <span class="inb txtItalic">
+                                                        Inbound : {{product.receivedQty || '0'}}
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="proHeaship col-sm-4 col-md-4 col-lg-4">
+                                               <!-- No. of Units-->
+                                              <div class="col-sm-6">
+
+                                               <input name="shipment-edit-product-quantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-edit-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" invalid-message="validationMessages.numberUnitsError" max="10000" step="1" min="1" ng-blur="updateLabelQuantity(product, $index)"/>
+                                              </div>
+
+                                              <!-- Label Quantity-->
+                                              <div class="col-sm-6" ng-show="whoLabelsCtrl.value == 'M'">
+
+                                                    <div><input name="shipment-edit-product-labelquantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-edit-product-labelquantity-{{$index}}" placeholder="Quantity" ng-model="product.labelQuantity" max="10000" invalid-message="validationMessages.labelQuantityError" step="1"/></div>
+                                              </div>
+
+                                               <!-- for inactive products -->
+                                                         <em class="text-danger paddtop3 dispInlineblk" ng-if="product.showHighlight == 1 && product.isActive == 0">Inactive Product</em>
+                                                         <em class="text-danger paddtop3 dispInlineblk" ng-if="product.showHighlight == 1 && product.isActive == 2">Archived Product</em>
+                                                        <!-- for inactive products -->
+                                            </div>
+
+                                            <!-- Remove -->
+                                            <div class="proHeaAleH col-sm-1 col-md-1 col-lg-1">
+                                              <button class="btnbgnone paddtop3" id="shipment-edit-product-remove-{{$index}}"type="button" ng-click="removeProduct(product)"><span class="glyphicon glyphicon-cross"></button>                                            </div>
+
+                                          </div>
+
+
+                                          <div class="row proRow" ng-if="!model.products.length">
+
+                                            <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                              No products added
+                                            </div>
+
+                                          </div>
+
+
+                                          <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>  
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-grp pull-left">
+                   <button id="edit-shipment-cancel-btm" type="button" class="btn btn-primary" ng-click="duplicate(model.header.inboundCode)">Duplicate</button>
+                </div>
+
+                
+                    
+                <div class="btn-grp pull-right">
+                    
+                    <button id="edit-shipment-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Back</button>
+
+                    <button id="edit-shipment-create-btm" type="submit" class="btn btn-primary" check-acl="editShipmentSave"><span ng-if="!fullEditShipment || (fullEditShipment && model.header.status!=2)">Next</span><span ng-if="fullEditShipment&&model.header.status==2">Save & Proceed</span></button>
+                </div>
+                <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="editShipmentSave" showmessage="hide"></div>
+                </form>
+        </div>
+    </div>
+    </section>
+    </div>
+    </div>
+<div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-shipment-edit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         <p>Edit Shipment <span class="model-close" data-dismiss="modal">X</span></p>
+      </div>
+      <div class="modal-body">
+        <p>Please add atleast one product to edit shipment</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancel">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+    
+</section>

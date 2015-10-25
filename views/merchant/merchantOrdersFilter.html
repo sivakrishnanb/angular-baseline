@@ -1,0 +1,528 @@
+<section class="container-fluid" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/merchant/nav.html'"></ng-include>
+            <section class="content full">
+                <h2 class="thHead"> <span ng-bind="getTitleText()"></span> </h2>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-9 padd0">
+                            <div class="thHeadIco glyphicon glyphicon-order col-lg-1 col-sm-1 hidden-xs"></div>
+                            <div class="thContent col-lg-11 col-sm-10 txtJustify">
+                                <span ng-bind="getHeaderText()"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <h4 class="sub-head thSubHead">Search Orders</h4>
+                <form class="form-inline container-fluid" role="form">
+                    <div class="row padBtm15px">
+                       
+                            <div class="form-group"  id="suggestion-holder">
+                                <label class="sr-only" for="order-search-text">Search Orders</label>
+                                <div class="input-group selectboxhldr">
+                                    <div class="thAll searchordr" multi-select input-model="orderFilterOptions" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="" output-model="searchColumn" id="order-search-column"></div>
+                                    <input type="text" class="thSearch form-control searchFright" id="order-search-text" placeholder="Search Orders" ng-model="searchKey" ng-focus="findSuggestion(searchKey, searchColumn)" ng-change="findSuggestion(searchKey, searchColumn)">
+                                </div>
+                                <div class="list-group suggestion-box nano" id="order-search-suggestion" ng-if="suggestions.length">
+                                    <div class="nano-content">
+                                        <a ng-repeat="suggest in suggestions" href="javascript:;" ng-click="suggestNavigation(suggest)" class="list-group-item">
+                                            <div class="orderSuggestion">
+                                                <div class="OIdContainer">
+                                                    <div class="orderIDs">
+                                                        <div class="txtBold merId" ng-bind-html="'Merchant Order ID: '+highlightSuggest(suggest.merchantOrderId, searchKey)"></div>
+                                                        <div class="txtBold ezyId" ng-bind-html="'EZY Order ID: ' + highlightSuggest(suggest.ezcOrderId, searchKey)"></div>
+                                                    </div>
+                                                    <div class="orderIcons">
+                                                        <span ng-class="getOrderSuggestionsIcon(suggest.orderStatus)" class="glyphicon dispInline"></span>
+                                                        <span ng-class="{'glyphicon-flight-grid' : suggest.shipCountry==constants.currentLocation, 'glyphicon-flight-ok-grid' : suggest.shipCountry!=constants.currentLocation}" class="glyphicon dispInline"></span>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+
+                                                <div class="suggestSKU">
+                                                    <div class="txtItalic fleft suggMerSKU" ng-bind-html="'Merchant SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest.merchantSku,searchKey), searchKey)"></div>
+                                                    <div class="txtItalic fleft suggEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(getFirstMatchSuggest(suggest.ezcSku,searchKey), searchKey)"></div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="suggProductContainer">
+                                                    <div class="suggPrdName txtItalic" ng-bind-html="'Product Name: ' + highlightSuggest(suggest.productName, searchKey)|addEllipse:28"></div>
+                                                    <div class="suggPrdCodes txtItalic">
+                                                        <span ng-if="suggest.productCodeType" ng-bind-html="highlightSuggest(getFirstMatchSuggest(suggest.productCodeType,searchKey), searchKey)"></span>
+                                                        <span ng-if="suggest.productCodeType" ng-bind-html="': '+((suggest.productCode) ? (highlightSuggest(getFirstMatchSuggest(suggest.productCode,searchKey), searchKey)):constants.notAvailableText)"></span>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="suggProductContainer">
+                                                    <div class="suggPrdName txtItalic">Tracking Number: <span ng-bind-html="highlightSuggest(suggest.trackNumber,searchKey)||constants.notAvailableText"></span></div>
+                                                    <div class="suggPrdCodes txtItalic">PO Number: <span ng-bind-html="highlightSuggest(suggest.poNumber,searchKey)||constants.notAvailableText"></span></div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="list-group suggestion-box" id="" ng-if="emptySuggestions">
+                                    <a href="javascript:;" class="list-group-item">
+                                        <span class="center fnt12px">No matching orders found</span>
+                                    </a>
+                                </div>
+
+
+                                <div class="list-group suggestion-box" id="" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
+                                    <a href="javascript:;" class="list-group-item">
+                                        <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <!--<div class="form-group">
+                                <label class="sr-only" for="order-date-range">Created Date Range</label>
+                                <div class="input-group order-date thCreDate">
+                                    <div multi-select input-model="dateOptions" output-model="date" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Created Date Range" disable-property="label" id="order-date-range"></div>
+                                </div>
+                            </div>-->
+
+                            <div class="form-group">
+                                <div class="btn-group date-selector">
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" id="product-date-selector">
+                                        {{(date[0].name)? date[0].name : dateOptions[0].name}} <span class="caret"></span>
+                                    </button>
+                                    <span class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</span>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="dateOption in dateOptions">
+                                            <span ng-class="{'cal-active':dateOption.ticked}"
+                                                  ng-if="dateOption.value !='custom' && dateOption.value !='none'"
+                                                  ng-click="tickSelection(dateOptions, $index)">
+                                                <a href="javascript:void(0)">{{dateOption.name}}</a>
+                                                <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                                            </span>
+
+                                            <!--custom date starts-->
+                                            <ul ng-if="dateOption.value =='custom'">
+                                                <li class="dropdown-submenu">
+                                                    <span ng-click="tickSelection(dateOptions, $index)" ng-class="{'cal-active':dateOption.ticked}">
+                                                        <a href="javascript:;">{{dateOption.name}}</a>
+                                                        <span ng-show="dateOption.ticked" class="tickMark">&#10004;</span>
+                                                    </span>
+
+                                                    <ul ng-class="{'dropdown-menu':true, 'cal-disblk':(dateOption.ticked)}">
+                                                        <li>
+                                                            <div class="input-daterange input-group date-rangepicker" id="datepicker">
+                                                                <div ng-model="fromdate" class="input pull-left daterangefrm" id="date-range-from"></div>
+                                                                <div ng-model="todate" class="input pull-left daterangeto" id="date-range-to"></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <!--custom date - ends-->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" ng-show="showInventoryType()">
+                                <label class="sr-only" for="order-search-type">Inventory Type</label>
+                                <div class="input-group order-inventory thCreDate">
+                                    <div multi-select input-model="orderInventoryOptions" output-model="inventory" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Inventory status" disable-property="label" id="order-inv-type"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="sr-only" for="order-date-range">Order Channel</label>
+                                <div class="input-group order-channel thCreDate">
+                                    <div multi-select input-model="orderChannelOptions" output-model="channel" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Order Channel" disable-property="label" id="order-channel-filter"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="order-search-type">Order Type</label>
+                                <div class="input-group order-type thCreDate">
+                                    <div multi-select input-model="orderTypeOptions" output-model="type" button-label="name" item-label="name" tick-property="ticked" selection-mode="single" helper-elements="none" default-label="Order Type" disable-property="label" id="order-search-type"></div>
+                                </div>
+                            </div>
+                            <div class="form-group displayInline-xs">
+                                <div class="input-group thAppFil">
+                                    <button class="btn btn-primary thButton" ng-click="applyFilter(1)" id="order-search-apply">Apply Filter</button>
+                                </div>
+                            </div>
+                            <div class="form-group displayInline-xs">
+                                <div class="input-group thAppFil">
+                                    <button class="btn btn-default" ng-click="resetFilter()" id="order-filter-reset">Reset</button>
+                                </div>
+                            </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2 col-lg-4 actions padd0">
+                            <div class="form-group">
+                                <label class="sr-only" for="order-search-action">Actions</label>
+                                <div class="input-group">
+                                    <div class="btn-group thAppAct">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="order-search-action" ng-disabled="isOptionVisible('action')">
+                                            Action <span class="caret"></span>
+                                        </button>
+                                        <label class="rowCount" ng-if="gridOptions.selectedItems.length">{{gridOptions.selectedItems.length}} row(s) selected</label>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <!--<li ng-if="isOptionVisible('approve')"><a ng-class="disableActionLinks(myData)" href="javascript:;" id="order-action-approve" ng-class="disableActionLinks(myData)">Approve</a></li>-->
+                                            <li ng-if="isOptionVisible('cancel')"><a ng-class="disableActionLinks(myData,1)" href="javascript:;" id="order-action-cancel" ng-class="disableActionLinks(myData)">Cancel</a></li>
+                                            <li ng-if="isOptionVisible('restore')"><a ng-class="disableActionLinks(myData)" href="javascript:;" id="order-action-restore" ng-class="disableActionLinks(myData)">Restore</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div class="form-group thDateFrom" ng-show="date[0].value=='custom'">
+                                <label class="sr-only" for="order-search-fromdate">From Date</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="order-search-fromdate" ng-model="fromdate" data-date-format="dd/mm/yyyy" readonly/>
+                                    <label class="input-group-addon" for="order-search-fromdate"><i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group thDateTo" ng-show="date[0].value=='custom'">
+                                <label class="sr-only" for="order-search-todate">To Date</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="order-search-todate" ng-model="todate" data-date-format="dd/mm/yyyy" readonly/>
+                                    <label class="input-group-addon" for="order-search-todate"><i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
+                                </div>
+                            </div>-->
+              <span class="rowSelectedTxt" ng-if="showSelected">
+                <span ng-bind="showSelectedLength"></span> row(s) selected
+              </span>
+                        </div>
+
+                        <div class="col-sm-10 col-lg-8 padd0">
+                            <div class="pull-right">
+                                <div class="showingPage pull-left" ng-if="myData.length">
+                                    Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} orders
+                                </div>
+                                <div class="views pull-left" ng-if="myData.length">
+                                    view<select ng-model="pagingOptions.pageSize" class="showingView">
+                                    <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+                                </select>per page
+                                </div>
+                                <div class="pagingout pull-left">
+                                    <ul class="pagingContainer" ng-if="myData.length">
+                                        <li><a href="javascript:void(0)" class="pageFirst"><span ng-click="paging(1)">&lt;&lt;</span></a></li>
+                                        <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage-1)">&lt;</span></a></li>
+
+                                        <li ng-repeat="pageSizeClicks in pageSize.pageSizeClickLength" ng-class="{pageHighLight:pageSizeClicks == pagingOptions.currentPage}">
+                                            <a ng-class="{pageHighLightColor:pageSizeClicks == pagingOptions.currentPage}" href="javascript:void(0);" ng-click="paging(pageSizeClicks)"><span>{{pageSizeClicks}}</span></a>
+                                        </li>
+
+                                        <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage+1)">&gt;</span></a></li>
+                                        <li><a href="javascript:void(0)" class="pageLast"><span ng-click="paging(pagingOptions.currentPage+1, 'last')">&gt;&gt;</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="sort txtRight pull-left">
+
+                                    <div class="">
+                                        <label class="sr-only" for="searchProducts">Sort By: Category</label>
+
+                                        <div class="input-group">
+                                            <!-- <input type="checkbox" name="action" /> -->
+                                            <div class="btn-group thAppAct thAppSort">
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="product-sort-category">
+                                                    Sort By : <span ng-bind="sortingOptions.name"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary" id="product-sort-action" ng-click="sortDirection()">
+                                                    <span ng-class="{'glyphicon glyphicon-sort-cat':!sortLogo(),'glyphicon glyphicon-sort-cat-asc':sortLogo()}"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li ng-click="sort('modifiedDate','Modified Date')"><a href="javascript:;" id="product-action-create-shipment">Modified Date</a></li>
+                                                    <li ng-click="sort('createdDate','Created Date')"><a href="javascript:;" id="product-action-create-shipment">Created Date</a></li>
+                                                    <li ng-click="sort('ezcOrderId','Fulfillable Order Id')"><a href="javascript:;" id="product-action-create-shipment">EZY Order ID</a></li>
+                                                    <li ng-click="sort('merchOrderId','Merchant Order Id')"><a href="javascript:;" id="product-action-create-shipment">Merchant Order ID</a></li>
+
+                                                    <li ng-show="getParamStatus()=== 'all' || getParamStatus()=== 'inprocess' || getParamStatus()=== 'fulfillment' || getParamStatus()=== 'shipped' || getParamStatus()=== 'delivered'"><a href="javascript:;">Approved Date</a></li>
+                                                    <li ng-show="getParamStatus()=== 'all' || getParamStatus()=== 'shipped' || getParamStatus()=== 'delivered'"><a href="javascript:;">Shipped Date</a></li>
+                                                    <li ng-show="getParamStatus()=== 'all' || getParamStatus()=== 'delivered'" ><a href="javascript:;">Delivered Date</a></li>
+                                                    <li ng-show="getParamStatus()=== 'all' || getParamStatus()=== 'undeliverable'"><a href="javascript:;">Returned Date</a></li>
+                                                    <li ng-show="getParamStatus()=== 'all' || getParamStatus()=== 'cancelled'"><a href="javascript:;">Cancelled Date</a></li>
+
+                                                    <li ng-show="getParamStatus()=== 'all'"><a href="javascript:;">Has Issues</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Unapproved</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">In process</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Fulfilment</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Shipped</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Delivered</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">RTS</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Drafts</a></li>
+                                                    <li ng-show="getOrderStatus()"><a href="javascript:;">Cancelled</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Table Starts -->
+
+                <div class="newGridContainer container-fluid paddbtm10">
+
+                    <div class="row ordHeader hidden-xs">
+
+                        <div class="ordHeaEditH col-xs-12 col-sm-1 col-md-1">
+                            <div class="checkboxFive">
+                                <input type="checkbox" value="" id="" name="" ng-click="toggleCheckBox()" ng-model="toggleCheckBoxVal"/>
+                            </div>
+                        </div>
+
+                        <div class="ordHeaOrdH col-xs-12 col-sm-12 col-md-3">Order</div>
+                        <div class="ordHeaChaH col-xs-12 col-sm-12 col-md-1">Channel</div>
+                        <div class="ordHeaTraH col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('trackingNumber')">Tracking Number</div>
+                        <div class="ordHeaDelH col-xs-12 col-sm-12 col-md-2">Delivery By</div>
+                        <div class="ordHeaDatH col-xs-12 col-sm-12 col-md-2">Date</div>
+                        <div class="ordHeaStaH col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('orderStatus')">Status</div>
+                        <!--<div class="ordHeaProH col-sm-3 col-md-1">Products</div>-->
+                        <div class="ordHeaShiH col-xs-12 col-sm-12 col-md-2">Ship To Address</div>
+                        <!--<div class="ordHeaRemH col-xs-12 col-sm-3 col-md-1" ng-show="isOptionVisible('remarks')">Remarks</div>-->
+                        <div class="ordHeaRemH col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('products')">Products</div>
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="row ordRow paddbtm4" ng-repeat="order in myData" ng-class="{rowSelected:order.Selected,highlightAddedRow:highlightAdded(order.merchantOrderId)}">
+
+                        <div class="ordHeaEdit col-xs-12 col-sm-12 col-md-1">
+                            <div class="checkboxFive">
+                                <input type="checkbox" value="" id="" name="" ng-model="order.Selected"/>
+                            </div>
+                        </div>
+
+                        <div class="ordHeaOrd col-xs-12 col-sm-12 col-md-3">
+
+                            <div class="pull-left ordCircleCont">
+                                <div class="ordArrow collapsed" data-toggle="collapse" data-target=".ordersBottom-{{order.ezcOrderNumber}}"><span class="glyphicon glyphicon-ord-ordRightArrow"></span></div>
+                                <div ng-if="order.orderIsUnread" class="ordCircleBlue"></div>
+                            </div>
+
+                            <div class="ezcOrdContainer">
+
+                                <div class="ezcOrdNo font-style-1">
+                                    <span data-toggle="tooltip" data-placement="top" title="Merchant Order ID" ng-bind="order.merchantOrderId || constants.notAvailable" ></span>
+                                </div>
+
+                                <div class="ezcOrdNo fnt12pxImp" ng-if="order.purchaseOrders && order.purchaseOrders.length && order.purchaseOrders[0].poNumber && showPoOrderNumber(order.orderStatus,order)">
+                                    <span data-toggle="tooltip" data-placement="top" title="Purchase Order Number" ng-bind="(order.purchaseOrders && order.purchaseOrders[0].poNumber)?'PO Number : '+ order.purchaseOrders[0].poNumber : constants.notAvailable" ></span>
+                                </div>
+
+                                <div class="editFlight">
+                                    <a ng-show="(getOrderEdit(order.orderStatus))||(isOptionVisible('ordersEdit') && order.orderStatus!='IN_PROCESS' && order.orderStatus!='PROCESS_MGR' && order.orderStatus!='FULFILLMENT' && order.orderStatus!='DELIVERED' && order.orderStatus!='SHIPPED' && order.orderStatus!='CANCELLED')" id="edit-order-{{order.orderHeaderId}}" ng-click="pushOrders()" ng-href="#/orders/edit/{{order.orderHeaderId}}" title="Edit"><span data-toggle="tooltip" data-placement="top" title="Edit" class="glyphicon glyphicon-edit-grid"></span>
+                                    </a>
+
+                                    <a ng-show="isOptionVisible('ordersView') || order.orderStatus=='IN_PROCESS' || order.orderStatus=='PROCESS_MGR' || order.orderStatus=='FULFILLMENT' || order.orderStatus=='DELIVERED' || order.orderStatus=='SHIPPED' || order.orderStatus=='CANCELLED'" id="edit-order-{{order.orderHeaderId}}" ng-click="pushOrders()" ng-href="#/orders/view/{{order.orderHeaderId}}" title="View"><span data-toggle="tooltip" data-placement="top" title="View" class="glyphicon glyphicon-view-grid"></span></a>
+
+                                    <a check-acl="managerApproveOrder" ng-if="order.orderStatus=='PROCESS_MGR' " id="approve-order-{{order.orderHeaderId}}" href="javascript:;" ng-click="$parent.approve(order)" title="Approve"><span data-toggle="tooltip" data-placement="top" title="Approve" class="glyphicon glyphicon-view-grid glyphicon-ord-approved-grid"></span></a>
+
+
+                                    <a ng-if="order.orderStatus=='UNAPPROVED'" id="merchant-approve-order-{{order.orderHeaderId}}" href="javascript:;" ng-click="$parent.merchantApprove(order)" title="Approve"><span data-toggle="tooltip" data-placement="top" title="Approve" class="glyphicon glyphicon-view-grid glyphicon-ord-approved-grid"></span></a>
+
+
+                                    <!-- <a ng-show="isOptionVisible('ordersView')" id="edit-order-{{order.orderHeaderId}}" ng-href="#/orders/view/{{order.orderHeaderId}}" title="View"><span data-toggle="tooltip" data-placement="top" title="View" class="glyphicon glyphicon-view-grid"></span></a>-->
+
+                                    <a ng-show="isOptionVisible(order.orderStatus)" data-toggle="tooltip" data-placement="top" title="Has Issues" class="glyphicon glyphicon-view"><span class="glyphicon glyphicon-has-issue"></span></a>
+                                </div>
+
+                                <div class="clear"></div>
+
+                                <div class="ezyOrdID">
+                                    <span class="">EZY-Order ID : <span ng-bind="order.ezcOrderNumber"></span></span>
+                                </div>
+
+                                <div class="dispOrdID txtItalic">
+                                    <span class="">Displayable Order ID : <span ng-bind="order.displayableOrderId||constants.notAvailableText"></span></span>
+                      <span class="eEan" ng-if="product.codeType">
+                        <span ng-bind="product.codeType"></span> :
+                        <span ng-bind="product.articleCode | addEllipse:7"></span>
+                          </span>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="ordHeaCha col-xs-12 col-sm-12 col-md-1">
+                            <span ng-bind="order.channel"></span>
+                        </div>
+
+                        <div class="ordHeaTra col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('trackingNumber')">
+                            <span ng-bind="(getShipmentTrackingNumber(order))?getShipmentTrackingNumber(order):constants.notAvailableText"></span>
+                        </div>
+
+                        <div class="ordHeaDel col-xs-12 col-sm-12 col-md-2">
+                            <div class="">
+                                <!--<span ng-bind="order.shipping.methodName"></span>-->
+                                <!--<span class="txtRed txtItalic" ng-bind="constants.unidentified"></span>-->
+                                <span ng-bind="order.shipping.methodName || constants.unidentified" ng-class="{'txtRed txtItalic':!getShippingClass(order.shipping.methodName)}"></span>
+                            </div>
+                            <div>
+                                <span class="txtItalic"><span ng-bind="product.weight"></span></span>
+                                <span class="kg txtItalic"><span ng-bind="product.weightUnit"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="ordHeaDat col-xs-12 col-sm-12 col-md-2">
+                            <div class="crDate">
+                                <!-- <span ng-if="order.createdDate" data-toggle="tooltip" data-placement="top" title="{{order.createdDate}}">Created <span class="timeago" title="{{changeDateTimeAgo(order.
+                                createdDate)}}"></span></span> -->
+                                <span ng-bind="getOrdersLandingDateOne(order)"></span>
+                            </div>
+                            <div class="lsDate">
+                                <!-- <span ng-if="order.modifiedDate" data-toggle="tooltip" data-placement="top" title="{{order.modifiedDate}}">Modified <span class="timeago" title="{{changeDateTimeAgo(order.modifiedDate)}}"></span></span> -->
+                                <span ng-bind="getOrdersLandingDateTwo(order)"></span>
+                            </div>
+                        </div>
+
+                        <div class="ordHeaSta col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('orderStatus')">
+                            <span ng-bind="formatOrderStatus(order.orderStatus)"></span>
+                        </div>
+
+                        <!--
+                        <div class="ordHeaPro col-sm-3 col-md-1">
+                          <div class="crDate fullColor txtBold">
+                            <span ng-bind="order.orderLineCount || constants.notAvailable"></span> SKUs
+                          </div>
+                          <div class="lsDate">
+                            Units : <span ng-bind="order.modifiedDate || constants.notAvailable"></span>
+                            <span> 3 | 5 kg</span>
+                          </div>
+                        </div> -->
+
+
+                        <div class="ordHeaShi col-xs-12 col-sm-12 col-md-2">
+
+                            <div class="pull-left">
+                                <span ng-class="{'glyphicon glyphicon-flight-grid-ordersUnapp':((order.customer.shippingAddress.countryCode!=constants.currentLocation)||(!order.customer.shippingAddress.countryCode))}" data-toggle="tooltip" data-placement="top" title="{{(order.shipping.deliveryType=='INTERNATIONAL') ? 'International' : 'Domestic'}}"></span>
+                            </div>
+
+                            <div class="ordShipCont" ng-class="{txtRed:getOrdShipClass(order.customer.shippingAddress)}">
+                                <!-- 1st line -->
+                                <div class="ezcOrdShipName font-style-2-bold" data-toggle="tooltip" data-placement="top" title="Customer Name">
+                                    <span ng-bind="order.customer.shippingAddress.lastname || constants.notAvailable | addEllipse:9"></span>
+                                    <span ng-bind="order.customer.shippingAddress.firstname || constants.notAvailable | addEllipse:9"></span>
+                                </div>
+                                <!-- 2nd Line -->
+                                <div class="ezcOrdShipAdd font-style-2" data-toggle="tooltip" data-placement="top" title="Address line 1">
+                                    <span class=""><span ng-bind="order.customer.shippingAddress.address1  | addEllipse:20"></span></span>
+                                </div>
+                                <!-- 3rd Line -->
+                                <div class="ordCountryCode" >
+                       <span class="">
+                         <span ng-bind="order.customer.shippingAddress.countryCode||constants.notAvailable" data-toggle="tooltip" data-placement="top" title="{{order.customer.shippingAddress.countryName}}"></span>
+                         -
+                         <span ng-bind="order.customer.shippingAddress.postalCode || constants.notAvailable | addEllipse:12"></span>
+                       </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ordHeaRem col-xs-12 col-sm-12 col-md-1" ng-show="isOptionVisible('products')">
+                            <div class="crDate fullColor txtBold">
+                                <span ng-bind="order.orderLineCount || constants.notAvailable"></span> SKUs
+                            </div>
+
+                            <!--<div class="lsDate">
+                              Units : <span ng-bind="order.modifiedDate || constants.notAvailable"></span> <br>
+                              <span> 3 | 5 kg</span>
+                            </div>-->
+
+                            <div class="lsDate">
+                                Units : {{getOrderUnits(order)}}
+                            </div>
+
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                        <div class="container-fluid marbtm5">
+                            <div class="row" ng-repeat="ordBottom in order.lineItems">
+                                <div class="ordersBottomContainer col-xs-6 col-sm-9 col-md-9 col-md-push-1 col-sm-push-1 col-xs-push-1">
+                                    <div class="row ordersBottom collapse ordersBottom-{{order.ezcOrderNumber}}">
+
+                                        <div class="ordAccBottomCircle">
+                                            <span ng-class="{ordActCircle:ordBottom.isActive,ordInactActCircle:!ordBottom.isActive}" data-toggle="tooltip" data-placement="top" title="{{(ordBottom.isActive) ? 'Active' : 'Inactive'}}"></span>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-12 col-md-2 paddlft10">
+                                            <span class="" ng-class="{'txtRed txtItalic':!ordBottom.merchantSku}" ng-bind="ordBottom.merchantSku || constants.skuNotAvailableText" data-toggle="tooltip" data-placement="top" title="Merchant SKU"></span>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-12 col-md-3 ordAccBottomProdDesc">
+                                            <span class="paddall5" ng-class="{'txtRed txtItalic':!ordBottom.description}" ng-bind="ordBottom.description || constants.unidentified | addEllipse:20" data-toggle="tooltip" data-placement="top" title="Product Name"></span>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-12 col-md-2">
+                                            <span class="paddall5 txtItalic" ng-class="{'txtRed':!ordBottom.ezcSku}" ng-bind="ordBottom.ezcSku || constants.unidentified" data-toggle="tooltip" data-placement="top" title="EZY-SKU"></span>
+                                        </div>
+                                        <div class="col-md-1 ordBottomCat col-sm-12 col-xs-4"><span ng-class="{'txtRed txtItalic':!ordBottom.productCategory}" ng-bind="getCategory(ordBottom.productCategory) || constants.unidentified" data-toggle="tooltip" data-placement="top" title="Category"></span></div>
+                                        <div class="col-xs-4 col-sm-12 col-md-1 ordBottomUnits" data-toggle="tooltip" data-placement="top" title="Quantity">
+                                            <span class="paddall5" ng-class="{'txtRed txtItalic':!ordBottom.quantity}" ng-bind="ordBottom.quantity+' Unit(s)' || constants.unidentified | addEllipse:10"></span>
+                                        </div>
+                                        <div class="col-md-1 col-sm-12 col-xs-4 padd0" data-placement="top" title="Weight" data-toggle="tooltip">
+                                            <span class="paddall5" ng-class="{'txtRed txtItalic':!ordBottom.productWeight}" ng-bind="ordBottom.productWeight || constants.unidentified | number: 2"></span>
+                                            <span ng-show="ordBottom.productWeight">Kg</span>
+                                        </div>
+                                        <div data-toggle="tooltip" data-placement="top" title="Shipped Quantity" class="col-md-1 col-sm-12 col-xs-4 padd0 ordAccQtyShipped" ng-show="order.orderStatus=='DELIVERED' || order.orderStatus=='SHIPPED' || isOptionVisible('ordAccQtyShipped')">
+                                            <span class="paddall5" ng-bind="(ordBottom.shippedQuantity)?ordBottom.shippedQuantity+' Units(s)':constants.notAvailableText"></span>
+                                        </div>
+                                        <div class="ordAccBottomFlight">
+                                            <span ng-class="{'glyphicon glyphicon-flight-ok-grid':ordBottom.isExportable,'glyphicon glyphicon-flight-grid':!ordBottom.isExportable,'txtRed glyphicon glyphicon-flight-grid':!ordBottom.isExportable && order.shipping.deliveryType!='DOMESTIC'}" data-toggle="tooltip" data-placement="top" title="{{(ordBottom.isExportable) ? 'Exportable' : 'Non-Exportable'}}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" ng-show="order.lineItems.length==0">
+                                <div class="ordersBottomContainer col-xs-6 col-sm-9 col-md-9 col-md-push-1 col-sm-push-1 col-xs-push-1">
+                                    <div class="row ordersBottom collapse ordersBottom-{{order.ezcOrderNumber}} noRecordDisplayCollapse">
+                                        No products available
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row proRow" ng-if="!myData.length">
+
+                        <div class="noRecordDisplayIcons col-sm-12 col-md-12 col-lg-12">
+                            <div ng-if="loading.nodata">
+
+                                <div class="fleft noDataRightContent">
+                                    <p class="noProd txtBold">No Pending Orders Found!</p>
+                                </div>
+
+                                <div class="clear"></div>
+
+                            </div>
+                            <div ng-if="loading.load" class="loadingText"><span class="dataget glyphicon glyphicon-cog spin"></span> We are retrieving your data. Please wait</div>
+                        </div>
+
+                    </div>
+
+
+                    <!--<div class="ordHeaRem col-sm-3 col-md-1 col-lg-1" ng-show="isOptionVisible('remarks')">
+                      <span ng-bind="order.remark || constants.notAvailable | addEllipse:25"></span>
+                    </div>-->
+
+
+
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

@@ -1,43 +1,48 @@
-<aside class="full">
+<aside class="full productNavContainer ">
   <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
+      <ul class="list-group leftNavOne">
+        <li class="list-group-item ezyHide">
           <!-- <span class="badge">14</span> -->
           <a href="javascript:;" ng-click="toggleLeftNav()" title="Expand/Collapse" class="glyphicon glyphicon-resize-horizontal" id="product-nav"></a><span class="full expOrCol">Quick Links</span>
         </li>
-        <li ng-class="isNavActive('products','create')" class="list-group-item">
+        <li ng-class="isNavActive('products','create')" class="list-group-item ezyCreate" data-toggle="tooltip" data-placement="top" title="Create Product">
           <!-- <span class="badge">14</span> -->
-          <a href="#/products/create" title="Create Product" id="product-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol">Create Product</span></a>
+          <a href="#/products/create" data-toggle="tooltip" id="product-nav-create"><span class="glyphicon glyphicon-plus-sign"></span><span class="full expOrCol ezyHide">Create Product</span></a>
         </li>
-        <li ng-class="isNavActive('products','upload')" class="list-group-item">
+        <li ng-class="isNavActive('products','upload')" class="list-group-item ezyUpload" data-toggle="tooltip" data-placement="top" title="Upload Products">
           <!-- <span class="badge">14</span> -->
-          <a href="#/products/upload" title="Upload Products" id="product-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol">Upload Products</span></a>
+          <a href="#/products/upload" data-toggle="tooltip" id="product-nav-upload"><span class="glyphicon glyphicon-upload"></span><span class="full expOrCol ezyHide">Upload Products</span></a>
         </li>
+        <li class="zeroDim"></li>
       </ul>
   </article>
   <article class="widget-nav">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol">Product Status</span>
+      <ul class="list-group leftNavTwo">
+        <li class="list-group-item navStatus">
+          <span class="glyphicon glyphicon-hdd"></span><span class="full expOrCol navStatusTxt">Product Status</span>
         </li>
         <li ng-class="isNavActive('products','all')" class="list-group-item">
-          <span class="badge">28</span>
+          <span class="badge" ng-bind="productCount['-1'] || 0"></span>
           <a href="#/products/all" title="All" id="product-nav-all"><span class="glyphicon glyphicon-certificate"></span><span class="full expOrCol">All</span></a>
 
         </li>
         <li ng-class="isNavActive('products','active','default')" class="list-group-item">
-          <span class="badge">14</span>
+          <span class="badge" ng-bind="productCount['1'] || 0"></span>
           <a href="#/products/active" title="Active" id="product-nav-active"><span class="glyphicon glyphicon-ok-circle"></span><span class="full expOrCol">Active</span></a>
 
         </li>
         <li ng-class="isNavActive('products','inactive')" class="list-group-item">
-          <span class="badge">14</span>
-          <a href="#/products/inactive" title="In Active" id="product-nav-inactive"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Inactive</span></a>
+          <span class="badge" ng-bind="productCount['0'] || 0"></span>
+          <a href="#/products/inactive" title="Inactive" id="product-nav-inactive"><span class="glyphicon glyphicon-ban-circle"></span><span class="full expOrCol">Inactive</span></a>
         </li>
+
+        <!--
         <li ng-class="isNavActive('products','archived')" class="list-group-item">
-          <span class="badge">14</span>
+          <span class="badge" ng-bind="productCount['2'] || 0"></span>
           <a href="#/products/archived" title="Archived" id="product-nav-archived"><span class="glyphicon glyphicon-trash"></span><span class="full expOrCol">Archived</span></a>
         </li>
+        -->
+
       </ul>
   </article>
 </aside>

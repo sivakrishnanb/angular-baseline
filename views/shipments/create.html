@@ -1,296 +1,409 @@
 <section class="container-fluid" ng-init="init()">
-  <div class="row">
-    <div class="col-xs-12">
-      <ng-include src="'views/shipments/nav.html'"></ng-include>
-      <section class="content full">
-        <h2>Create Shipments</h2>
-        <form role="form" class="form-horizontal">
-          <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/shipments/nav.html'"></ng-include>
+            <section class="content full widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form"  name="create_shipment" novalidate angular-validator angular-validator-submit="createShipment(create_shipment)">
+                            <h2 class="thHead">Create Inbound Shipment</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 padd0">
+                                        <div class="thHeadIco glyphicon glyphicon-share-car col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10">
+                                            Enter the Inbound Shipment Plan Name and Ship From address. Search and add products you wish to send to the warehouse. Choose who will label the units in the shipment. Click Create Shipment to create an Inbound Shipment ID. Fields marked with asterisk (*) are mandatory.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-group">
+                                <div class="row">
+                                    
+                                    <div class="step-flow">
+                                        <div class="addprobg select">
+                                        <span>Add Products</span>
+                                        </div>
+                                        <div class="probg"><span>Send Shipment</span></div>                                 
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body order-headid">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-8 col-xs-12">
+                                                       <div class="form-group required">
+                                                           <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
+
+                                                          <label for="shipment-create-plan-name" class="control-label custmrid">Shipment Plan Name</label>
+                                                             <div class="popoverHldr marg-left7">
+                                                                <span class="glyphicon glyphicon-info" 
+                                                                      data-container="body" 
+                                                                      data-toggle="popover" 
+                                                                      data-placement="right" 
+                                                                      data-content="This is only for your reference" 
+                                                                      data-original-title="" title="" id="reference">
+                                                                </span>
+                                                            </div>
+                                                               </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-11 paddnone">
+                                                            <input name="shipment-create-plan-name" type="text" class="form-control" id="shipment-create-plan-name" placeholder="Max. 30 characters" ng-model="model.header.planName" required required-message="validationMessages.required" maxlength="30" />
+                                                        </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                    <div  class="panel-heading">
+                                        <h4 class="panel-title"><a href="javascript:;" id="shipment-create-ship-address"> Ship From Address</a></h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="col-sm-12 col-xs-12 paddnone">
+                                                <div class="col-sm-9 paddnone">
+                                                    <div class="row">
+
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                            <div class="form-group required">
+                                                                <label for="shipment-create-firstName" class="control-label">Name / Company Name</label>
+                                                                <input name="shipment-create-firstname" type="text" class="form-control" id="shipment-create-firstname" placeholder="First Name" ng-model="model.header.fromName" maxlength="30" required required-message="validationMessages.required"/>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4 col-sm-6 col-xs-12">
+                                                            <div class="form-group required">
+                                                                <label for="shipment-create-addressLine1" class=" control-label">Address Line 1</label>
+                                                                <input name="shipment-create-addressLine1" type="text" class="form-control" id="shipment-create-addressLine1" placeholder="Address Line 1" maxlength="200" ng-model="model.header.address1" required required-message="validationMessages.required" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                            <div class="form-group">
+                                                                <label for="shipment-create-addressLine2" class=" control-label">Address Line 2</label>
+                                                                <input name="shipment-create-addressLine2" type="text" class="form-control" id="shipment-create-addressLine2" placeholder="Address Line 2" maxlength="60" ng-model="model.header.address2" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+
+                                                            <div class="form-group required">
+                                                                <label for="shipment-create-city" class=" control-label">City / Town</label>
+                                                                <input name="shipment-create-city" type="text" class="form-control" id="shipment-create-city" placeholder="City" ng-model="model.header.addressCity" required required-message="validationMessages.required" maxlength="30" />
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+
+                                                            <div class="form-group">
+                                                                <label for="shipment-create-state" class=" control-label">State / Province</label>
+                                                                <input name="shipment-create-state" type="text" class="form-control" id="shipment-create-state" placeholder="State/Region" ng-model="model.header.addressState" maxlength="30" />
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+
+                                                            <div class="form-group required">
+                                                                <label for="shipment-create-originCountry" class="control-label">Country</label>
+                                                                <select class="form-control" name="shipment-create-originCountry" ng-model="countryOfOriginCtrl" id="shipment-create-originCountry" required-message="validationMessages.required" ng-options="item as item.countryName for item in countryList track by item.countryCode" required>
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+
+                                                            <div class="form-group required">
+                                                                <label for="shipment-create-zipCode" class=" control-label">ZIP/Postal Code</label>
+                                                                <input name="shipment-create-zipCode" type="text" class="form-control" id="shipment-create-zipCode" placeholder="ZIP/Postal Code" ng-model="model.header.addressPostalCode" invalid-message="invalidPostalShipment" maxlength="12" validator="postalCodeVaidate()"/>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                            <div class="form-group">
+                                                                <label for="shipment-create-phone" class=" control-label">Phone</label>
+                                                                <input name="shipment-create-phone" type="tel" class="form-control" id="shipment-create-phone" placeholder="Phone" ng-model="model.header.phone" invalid-message="validationMessages.invalidphone" maxlength="20"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                        <div class="form-group">
+                                                            <label for="shipment-create-email" class=" control-label">Email</label>
+                                                            <input name="shipment-create-email" type="text" class="form-control" id="shipment-create-email" placeholder="Email" ng-model="model.email" maxlength="50" />
+                                                        </div>
+                                                        </div>
+                                                        
+                                                        
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-sm-1"></div>
+
+
+                                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                                    <div class="row">
+                                                        
+                                                        <div class="form-group">
+                                                            <label for="shipment-create-remarks" class=" control-label">Remarks</label>
+                                                            <textarea id="shipment-create-remarks" name="shipment-create-remarks" class="form-control" rows="4" cols="7" ng-model="model.header.remarks" maxlength="100"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><a href="javascript:;" id="shipment-create-product-details"> Product Details</a></h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse in">
+
+                                        <div class="panel-body">
+                                            <div class="row srch-product-details">
+                                                <div class="col-sm-8 col-xs-12 paddnone">
+                                                    <div class="form-group">
+                                                        <label for="shipment-create-search-product" class="col-sm-3 col-xs-12 control-label paddrgt0 shipEditSearchandAdd">Search and Add Products</label>
+                                                        <div class="col-sm-5 xstxt-padd0 paddlft0 paddrgt5">
+                                                            <input name="shipment-create-search-product" type="text" class="form-control shipment-search-box-products" id="shipment-create-search-product" placeholder="ezy-SKU / Merchant SKU / Name / Product ID" ng-model="searchKey" ng-focus="findSuggestion(searchKey)" ng-change="findSuggestion(searchKey)" />
+                                                            <div class="list-group suggestion-box nano" id="shipment-create-product-search-suggestion" ng-if="suggestions.length">
+                                                                <div class="nano-content">
+                                                                    <a ng-repeat="suggest in suggestions" href="javascript:;" class="list-group-item" ng-click="addProduct(suggest)" ng-class="{'disabled' : checkActive(suggest)}">
+                                                                        <div class="createShipmentSuggestion">
+                                                                            <div class="prodIdContainer">
+                                                                              <div class="prodIDs">
+                                                                                <div class="txtBold prodId" ng-bind-html="'Merchant SKU : '+highlightSuggest(suggest.sku, searchKey)"></div>
+                                                                              </div>
+                                                                               <div class="prodIcons">
+                                                                                 <span ng-class="{'actCircle' : getSuggestionClass(suggest.isActive), 'actCircleInact' : !getSuggestionClass(suggest.isActive)}"></span>
+                                                                                 <span class="displayInline" ng-class="{'glyphicon glyphicon-flight-grid' : !getSuggestionClass(suggest.isExportable), 'glyphicon glyphicon-flight-ok-grid' : getSuggestionClass(suggest.isExportable)}"></span>
+                                                                               </div>
+                                                                               <div class="clear"></div>
+                                                                            </div>
+                                                                            
+                                                                            <div class="suggprodProductContainer">
+                                                                              <div class="suggprodPrdName" ng-bind-html="'Name: ' + highlightSuggest(suggest.productName, searchKey) | addEllipse:37"></div>
+                                                                            </div>
+                                                                            
+                                                                            <div class="suggestprodSKU">
+                                                                              <div class="txtItalic fleft suggprodEZYSKU" ng-bind-html="'EZY-SKU: ' + highlightSuggest(suggest.fbspSkuId, searchKey)"></div>
+                                                                              <div class="suggprodPrdCodes">
+                                                                                <span ng-if="suggest.productType" ng-bind-html="highlightSuggest(suggest.productType, searchKey)"></span>
+                                                                                <span ng-if="suggest.productId" ng-bind-html="': '+((suggest.productId) ? (highlightSuggest(suggest.productId, searchKey)):constants.notAvailableText)"></span>
+                                                                              </div>
+                                                                              <div class="clear"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group suggestion-box" ng-if="emptySuggestions">
+                                                                <a href="javascript:;" class="list-group-item">
+                                                                    <span class="center fnt12px">No matching products found</span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="list-group suggestion-box" ng-if="searchKey.length!=0 && searchKey.length<3 && !suggestions.length">
+                                                                <a href="javascript:;" class="list-group-item">
+                                                                    <span class="center fnt12px">Please type at least 3 characters for suggestions</span>
+                                                                </a>
+                                                            </div>
+
+                                                        </div>
+                                                        <em class="text-danger paddtop3 dispInlineblk">Click on the suggested product to add them.</em>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 paddnone">
+                                                    <div class="form-group">
+                                                        <label for="shipment-create-who-labels" class="col-sm-5 control-label editShipWhoLbl paddlft0">Who Labels?</label>
+                                                        <div class="col-sm-7 paddnone">
+                                                            <select class="form-control" name="shipment-create-who-labels" ng-model="whoLabelsCtrl" id="shipment-create-who-labels" required-message="validationMessages.required" ng-options="item as item.name for item in labelList track by item.value" required>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- remove{{active}} -->
+                                             <em class="text-danger paddtop3 dispInlineblk" ng-show="active">Remove the products highlighted in red or resolve the issues in order to create shipment</em>                                            
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="panel panel-default">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-12 paddnone">
+                                            <div class="newGridContainer container-fluid paddnone">
+                                                <div class="row proHeader hidden-xs">
+                                                    <div class="proHeaMerH col-sm-3 col-md-3 col-lg-3">Product</div>
+                                                    <div class="proHeaCatH col-sm-2 col-md-2 col-lg-2">Category</div>
+                                                    <div class="proHeaDimH col-sm-2 col-md-2 col-lg-2">Inventory</div>
+                                                    <div class="proHeaMerH col-sm-4 col-md-4 col-lg-4">
+                                                        <div class="col-sm-6 xs-paddlft0">No. of Units</div>
+                                                        <div class="col-sm-6 xs-paddlft0" ng-show="whoLabelsCtrl.value == 'M'">Label Quantity
+                                                            <div class="popoverHldr">
+                                                              <span class="glyphicon glyphicon-info" 
+                                                                    data-container="body" 
+                                                                    data-toggle="popover" 
+                                                                    data-placement="top" 
+                                                                    data-content="This quantity will only be used for printing labels. You can print your labels in the next step after you create the Shipment." 
+                                                                    data-original-title="" title="">
+                                                              </span>
+                                                          </div> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="proHeaAleH col-sm-1 col-md-1 col-lg-1">Remove</div>
+                                                </div>
+                                                <div class="clear"></div>
+
+
+                                                <div class="row proRow" ng-class="{'rowArchivedInactive':product.isActive==0 || product.isActive==2 }" ng-repeat="product in model.products">
+
+                                                    <div class="proHeaMerH col-sm-3 col-md-3 col-lg-3">
+                                                        <div class="createShipContainer">
+                                                            <div ng-class="{'actCircle' : getCircle(product.isActive), 'actCircleInact' : !getCircle(product.isActive)}" class="fleft martop5"></div>
+                                                            <div class="createShipskU fleft">
+                                                                <span data-toggle="tooltip" data-placement="top" title="Merchant SKU" ng-bind="product.merchantSku || constants.notAvailableText"></span>
+                                                            </div>
+                                                            <div class="editFlight fleft">
+                                                                <span ng-if="!product.isExportable" class="glyphicon glyphicon-flight-grid"></span>
+                                                                <span ng-if="product.isExportable" class="glyphicon glyphicon-flight-ok-grid"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                        <div class="createShip proName">
+                                                            <span data-toggle="tooltip" data-placement="top" title="Product Name"><span ng-bind="product.productDesc || constants.notAvailable | addEllipse:23"></span></span>
+                                                        </div>
+                                                        <div class="createShip eSku">
+                                                            <span class="">EZY-SKU : </span><span ng-bind="product.sku || constants.notAvailable"></span>
+                                                            <span class="eEan" ng-if="product.codeType">
+                                                                <span ng-bind="product.codeType"></span> : <span ng-bind="product.articleCode"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    
+
+                                                    <!-- Category -->
+                                                    <div class="proHeaCatH col-sm-2 col-md-2 col-lg-2">
+
+                                                        {{product.mainProductCategory || constants.notAvailableText | addEllipse:20 }}
+
+                                                    </div>
+
+                                                    <!-- Inventory -->
+                                                    <div class="proHeaDimH col-sm-2 col-md-2 col-lg-2">
+
+                                                        <!--<div>
+
+                                                            {{product.width || constants.notAvailableText}} x {{product.length || constants.notAvailableText}} x {{product.height || constants.notAvailableText}} {{product.dimensionUnit || constants.notAvailableText}}
+                                                        </div>
+                                                        <div>
+                                                            <span class="txtItalic">{{product.weight}}</span>
+                                                            <span class="kg txtItalic">{{product.weightUnit}}</span>
+
+                                                        </div>-->
+
+                                                        <!--<div class="proHeaInv col-sm-4 col-md-1 col-lg-2">-->
+                                                            <div class="fullFill fullColor txtBold">
+                                                                Fullfillable : {{product.fulFilQty || '0'}}
+                                                            </div>
+                                                            <div class="damInbound">
+                                                                <span class="dam txtItalic damColor">
+                                                                    Damaged : {{product.damagedQty || '0'}}
+                                                                </span>
+                                                                <span class="inb txtItalic">
+                                                                    Inbound : {{product.receivedQty || '0'}}
+                                                                </span>
+                                                            </div>
+                                                        <!--</div>-->
+
+                                                    </div>
+
+
+                                                    <div class="proHeaMerH col-sm-4 col-md-4 col-lg-4">
+                                                        <!-- No. of Units-->
+
+                                                        <div class="col-sm-6">
+
+                                                            <input name="shipment-create-product-quantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-quantity-{{$index}}" placeholder="Quantity" ng-model="product.quantity" required required-message="validationMessages.required" step="1" min="1" max="10000" invalid-message="validationMessages.numberUnitsError" ng-blur="updateLabelQuantity(product, $index)"/>
+                                                        </div>
+
+                                                        <!-- Label Quantity-->
+                                                        <div class="col-sm-6" ng-show="whoLabelsCtrl.value == 'M'">
+
+                                                            <div><input name="shipment-create-product-labelquantity-{{$index}}" type="number" class="form-control shipment-qty" id="shipment-create-product-labelquantity-{{$index}}" placeholder="Quantity" ng-model="product.labelQuantity" max="10000" invalid-message="validationMessages.labelQuantityError" step="1"/></div>
+                                                        </div>
+                                                        <!-- for inactive products -->
+                                                         <em class="text-danger paddtop3 dispInlineblk" ng-if="product.isActive == 0">Inactive Product</em>
+                                                         <em class="text-danger paddtop3 dispInlineblk" ng-if="product.isActive == 2">Archived Product</em>
+                                                        <!-- for inactive products -->
+
+                                                    </div>
+
+                                                    <!-- Remove -->
+                                                    <div class="proHeaAleH col-sm-1 col-md-1 col-lg-1">
+                                                        <button id="shipment-create-product-remove-{{$index}}"type="button" class="btnbgnone paddtop3" ng-click="removeProduct(product)"><span class="glyphicon glyphicon-cross"></span></button>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="row proRow" ng-if="!model.products.length">
+
+                                                    <div class="noRecordDisplay col-sm-12 col-md-12 col-lg-12">
+                                                        No products added
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="btn-grp pull-right">                               
+                                 <a href="#/shipments"
+                                    class="btn btn-default" id="create-shipment-cancel-btm">Cancel</a>
+                                <button id="create-shipment-create-btm" type="submit" class="btn btn-primary" check-acl="createShipment">Create Shipment</button>
+                            </div>
+                            <div class="col-sm-12 text-danger noAccessAcl ezyHide txtRight txtItalic padd0" check-acl="createShipment" showmessage="hide"></div>
+                        </form>
                     </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading"><h3 class="panel-title">Panel title</h3></div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <div class="col-sm-4 control-label">
-                      <label for="exampleInputEmail1">Email address</label>
-                    </div>
-                    <div class="col-sm-8">
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="btn-grp">
-                <button type="button" class="btn btn-default">Default</button>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-success">Success</button>
-          </div>
-        </form>
-      </section>
+            </section>
+        </div>
     </div>
-  </div>
+
+    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="modal-shipment-create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Create Shipment <span class="model-close" data-dismiss="modal">X</span></p>
+                </div>
+                <div class="modal-body">
+                    <p>Please add atleast one product to create shipment</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="modalCancel">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </section>

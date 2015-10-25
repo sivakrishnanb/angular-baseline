@@ -1,0 +1,149 @@
+{
+  "ACCOUNT RELATED": [
+    {
+      "Change of account details": [
+        "Unable to change contact information",
+        "Others"
+      ]
+    },
+    {
+      "Others": [
+        "Need help with account",
+        "Unable to set preferences",
+        "Others"
+      ]
+    }
+  ],
+  "PRODUCT RELATED": [
+    "Create Product",
+    {
+      "Upload Products": [
+        "Unable to download template",
+        "Unable to   upload the file",
+        "Errors in file",
+        "Others"
+      ]
+    },
+    "Edit Product",
+    "Size & Weight",
+    "Others"
+  ],
+  "SALES CHANNEL RELATED": [
+    {
+      "Connections": [
+        "Unable to connect to a sales channel",
+        "Others"
+      ]
+    },
+    {
+      "Orders": [
+        "Orders are not imported to EZC",
+        "Order status not updated to sales channel",
+        "Mismatch in order attribute for imported orders",
+        "Others"
+      ]
+    },
+    "Others"
+  ],
+  "INBOUND SHIPMENT RELATED": [
+    "Create Inbound Shipment",
+    {
+      "Upload Shipment": [
+        "Unable to download template",
+        "Unable to upload the file",
+        "Errors in file",
+        "Others"
+      ]
+    },
+    "Edit Shipment",
+    {
+      "Shipment Receipt": [
+        "Damaged Products",
+        "Missing Products",
+        "Mismatch in inventory",
+        "Labelling",
+        "Others"
+      ]
+    },
+    {
+      "Cancel Shipment": [
+        "Unable to cancel shipment",
+        "Others"
+      ]
+    },
+    "Others"
+  ],
+  "ORDER RELATED": [
+    {
+      "Create order": [
+        "Unable to create/approve an order",
+        "Others"
+      ]
+    },
+    {
+      "Edit Order": [
+        "Unable to edit order",
+        "Edit Order after approval",
+        "Others"
+      ]
+    },
+    "Cancel Order",
+    {
+      "End customer - Product issues": [
+        "Order not received",
+        "Order packaging tampered",
+        "Items damaged",
+        "Item quantity discrpancy",
+        "Wrong item",
+        "Packaging not correct 6. others"
+      ]
+    },
+    {
+      "End customer - Delivery Issues": [
+        "Customer has not received the order",
+        "Unable to track an order",
+        "Delivery time has exceeded the SLA",
+        "Packing slip",
+        "Others"
+      ]
+    },
+    "Others"
+  ],
+  "INVOICING RELATED": [
+    {
+      "Charges": [
+        "Storage",
+        "Handling",
+        "Delivery",
+        "Adjustments",
+        "Others"
+      ]
+    },
+    {
+      "Payments": [
+        "Discrepancies in payment",
+        "Payment not reflected",
+        "Bank related issues",
+        "Others"
+      ]
+    },
+    {
+      "Others": [
+        "Unable to download monthly statement",
+        "Others"
+      ]
+    }
+  ],
+  "PLATFORM RELATED": [
+    "Data mismatch between virtual and physical",
+    "Dashboard",
+    "Reports",
+    "Emails & Notifications",
+    "Others"
+  ],
+  "OTHERS": [
+    "Suggestion",
+    "Feedback",
+    "Others"
+  ]
+}

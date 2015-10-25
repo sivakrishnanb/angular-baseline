@@ -1,0 +1,152 @@
+<section class="container-fluid adminInvoiceContainer" ng-init="init()">
+    <div class="row">
+        <div class="col-xs-12">
+            <ng-include src="'views/admin/nav.html'"></ng-include>
+            <section class="content full  widget-form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form" name="add_ebay" class="form-horizontal"  novalidate angular-validator angular-validator-submit="sendInvoiceDetails()">
+                            <h2 class="thHead">Invoice Generation</h2>
+                            <div class="container-fluid">
+                                <div class="row paddbtm30">
+                                    <div class="col-sm-12 col-lg-9 padd0">
+                                        <div class="thHeadIco glyphicon glyphicon-icon-admin-invoice col-lg-1 col-sm-1 hidden-xs"></div>
+                                        <div class="thContent col-lg-11 col-sm-10 txtJustify">
+                                            Here you can download all invoices of active merchants.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-heading">
+                                <h4 class="panel-title" id="acc-reports-ord-download">Download Generated Invoice</h4>
+                            </div>
+                            
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-11">
+                                            <div class="row ordrptchkpanel">
+                                                <div class="form-group">
+                                                    <label for="acc-reports-ord-ordCat"  class="col-sm-3 col-md-2 col-lg-2 control-label paddrgt0 paddtop5">Invoice Date Range</label>
+                                                    <div class="col-sm-3 col-md-width29">
+                                                        <div class="form-group marbtm0">
+                                                            <div class="btn-group date-selector wdth215">
+                                                            <select class="form-control" name="options-invoice-period" ng-model="selectedInvoiceDates" id="options-invoice-period" 
+                                                            ng-options="item.stringDate for item in invoiceGenerationDates" required required-message="validationMessages.required">
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8 col-md-8 col-lg-9">
+                                      <span check-acl="adminInvoiceGenerate">
+                                        <button type="button" class="btn btn-primary headrTopPad col-sm-offset-5 col-md-marlft21 pull-left marbtm0" ng-click="sendBulkInvoiceDetails()">Generate</button>
+                                       </span>
+                                       <span>
+                                        <button type="submit" class="btn btn-primary headrTopPad col-sm-offset-5 marlft50 pull-left marbtm0" id="list-invoices">List Invoices</button>
+                                       </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6" ng-if="0&&myData.length">
+                                        <button type="button" class="btn btn-primary marbtm5" ng-click="sendBulkInvoiceDetails()">Download All</button>
+                                    </div>
+                                        
+                                    <!-- paging starts -->    
+                                    <div class="col-sm-12 col-lg-12 padd0">
+                                        <div class="pull-right pageingClass">
+                                          
+                                                <div class="showingPage pull-left" ng-if="myData.length">Showing {{fromRecord}}-{{toRecord}} of {{totalRecord}} products</div>
+
+                                                <div class="views pull-left" ng-if="myData.length">
+                                                   view
+                                                   <select ng-model="pagingOptions.pageSize" class="showingView" ng-change="changePage(pagingOptions)">
+                                                        <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+                                                   </select>per page
+                                                </div>
+
+                                             <div class="pagingout pull-left">
+                                                <ul class="pagingContainer" ng-if="myData.length">
+                                                      <li><a href="javascript:void(0)" class="pageFirst"><span ng-click="paging(1)">&lt;&lt;</span></a></li>
+                                                      <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage-1)">&lt;</span></a></li>
+                                                      <li ng-repeat="pageSizeClicks in pageSize.pageSizeClickLength" ng-class="{pageHighLight:pageSizeClicks == pagingOptions.currentPage}">
+                                                        <a ng-class="{pageHighLightColor:pageSizeClicks == pagingOptions.currentPage}" href="javascript:void(0);" ng-click="paging(pageSizeClicks)"><span>{{pageSizeClicks}}</span></a>
+                                                    </li>
+                                                    <li><a href="javascript:void(0)" class="paging"><span ng-click="paging(pagingOptions.currentPage+1)">&gt;</span></a></li>
+                                                    <li><a href="javascript:void(0)" class="pageLast"><span ng-click="paging(pagingOptions.currentPage+1, 'last')">&gt;&gt;</span></a></li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="newGridContainer container-fluid">
+
+                                            <div class="row merchant-landing-Header hidden-xs">
+                                                <div class="invHMerchantCode col-xs-12 col-sm-3 col-md-2">Merchant Code</div>
+                                                <div class="invHInvoiceCode col-xs-12 col-sm-3 col-md-2">Invoice Code</div>
+                                                <div class="invHStartDate col-xs-12 col-sm-3 col-md-2">Invoice Start Date</div>
+                                                <div class="invHEndDate col-xs-12 col-sm-3 col-md-2">Invoice End Date</div>
+                                                <div class="invHInvoiceAmt col-xs-12 col-sm-3 col-md-1">Amount</div>
+                                                <div class="invHCreatedDate col-xs-12 col-sm-3 col-md-2">Created Date</div>
+                                                <div class="invHInvoiceDownLink col-xs-12 col-sm-3 col-md-1">Download</div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+
+                                            <div class="row proRow" ng-repeat="data in myData">
+
+                                                <div class="invMerchantCode col-xs-12 col-sm-3 col-md-2">
+                                                    <a href="#/merchant/showProfile/{{data.merchantCode}}" target="_blank" ng-bind="data.merchantCode || constants.notAvailableText"></a>
+                                                </div>
+                                                <div class="invInvoiceCode col-xs-12 col-sm-3 col-md-2"><span ng-bind="data.invCode || constants.notAvailableText"></span></div>
+                                                <div class="invStartDate col-xs-12 col-sm-3 col-md-2"><span ng-bind="data.invStartDate || constants.notAvailableText"></span></div>
+                                                <div class="invEndDate col-xs-12 col-sm-3 col-md-2"><span ng-bind="data.invEndDate || constants.notAvailableText"></span></div>
+                                                <div class="invInvoiceAmt col-xs-12 col-sm-3 col-md-1"><span ng-bind="data.invAmount || constants.notAvailableText"></span></div>
+                                                <div class="invCreatedDate col-xs-12 col-sm-3 col-md-2"><span ng-bind="data.createdDate || constants.notAvailableText"></span></div>
+                                                <div class="invInvoiceDownLink col-xs-12 col-sm-3 col-md-1"><a href="{{data.invFileName}}" target="_blank">Download</a></div>
+
+                                            </div>
+
+                                            <div class="row proRow"  ng-if="!myData.length">
+                                              <div class="noRecordDisplay col-xs-12 col-sm-12 col-md-12">
+                                                <div ng-if="loading.load" class="loadingText"><span class="dataget glyphicon glyphicon-cog spin"></span> We are retrieving your data. Please wait</div>
+                                                <div ng-if="loading.nodata" class="txtCenter">No data to display</div>
+                                              </div>
+                                            </div>
+
+                                        </div>
+                                    <div class="clearfix"></div>
+
+                                </div>
+                            </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</div>
+</section>

@@ -1,0 +1,400 @@
+<section class="create-returns container-fluid" ng-init="init()"  ng-show="!isReviewOrder">
+<div class="row">
+  <div class="col-xs-12">
+    <ng-include src="'views/orders/nav.html'"></ng-include>
+    <section class="content full widget-form">
+    <div class="row">
+      <div class="col-sm-12">
+      <form role="form" class="form-horizontal" name="create_returns" novalidate angular-validator angular-validator-submit="createReturns()">
+        <h2 class="thHead">Create Return</h2>
+        <div class="container-fluid">
+          <div class="row paddbtm30">
+            <div class="col-sm-12 col-lg-9 paddnone">
+              <div class="thHeadIco glyphicon glyphicon-order col-lg-1 col-sm-1 hidden-xs"></div>
+              <div class="thContent col-lg-11 col-sm-10"> You can create returns on behalf of your customer. Please fill the 	returns form and we will mail you or your customer the returns
+                label. This label can be pasted on the return shipment and dropped off in any Post Office or POP station. Tracking for the return to be done in delivery courier website. </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-group">
+          <h4 class="sub-head thSubHead">Return Details</h4>
+          <div class="panel panel-default">
+            <div id="collapseOne" class="panel-collapse collapse in">
+              <div class="panel-body order-headid">
+                <div class="row">
+                  <div class="col-md-6 col-sm-8 col-xs-12 ordrwidthtxt">
+                    <div class="form-group required">
+                      <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
+                        <label for="order-create-merchant-id" class="control-label custmrid">Order ID</label>
+                        <div class="popoverHldr marg-left7">
+                            <span class="glyphicon glyphicon-info" data-container="body" data-toggle="popover" data-placement="right" data-content="Enter the Merchant Order ID if you are creating a return for an ezyCommerce order. Use the marketplace/webstore Order ID if it was not fulfilled by ezyCommerce" data-original-title="" title=""></span>
+                        </div>
+                      </div>
+                      <div class="col-md-7 col-sm-6 col-xs-11 colwdthordr paddnone">
+                        <input name="returns-create-merchant-id" type="text" class="form-control" id="returns-create-merchant-id" placeholder="Max. 30 characters" ng-model="model.returns.merchantOrderId" required required-message="validationMessages.required" maxlength="30" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-12 pull-left paddnone txtItalic" ng-if="0">
+                    <span class="error-font-color" >Merchant Order ID entered is already in use.Please enter a different and unique Merchant Order ID.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="panel panel-default col-md-12 col-sm-12 col-xs-12  paddnone">
+              <div class="panel-heading">
+                <h4 class="panel-title"> <a href="javascript:;" id="orders-create-ship-address"> Return Information</a> </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12 paddrgt20">
+					<div class="col-md-11 col-sm-12 col-xs-12 paddnone">
+                      <div class="form-group required">
+                        <label for="returns-create-remarks" class="control-label">Reason</label>
+                        <textarea required required-message="validationMessages.required" name="returns-create-remarks" class="form-control" rows="4" cols="7" maxlength="100" ng-model="model.returns.reason"></textarea>
+                      </div>
+					   </div>
+                    </div>
+					<div class="col-md-6 col-sm-6 col-xs-12 paddnone">
+					<div class="form-group required">
+                      <label class="control-label label-align-text">Do you want the return label to be sent to your customer?</label>
+                      <div class="popoverHldr marg-left7">
+                        <span class="glyphicon glyphicon-info" data-container="body" data-toggle="popover" data-placement="right" data-content="The email will contain returns label, tracking info, lodging instructions." data-original-title="" title=""></span>
+                      </div>
+                      <div class="dispInlineblk">
+                        <div class="onoffswitch pref topalign">
+                          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" ng-model="model.returns.labelRecipientObj">
+                          <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch" ng-class="{'onoffswitch-switch-inverted':!model.returns.labelRecipientObj}"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+					</div>
+
+            <div class="col-md-5 col-sm-5 col-xs-12 paddrgt20">
+              
+                <div class="form-group" ng-if="!model.returns.labelRecipientObj">
+                  <label for="returns-label-email" class="control-label">Enter your email address <span class="reqStar">*</span></label>
+                  <input name="returns-label-email" type="email" class="form-control" id="returns-label-email" placeholder="Email" ng-model="model.returns.labelRecipientEmail" invalid-message="validationMessages.invalidemail" maxlength="90" required required-message="validationMessages.required" validator="checkEmail(model.returns.labelRecipientEmail)"/>
+                  <em class="text-muted text-descrip-close text-grey">An email with the return label and instructions will be sent to this email address within 1-2 business days</em>
+                </div>
+
+                <div class="form-group" ng-if="model.returns.labelRecipientObj">
+                  <label for="returns-label-customer-email" class="control-label">Enter your customer email address <span class="reqStar">&nbsp;*</span></label>
+                  <input name="returns-label-customer-email" type="email" class="form-control" id="returns-label-customer-email" placeholder="Email" ng-model="model.returns.labelRecipientEmail" invalid-message="validationMessages.invalidemail" maxlength="90" required required-message="validationMessages.required" validator="checkEmail(model.returns.labelRecipientEmail)"/>
+                  <em class="text-muted text-descrip-close text-grey">An email with the return label and instructions will be sent to this email address within 1-2 business days</em>
+                </div>
+
+            </div>
+
+          </div>
+                  
+                  <div class="row">                   
+					 <div class="col-md-6 col-sm-6 col-xs-12 paddrgt20">
+					<div class="col-md-11 col-sm-12 col-xs-12 paddnone">
+                  <div class="form-group">
+                    <label for="item-returned-to" class="control-label">Item returned to</label>
+                      <select ng-disabled="1" id="item-returned-to" class="form-control shpCal1" name="item-returned-to" ng-model="model.returns.returnsToObj" ng-options="item as item.name for item in constants.labelList track by item.value">
+                        <option value="">Select</option>
+                      </select>
+                  </div>
+				  </div>
+                </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddrgt20">
+              <div class="panel-heading">
+                <h4 class="panel-title"><a href="javascript:;" id="orders-create-ship-address"> Ship From Address</a> </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipfrom-name" class="control-label">Name</label>
+                        <input name="returns-shipfrom-name" type="text" class="form-control" id="returns-shipfrom-name" placeholder="Name" ng-model="model.returns.fromName" required required-message="validationMessages.required" maxlength="35" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipfrom-addline1" class="control-label">Address Line&nbsp;1</label>
+                        <input name="returns-shipfrom-addline1" type="text" class="form-control" id="returns-shipfrom-addline1" placeholder="Address Line 1" ng-model="model.returns.fromAddressLine1" required required-message="validationMessages.required" maxlength="35"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipfrom-addline2" class="control-label">Address Line&nbsp;2</label>
+                        <input name="returns-shipfrom-addline2" type="text" class="form-control" id="returns-shipfrom-addline2" placeholder="Address Line 2" ng-model="model.returns.fromAddressLine2" maxlength="35"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipfrom-city" class="control-label">City / Town</label>
+                        <input name="returns-shipfrom-city" type="text" class="form-control" id="returns-shipfrom-city" placeholder="City" ng-model="model.returns.fromCity" required required-message="validationMessages.required" maxlength="30"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipfrom-state" class="control-label">State/ Region</label>
+                        <input name="returns-shipfrom-state" type="text" class="form-control" id="returns-shipfrom-state" placeholder="State/ Region" ng-model="model.returns.fromState" maxlength="30"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipfrom-country" class="control-label">Country</label>
+                        <select class="form-control" name="returns-shipfrom-country" ng-disabled="1" ng-model="model.returns.fromCountryObj" id="returns-shipfrom-country" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
+                          <option value="">Select</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipfrom-zipcode" class="control-label">ZIP/Postal Code</label>
+                        <input type="text" name="returns-shipfrom-zipcode"  class="form-control" id="returns-shipfrom-zipcode" placeholder="ZIP/Postal Code" ng-model="model.returns.fromZipCode" required required-message="validationMessages.zipCodeNew" maxlength="12" invalid-message="validationMessages.zipCodeNew" ng-pattern="/^[0-9]{6}$/"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipfrom-email" class="control-label">Email</label>
+                        <input name="returns-shipfrom-email" type="email" class="form-control" id="returns-shipfrom-email" placeholder="Email" ng-model="model.returns.fromEmail" invalid-message="validationMessages.invalidemail" maxlength="90"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipfrom-phone" class="control-label">Phone</label>
+                        <input name="returns-shipfrom-phone" type="tel" class="form-control" id="returns-shipfrom-phone" placeholder="Phone" ng-model="model.returns.fromPhone" minlength="4" maxlength="35"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
+              <div class="panel-heading">
+                <h4 class="panel-title"><a href="javascript:;" id="orders-create-ship-address">Ship To Address</a></h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipto-name" class="control-label">Name</label>
+                        <input name="returns-shipto-name" type="text" class="form-control" id="returns-shipto-name" placeholder="Name" ng-model="model.returns.toName" required required-message="validationMessages.required" maxlength="35" />
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipto-addline1" class="control-label">Address Line&nbsp;1</label>
+                        <input name="returns-shipto-addline1" type="text" class="form-control" id="returns-shipto-addline1" placeholder="Address Line 1" ng-model="model.returns.toAddressLine1" required required-message="validationMessages.required" maxlength="35"/>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipto-addline2" class="control-label">Address Line&nbsp;2</label>
+                        <input name="returns-shipto-addline2" type="text" class="form-control" id="returns-shipto-addline2" placeholder="Address Line 2" ng-model="model.returns.toAddressLine2" maxlength="35"/>
+                      </div>
+                    </div>                    
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipto-city" class="control-label">City / Town</label>
+                        <input name="returns-shipto-city" type="text" class="form-control" id="returns-shipto-city" placeholder="City" ng-model="model.returns.toCity" required required-message="validationMessages.required" maxlength="30"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipto-state" class="control-label">State/ Region</label>
+                        <input name="returns-shipto-state" type="text" class="form-control" id="returns-shipto-state" placeholder="State/ Region" ng-model="model.returns.toState" maxlength="30"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipto-country" class="control-label">Country</label>
+                        <select class="form-control" ng-disabled="1" name="returns-shipto-country" ng-model="model.returns.toCountryObj" id="returns-shipto-country" required required-message="validationMessages.required" ng-options="item as item.countryName for item in countryListOrders track by item.countryCode">
+                          <option value="">Select</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group required">
+                        <label for="returns-shipto-zip" class="control-label">ZIP/Postal Code</label>
+                        <input type="text" name="returns-shipto-zip"  class="form-control" id="returns-shipto-zip" placeholder="ZIP/Postal Code" ng-model="model.returns.toZipCode" required required-message="validationMessages.zipCodeNew" maxlength="12" invalid-message="validationMessages.zipCodeNew" ng-pattern="/^[0-9]{6}$/"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipto-email" class="control-label">Email</label>
+                        <input name="returns-shipto-email" type="email" class="form-control" id="returns-shipto-email" placeholder="Email" ng-model="model.returns.toEmail" invalid-message="validationMessages.invalidemail" maxlength="90"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <label for="returns-shipto-phone" class="control-label">Phone</label>
+                        <input name="returns-shipto-phone" type="tel" class="form-control" id="returns-shipto-phone" placeholder="Phone" ng-model="model.returns.toPhone" minlength="4" maxlength="35"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddrgt20">
+            <div class="panel-heading">
+              <h4 class="panel-title"><a href="javascript:;" for="returns-create-additional-information">Item Information</a></h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse in">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                      <label for="returns-create-noofpackages" class="control-label">Number of packages</label>
+                      <select class="form-control"  name="returns-create-noofpackages" id="returns-create-noofpackages" required required-message="validationMessages.required" ng-model="model.returns.noOfBoxes" ng-options="page for page in numberOfPackages(1, constants.orderReturnsNoOfPackages)" ng-change="model.lineItems=[];clearAdditionalInfoData()"><option value="" class="">Select</option></select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-12 martop10" ng-repeat="package in displayNumberOfPackages(model.returns.noOfBoxes) track by $index">
+                    <div class="form-group" id="package_{{$index}}" class="packageLoop">
+                      <label for="weight-of-packages-{{$index}}" class="control-label" ng-bind="'Weight of Package '+{{$index+1}}"></label>
+                      <input type="text" class="form-control" ng-model="model.lineItems[$index].weight" name="weight-of-package-{{$index}}" id="weight-of-package-{{$index}}" placeholder="Weight of Package {{$index+1}}" maxlength="10" required required-message="validationMessages.invalidReturnsPackageWeight" invalid-message="validationMessages.invalidReturnsPackageWeight" validator="validatePackageWeight({{model.lineItems[$index].weight}})" ng-pattern="/^[0-9]*(\.?[0-9]{1,3})?$/" ng-change="updateEstimateCharge({{$index}})"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="panel panel-default col-md-6 col-sm-12 col-xs-12 paddnone">
+              <div class="panel-heading">
+                <h4 class="panel-title"><a href="javascript:;" id="order-create-general-information"> Estimated charges</a></h4>
+              </div>
+              <div id="orders-create2-collapseThree" class="panel-collapse collapse in">
+                <div class="panel-body delwidget">
+                  <div class="row"> 
+                    <!-- Left hand Panel -->
+                    
+                    <div class="col-sm-12 col-xs-12">
+                      <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                          <div class="form-group">
+                            <label for="orders-create2-shipping-weight" class="col-sm-5 control-label">Number of Packages</label>
+                            <div class="col-sm-7"> <em ng-bind="showNumberOfPackages||constants.notAvailableText"></em> </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                          <div class="form-group">
+                            <label for="orders-create2-shipping-method" class="col-sm-5 control-label">Total Weight </label>
+                            <div class="col-sm-7"> <em ng-bind="showReturnWeight||constants.notAvailableText"></em> </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                          <div class="form-group">
+                            <label for="orders-create2-shipping-method" class="col-sm-5 control-label">Delivery fee </label>
+                            <div class="col-sm-7"> <em ng-bind="showReturnCharges||constants.notAvailableText"></em> </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Right hand panel --> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+		 <div class="btn-grp pull-right">
+          <button check-acl="createOrder" id="create-order-create-btm" type="submit" class="btn btn-primary">Create Return</button>
+          <button id="create-order-cancel-btm" type="button" class="btn btn-default" ng-click="back()">Cancel</button>
+        </div>
+        </div>
+       
+      </form>
+      
+    </div>
+  </div>
+  </section>
+</div>
+</div>
+</section>
+
+<!-- model starts for returns estimate charges-->
+<div class="modal fade" id="confirm-return-estimate-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <p> Estimated charges <span class="return-estimate-modal-close" data-dismiss="modal">X</span></p>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row mrgnone">
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="orders-create2-shipping-weight" class="col-sm-5 control-label lblcln">Number of Packages</span>
+                                        </label>
+                                        <div class="col-sm-7">
+                                            <p id="orders-create2-shipping-weight" class="form-control-static padd0"></p>
+                                            <em ng-bind="showNumberOfPackages"></em>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="orders-create2-shipping-method" class="col-sm-5 control-label">Total Weight</label>
+                                        <div class="col-sm-7">
+                                            <p id="orders-edit2-shipping-method" class="form-control-static padd0"></p>
+                                            <em ng-bind="showReturnWeight"></em>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="orders-create2-shipping-method" class="col-sm-5 control-label">Delivery fee</label>
+                                        <div class="col-sm-7">
+                                            <p id="orders-edit2-shipping-method" class="form-control-static padd0"></p>
+                                            <em ng-bind="showReturnCharges"></em>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default modelButtonCancel" data-dismiss="modal" id="return-estimate-modalCancel">Cancel</button>
+                    <button type="button" class="btn btn-danger danger thButton modelButtonOk" id="return-estimate-modalOk" >Create Return</button>
+                </div>
+            </div>
+        </div>
+</div>
+<!-- model ends -->

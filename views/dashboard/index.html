@@ -1,154 +1,402 @@
+<div ng-class="getDashboardScrollClassTop()">
+<div ng-class="getDashboardScrollClassBot()">
 <section class="container-fluid" ng-init="init()">
-  <div class="row">
+    <div class="row">
 
-    <div class="col-sm-9">
-      <article class="widget-data clearfix">
-        <div class="filter-box">
-          <p class="link-hldr">
-            <a href="javascript:;" title="Link 1">Today</a>
-            <a href="javascript:;" title="Last 7 Days">Last 7 Days</a>
-            <a href="javascript:;" title="Last 30 Days">Last 30 Days</a>
-            <a href="javascript:;" title="Link 4" class="active">This month</a>
-            <a href="javascript:;" title="Link 5">Last month</a>
-            <a href="javascript:;" title="Link 6">This quarter</a>
-          </p>
-          <div class="input-group col-md-5" id="datetimepicker7">
-            <span class="input-group-addon datepickerbutton">
+        <div class="col-sm-12 widget-data-panel">
+            <article class="widget-data widget-box clearfix">
+                <div class="filter-box dashboardOrdersHeight">
+                    <p class="link-hldr pull-left hvr-sweep-to-bottom" ng-repeat="option in dashBoardDateOptions">
+                        <a href="javascript:;" title="{{option.name}}" ng-class="{active:option.selected}" ng-click="dateOptionChanged(option)" class="hvr-fade" ng-model="selectedDateOption">{{option.name}}</a>
+                    </p>
+					
+                    <div class="input-group col-md-5 pull-right hide " id="datetimepicker7">
+                        <div class="input-daterange input-group rangepicker" id="datepicker">
+                            <div class="input pull-left daterangefrm" id="date-range-from"></div>
+                            <div class="input pull-left daterangeto" id="date-range-to"></div>
+                        </div>
+            <span class="input-group-addon datepickerbutton" ng-click="toggleDatePicker()">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-            <input type='text' class="form-control" value="18 July, 2014 - 19 July, 2014"/>
+                        <input type='text' class="form-control" value={{salesBetween}}>
             <span class="input-group-addon">
                 <span>Filter</span>
             </span>
-          </div>
-        </div>
-        <h1>Sales between 18 July 2014 to 19 July 2014</h1>
-        <hr/>
-        <div class="status-box">
-          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>89</span><br/><span>no. of orders</span><br/><span class="percent">45%</span></div></div>
-          <div class="col-sm-3"><div class="circle green"></div><div class="text green"><span>65</span><br/><span>items sold</span><br/><span class="percent">32%</span></div></div>
-          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>12</span><br/><span>ave. order <br/>per day</span></div></div>
-          <div class="col-sm-3"><div class="circle red"></div><div class="text red"><span>78</span><br/><span>ave. order <br/>per day</span></div></div>
-        </div>
-      </article>
-      <article class="widget-table">
-        <div class="gridStyle" ng-grid="gridOptions"></div>
-        <!-- <div class="table-responsive">
-          <table class="table table-hover table-bordered table-striped">
-            <thead>
-              <tr><td>#</td><td>Top 5 Sales</td><td>Rates</td></tr>
-            </thead>
-            <tbody>
-              <tr><td>1</td><td>data 1</td><td>75 %</td></tr>
-              <tr><td>2</td><td>data 1</td><td>75 %</td></tr>
-              <tr><td>3</td><td>data 1</td><td>75 %</td></tr>
-              <tr><td>4</td><td>data 1</td><td>75 %</td></tr>
-              <tr><td>5</td><td>data 1</td><td>75 %</td></tr>
-            </tbody>
-          </table>
-        </div> -->
+                    </div>
+                    <h1 class="dashboard" ng-hide="!salesBetween">{{(selectedDateOption.value == "1d" || selectedDateOption.value == "-1d")? "Sales on" : "Sales between"}} {{salesBetween}}</h1>
+                </div>
+                <div class="clearfix"></div>
+                
+                
+                <div id='quicklook-top' class="status-box">
+                    <div class="row">
+                        <div class="col-sm-3">
+						<div class="hvr-glow hghtcntbox">
+                            <div class="circle orders">
+                                <span class="glyphicon glyphicon-orderdashboard"></span>
+                            </div>
+                            <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                            <div class="text">
+                                <!--<span class="number">{{qlOrdersCount | number:0}}</span><br/>-->
+                                <span class="number" count-to="{{qlOrdersCount}}" value="{{0}}" duration="3"></span>
+                                <span>Number of Orders</span>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-sm-3">
+						<div class="hvr-glow hghtcntbox">
+                            <div class="circle products">
+                                <span class="glyphicon glyphicon-productdashboard"></span>
+                            </div>
+                            <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                            <div class="text">
+                                <!--<span class="number">{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length | number) : 0}}</span><br/>-->
+                                <span class="number" count-to="{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length | number) : 0}}" value="{{0}}" duration="3"></span>
+                                <span>Number of SKU's Sold</span>
+                            </div>
+                        </div>
+						</div>
+                        <div class="col-sm-3">
+						<div class="hvr-glow hghtcntbox">
+                            <div class="circle units">
+                                <span class="glyphicon glyphicon-unitsolddashboard"></span>
+                            </div>
+                            <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                            <div class="text">
+                                <!--<span class="number">{{qlUnitsSold | number:0}}</span><br/>-->
+                                <span class="number" count-to="{{qlUnitsSold}}" value="{{0}}" duration="3"></span>
+                                <span>Number of Units Sold</span>
+                            </div>
+                        </div>
+						</div>
+                        <div class="col-sm-3">
+						<div class="hvr-glow hghtcntbox">
+                            <div class="circle retails">
+                                <span class="glyphicon glyphicon-retaildashboard"></span>
+                            </div>
+                            <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                            <div class="text">
+                                <!--<span class="number">{{qlRetailValue | number:0}}</span><br/>-->
+                                <span class="number" count-to="{{qlRetailValue}}" value="{{0}}" duration="3"></span>
+                                <span>Total Retail Value</span>
+                            </div>
+                        </div>
+						</div>
+                    </div>
+                </div>
+            </article>
 
-      </article>
-      <article class="widget-main">
-        <header>
-            <strong>Title</strong>
-        </header>
-        <section>
-          <nvd3 options="bar.options" data="bar.data"></nvd3>
-          <div class="btn-grp">
-                <button type="button" class="btn btn-default">Default</button>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-success">Success</button>
-          </div>
-        </section>
-      </article>
-      <article class="widget-main">
-        <header>
-            <strong>Title</strong>
-        </header>
-        <section>
-          <nvd3 options="bar.options" data="bar.data"></nvd3>
-          <div class="btn-grp">
-                <button type="button" class="btn btn-default">Default</button>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-success">Success</button>
-          </div>
-        </section>
-      </article>
-      <article class="widget-main">
-        <header>
-            <strong>Title</strong>
-        </header>
-        <section>
-          
-            <gmap></gmap>
-  
-        </section>
-      </article>
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <article class="widget-main orderschart hvr-glow marginbtmnone">
+                        <header>
+                            Orders
+                        </header>
+                        <span ng-show="!inboundRcvd" class="nodatatext nodatatxtblk">SAMPLE</span>
+                        <section class="announcebar">
+
+                            <div id="tooltip-bar" class="avg-line-tooltip">
+                                <p id="tooltiptext-bar">default</p>
+                            </div>
+
+                            <div id="bar-chart"></div>
+                        </section>
+                    </article>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <article class="widget-aside marbtm0 overFlowHide hvr-glow">
+                        <header><span class="glyphicon glyphicon-bullhornnotify"></span>Notifications</header>
+                        <section class="widgetnotify col-sm-12">
+                            <div class="popover-content">
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div ng-repeat="myData in myNotificationsDashboard track by $index" class="{{$index%2==0 ? 'Records odd' : 'Records even'}}">
+                                            <header-notifications data="{{myData}}" ></header-notifications>
+                                        </div>
+                                        <div ng-if="!myNotificationsDashboard.length">
+                                            <p>
+                                                Currently you don't have any notifications <br> to display..
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </section>
+                    </article>
+                </div>
+
+                <div class="col-sm-4">
+                    <article class="widget-aside announceArt overFlowHide hvr-glow">
+					<header>
+					<span class="glyphicon glyphicon-announce"></span>
+						<span class="topsellhead">Announcements</span>
+                        </header>
+                        <!--<span class="nodatatext-announce">SAMPLE</span>-->
+                        <section class="announce col-sm-12">
+                            <div class="nano">
+                                <div class="nano-content">
+                                    <p ng-repeat="myData in announcements" class="{{$index%2==0 ? 'Records odd announcementsBorder' : 'Records even announcementsBorder'}}">
+                                        <strong>
+                                            <span ng-bind="myData.header||constants.notAvailableText"></span>
+                                            <span class="announcementsTimeAgo" title="{{myData.time}}">{{getTimeAgoAnnouncement(myData.time)}}</span>
+                                        </strong><br/>
+                                        <span ng-bind="myData.message||constants.notAvailableText"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <p ng-if="!announcements">
+                                <strong class="txtCenter">No records to display</strong><br/>
+                            </p>
+                        </section>
+
+                    </article>
+                </div>
+
+                <div class="col-sm-4">
+                    <article class="widget-main deliverymethod-panel hvr-glow">
+                        <header>
+						<span class="glyphicon glyphicon-header-prod"></span>
+						<span class="topsellhead">Delivery Method</span>
+                           
+                        </header>
+                        <span ng-show="!inboundRcvd" class="nodatatext-delivey">SAMPLE</span>
+                        <div class="widgetbtn">
+                            <button  ng-hide="deliveryMethodsChart.length < 1" class="btn btn-sm pull-right marlft8 hvr-fade" ng-click="populateDeliveryMethod('$')" ng-class="{active:delMethSortByDollar}">By $</button>
+                            <button  ng-hide="deliveryMethodsChart.length < 1" class="btn btn-sm pull-right hvr-fade" ng-click="populateDeliveryMethod('#')" ng-class="{active:!delMethSortByDollar}">By #</button>
+                        </div>
+
+                        <section>
+                            <p id="pie-chart-delivery" class="delivery-chart">
+                            </p>
+                        </section>
+                    </article>
+                </div>
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-7 ">
+                    <article class="widget-table overFlowHide hvr-glow">
+                        <!-- <div class="gridStyle" ng-grid="gridOptions"></div> -->
+                        <div class="widgettblhead">
+                            <h3><span class="glyphicon glyphicon-header-prod"></span><span class="topsellhead">Top Selling Products</span></h3>
+                        </div>
+                        <span ng-show="!inboundRcvd" class="nodatatext">SAMPLE</span>
+                        <div class="topSellingProdsHeader">
+                            <div class="col-sm-5 padd0">Product Name</div>
+                            <div class="col-sm-4 padd0">SKU</div>
+                            <div class="col-sm-3 padd0">Number of Units Sold</div>
+                        </div>
+
+                        <div class="col-sm-12 padd0">
+                            <div class="container-fluid topSellingProds nano">
+                                <div class="nano-content">
+
+                                    <div class="clearfix"></div>
+
+                                    <div ng-repeat="prod in topSellingProds | orderBy:'-sold'" class="{{$index%2==0 ? 'row Records odd' : 'row Records even'}}">
+                                        <div class="showBorders col-sm-5 bdrlft">{{prod.prodName}}</div>
+                                        <div class="showBorders col-sm-4">{{prod.SKU}}</div>
+                                        <div class="showBorders col-sm-3 txtCentersm" ng-class="getTopSellingClass($index+1)"><span>{{prod.sold}}</span></div>
+                                    </div>
+
+                                    <div class="row Records text-center noRecords" ng-show="topSellingProds.length < 1">
+                                        <h1>No Data Available.</h1>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="col-sm-5 ">
+                    <div class="piechartpad hvr-glow">
+                        <div class="piechartheader col-sm-12">                           
+							<span class="glyphicon glyphicon-orders"></span><span class="piecharttxt">Orders</span>
+                            <button ng-click="togglePieChart('$')" ng-hide="pieChannelData.length < 1 && pieShipmentData.length < 1" class="btn btn-sm pull-right marlft8 hvr-fade" ng-class="{active:pieSortByDollar}">By $</button>
+                            <button ng-click="togglePieChart('#')" ng-hide="pieChannelData.length < 1 && pieShipmentData.length < 1" class="btn btn-sm pull-right hvr-fade" ng-class="{active:!pieSortByDollar}">By #</button>
+                        </div>
+                        <span ng-show="!inboundRcvd" class="nodatatext-orders">SAMPLE</span>
+                        <div class="col-sm-6 col-xs-6">
+                            <article>
+                                <section>
+                                    <p id="pie-chart-channel" class="donut-chart">
+                                    </p>
+                                    <header>Channel</header>
+                                </section>
+                            </article>
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <article>
+                                <section>
+                                    <p id="pie-chart-shipment" class="donut-chart">
+                                    </p>
+                                    <header ng-bind="isCountriesOptionsVisible('pieShipmentHeader')"></header>
+
+                                </section>
+                            </article>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-7 productsoldpanel">
+                    <article class="widget-main hvr-glow">
+                        <header>
+						<span class="glyphicon glyphicon-header-prod"></span>
+                            <span class="prod-sold">Products Sold</span>
+                        </header>
+                        <span ng-show="!inboundRcvd" class="nodatatext">SAMPLE</span>
+                        <section>
+                            <div id="line-chart"></div>
+                        </section>
+                    </article>
+                    <!--  <article class="widget-main">
+                       <header>
+                           Products in Stock
+                       </header>
+                       <section>
+                       </section>
+                     </article> -->
+                </div>
+
+                <div class="col-sm-5">
+
+                    <div id="quicklook-bottom" class="status-box paddtop10">
+                        <div class="row cntboxpadbtm">
+                            <div class="col-sm-6">
+							<div class="hvr-glow hghtcntbox">
+                                <div class="circle orders">
+                                    <span class="glyphicon glyphicon-orderdashboard"></span>
+                                </div>
+                                <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                                <div class="text">
+                                    <!--<span class="number">{{getAvgOrders() | number:2}}</span><br/>-->
+                                    <span class="number" count-to="{{getAvgOrders()}}" decimal="2" value="{{0}}" duration="3"></span>
+                                    <span>Average orders / day</span>
+                                </div>
+							</div>
+                            </div>
+                            <div class="col-sm-6">
+							<div class="hvr-glow hghtcntbox">
+                                <div class="circle products">
+                                    <span class="glyphicon glyphicon-unitdashboard"></span>
+                                </div>
+                                <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                                <div class="text">
+                                    <!--<span class="number">{{maxOrders | number}}</span><br/>-->
+                                    <span class="number" count-to="{{maxOrders}}"  value="{{0}}" duration="3"></span>
+                                    <span>Max Number of orders</span>
+                                </div>
+								 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+							<div class="hvr-glow hghtcntbox">
+                                <div class="circle units">
+                                    <span class="glyphicon glyphicon-productdashboard"></span>
+                                </div>
+                                <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                                <div class="text">
+                                    <!--<span class="number">{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length | number) : 0}}</span><br/>-->
+                                    <span class="number" count-to="{{(!inboundRcvd)? topSellingCount :(topSellingProds.length) ? (topSellingProds.length) : 0}}" value="{{0}}" duration="3"></span>
+                                    <span>Number of unique products</span>
+                                </div>
+								</div>
+                            </div>
+                            <div class="col-sm-6">
+							<div class="hvr-glow hghtcntbox">
+                                <div class="circle retails">
+                                    <span class="glyphicon glyphicon-retaildashboard"></span>
+                                </div>
+                                <span ng-show="!inboundRcvd" class="nodatatext-ql">SAMPLE</span>
+                                <div class="text">
+                                    <!--<span class="number">{{getAveOrderValue(qlRetailValue,qlOrdersCount) | number}}</span><br/>-->
+                                    <span class="number" count-to="{{getAveOrderValue(qlRetailValue,qlOrdersCount)}}" decimal="2" value="{{0}}" duration="3"></span>
+                                    <span>Average order value</span>
+                                </div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <article class="widget-main orderbygeo hvr-glow">
+                        <header>
+						<span class="glyphicon glyphicon-orders"></span>
+                            <span class="store-used">Orders by Geography</span>
+                            <div class="widgetbtn">
+
+                                <button ng-hide="geoChartData.length < 1" class="btn btn-sm pull-right marlft8" ng-click="populateGeoChart('$')" ng-class="{active:geoSortByDollar}">By $</button>
+                                <button ng-hide="geoChartData.length < 1" class="btn btn-sm pull-right" ng-click="populateGeoChart('#')" ng-class="{active:!geoSortByDollar}">By #</button>
+                            </div>
+                        </header>
+                        <span ng-show="!inboundRcvd" class="nodatatext-geo">SAMPLE</span>
+                        <section>
+                            <gmap geo-loactions="geoLocations"></gmap>
+
+
+                            <div class="topcountries hidden-xs">
+                                <div class="topcountryhead">Top Countries</div>
+                                <div class="clearfix"></div>
+                            <div ng-repeat="country in topCountries"><div class="topcountrycnt">{{country[0]}} : {{country[1]}}</div></div>
+                            </div>
+                        </section>
+                    </article>
+                </div>
+
+                <div class="col-sm-7">
+                    <article class="widget-main storageused hvr-glow">
+                        <header>
+						<span class="glyphicon glyphicon-header-prod"></span>
+                            <span class="store-used">Storage Used</span>
+                            <div class="widgetbtn">
+                                <button ng-hide="stackAreaData.length < 1" class="btn btn-sm pull-right marlft8 hvr-glow" ng-click="populateStorageUsed('$')" ng-class="{active:storageSortByDollar}">By $</button>
+                                <button ng-hide="stackAreaData.length < 1" class="btn btn-sm pull-right hvr-glow" ng-click="populateStorageUsed('#')" ng-class="{active:!storageSortByDollar}">By #</button>
+                            </div>
+                        </header>
+                        <span ng-show="!inboundRcvd" class="nodatatext-geo">SAMPLE</span>
+                        <section>
+
+                            <div id="tooltip-area" class="avg-line-tooltip">
+                                <p id="tooltiptext-area">default</p>
+                            </div>
+                            <div id="area-chart"></div>
+                        </section>
+                    </article>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
     </div>
-    <div class="col-sm-3">
-      <article class="widget-aside">
-        <header>Header</header>
-        <section>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-        </section>
-      </article>
-      <article class="widget-aside">
-        <header>Header</header>
-        <section>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-          <p>
-            <strong>Title</strong><br/>
-            <span>Content</span>
-          </p>
-        </section>
-      </article>
-      <article class="widget-aside">
-        <section>
-          <p>
-            <strong>Title</strong>
-          </p>
-          <p class="donut-chart">
-            <nvd3 options="pie.options" data="pie.data"></nvd3>
-          </p>
-        </section>
-      </article>
-      <article class="widget-aside">
-        <section>
-          <p>
-            <strong>Title</strong>
-          </p>
-          <p class="donut-chart">
-            <nvd3 options="pie.options" data="pie.data"></nvd3>
-          </p>
-        </section>
-      </article>
-    </div>
-  </div>
+
+
 </section>
+</div>
+</div>
